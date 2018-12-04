@@ -60,6 +60,13 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     private int currentLoginType = -1;
 
     private static final int SDK_AUTH_FLAG = 2;
+
+    //
+    private final int THIRD_STATUS_LOGIN = 0;
+    private final int THIRD_STATUS_VERIFY_PHONE = 1;
+    private final int THIRD_STATUS_REGISTER = 2;
+
+    private int status = THIRD_STATUS_LOGIN;
     @Inject
     ILoginPresenter<ILoginView> presenter;
 //    @BindView(R.id.etMobile)
@@ -101,16 +108,6 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     private String code;
 
     private boolean isThirdLogin;
-
-    public boolean isChooseSchool() {
-        return chooseSchool;
-    }
-
-    public void setChooseSchool(boolean chooseSchool) {
-        this.chooseSchool = chooseSchool;
-    }
-
-    private boolean chooseSchool;
 
     @Override
     protected void setUp() {
@@ -180,6 +177,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
             Log.e(TAG, "gotoRegisterStep1: set" );
             tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
             tvLogin.setText("绑定手机号");
+            status = THIRD_STATUS_VERIFY_PHONE;
         }else{
             tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextGray));
             tvRegistry.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
@@ -207,6 +205,18 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e(TAG, "onResume: loginActivity" );
+        if (status == THIRD_STATUS_VERIFY_PHONE ){
+            tvRegistry.setVisibility(View.GONE);
+            view.setVisibility(View.GONE);
+            tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
+            tvLogin.setText("绑定手机号");
+        }else if(status == THIRD_STATUS_REGISTER){
+            tvRegistry.setVisibility(View.GONE);
+            view.setVisibility(View.GONE);
+            tvLogin.setText("设置密码");
+            tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
+        }
     }
 
     @OnClick(R.id.tv_login)
@@ -243,6 +253,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
             view.setVisibility(View.GONE);
             tvLogin.setText("设置密码");
             tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
+            status = THIRD_STATUS_REGISTER;
         }
 
         if (registerStep2Fragment == null) {
@@ -413,6 +424,8 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        status = THIRD_STATUS_LOGIN;
+        Log.e(TAG, "onBackPressed: activity" );
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -444,6 +457,10 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     public boolean isThirdLogin(){
         return isThirdLogin;
+    }
+
+    public int getStatus(){
+        return status;
     }
 
     @OnClick(R.id.bt_wechat)

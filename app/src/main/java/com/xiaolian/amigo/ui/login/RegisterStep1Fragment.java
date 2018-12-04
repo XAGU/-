@@ -54,6 +54,7 @@ public class RegisterStep1Fragment extends Fragment {
         if (((LoginActivity) getActivity()).isThirdLogin()){
             ((LoginActivity) getActivity()).ThirdLoginPhoneBind(etMobile.getText().toString(),
                     etVerificationCode.getText().toString());
+            Log.e("Test", "checkVerification: --" );
             return;
         }
 
@@ -222,6 +223,7 @@ public class RegisterStep1Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.e("Test", "onResume: register" );
         ((LoginActivity) getActivity()).showThirdLoginView(false);
         if (etMobile != null) {
             etMobile.requestFocus();

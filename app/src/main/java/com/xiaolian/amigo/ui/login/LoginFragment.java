@@ -128,7 +128,7 @@ public class LoginFragment extends Fragment {
 
         ((LoginActivity) getActivity()).showThirdLoginView(true);
 
-        if (!((LoginActivity)getActivity()).isChooseSchool()) {
+        if (((LoginActivity)getActivity()).getStatus() == 0) {
             ((LoginActivity) getActivity()).setThirdLogin(false);
             ((LoginActivity) getActivity()).showLoginAndRegister();
         }
