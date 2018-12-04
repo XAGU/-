@@ -52,10 +52,6 @@ public class RechargeDetailPresenter<V extends IRechargeDetailView> extends Base
         });
     }
 
-    @Override
-    public String getToken() {
-        return sharedPreferencesHelp.getToken();
-    }
 
     @Override
     public void remind(Long sourceId) {
@@ -105,5 +101,15 @@ public class RechargeDetailPresenter<V extends IRechargeDetailView> extends Base
     @Override
     public String getMobile() {
         return walletDataManager.getMobile();
+    }
+
+    @Override
+    public String getAccessToken() {
+        return sharedPreferencesHelp.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return sharedPreferencesHelp.getReferToken();
     }
 }

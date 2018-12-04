@@ -29,7 +29,10 @@ import javax.inject.Inject;
  */
 public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_FILE_NAME = "amigo";
-    private static final String PREF_KEY_TOKEN = "PREF_KEY_TOKEN";
+    private static final String PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN";
+
+    private static final String PREF_KEY_REFERSH_TOKEN = "PREF_KEY_REFERSH_TOKEN";
+
     private static final String PREF_DEVICE_TOKEN_PREFIX = "PREF_DEVICE_TOKEN_";
     private static final String PREF_DEVICE_RESULT_PREFIX = "PREF_DEVICE_RESULT_PREFIX";
     private static final String PREF_CURRENT_DEVICE_TOKEN = "PREF_CURRENT_DEVICE_TOKEN";
@@ -124,6 +127,12 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     private static final String PREF_KEY_CERTIFY_STATUS = "PREF_KEY_CERTIFY_STATUS";
 
+    private static final String PREF_KEY_APY_NICKNAME = "PREF_KEY_APY_NICKNAME";
+
+    private static final String PREF_KEY_APY_USER_ID= "PREF_KEY_APY_USER_ID";
+
+    private static final String PREF_KEY_APY_IS_BIND= "PREF_KEY_APY_IS_BIND";
+
 
     /**
      * 是否需要弹出退费说明
@@ -141,8 +150,6 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
      */
     private static final String PREF_CERTIFICATION_STATUS = "PREF_CERTIFICATION_STATUS";
 
-    private String tokenHolder;
-    private String deviceTokenHolder;
     private User userHolder;
 
     private boolean showUrgencyNotify = true;
@@ -167,18 +174,23 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     }
 
     @Override
-    public String getToken() {
-        if (tokenHolder != null) {
-            return tokenHolder;
-        }
-        tokenHolder = mSharedPreferences.getString(PREF_KEY_TOKEN, null);
-        return tokenHolder;
+    public void setAccessToken(String accessToken) {
+        mSharedPreferences.edit().putString(PREF_KEY_ACCESS_TOKEN ,accessToken).commit();
     }
 
     @Override
-    public void setToken(String token) {
-        tokenHolder = token;
-        mSharedPreferences.edit().putString(PREF_KEY_TOKEN, token).commit();
+    public String getAccessToken() {
+        return mSharedPreferences.getString(PREF_KEY_ACCESS_TOKEN , "");
+    }
+
+    @Override
+    public void setReferToken(String referToken) {
+        mSharedPreferences.edit().putString(PREF_KEY_REFERSH_TOKEN ,referToken).commit();
+    }
+
+    @Override
+    public String getReferToken() {
+        return mSharedPreferences.getString(PREF_KEY_REFERSH_TOKEN , "");
     }
 
     @Override
@@ -238,6 +250,15 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
         userHolder.setCalsses(mSharedPreferences.getString(PREF_KEY_CALSS , ""));
         userHolder.setStudentId(mSharedPreferences.getString(PREF_KEY_STUDENT_ID , ""));
         userHolder.setDormitory(mSharedPreferences.getString(PREF_KEY_DORMITORY , ""));
+        if (mSharedPreferences.getBoolean(PREF_KEY_APY_IS_BIND,false)){
+            String apayNickName = mSharedPreferences.getString(PREF_KEY_NICKNAME,"");
+            long apayUserId = mSharedPreferences.getLong(PREF_KEY_APY_USER_ID,-1);
+            User.AlipayBindBean alipayBindBean = new User.AlipayBindBean();
+            alipayBindBean.setAlipayNickName(apayNickName);
+            alipayBindBean.setAlipayUserId(apayUserId);
+            alipayBindBean.setIsBinding(true);
+            userHolder.setAlipayBind(alipayBindBean);
+        }
         return userHolder;
     }
 
@@ -313,6 +334,11 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
             mSharedPreferences.edit().putString(PREF_KEY_DORMITORY, user.getDormitory()).apply();
         }
 
+        if (null != user.getAlipayBind() && user.getAlipayBind().isIsBinding()){
+            mSharedPreferences.edit().putString(PREF_KEY_NICKNAME, user.getAlipayBind().getAlipayNickName()).apply();
+            mSharedPreferences.edit().putLong(PREF_KEY_APY_USER_ID, user.getAlipayBind().getAlipayUserId()).apply();
+            mSharedPreferences.edit().putBoolean(PREF_KEY_APY_IS_BIND, user.getAlipayBind().isIsBinding()).apply();
+        }
     }
 
 
@@ -754,7 +780,6 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void logout() {
         mSharedPreferences.edit().clear().apply();
-        tokenHolder = null;
         userHolder = null;
         bonusAmount = 0;
         balance = "";

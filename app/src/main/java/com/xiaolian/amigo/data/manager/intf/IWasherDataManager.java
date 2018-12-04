@@ -82,6 +82,7 @@ public interface IWasherDataManager {
 
     User getUserInfo();
 
-    String getToken();
+    String getAccessToken();
 
+    String getRefreshToken();
 }

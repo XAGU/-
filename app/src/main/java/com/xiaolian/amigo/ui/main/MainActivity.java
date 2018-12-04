@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.main;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -22,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.tencent.android.tpush.XGIOperateCallback;
-import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.BuildConfig;
@@ -68,6 +68,7 @@ import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.MD5Util;
 import com.xiaolian.amigo.util.MyInterpolator;
+import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.TimeUtils;
 
@@ -80,6 +81,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -180,37 +182,43 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        android.util.Log.e(TAG, "onCreate: " );
         setContentView(R.layout.activity_main);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
-        if (savedInstanceState != null){
-            lastFragment = savedInstanceState.getInt(KEY_LASTFRAGMENT);
-        }
         presenter.onAttach(this);
+            if (isNotice) {
+                presenter.routeHeaterOrBathroom();
+            }
+            // 友盟日志加密
+            MobclickAgent.enableEncrypt(true);
+            MobclickAgent.setCatchUncaughtExceptions(true);
+            if (presenter.isLogin()) {
+                presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+                        AppUtils.getVersionName(this));
+            }
+            if (fragments == null)
+            fragments = new Fragment[3];
 
-        if (isNotice) {
-            presenter.routeHeaterOrBathroom();
-        }
 
-        // 友盟日志加密
-        MobclickAgent.enableEncrypt(true);
-        MobclickAgent.setCatchUncaughtExceptions(true);
-        if (presenter.isLogin()) {
-            presenter.checkUpdate(AppUtils.getAppVersionCode(this),
-                    AppUtils.getVersionName(this));
-        }
-        fragments = new Fragment[3];
-        initTable();
+            initTable(savedInstanceState);
 
-        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe(granted -> {
-                    if (granted) {
+            rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .subscribe(granted -> {
+                        if (granted) {
 
+<<<<<<< HEAD
                     } else {
                         showMessage("没有SD卡权限");
                     }
                 });
         android.util.Log.e(TAG, "onCreate: " +  TimeUtils.getCountTimeStamp());
+=======
+                        } else {
+                            showMessage("没有SD卡权限");
+                        }
+                    });
+>>>>>>> feature/userBleCount
     }
 
 
@@ -250,6 +258,31 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             view.setLayoutParams(params);
             view.postInvalidate();
         });
+
+        animator2.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (fm != null){
+                    if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null){
+                        setDefalutItem(1);
+                    }
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
         animator2.setDuration(300);
         animator2.setInterpolator(new MyInterpolator());
 
@@ -260,18 +293,34 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     /**
      * 初始化底部导航栏
      */
-    private void initTable() {
-        if (fm == null) fm = getSupportFragmentManager();
-
-        if (presenter.isLogin()) {
-            setDefalutItem(0);
-        }else{
-            setDefalutItem(2);
-//            redirectToLogin();
+    private void initTable(Bundle bundle) {
+        //  获取被内存杀死时的activity保存的上一个fragment
+        if (fm == null) fm = getSupportFragmentManager() ;
+        if (bundle != null) {
+            try {
+                lastFragment = bundle.getInt(KEY_LASTFRAGMENT);
+                android.util.Log.e(TAG, "initTable: " + lastFragment );
+            } catch (Exception e) {
+                android.util.Log.e(TAG, "initTable: " + e.getMessage() + "   isLogin >>>>>" + presenter.isLogin());
+            }
         }
-    }
-    FragmentTransaction transaction ;
-
+            // 杀死界面重新进入
+            if (presenter.isLogin()) {
+                if (lastFragment == -1) {
+                    android.util.Log.e(TAG, "initTable:>>>>>    0 "  );
+                    setDefalutItem(0);
+                    tableBottomImageChange(0);
+                } else {
+                    android.util.Log.e(TAG, "initTable: >>>>>  " +lastFragment );
+                    setDefalutItem(lastFragment);
+                    tableBottomImageChange(lastFragment);
+                }
+            } else {
+                android.util.Log.e(TAG, "initTable: >>>>>>  2 "  );
+                setDefalutItem(2);
+                tableBottomImageChange(2);
+            }
+        }
 
     /**
      * 设置默认选择底部那个模块
@@ -279,109 +328,136 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * @param position
      */
     private void setDefalutItem(int position) {
+        android.util.Log.e(TAG, "setDefalutItem: " + position );
         if (position == -1 || position > 2) return ;
-        if (position == 0){
-           if (fm.findFragmentByTag(HomeFragment2.class.getSimpleName()) == null){
-               transaction = fm.beginTransaction();
-                 fragment = new HomeFragment2(presenter ,isServerError);
-                 fragments[0] = fragment ;
-                 if (lastFragment == -1 && !fragment.isAdded()){
-                     transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
-                     transaction.commit();
-                 }else{
-                     if (fragments[lastFragment]!= null) transaction.hide(fragments[lastFragment]);
-                     transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
-                     transaction.commit();
-                 }
+        // 目标Fragment
+        Fragment targetFragment = null ;
 
-           }else{
-               transaction = fm.beginTransaction();
-               fragment = fm.findFragmentByTag(HomeFragment2.class.getSimpleName());
-               if (lastFragment != -1) {
-                   if (fragment.isAdded()) {
-                       if (fragments[lastFragment] != null) transaction.hide(fragments[lastFragment]);
-                       try {
-                           transaction.show(fragment).commit();
-                       }catch (Exception e){
-                           Log.wtf(TAG ,e.getMessage());
-                           transaction.show(fragment).commitAllowingStateLoss();
-                       }
-                   }else{
+        // 上一个显示的Tag
+        Fragment last ;
+        if (fm == null) fm =getSupportFragmentManager() ;
+        if (position == lastFragment){
 
-                       transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
-                       transaction.commit();
-                   }
-               }
-           }
-        }
-        if (position == 1 ){
-
-                if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null) {
-                    transaction = fm.beginTransaction();
-                    socalFragment = new SocalFragment(presenter);
-                    fragments[1] = socalFragment;
-                    if (lastFragment == -1 && !socalFragment.isAdded()) {
-                        transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
-                        transaction.commit();
-                    } else {
-                        if (fragments[lastFragment] != null)
-                            transaction.hide(fragments[lastFragment]);
-                        if (!socalFragment.isAdded())
-                        transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
-                        transaction.commit();
-                    }
-
-                } else {
-                    transaction = fm.beginTransaction();
-                    fragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
-                    socalFragment = (SocalFragment) fragment;
-                    if (lastFragment != -1) {
-                        if (fragments[lastFragment] != null)
-                            transaction.hide(fragments[lastFragment]);
-                        if (fragment.isAdded()) {
-                            transaction.show(fragment).commit();
-                        } else {
-                            transaction.add(R.id.fragment, fragment, SocalFragment.class.getSimpleName());
-                            transaction.commit();
+            //  内存不足时，Fragment的Presenter 变量没有保存，所以需要我们判断给他set进去
+            switch (position){
+                case 0:
+                    targetFragment = fm.findFragmentByTag(HomeFragment2.class.getSimpleName());
+                     if (targetFragment != null){
+                         if (((HomeFragment2)targetFragment).presenter == null && presenter != null){
+                             ((HomeFragment2)targetFragment).setPresenter(presenter);
+                         }
+                     }
+                     break;
+                case 1:
+                    targetFragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
+                    if (targetFragment != null){
+                        if (((SocalFragment)targetFragment).mainPresenter == null && presenter != null){
+                            ((SocalFragment)targetFragment).setPresenter(presenter);
                         }
                     }
-                }
-        }
-
-        if (position == 2){
-            if (fm.findFragmentByTag(ProfileFragment2.class.getSimpleName()) == null){
-                transaction = fm.beginTransaction();
-                fragment = new ProfileFragment2(presenter ,isServerError);
-                fragments[2] = fragment;
-                if (lastFragment == -1 && !fragment.isAdded()){
-                    transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
-                    transaction.commit();
-                }else{
-                    if (fragments[lastFragment] != null)
-                    transaction.hide(fragments[lastFragment]);
-                    if (!fragment.isAdded())
-                    transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
-                    transaction.commit();
-                }
-
-            }else{
-                transaction = fm.beginTransaction();
-                fragment = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
-                if (lastFragment != -1) {
-                    if (fragments[lastFragment] != null){
-                        transaction.hide(fragments[lastFragment]);
+                    break;
+                case 2:
+                    targetFragment = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
+                    if (targetFragment != null){
+                        if (((ProfileFragment2)targetFragment).presenter == null && presenter != null){
+                            ((ProfileFragment2)targetFragment).setPresenter(presenter);
+                        }
                     }
-                    if (fragment.isAdded()) {
-                        transaction.show(fragment).commit();
-                    }else{
-                        transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
-                        transaction.commit();
+                    break;
+                    default:
+                        break;
+            }
+
+        }else {
+
+            //  获取上一个Fragment ； 因为Fragment添加时设置了Tag，所以用findFragmentByTag获取。
+
+            switch (lastFragment){
+                case 0:
+                    last =fm.findFragmentByTag(HomeFragment2.class.getSimpleName()) ;
+                    break;
+                case 1:
+                    last = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
+                    break;
+                case 2:
+                    last = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
+                    break;
+                    default:
+                        last = null;
+            }
+            if (position == 0) {
+                if (fm.findFragmentByTag(HomeFragment2.class.getSimpleName()) == null) {
+                    fragment = new HomeFragment2(presenter, isServerError);
+                    switchFragment(fragment ,last ,HomeFragment2.class.getSimpleName());
+
+                } else {
+                    fragment = fm.findFragmentByTag(HomeFragment2.class.getSimpleName());
+                    if (fragment instanceof HomeFragment2) {
+                        if (((HomeFragment2) fragment).presenter == null) {
+                            if (presenter != null)
+                                ((HomeFragment2) fragment).setPresenter(presenter);
+                        }
                     }
+                    switchFragment(fragment ,last ,HomeFragment2.class.getSimpleName());
                 }
             }
+            if (position == 1) {
+                if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null) {
+                    socalFragment = new SocalFragment(presenter);
+                    fragment = socalFragment ;
+                    switchFragment(fragment ,last ,SocalFragment.class.getSimpleName());
+                } else {
+                    fragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
+                    socalFragment = (SocalFragment) fragment;
+                    if (socalFragment.mainPresenter == null) {
+                        if (presenter != null) socalFragment.setPresenter(presenter);
+                    }
+                    switchFragment(socalFragment ,last ,SocalFragment.class.getSimpleName());
+                }
+            }
+
+            if (position == 2) {
+                if (fm.findFragmentByTag(ProfileFragment2.class.getSimpleName()) == null) {
+                    fragment = new ProfileFragment2(presenter, isServerError);
+                    switchFragment(fragment , last ,ProfileFragment2.class.getSimpleName());
+                } else {
+                    fragment = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
+                    if (fragment instanceof ProfileFragment2) {
+                        if (((ProfileFragment2) fragment).presenter == null && presenter != null)
+                            ((ProfileFragment2) fragment).setPresenter(presenter);
+                    }
+                    switchFragment(fragment , last ,ProfileFragment2.class.getSimpleName());
+                }
+            }
+            lastFragment = position;
         }
-        lastFragment = position ;
-        tableBottomImageChange(position);
+    }
+    /**
+     * 隐藏上一个界面，显示目标界面
+     * @param target   目标界面
+     * @param last     上一个界面
+     * @param targetTag   目标tag
+     */
+    private void switchFragment( Fragment target,Fragment last , String targetTag){
+
+        FragmentTransaction transaction = fm.beginTransaction() ;
+        // 隐藏上一个界面
+        if (last != null && last.isAdded() && !last.isHidden()){
+           transaction.hide(last);
+        }
+
+        //  显示targetFragment
+
+        if (target != null){
+            if (target.isAdded()){
+                transaction.show(target);
+            }else{
+                transaction.add(R.id.fragment ,target , targetTag);
+            }
+        }
+
+        transaction.commit() ;
+
     }
 
     /**
@@ -389,6 +465,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * @param position
      */
     private void tableBottomImageChange(int position) {
+        android.util.Log.e(TAG, "tableBottomImageChange: " + position );
         if (position == -1 || position > 2) return ;
         nowPosition = position ;
         if (position == 0) {
@@ -423,29 +500,28 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @OnClick({R.id.home_rl, R.id.social_rl, R.id.personal_rl})
     public void onTabItemSelect(View view) {
+
         switch (view.getId()) {
             case R.id.home_rl:
                 tableBottomImageChange(0);
                 setDefalutItem(0);
-//                vgFragment.setCurrentItem(0);
                 break;
             case R.id.social_rl:
                 if (socialSelRl.getVisibility() == View.VISIBLE){
                     startActivityForResult(new Intent(this , WriteLZActivity.class) ,WRITE_BLOG);
                 }else {
                     tableBottomImageChange(1);
-                    setDefalutItem(1);
-//                    vgFragment.setCurrentItem(1);
+                    if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) != null) {
+                        setDefalutItem(1);
+                    }
                 }
                 break;
             case R.id.personal_rl:
                 tableBottomImageChange(2);
                 setDefalutItem(2);
-//                vgFragment.setCurrentItem(2);
                 break;
         }
     }
-
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -454,26 +530,34 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (presenter.isLogin()) {
             presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                     AppUtils.getVersionName(this));
+            uploadDeviceInfo();
+            if (presenter.getIsFirstAfterLogin()) {
+                if (fm == null) fm = getSupportFragmentManager() ;
+                presenter.setIsFirstAfterLogin(false);
+                SocalFragment socalFragment = (SocalFragment) fm.findFragmentByTag(SocalFragment.class.getSimpleName());
+                if (socalFragment == null ) {
+                    setDefalutItem(0);
+                    tableBottomImageChange(0);
+                    return;
+                }
+                if (socalFragment.isAdded()) {
+                    // commit  方法在activity 的onSaveInstanceState()之后调用会报错 。 解决方法是吧commit 换成 commitAllowingStateLoss();
+                    fm.beginTransaction().remove(socalFragment).commitAllowingStateLoss();
+                }
+                setDefalutItem(0);
+                tableBottomImageChange(0);
+
+            }
         }
-
-//        if (intent != null) {
-//            boolean isSwitchToHome = intent.getBooleanExtra(INTENT_KEY_SWITCH_TO_HOME, false);
-//            if (isSwitchToHome) {
-//                onSwitch(0);
-//            }
-//            int actionType = intent.getIntExtra(Constant.INTENT_ACTION, 0);
-//            if (IntentAction.getAction(actionType) == IntentAction.ACTION_GOTO_HEATER) {
-//                if (btSwitch != null) {
-//                    btSwitch.postDelayed(this::gotoHeater, 200);
-//                }
-//            }
-//            isNotice = intent.getBooleanExtra(Constant.BUNDLE_ID, false);
-//        }
-
-
     }
 
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (lastFragment != -1 ) {
+            outState.putInt(KEY_LASTFRAGMENT, lastFragment);
+        }
+    }
 
     @Override
     protected void setUp() {
@@ -482,7 +566,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             isServerError = getIntent().getBooleanExtra(INTENT_KEY_SERVER_ERROR, false);
             defaultBanners = getIntent().getParcelableArrayListExtra(INTENT_KEY_BANNERS);
             isNotice = getIntent().getBooleanExtra(Constant.BUNDLE_ID, false);
-            android.util.Log.e(TAG, "setUp: " + (defaultBanners == null));
         }
     }
 
@@ -541,6 +624,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onResume() {
         super.onResume();
+        FragmentInit();
+
+
+    }
+
+    /**
+     * 首页界面初始化显示，因为是需要请求网络
+     */
+    private void FragmentInit() {
         if (!presenter.isLogin()){
             showNoticeAmount(0);
             initSchoolBiz();
@@ -548,25 +640,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }else {
             // 注册信鸽推送
             registerXGPush();
+<<<<<<< HEAD
             Log.d(TAG ,"onResume");
+=======
+>>>>>>> feature/userBleCount
             presenter.noticeCount();
-            uploadDeviceInfo();
-            if (presenter.getIsFirstAfterLogin()) {
-                if (fm == null) return ;
-                presenter.setIsFirstAfterLogin(false);
-                SocalFragment socalFragment = (SocalFragment) fm.findFragmentByTag(SocalFragment.class.getSimpleName());
-                if (socalFragment == null ) {
-                    setDefalutItem(0);
-                    return;
-                }
-                if (socalFragment.isAdded()) {
-                    // commit  方法在activity 的onSaveInstanceState()之后调用会报错 。 解决方法是吧commit 换成 commitAllowingStateLoss();
-                    fm.beginTransaction().remove(socalFragment).commitAllowingStateLoss();
-                }
-                setDefalutItem(0);
-
-            }
             presenter.deleteFile();
+<<<<<<< HEAD
 
             startBleCountService();
         }
@@ -579,6 +659,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private void startBleCountService(){
         Intent intent = new Intent(this , BleCountService.class);
         startService(intent);
+=======
+        }
+>>>>>>> feature/userBleCount
     }
 
     private void uploadDeviceInfo() {
@@ -614,7 +697,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data) {
-        Log.d(TAG, "showTimeValidDialog: " + data.getTitle() + "->" + data.getRemark() + "->" + deviceType);
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
         }
@@ -663,7 +745,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void gotoDevice(Device device, String macAddress, Long supplierId,
                            String location, Long residenceId, boolean recovery) {
-        Log.d(TAG, "gotoDevice: " + device.getDesc() + "->" + macAddress + "->" + supplierId + "->" + location + "->" + residenceId);
         if (TextUtils.isEmpty(macAddress)) {
             onError("设备macAddress不合法");
         } else {
@@ -721,7 +802,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showUrgentNotify(String content, Long id) {
-        Log.d(TAG, "showUrgentNotify: " + content + "->" + id);
         NoticeAlertDialog dialog = new NoticeAlertDialog(this);
         dialog.setContent(content);
         dialog.setOnOkClickListener((dialog1, isNotReminder) -> {
@@ -739,7 +819,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showBanners(List<BannerDTO> banners) {
-        android.util.Log.e(TAG, "showBanners: " + (defaultBanners == null));
         List<BannerDTO> settingBanners = new ArrayList<>();
         if (defaultBanners != null) {
             settingBanners.addAll(defaultBanners);
@@ -748,7 +827,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             settingBanners.addAll(banners);
         }
         if (!settingBanners.isEmpty()) {
-            Log.d(TAG, "showBanners");
             hasBanners = true;
             EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.BANNER,
                     settingBanners));
@@ -768,7 +846,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             initSchoolBiz();
             return;
         }
-        Log.d(TAG, "showSchoolBiz");
         this.businesses = businesses;
         for (BriefSchoolBusiness business : businesses) {
             if (business.getBusinessId() == 1) {
@@ -794,7 +871,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data) {
-        Log.d(TAG, "showDeviceUsageDialog: " + type);
         if (data == null || data.getBalance() == null
                 || data.getPrepay() == null || data.getMinPrepay() == null
                 || data.getTimeValid() == null) {
@@ -859,7 +935,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showOpenLocationDialog() {
-        Log.d(TAG, "showOpenLocationDialog");
         if (null == openLocationDialog) {
             openLocationDialog = new AvailabilityDialog(this);
         }
@@ -880,7 +955,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showNoDeviceDialog() {
-        Log.d(TAG, "showNoDeviceDialog");
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
         }
@@ -911,7 +985,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showUpdateDialog(IVersionModel model) {
-        Log.i(TAG, "showUpdateDialog");
         rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
                     if (granted) {
@@ -1105,6 +1178,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         RxBus.getDefault().post(personalExtraInfoDTO);
     }
 
+    @Override
+    public void startNet() {
+        RxHelper.delay(300 , TimeUnit.MILLISECONDS)
+                .subscribe(integer -> {
+                    presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+                            AppUtils.getVersionName(this));
+                });
+
+    }
+
 
     /**
      * 点击进入饮水机页面
@@ -1157,7 +1240,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
 
     private boolean checkLogin() {
-        if (TextUtils.isEmpty(presenter.getToken())) {
+        if (TextUtils.isEmpty(presenter.getAccessToken()) || TextUtils.isEmpty(presenter.getRefreshToken())) {
             redirectToLogin();
             return false;
         }
@@ -1245,13 +1328,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private void gotoGate() {
         startActivity(new Intent(this, WebActivity.class)
                 .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_GATE
-                        + "?token=" + presenter.getToken()));
+                        + "?accessToken=" + presenter.getAccessToken() +"&refreshToken" + presenter.getRefreshToken()));
     }
 
     private void gotoWasher() {
        // startActivity(new Intent(this, WasherActivity.class));
         Intent intent = new Intent(this,WebActivity.class);
-        String url = BuildConfig.H5_SERVER +"/washer" + "?token=" + presenter.getToken() + "&schoolId=" + presenter.getSchoolId();
+        String url = BuildConfig.H5_SERVER +"/washer" + "?accessToken=" + presenter.getAccessToken()+"&refreshToken=" +presenter.getRefreshToken() + "&schoolId=" + presenter.getSchoolId();
         intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL,url);
         startActivity(intent);
     }

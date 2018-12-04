@@ -17,12 +17,14 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,8 +63,6 @@ import static android.app.Activity.RESULT_OK;
  */
 public abstract class BaseFragment extends Fragment  implements IBaseView{
 
-    protected View mRootView;
-
     protected AppCompatActivity mActivity ;
 
     protected  boolean isCreated  ;
@@ -94,27 +94,45 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     private Toast toast;
     private CountDownTimer toastCountDown;
 
-
+    private static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isCreated = true ;
         if (mActivity != null) rxPermissions = RxPermissions.getInstance(mActivity);
+
+        if (savedInstanceState != null) {
+            boolean isSupportHidden = savedInstanceState.getBoolean(STATE_SAVE_IS_HIDDEN);
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            if (isSupportHidden) {
+                ft.hide(this);
+            } else {
+                ft.show(this);
+                android.util.Log.e(TAG, "onCreate:  >>>>> show" );
+                initView();
+            }
+            ft.commit();
+        }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden());
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        android.util.Log.e(TAG, "onHiddenChanged: >>>>> " + hidden  );
         if (!hidden){
             initView();
         }
     }
 
-
-
-    protected abstract  void initData();
-
-    protected abstract  void initView() ;
+    protected abstract void initView();
 
     private void selectPhoto() {
         mPickImageUri = getImageUri("pick");
@@ -607,7 +625,6 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(mActivity);
-        onHiddenChanged(!isVisible());
     }
 
     @Override
@@ -630,9 +647,7 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     }
 
 
-
-
-//    @Nullable
+    //    @Nullable
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        if (mRootView == null) {

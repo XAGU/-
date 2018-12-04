@@ -153,9 +153,5 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
         });
     }
 
-    @Override
-    public String getToken() {
-        return orderDataManager.getToken();
-    }
 
 }

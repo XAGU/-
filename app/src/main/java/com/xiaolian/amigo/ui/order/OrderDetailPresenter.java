@@ -80,13 +80,19 @@ public class OrderDetailPresenter<V extends IOrderDetailView> extends BasePresen
         });
     }
 
-    @Override
-    public String getToken() {
-        return orderDataManager.getToken();
-    }
 
     @Override
     public OrderDetailRespDTO getOrder() {
         return order;
+    }
+
+    @Override
+    public String getAccessToken() {
+        return orderDataManager.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return orderDataManager.getRefreshToken();
     }
 }

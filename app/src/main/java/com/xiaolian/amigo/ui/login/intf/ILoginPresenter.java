@@ -107,4 +107,22 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
     void setPushTag(String pushTag);
 
     void setIsFirstAfterLogin(boolean b);
+    //支付宝登录
+
+    String getAlipayAuthInfo();
+
+    void alipayLogin(String authCode , String androidId,
+                   String brand, String model,
+                   String systemVersion, String appVersion);
+    void checkAlipayPhoneBind(String mobile, String code);
+    void registerAlipay(String password,Long schoolId);
+    //支付宝登录 end
+
+    //微信登录
+    void getWeChatCode();
+    void weChatLogin(String code);
+    void checkWechatPhoneBind(String moblie,String code);
+
+    void registerWeChat(String password, Long schoolId);
+    //微信登录 end
 }

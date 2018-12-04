@@ -16,11 +16,6 @@ public interface IDeviceOrderPresenter<V extends IDeviceOrderView> extends IBase
      */
     void onLoad(long orderId);
 
-    /**
-     * 获取token
-     * @return token
-     */
-    String getToken();
 
     /**
      * 剪裁是否已经投诉过了
@@ -29,4 +24,7 @@ public interface IDeviceOrderPresenter<V extends IDeviceOrderView> extends IBase
      */
     void checkComplaint(Long orderId, Integer orderType);
 
+    String getAccessToken();
+
+    String getRefreshToken();
 }

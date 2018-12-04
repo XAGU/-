@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,13 @@ public class RegisterStep2Fragment extends Fragment {
 
     @OnClick(R.id.bt_submit)
     void register() {
+        //为绑定第三方账号注册电话号码
+        if (((LoginActivity) getActivity()).isThirdLogin()){
+            ((LoginActivity) getActivity()).registerForThirdAccount(etUserpwd.getText().toString(),
+                    schoolId);
+            return;
+        }
+
         if (getActivity() instanceof LoginActivity) {
             ((LoginActivity) getActivity()).register(etUserpwd.getText().toString(),
                     schoolId);
@@ -60,6 +68,7 @@ public class RegisterStep2Fragment extends Fragment {
 
     @OnClick(R.id.tv_school)
     void chooseSchool() {
+        ((LoginActivity) getActivity()).setChooseSchool(true);
         Intent intent = new Intent(getActivity(), ChooseSchoolActivity.class);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_SCHOOL_RESULT);
         startActivityForResult(intent, REQUEST_CODE_CHOOSE_SCHOOL);
@@ -114,6 +123,9 @@ public class RegisterStep2Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((LoginActivity) getActivity()).showThirdLoginView(false);
+        ((LoginActivity) getActivity()).setChooseSchool(false);
+
         if (etUserpwd != null) {
             etUserpwd.requestFocus();
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);

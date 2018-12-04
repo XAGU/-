@@ -74,4 +74,22 @@
         android:layout_marginTop="13dp"
         android:text="登录"
         />
+    <TextView
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:gravity="bottom"
+        android:layout_alignParentBottom="true" />
+
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_height="0dp">
+
+
+
+    </RelativeLayout>
+
+
 </com.xiaolian.amigo.ui.widget.FormLayout2>

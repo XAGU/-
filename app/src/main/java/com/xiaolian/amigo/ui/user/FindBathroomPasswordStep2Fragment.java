@@ -125,10 +125,6 @@ public class FindBathroomPasswordStep2Fragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @Override
-    protected void initData() {
-
-    }
 
     @Override
     protected void initView() {

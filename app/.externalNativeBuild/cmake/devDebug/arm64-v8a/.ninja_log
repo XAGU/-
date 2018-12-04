@@ -1,7 +1,22 @@
 # ninja log v5
+<<<<<<< HEAD
 1	131	0	CMakeFiles/algor.dir/src/main/cpp/src/des.c.o	7fa746b68681e5da
 2	138	0	CMakeFiles/algor.dir/src/main/cpp/src/trade_rule.c.o	8bb7b6f785adfcef
 0	141	0	CMakeFiles/algor.dir/src/main/cpp/src/aes.c.o	fbf64585d4f87404
 141	196	0	/Users/max/android_amigo/encrypt2/libs/arm64-v8a/libalgor.so	6513117c816d3b66
 196	401	0	CMakeFiles/xiaolian-lib.dir/src/main/cpp/src/xiaolian-lib.cpp.o	5916a4a4b54ca4ee
 401	517	0	/Users/max/android_amigo/encrypt2/libs/arm64-v8a/libxiaolian-lib.so	361da95bf32a0ced
+=======
+2	156	0	CMakeFiles/algor.dir/src/main/cpp/src/des.c.o	96d32372874b97f6
+4	164	0	CMakeFiles/algor.dir/src/main/cpp/src/trade_rule.c.o	ab9d7fd99b888e6e
+0	189	0	CMakeFiles/algor.dir/src/main/cpp/src/aes.c.o	59417f800f512ddc
+189	276	0	/Users/max/android_amigo/encrypt/libs/arm64-v8a/libalgor.so	33f925dcc906c839
+276	820	0	CMakeFiles/xiaolian-lib.dir/src/main/cpp/src/xiaolian-lib.cpp.o	1e75e17bfb76b3af
+820	935	0	/Users/max/android_amigo/encrypt/libs/arm64-v8a/libxiaolian-lib.so	bd93fc68652d68c6
+1	71	0	CMakeFiles/algor.dir/src/main/cpp/src/des.c.o	96d32372874b97f6
+3	78	0	CMakeFiles/algor.dir/src/main/cpp/src/trade_rule.c.o	ab9d7fd99b888e6e
+1	100	0	CMakeFiles/algor.dir/src/main/cpp/src/aes.c.o	59417f800f512ddc
+100	155	0	/Users/max/android_amigo/encrypt/libs/arm64-v8a/libalgor.so	33f925dcc906c839
+155	403	0	CMakeFiles/xiaolian-lib.dir/src/main/cpp/src/xiaolian-lib.cpp.o	1e75e17bfb76b3af
+404	488	0	/Users/max/android_amigo/encrypt/libs/arm64-v8a/libxiaolian-lib.so	bd93fc68652d68c6
+>>>>>>> feature/userBleCount

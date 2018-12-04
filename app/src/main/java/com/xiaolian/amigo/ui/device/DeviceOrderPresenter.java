@@ -57,11 +57,6 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
     }
 
     @Override
-    public String getToken() {
-        return orderDataManager.getToken();
-    }
-
-    @Override
     public void checkComplaint(Long orderId, Integer orderType) {
         CheckComplaintReqDTO reqDTO = new CheckComplaintReqDTO();
         reqDTO.setOrderId(orderId);
@@ -81,5 +76,15 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
                 }
             }
         });
+    }
+
+    @Override
+    public String getAccessToken() {
+        return orderDataManager.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return orderDataManager.getRefreshToken();
     }
 }

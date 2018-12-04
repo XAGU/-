@@ -193,11 +193,11 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
 
     @Override
     public void toComplaint() {
-        String token = presenter.getToken();
         OrderDetailRespDTO order = presenter.getOrder();
         startActivity(new Intent(this, WebActivity.class)
                 .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
-                        + "?token=" + token
+                        + "?accessToken=" + presenter.getAccessToken()
+                        + "&refreshToken=" + presenter.getRefreshToken()
                         + "&orderId=" + order.getId()
                         + "&orderNo=" + order.getOrderNo()
                         + "&orderType="

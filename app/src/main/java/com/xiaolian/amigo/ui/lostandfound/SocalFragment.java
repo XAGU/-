@@ -151,7 +151,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     private List<LostAndFoundDTO> searchData;
 
-    private IMainPresenter<IMainView> mainPresenter;
+    public IMainPresenter<IMainView> mainPresenter;
 
 
     int tagRlHeight;
@@ -168,6 +168,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @SuppressLint("ValidFragment")
     public SocalFragment(IMainPresenter<IMainView> mainPresenter) {
+        this.mainPresenter = mainPresenter;
+    }
+
+
+    public void setPresenter(IMainPresenter <IMainView> mainPresenter) {
         this.mainPresenter = mainPresenter;
     }
 
@@ -195,10 +200,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         setErrorNetListener();
         return rootView;
     }
-
-
-
-
 
     private void setErrorNetListener(){
         if (errorNetLayout != null)
@@ -352,11 +353,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         blogFragments.get(0).setReferTop(true);
     }
 
-    @Override
-    protected void initData() {
-
-    }
-
     /**
      * 滑动监听
      */
@@ -370,8 +366,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     protected void initView() {
+        android.util.Log.e(TAG, "initView: "  );
         if (mSocialTagDatas == null || mSocialTagDatas.size() == 0) presenter.getTopicList();
-         if (null != mainPresenter) mainPresenter.getNoticeAmount();
+         if (null != mainPresenter) {
+             Log.e(TAG ,"SocalFragment>>>>>>>>  initView");
+             mainPresenter.getNoticeAmount();
+         }
         presenter.getLostList("", 1, "", 0);
 
     }
@@ -710,7 +710,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 int currentValue = (int) animation.getAnimatedValue();
-                Log.wtf(TAG, currentValue + "");
                 if (ivLoading != null)
                     ivLoading.setImageResource(loadingRes[currentValue]);
             }

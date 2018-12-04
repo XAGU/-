@@ -369,12 +369,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_5));
                 }
                 if (!scanDevice){
-//                    uploadLog();
+
                 }
 
                 recordUseNumber(Type.SCAN , Target.DEVICE,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
             }
         };
+
+
         Log.i(TAG, "启动15s定时器......");
 
         // 初始化扫描时间
@@ -548,6 +550,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                 recordUseNumber(Type.CONNECT , Target.DEVICE,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
                                 return;
                             }
+
                             afterBleConnected();
                             bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                                     UUID.fromString(supplier.getWriteUuid()), data -> {

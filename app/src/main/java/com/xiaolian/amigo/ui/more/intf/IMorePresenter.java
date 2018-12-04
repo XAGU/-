@@ -16,11 +16,17 @@ public interface IMorePresenter<V extends IMoreView> extends IBasePresenter<V> {
     void logout();
 
     /**
-     * 获取token
+     * 获取accessToken
      *
-     * @return token
+     * @return accessToken
      */
-    String getToken();
+    String getAccessToken();
+
+    /**
+     * 获取refreshToken
+     * @return
+     */
+    String getRefreshToken();
 
     Long getUserId();
 
@@ -31,4 +37,7 @@ public interface IMorePresenter<V extends IMoreView> extends IBasePresenter<V> {
     String getPushTag();
 
     void setPushTag(String pushTag);
+
+    void uploadErrorLog();
+
 }

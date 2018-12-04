@@ -70,4 +70,11 @@ public interface IEditProfileView extends IBaseView {
     void gotoChooseSchool();
 
     void gotoChangeSchool(ApplySchoolCheckRespDTO data);
+
+    void showWechatBind(String nickName);
+
+    void showAliPayBind(String nickName);
+
+    void gotoThirdLoginDetail(int type,String nickName);
+
 }

@@ -77,14 +77,20 @@ public class OrderDataManager implements IOrderDataManager {
         return complaintApi.checkComplaint(reqDTO);
     }
 
-    @Override
-    public String getToken() {
-        return sharedPreferencesHelp.getToken();
-    }
 
     @Override
     public Observable<ApiResult<OrderRespDTO>> getMonthlyMaxBill(QueryPersonalMaxConsumeOrderListReqDTO reqDTO) {
         return userBillApi.getMonthlyMaxBill(reqDTO);
+    }
+
+    @Override
+    public String getAccessToken() {
+        return sharedPreferencesHelp.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return sharedPreferencesHelp.getReferToken();
     }
 
     @Override

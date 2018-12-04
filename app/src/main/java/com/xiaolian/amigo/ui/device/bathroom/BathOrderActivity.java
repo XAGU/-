@@ -304,7 +304,8 @@ public class BathOrderActivity extends BaseActivity implements IDeviceOrderView 
         startActivity(new Intent(this, WebActivity.class)
                 .putExtra(WebActivity.INTENT_KEY_URL,
                         Constant.H5_COMPLAINT
-                                + "?token=" + presenter.getToken()
+                                + "?accessToken=" + presenter.getAccessToken()
+                                +"&refreshToken=" + presenter.getRefreshToken()
                                 + "&orderId=" + orderId
                                 + "&orderNo=" + orderNo
                                 + "&orderType=" + orderType));

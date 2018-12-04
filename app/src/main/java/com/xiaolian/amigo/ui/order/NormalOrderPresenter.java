@@ -97,7 +97,8 @@ public class NormalOrderPresenter<V extends INormalOrderView> extends BasePresen
     @Override
     public String getComplaintParam() {
         return Constant.H5_COMPLAINT
-                + "?token=" + orderDataManager.getToken()
+                + "?accessToken=" + orderDataManager.getAccessToken()
+                + "&refreshToken=" + orderDataManager.getRefreshToken()
                 + "&orderId=" + order.getId()
                 + "&orderNo=" + order.getOrderNo()
                 + "&orderType="

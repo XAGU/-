@@ -1,6 +1,9 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.alipay.AliPayBindInAppReq;
+import com.xiaolian.amigo.data.network.model.alipay.AliPayBindQueryReq;
+import com.xiaolian.amigo.data.network.model.alipay.AlipayAuthInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.RecordResidenceReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
@@ -15,10 +18,14 @@ import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
+import com.xiaolian.amigo.data.network.model.login.CancelBindReqDTO;
+import com.xiaolian.amigo.data.network.model.login.CancelThirdBindReqDTO;
 import com.xiaolian.amigo.data.network.model.login.ClearTokenReqDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
+import com.xiaolian.amigo.data.network.model.login.WeChatBindRespDTO;
+import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
 import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
@@ -30,6 +37,7 @@ import com.xiaolian.amigo.data.network.model.user.DeleteResidenceRespDTO;
 import com.xiaolian.amigo.data.network.model.user.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.PasswordCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.user.PasswordUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.user.PasswordVerifyRespDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
@@ -100,6 +108,16 @@ public interface IUserDataManager {
     Observable<ApiResult<QueryBriefSchoolListRespDTO>> getSchoolList(@Body QuerySchoolListReqDTO body);
 
     /**
+     *解除支付宝绑定
+     */
+    Observable<ApiResult<CancelThirdBindReqDTO>> aplipayUnbind();
+
+    /**
+     *解除微信绑定
+     */
+    Observable<ApiResult<CancelThirdBindReqDTO>> weChatUnbind();
+
+    /**
      * 获取学校业务列表
      */
     Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
@@ -141,7 +159,18 @@ public interface IUserDataManager {
      * 检查是否有申请过更换学校
      */
     Observable<ApiResult<ApplySchoolCheckRespDTO>> applySchoolCheck();
-
+    /**
+     *在app登录后绑定支付宝
+     */
+    Observable<ApiResult<User.AlipayBindBean>> bindAlipayInApp(AliPayBindInAppReq reqDTO);
+    /**
+     * 在app登录后绑定微信
+     */
+    Observable<ApiResult<WeChatBindRespDTO>> bindWechatInApp(WechatLoginReqDTO reqDTO);
+    /**
+     *获取支付宝auth info
+     */
+    Observable<ApiResult<AlipayAuthInfoRespDTO>> getApayAuth();
     /**
      *检查是否满足切换学校条件
      */
@@ -296,13 +325,21 @@ public interface IUserDataManager {
      */
     Observable<ApiResult<UserCertifyInfoRespDTO>> certifyInfo();
 
+    /**
+     *修改电话号码
+     */
+    Observable<ApiResult<EntireUserDTO>> checkChangePhoneVerification(VerificationCodeCheckReqDTO body);
+
+    /**
+     * 验证登录密码
+     */
+    Observable<ApiResult<PasswordVerifyRespDTO>> verifyPassword(PasswordCheckReqDTO body);
 
     void setCertifyStatus(int certifyStatus);
 
     long getLastDeleteTime();
 
     void setDeleteFileTime(long l);
-
 
     int getCertifyStatus();
 }

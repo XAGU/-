@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
@@ -35,7 +36,10 @@ import okio.Buffer;
 public class LogInterceptor implements Interceptor {
     private final static String TAG = LogInterceptor.class.getSimpleName();
     private final static boolean DEBUG = true;
-    private final static String TOKEN = "token";
+
+    private final static String REFER_TOKEN = "refreshToken";
+
+    private final static String ACCESS_TOKEN = "accessToken";
     private final static String DEVICE_TOKEN = "deviceToken";
     private final static String GET = "GET";
     private final static String POST = "POST";
@@ -93,10 +97,10 @@ public class LogInterceptor implements Interceptor {
     public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
         Request newRequest;
-        String token = sharedPreferencesHelp.getToken();
-        if (token == null) {
-            token = "";
-        }
+//        String token = sharedPreferencesHelp.getToken();
+
+        String accessToken  =  sharedPreferencesHelp.getAccessToken() ;
+        String refershToken = sharedPreferencesHelp.getReferToken() ;
 
         if ((request.url().url().getPath().contains(TRADE_PREFIX)
                 && (!request.url().url().getPath().contains(ANTI_TRADE_PREFIX))) || request.url().url().getPath().contains(UPDAT_RATE_PREFIX)) {
@@ -113,13 +117,15 @@ public class LogInterceptor implements Interceptor {
                 newRequest = request.newBuilder()
                         // 添加token
                         .url(newUrl)
-                        .addHeader(TOKEN, token)
+                        .addHeader(ACCESS_TOKEN, accessToken)
+                        .addHeader(REFER_TOKEN ,refershToken)
                         .addHeader(DEVICE_TOKEN, deviceToken)
                         .build();
             } else {
                 newRequest = request.newBuilder()
                         // 添加token
-                        .addHeader(TOKEN, token)
+                        .addHeader(ACCESS_TOKEN , accessToken)
+                        .addHeader(REFER_TOKEN ,refershToken)
                         .addHeader(DEVICE_TOKEN, deviceToken)
                         .build();
             }
@@ -131,12 +137,14 @@ public class LogInterceptor implements Interceptor {
                 newRequest = request.newBuilder()
                         // 添加token
                         .url(newUrl)
-                        .addHeader(TOKEN, token)
+                        .addHeader(ACCESS_TOKEN , accessToken)
+                        .addHeader(REFER_TOKEN ,refershToken)
                         .build();
             } else {
                 newRequest = request.newBuilder()
                         // 添加token
-                        .addHeader(TOKEN, token)
+                        .addHeader(ACCESS_TOKEN , accessToken)
+                        .addHeader(REFER_TOKEN ,refershToken)
                         .build();
             }
         }
@@ -172,10 +180,21 @@ public class LogInterceptor implements Interceptor {
             Log.wtf(TAG, "网络请求错误: " + newRequest.url(), e);
             throw e;
         }
+
+
+
         if (null != response.header(DEVICE_TOKEN)) {
             // 有device_token,一定配对一个macAddress
             String macAddress = response.header("macAddress");
             sharedPreferencesHelp.setDeviceToken(macAddress, response.header(DEVICE_TOKEN));
+        }
+
+        if (null != response.header(ACCESS_TOKEN) && !TextUtils.isEmpty(response.header(ACCESS_TOKEN))){
+            sharedPreferencesHelp.setAccessToken(response.header(ACCESS_TOKEN));
+        }
+
+        if (null != response.header(REFER_TOKEN) && !TextUtils.isEmpty(response.header(REFER_TOKEN))){
+            sharedPreferencesHelp.setReferToken(response.header(REFER_TOKEN));
         }
         String content;
         MediaType mediaType;
@@ -209,9 +228,15 @@ public class LogInterceptor implements Interceptor {
         if (request.headers().size() != lastRequest.headers().size()) {
             return false;
         }
-        if (!TextUtils.equals(request.headers().get(TOKEN), lastRequest.headers().get(TOKEN))) {
-            return false;
+
+        if (!TextUtils.equals(request.headers().get(ACCESS_TOKEN) , lastRequest.headers().get(ACCESS_TOKEN))){
+            return false ;
         }
+
+        if (!TextUtils.equals(request.headers().get(REFER_TOKEN) , lastRequest.headers().get(REFER_TOKEN))){
+            return false ;
+        }
+
         if (!TextUtils.equals(request.headers().get(DEVICE_TOKEN), lastRequest.headers().get(DEVICE_TOKEN))) {
             return false;
         }

@@ -221,7 +221,8 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
     public void toComplaint() {
         startActivity(new Intent(this, WebActivity.class)
                 .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
-                        + "?token=" + presenter.getToken()
+                        + "?accessToken=" + presenter.getAccessToken()
+                        + "&refreshToken" + presenter.getRefreshToken()
                         + "&orderId=" + id
                         + "&orderNo=" + orderNo
                         + "&orderType=" + ComplaintType.WITHDRAW.getType()));

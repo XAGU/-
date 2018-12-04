@@ -9,6 +9,7 @@ import com.xiaolian.amigo.data.manager.intf.IOssDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.UserActivityContext;
 import com.xiaolian.amigo.ui.user.ChangeBathroomPasswordPresenter;
+import com.xiaolian.amigo.ui.user.ChangePhonePresenter;
 import com.xiaolian.amigo.ui.user.ChangeSchoolPresenter;
 import com.xiaolian.amigo.ui.user.CheckPasswordPresenter;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryPresenter;
@@ -23,10 +24,14 @@ import com.xiaolian.amigo.ui.user.EditProfilePresenter;
 import com.xiaolian.amigo.ui.user.EditUserInfoPresenter;
 import com.xiaolian.amigo.ui.user.FindBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.ListChoosePresenter;
+import com.xiaolian.amigo.ui.user.PasswordVerifyPresenter;
+import com.xiaolian.amigo.ui.user.ThirdBindPresenter;
 import com.xiaolian.amigo.ui.user.UserCertificationPresenter;
 import com.xiaolian.amigo.ui.user.UserCertificationStatusPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChangeBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChangeBathroomPasswordView;
+import com.xiaolian.amigo.ui.user.intf.IChangePhonePresenter;
+import com.xiaolian.amigo.ui.user.intf.IChangePhoneView;
 import com.xiaolian.amigo.ui.user.intf.IChangeSchoolPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChangeSchoolView;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordPresenter;
@@ -55,6 +60,10 @@ import com.xiaolian.amigo.ui.user.intf.IFindBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IFindBathroomPasswordView;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
+import com.xiaolian.amigo.ui.user.intf.IPasswordVerifyPresenter;
+import com.xiaolian.amigo.ui.user.intf.IPasswordVerifyView;
+import com.xiaolian.amigo.ui.user.intf.IThirdBindPresenter;
+import com.xiaolian.amigo.ui.user.intf.IThirdBindView;
 import com.xiaolian.amigo.ui.user.intf.IUserCerticifationStatusPresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationPresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationStatusView;
@@ -219,6 +228,27 @@ public class UserActivityModule {
     @UserActivityContext
     IChangeSchoolPresenter<IChangeSchoolView> provideChangeSchoolPresenter(
             ChangeSchoolPresenter<IChangeSchoolView> presenter){
+        return presenter;
+    }
+
+    @Provides
+    @UserActivityContext
+    IChangePhonePresenter<IChangePhoneView> provideChangePhonePresenter(
+            ChangePhonePresenter<IChangePhoneView> presenter){
+        return presenter;
+    }
+
+    @Provides
+    @UserActivityContext
+    IThirdBindPresenter<IThirdBindView> provideThirdBindPresenter(
+            ThirdBindPresenter<IThirdBindView> presenter){
+        return presenter;
+    }
+
+    @Provides
+    @UserActivityContext
+    IPasswordVerifyPresenter<IPasswordVerifyView> providePasswordVerifyPresenter(
+            PasswordVerifyPresenter<IPasswordVerifyView> presenter){
         return presenter;
     }
 }

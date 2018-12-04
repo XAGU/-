@@ -869,6 +869,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @OnClick(R.id.bt_pay)
     void pay(Button button) {
         //先查询是否存在费率更新操作
+        button.setEnabled(false);
         presenter.onUpdateDeviceRate(this.macAddress);
 //        realPay();
     }
@@ -979,6 +980,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      */
     @OnClick(R.id.bt_error_handler)
     void handleError(Button button) {
+        btErrorHandler.setEnabled(false);
         switch (ErrorTag.getErrorTag((int) (button.getTag()))) {
             case CONNECT_ERROR:
                 // 点击重连按钮时蓝牙必须为开启状态
@@ -1236,6 +1238,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             btErrorHandler.setText(getString(tradeError.getBtnText()));
             btErrorHandler.setTag(tradeError.getBtnTag());
 
+
+            //  因为之前按钮被显示不能点击 ,  这里恢复按钮点击功能
+
+            btErrorHandler.setEnabled(true);
 //            if (tradeError == TradeError.DEVICE_BROKEN_3 && deviceType == Device.DISPENSER.getType()) {
 //                btErrorHandler.setText(getString(R.string.change_dispenser));
 //                btErrorHandler.setTag(ErrorTag.CHANGE_DISPENSER.getCode());

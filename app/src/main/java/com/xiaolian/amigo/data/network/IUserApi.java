@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.alipay.AliPayBindInAppReq;
+import com.xiaolian.amigo.data.network.model.alipay.AliPayBindQueryReq;
 import com.xiaolian.amigo.data.network.model.bathroom.RecordResidenceReqDTO;
 import com.xiaolian.amigo.data.network.model.common.ChangeSchoolResDTO;
 import com.xiaolian.amigo.data.network.model.common.CheckSchoolRespDTO;
@@ -8,6 +10,8 @@ import com.xiaolian.amigo.data.network.model.common.CommitSchoolReqDTO;
 import com.xiaolian.amigo.data.network.model.common.EmptyRespDTO;
 import com.xiaolian.amigo.data.network.model.common.ApplySchoolCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.login.ClearTokenReqDTO;
+import com.xiaolian.amigo.data.network.model.login.WeChatBindRespDTO;
+import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
 import com.xiaolian.amigo.data.network.model.user.BindResidenceReq;
 import com.xiaolian.amigo.data.network.model.user.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.PasswordCheckReqDTO;
@@ -27,6 +31,7 @@ import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
+import com.xiaolian.amigo.data.vo.User;
 
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -130,9 +135,23 @@ public interface IUserApi {
     @POST("user/change/school")
     Observable<ApiResult<ChangeSchoolResDTO>>  applyChangeSchool(@Body CommitSchoolReqDTO reqDTO);
 
+    /**
+     *支付宝是否绑定
+     */
+    @POST("user/alipay/bind/info")
+    Observable<ApiResult<User.AlipayBindBean>> isAlipayBind();
+
+    /**
+     *
+     */
+    @POST("user/alipay/bind")
+    Observable<ApiResult<User.AlipayBindBean>> bindAlipayInApp(@Body AliPayBindInAppReq reqDTO);
+
     @POST("user/change/school/cancel")
     Observable<ApiResult<CheckSchoolRespDTO>> cancelApplyChangeSchool(@Body SimpleReqDTO reqDTO);
 
+    @POST("wechat/user/account/native/bind")
+    Observable<ApiResult<WeChatBindRespDTO>> bindWechatApp(@Body WechatLoginReqDTO reqDTO);
     /**
      * 用户绑定宿舍详情
      */
@@ -177,7 +196,7 @@ public interface IUserApi {
 
     /**
      * 学生认证
-     * @param dto
+     * @param
      * @return
      */
     @POST("user/auth/certify")

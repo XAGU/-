@@ -100,7 +100,12 @@ public class ProfileFragment2 extends BaseFragment {
         this.isServerError = isServerError;
     }
 
-    IMainPresenter<IMainView> presenter;
+
+    public void setPresenter(IMainPresenter<IMainView> presenter) {
+        this.presenter = presenter;
+    }
+
+    public  IMainPresenter<IMainView> presenter;
     boolean isServerError;
 
     ProfileAdaptor adaptor;
@@ -113,7 +118,6 @@ public class ProfileFragment2 extends BaseFragment {
 
     private Unbinder unbinder;
 
-    private String avatarUrl;  //  图片url
 
 
 
@@ -130,7 +134,6 @@ public class ProfileFragment2 extends BaseFragment {
     public void setAvatar(String pictureUrl) {
         if (ivAvatar == null) return;
         if (!TextUtils.isEmpty(pictureUrl)) {
-            avatarUrl = pictureUrl;
             Glide.with(this).load(Constant.IMAGE_PREFIX + pictureUrl)
                     .asBitmap()
                     .placeholder(R.drawable.ic_picture_error)
@@ -184,7 +187,7 @@ public class ProfileFragment2 extends BaseFragment {
     }
 
     private boolean checkLogin() {
-        if (null == presenter.getToken() ||  TextUtils.isEmpty(presenter.getToken())) {
+        if (null == presenter.getAccessToken() ||  TextUtils.isEmpty(presenter.getRefreshToken())) {
             redirectToLogin();
             return false;
         }
@@ -279,18 +282,16 @@ public class ProfileFragment2 extends BaseFragment {
     }
 
     @Override
-    protected void initData() {
-
-    }
-
-    @Override
     protected void initView() {
+        android.util.Log.e(TAG, "initView: "  + (presenter == null));
         if (presenter == null) return;
         if (presenter.isLogin()) {
+            Log.e(TAG ,"profileFragment2>>>>>>>>  initView");
             presenter.getNoticeAmount();
             User user = presenter.getUserInfo();
             setAvatar(user.getPictureUrl());
             if (tvNickName != null) {
+                android.util.Log.e(TAG, "initView: " + user.getNickName() );
                 if (!user.getNickName().equals(tvNickName.getText().toString()))
                     tvNickName.setText(user.getNickName());
             }
@@ -298,6 +299,7 @@ public class ProfileFragment2 extends BaseFragment {
             if (tvSchoolName != null)
                 tvSchoolName.setVisibility(View.GONE);
         } else {
+            android.util.Log.e(TAG, "initView:   未登录>>>>>>" + presenter.isLogin()  );
             setAvatar("");
             if (tvNickName != null)
                 tvNickName.setText("登录/注册");

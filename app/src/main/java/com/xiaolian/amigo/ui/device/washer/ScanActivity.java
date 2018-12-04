@@ -220,7 +220,8 @@ public class ScanActivity extends WasherBaseActivity
 
             String url = BuildConfig.H5_SERVER
                     + "/washer"
-                    + "?token=" + presenter.getToken()
+                    + "?accessToken=" + presenter.getAccessToken()
+                    +"&refreshToken=" + presenter.getRefreshToken()
                     + "&schoolId=" + presenter.getUserInfo().getSchoolId()
                     + "&supplierId=" + sid
                     + "&deviceType=" + deviceType
@@ -736,7 +737,8 @@ public class ScanActivity extends WasherBaseActivity
     @Override
     public void goToWasher(String deviceToken, String macAddress, int deviceType) {
         String url = BuildConfig.H5_SERVER
-                + "/washer" + "?token=" + presenter.getToken()
+                + "/washer" + "?accessToken=" + presenter.getAccessToken()
+                +"&refreshToken=" + presenter.getRefreshToken()
                 + "&shcoolId=" + presenter.getUserInfo().getSchoolId()
                 + "&deviceToken=" + deviceToken
                 + "&deviceType=" + deviceType

@@ -11,6 +11,18 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
  */
 
 public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
+
+    /**
+     * 获取accessToken
+     * @return
+     */
+    String getAccessToken() ;
+
+    /**
+     * 获取refreshToken
+     * @return
+     */
+    String getRefreshToken();
     /**
      * 是否登录
      *
@@ -29,13 +41,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
      * @return 用户信息
      */
     User getUserInfo();
-
-    /**
-     * 获取token
-     *
-     * @return token
-     */
-    String getToken();
 
     long getSchoolId();
 

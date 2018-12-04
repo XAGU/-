@@ -31,6 +31,11 @@ public interface ILoginView extends IBaseView {
     void gotoLoginView();
 
     /**
+     * 跳转到注册第一步页面
+     */
+    void gotoRegisterStep1View();
+
+    /**
      * 跳转到注册第二步页面
      */
     void gotoRegisterStep2View();
@@ -44,5 +49,9 @@ public interface ILoginView extends IBaseView {
      * 跳转到主页
      */
     void gotoMainView();
+
+    void alipayLogin(String authCode);
+
+    void showTipDialog(String title,String content);
 
 }

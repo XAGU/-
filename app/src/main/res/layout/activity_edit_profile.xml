@@ -157,6 +157,89 @@
 
     </RelativeLayout>
 
+
+    <RelativeLayout
+        android:id="@+id/rel_edit_school"
+        android:onClick="onclick"
+        style="@style/ListItemRel">
+
+        <TextView
+            android:id="@+id/text_school"
+            style="@style/ListItemMainText"
+            android:layout_marginLeft="10dp"
+            android:text="学校" />
+
+
+        <ImageView
+            android:id="@+id/imageView6"
+            style="@style/ListItemImage"
+            android:layout_alignParentRight="true"
+
+            android:src="@drawable/arrow_right" />
+
+        <TextView
+            android:id="@+id/tv_school"
+            style="@style/ListItemSubText"
+            android:layout_toLeftOf="@id/imageView6"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
+            android:background="#eee" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rel_edit_room"
+        android:onClick="onclick"
+        style="@style/ListItemRel"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/text_room"
+            style="@style/ListItemMainText"
+            android:layout_marginLeft="10dp"
+            android:text="宿舍信息" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            style="@style/ListItemImage"
+            android:layout_alignParentRight="true"
+
+            android:src="@drawable/arrow_right" />
+
+        <TextView
+            android:hint="@string/unbind"
+            android:id="@+id/tv_residence"
+            style="@style/ListItemSubText"
+            android:layout_toLeftOf="@id/imageView7"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
+            android:background="#eee" />
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_toolbar_title"
+        style="@style/ToolBarTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:text="安全设置" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:background="#eee" />
     <RelativeLayout
         android:id="@+id/rel_edit_mobile"
         android:onClick="onclick"
@@ -261,30 +344,31 @@
 
     </RelativeLayout>
 
-
     <RelativeLayout
-        android:id="@+id/rel_edit_school"
+        android:id="@+id/rel_wechat_bind"
+        android:visibility="visible"
         android:onClick="onclick"
         style="@style/ListItemRel">
 
         <TextView
-            android:id="@+id/text_school"
+            android:id="@+id/tv_wechat"
             style="@style/ListItemMainText"
             android:layout_marginLeft="10dp"
-            android:text="学校" />
+            android:text="微信绑定" />
 
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/imageView_wechat"
             style="@style/ListItemImage"
             android:layout_alignParentRight="true"
 
             android:src="@drawable/arrow_right" />
 
         <TextView
-            android:id="@+id/tv_school"
+            android:id="@+id/tv_wechat_tip"
             style="@style/ListItemSubText"
-            android:layout_toLeftOf="@id/imageView6"
+            android:layout_toLeftOf="@id/imageView_wechat"
+            android:text="未绑定"
             />
 
         <View
@@ -293,33 +377,34 @@
             android:layout_alignParentBottom="true"
             android:layout_centerVertical="true"
             android:background="#eee" />
-    </RelativeLayout>
 
+    </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rel_edit_room"
+        android:id="@+id/rel_pay_bind"
+        android:visibility="visible"
         android:onClick="onclick"
-        style="@style/ListItemRel"
-        android:visibility="gone">
+        style="@style/ListItemRel">
 
         <TextView
-            android:id="@+id/text_room"
+            android:id="@+id/tv_apay"
             style="@style/ListItemMainText"
             android:layout_marginLeft="10dp"
-            android:text="宿舍信息" />
+            android:text="支付宝绑定" />
+
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/imageView_apay"
             style="@style/ListItemImage"
             android:layout_alignParentRight="true"
 
             android:src="@drawable/arrow_right" />
 
         <TextView
-            android:hint="@string/unbind"
-            android:id="@+id/tv_residence"
+            android:id="@+id/tv_apay_tip"
             style="@style/ListItemSubText"
-            android:layout_toLeftOf="@id/imageView7"
+            android:layout_toLeftOf="@id/imageView_apay"
+            android:text="未绑定"
             />
 
         <View
@@ -330,5 +415,6 @@
             android:background="#eee" />
 
     </RelativeLayout>
+
 
 </LinearLayout>

@@ -225,10 +225,6 @@ public class FindBathroomPasswordStep1Fragment extends BaseFragment {
         if (cdb != null) cdb.cancel();
     }
 
-    @Override
-    protected void initData() {
-
-    }
 
     @Override
     protected void initView() {

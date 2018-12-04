@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.ui.order.OrderActivity;
+import com.xiaolian.amigo.ui.user.PasswordVerifyActivity;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -141,8 +142,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     @OnClick(R.id.rl_withdrawal)
     void withdrawal() {
 //        presenter.queryWithdrawTimeValid();
-
-          presenter.queryWithDraw();
+         presenter.queryWithDraw();
     }
 
     /**
@@ -284,5 +284,10 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

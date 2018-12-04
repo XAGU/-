@@ -3,6 +3,8 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.ILoginApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.alipay.AlipayAuthInfoRespDTO;
+import com.xiaolian.amigo.data.network.model.alipay.AlipayBindReq;
 import com.xiaolian.amigo.data.network.model.login.LoginReqDTO;
 import com.xiaolian.amigo.data.network.model.login.PasswordResetReqDTO;
 import com.xiaolian.amigo.data.network.model.login.RegisterReqDTO;
@@ -10,6 +12,9 @@ import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.login.LoginRespDTO;
+import com.xiaolian.amigo.data.network.model.login.WeChatBindPhoneReqDTO;
+import com.xiaolian.amigo.data.network.model.login.WeChatResiterReqDTO;
+import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.di.UserServer;
@@ -50,6 +55,47 @@ public class LoginDataManager implements ILoginDataManager {
     public Observable<ApiResult<LoginRespDTO>> login(@Body LoginReqDTO body) {
         return loginApi.login(body);
     }
+
+    @Override
+    public Observable<ApiResult<AlipayAuthInfoRespDTO>> getApayAuth() {
+        return loginApi.getApayAuth();
+    }
+    // alipay登录接口
+    @Override
+    public Observable<ApiResult<LoginRespDTO>> apayLogin(@Body AlipayBindReq body) {
+        return loginApi.apayLogin(body);
+    }
+
+    @Override
+    public Observable<ApiResult<LoginRespDTO>> alipayCheckPhoneBind(@Body AlipayBindReq body) {
+        return loginApi.alipayCheckPhoneBind(body);
+    }
+
+    @Override
+    public Observable<ApiResult<LoginRespDTO>> registerAlipay(@Body AlipayBindReq body) {
+        return loginApi.registerAlipay(body);
+    }
+    //alipay登录接口end
+
+    //wechat login begin
+    @Override
+    public Observable<ApiResult<LoginRespDTO>> weChatLogin(@Body WechatLoginReqDTO body) {
+        return loginApi.weChatLogin(body);
+    }
+
+    @Override
+    public Observable<ApiResult<LoginRespDTO>> weChatCheckPhoneBind(@Body WeChatBindPhoneReqDTO body){
+        return loginApi.weChatCheckPhoneBind(body);
+    }
+
+    @Override
+    public Observable<ApiResult<LoginRespDTO>> registerWeChat(WeChatResiterReqDTO body){
+        return loginApi.registerWeChat(body);
+    }
+
+
+
+    //wechat login end
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> passwordReset(@Body PasswordResetReqDTO body) {
@@ -97,14 +143,15 @@ public class LoginDataManager implements ILoginDataManager {
     }
 
     @Override
-    public String getToken() {
-        return sharedPreferencesHelp.getToken();
+    public void setAccessToken(String accessToken) {
+        sharedPreferencesHelp.setAccessToken(accessToken);
     }
 
     @Override
-    public void setToken(String token) {
-        sharedPreferencesHelp.setToken(token);
+    public void setRefreshToken(String refreshToken) {
+        sharedPreferencesHelp.setReferToken(refreshToken);
     }
+
 
     @Override
     public User getUserInfo() {

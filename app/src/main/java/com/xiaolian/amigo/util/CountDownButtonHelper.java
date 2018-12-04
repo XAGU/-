@@ -24,6 +24,8 @@ public class CountDownButtonHelper {
 
     private Button button;
 
+    private boolean isFinished = false;
+
     /**
      * @param button        需要显示倒计时的Button
      * @param defaultString 默认显示的字符串
@@ -53,6 +55,7 @@ public class CountDownButtonHelper {
             public void onFinish() {
 // button.setEnabled(true);
 // button.setText(defaultString);
+                isFinished = true;
                 if (listener != null) {
                     listener.finish();
                 }
@@ -64,6 +67,7 @@ public class CountDownButtonHelper {
      * 开始倒计时
      */
     public void start() {
+        isFinished = false;
         button.setEnabled(false);
         countDownTimer.start();
     }
@@ -85,7 +89,9 @@ public class CountDownButtonHelper {
     }
 
     public void cancel() {
-        countDownTimer.cancel();
+        if(!isFinished) {
+            countDownTimer.cancel();
+        }
     }
 
 }
