@@ -46,6 +46,8 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
     private BluetoothWriteDescriptorCallback bluetoothWriteDescriptorCallback;
     private int connectState = BluetoothConstants.STATE_DISCONNECTED;
     private Handler handler;
+
+    private int newStateCode ;
     private BluetoothGattCallback coreGattCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
@@ -56,10 +58,10 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
                     + '\n' + "currentThread: " + Thread.currentThread().getId()
                     + "name:" + Thread.currentThread().getName());
 
-
+            newStateCode = newState ;
             handler.post(() -> {
                 if (bluetoothConnectStatusListener != null) {
-                    bluetoothConnectStatusListener.onConnectStatusChanged(newState);
+                    bluetoothConnectStatusListener.onConnectStatusChanged(newState , newStateCode);
                 }
             });
             bluetoothGatt = gatt;
@@ -317,7 +319,7 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
 
         handler.post(() -> {
             if (bluetoothConnectStatusListener != null) {
-                bluetoothConnectStatusListener.onConnectStatusChanged(BluetoothConstants.STATE_CONNECTED);
+                bluetoothConnectStatusListener.onConnectStatusChanged(BluetoothConstants.STATE_DISCONNECTED , newStateCode);
             }
         });
     }

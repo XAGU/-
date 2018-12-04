@@ -6,5 +6,5 @@ package com.xiaolian.blelib.connect;
  */
 
 public interface BluetoothConnectStatusListener {
-    void onConnectStatusChanged(int status);
+    void onConnectStatusChanged(int status , int newStatus);
 }

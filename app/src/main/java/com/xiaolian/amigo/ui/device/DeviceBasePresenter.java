@@ -484,27 +484,27 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 3、创建共享连接q
         Log.d(TAG, "注册连接监听");
-        bleDataManager.registerConnectStatusListener(currentMacAddress, status -> {
+        bleDataManager.registerConnectStatusListener(currentMacAddress, (status ,newStatus) -> {
             // 处理蓝牙连接状态
             switch (status) {
                 case BluetoothConstants.STATE_CONNECTED:
-                    writeLogFile("ConnectStatusListener" ,"currentMacAddress : "  + currentMacAddress   ,"蓝牙已连接");
+                    writeLogFile("ConnectStatusListener" ,"currentMacAddress : "  + currentMacAddress  + "'\t'newStatus: " + newStatus   ,"蓝牙已连接");
                     Log.d(TAG, "[ConnectStatusListener]蓝牙已连接");
                     break;
                 case BluetoothConstants.STATE_CONNECTING:
-                    writeLogFile("ConnectStatusListener" ,"currentMacAddress : "  + currentMacAddress   ,"蓝牙正在连接");
+                    writeLogFile("ConnectStatusListener" ,"currentMacAddress : "  + currentMacAddress + "'\t'newStatus: " + newStatus   ,"蓝牙正在连接");
                     Log.d(TAG, "[ConnectStatusListener]蓝牙正在连接");
 
                     //  开始连接蓝牙
                     break;
                 case BluetoothConstants.STATE_DISCONNECTED:
 //                    getMvpView().showMessage("蓝牙已经断开连接...");
-                    writeLogFile("ConnectStatusListener" ,"currentMacAddress : "  + currentMacAddress   ,"蓝牙已经断开连接");
+                    writeLogFile("ConnectStatusListener" ,"currentMacAddress : "  + currentMacAddress + "'\t'newStatus: " + newStatus   ,"蓝牙已经断开连接");
                     handleDisConnectError("[ConnectStatusListener]蓝牙已经断开连接");
                     break;
                 case BluetoothConstants.STATE_DISCONNECTING:
 //                    getMvpView().showMessage("蓝牙正在断开连接...");
-                    writeLogFile("ConnectStatusListener" ,"currentMacAddress : "  + currentMacAddress   ,"蓝牙正在断开连接");
+                    writeLogFile("ConnectStatusListener" ,"currentMacAddress : "  + currentMacAddress + "'\t'newStatus: " + newStatus   ,"蓝牙正在断开连接");
                     Log.d(TAG, "[ConnectStatusListener]蓝牙正在断开连接");
                     break;
             }
