@@ -177,8 +177,12 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
             public void onReady(ApiResult<WeChatBindRespDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().getResult()) {
+                        WeChatBindRespDTO data = result.getData();
                         EditProfileActivity.Event event = new EditProfileActivity.Event(EditProfileActivity.Event.EventType.BIND_WECHAT);
-                        event.setMsg(result.getData());
+                        if (null == data.getNickname()){
+                            data.setNickname("未设置昵称");
+                        }
+                        event.setMsg(data);
                         EventBus.getDefault().post(event);
                     }else{
                         getMvpView().onError("绑定微信失败，请重试");
@@ -234,8 +238,12 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
             public void onReady(ApiResult<User.AlipayBindBean> result) {
                 if(null == result.getError()){
                     if (result.getData().isIsBinding()) {
+                        User.AlipayBindBean bean = result.getData();
                         EditProfileActivity.Event event = new EditProfileActivity.Event(EditProfileActivity.Event.EventType.BIND_ALIPAY);
-                        event.setMsg(result.getData());
+                        if (null == bean.getAlipayNickName()){
+                            bean.setAlipayNickName("未设置昵称");
+                        }
+                        event.setMsg(bean);
                         EventBus.getDefault().post(event);
                     }else {
                         getMvpView().onError("绑定支付宝失败请重试");

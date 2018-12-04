@@ -11,4 +11,10 @@ import lombok.Data;
 @Data
 public class SimpleRespDTO {
     private Long id;
+
+    //密码保护
+    private Integer protectInMinutes;
+    private Integer remaining;
+    private Boolean result;
+    //密码保护end
 }

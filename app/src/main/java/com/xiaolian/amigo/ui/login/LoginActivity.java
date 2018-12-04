@@ -445,7 +445,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     @OnClick(R.id.bt_wechat)
     void weCharLogin(){
         if (!MvpApp.mWxApi.isWXAppInstalled()) {
-            Toast.makeText(getContext(),"weChat not installed",Toast.LENGTH_LONG);
+            onError("未安装微信，请安装");
             return;
         }
         weChatLogin();

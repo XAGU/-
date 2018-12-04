@@ -6,6 +6,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.user.PasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordView;
 
@@ -38,11 +39,29 @@ public class EditPasswordPresenter<V extends IEditPasswordView> extends BasePres
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess(R.string.change_password_success);
-                    getMvpView().finishView();
-                } else {
+                    if (result.getData().getResult()) {
+                        getMvpView().onSuccess(R.string.change_password_success);
+                        getMvpView().finishView();
+
+                    } else if (!result.getData().getResult() && result.getData().getRemaining() != null) {
+                        //检查密码错误剩余次数
+                        if (1 == result.getData().getRemaining()) {
+                            LoginActivity activity = (LoginActivity) getMvpView();
+                            getMvpView().showTipDialog(activity.getString(R.string.verify_password_only_one_titile), activity.getString(R.string.verify_password_tip));
+                        }
+                    } else if (!result.getData().getResult() && result.getData().getProtectInMinutes() != null) {
+                        //检查剩余分钟数
+                        LoginActivity activity = (LoginActivity) getMvpView();
+                        int rest = result.getData().getProtectInMinutes();
+                        String title = activity.getResources().getString(R.string.verify_password_failed_title, rest);
+                        getMvpView().showTipDialog(title, activity.getString(R.string.verify_password_failed_stop));
+                    } else {
+                        getMvpView().onError("请输入正确的登录密码");
+                    }
+                }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+
             }
         });
     }

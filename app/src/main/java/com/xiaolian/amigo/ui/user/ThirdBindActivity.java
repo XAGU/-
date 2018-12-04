@@ -108,7 +108,7 @@ public class ThirdBindActivity extends UserBaseActivity implements IThirdBindVie
     @Override
     public void setNickName(String nickName) {
         if(type == EditProfileActivity.ALIPAY_BIND){
-            tv_nickName.setText("已支付宝微信号: " +nick_name);
+            tv_nickName.setText("已绑定支付宝: " +nick_name);
         }else if(type == EditProfileActivity.WECHAT_BIND){
             tv_nickName.setText("已绑定微信号: " +nick_name);
         }

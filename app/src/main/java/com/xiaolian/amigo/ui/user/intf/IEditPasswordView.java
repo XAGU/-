@@ -15,4 +15,6 @@ public interface IEditPasswordView extends IBaseView {
      * 结束页面
      */
     void finishView();
+
+    void showTipDialog(String title,String content);
 }

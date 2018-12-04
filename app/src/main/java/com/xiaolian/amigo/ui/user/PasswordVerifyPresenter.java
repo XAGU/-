@@ -45,7 +45,6 @@ public class PasswordVerifyPresenter <V extends IPasswordVerifyView> extends Bas
                         //检查剩余分钟数
                         PasswordVerifyActivity activity = (PasswordVerifyActivity) getMvpView();
                         int rest = result.getData().getProtectInMinutes();
-                        getMvpView().onError(result.getData().getFailReason());
                         String title =activity.getResources().getString(R.string.verify_password_failed_title,rest);
                         getMvpView().showTipDialog(title,activity.getString(R.string.verify_password_failed));
 
