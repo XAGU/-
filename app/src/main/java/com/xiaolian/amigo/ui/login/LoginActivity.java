@@ -120,7 +120,6 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(TAG, "onCreate: fdfjfdskf" );
         setContentView(R.layout.activity_login_registry_group);
 
         setUnBinder(ButterKnife.bind(this));
@@ -212,6 +211,9 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     @OnClick(R.id.tv_login)
     void gotoLogin() {
+
+        showThirdLoginView(true);
+
         if(isThirdLogin)
             return;
 
@@ -415,7 +417,6 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EditProfileActivity.Event event) {
-        Log.e(TAG, "onEvent: ---login" );
         if (isLogined) return;
 
         switch (event.getType()){

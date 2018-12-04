@@ -125,6 +125,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         ((LoginActivity) getActivity()).showThirdLoginView(true);
 
         if (!((LoginActivity)getActivity()).isChooseSchool()) {
