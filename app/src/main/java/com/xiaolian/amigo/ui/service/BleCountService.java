@@ -124,9 +124,11 @@ public class BleCountService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         initRequestVariable();
+        Log.e(TAG, "onStartCommand: " );
         if (timer == null){
+            Log.e(TAG, "onStartCommand: " );
 //            handleUploadTradSatistic(fileName);
-            timer = RxHelper.intervel(300, aLong ->
+            timer = RxHelper.intervel(60, aLong ->
                     handleUploadTradSatistic(fileName)
             );
         }
@@ -180,11 +182,11 @@ public class BleCountService extends Service {
                                         //  上传成功删除这些文件
                                         if (uploadFile.size() > 0){
                                             for (File file : uploadFile){
-                                                    boolean b = file.delete();
-                                                    if (b) {
-                                                        uploadFile.remove(file);
-                                                        Log.e(TAG, "onDelete: " + file.getName() );
-                                                    }
+//                                                    boolean b = file.delete();
+//                                                    if (b) {
+//                                                        uploadFile.remove(file);
+//                                                        Log.e(TAG, "onDelete: " + file.getName() );
+//                                                    }
                                             }
                                         }
                                     }
@@ -232,6 +234,7 @@ public class BleCountService extends Service {
                         if (itemsBeans.size() == 0){
                             itemsBeans.add(itemsBean) ;
                         }else{
+                            boolean isSaveRecord = false ;
                             for (int i = 0 ; i < itemsBeans.size() ; i++){
                                 AppTradeStatisticDataReqDTO.ItemsBean item = itemsBeans.get(i);
                                 //  判断是否有存储macAddress 的数据
@@ -247,37 +250,32 @@ public class BleCountService extends Service {
                                             if (TextUtils.equals(item.getResult(), itemsBean.getResult())) {
 
                                                 //  如果 此Type 结果也一样，则Count + 1 ， 判断是否耗时最小 ， 耗时最大， 以及平均时间
-
+                                                isSaveRecord = true ;
                                                 int count = item.getCount();
                                                 int avgTime = item.getAvgTime();
                                                 int minTime = item.getMinTime();
                                                 int maxTime = item.getMaxTime();
 
-                                                itemsBean.setCount(count + 1);
+
                                                 avgTime = (count * avgTime + item.getAvgTime()) / (count + 1);
+                                                count = count + 1 ;
+                                                item.setCount(count);
+                                                Log.e(TAG, "fromFilesToReqDto: >>>> count" + count );
+                                                Log.e(TAG, "fromFilesToReqDto: >>>>  avgTime" + avgTime );
                                                 item.setAvgTime(avgTime);
                                                 minTime = Math.min(minTime, item.getMinTime());
                                                 item.setAvgTime(minTime);
                                                 maxTime = Math.max(maxTime, item.getMaxTime());
                                                 item.setMaxTime(maxTime);
                                                 break;
-                                            } else {
-                                                itemsBeans.add(itemsBean);
-                                                break;
                                             }
-                                        }else{
-                                            itemsBeans.add(itemsBean);
-                                            break;
                                         }
-                                    }else{
-                                        itemsBeans.add(itemsBean);
-                                        break;
                                     }
-                                }else{
-                                    itemsBeans.add(itemsBean);
-                                    break;
                                 }
-
+                            }
+                            if (!isSaveRecord) {
+                                Log.e(TAG, "fromFilesToReqDto: >>>> addItem "  );
+                                itemsBeans.add(itemsBean);
                             }
                         }
 

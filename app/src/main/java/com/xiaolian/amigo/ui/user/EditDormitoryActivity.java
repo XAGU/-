@@ -34,6 +34,7 @@ import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_R
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_LOCATION;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_MAC_ADDRESS;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_RESIDENCE_ID;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_SUPPLIER_ID;
 
 /**
@@ -137,11 +138,11 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     @Override
     public void startShower(UserResidenceInListDTO dto) {
-
         startActivity(new Intent(this , HeaterActivity.class)
                 .putExtra(INTENT_KEY_LOCATION ,dto.getResidenceName())
                 .putExtra(INTENT_KEY_MAC_ADDRESS ,dto.getMacAddress())
-                .putExtra(INTENT_KEY_SUPPLIER_ID , dto.getSupplierId()));
+                .putExtra(INTENT_KEY_SUPPLIER_ID , dto.getSupplierId())
+                .putExtra(INTENT_KEY_RESIDENCE_ID ,dto.getResidenceId()));
         Log.e(TAG, "startShower: " + dto.getMacAddress() );
         this.finish();
     }

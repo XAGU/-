@@ -174,6 +174,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
         initRxbus();
         initPage();
         initScroll();
+        initView();
         return view;
     }
 

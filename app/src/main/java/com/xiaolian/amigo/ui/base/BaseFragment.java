@@ -110,7 +110,6 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
             } else {
                 ft.show(this);
                 android.util.Log.e(TAG, "onCreate:  >>>>> show" );
-                initView();
             }
             ft.commit();
         }

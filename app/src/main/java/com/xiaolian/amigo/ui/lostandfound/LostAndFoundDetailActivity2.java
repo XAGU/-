@@ -225,7 +225,6 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 int currentValue = (int) animation.getAnimatedValue();
-                Log.wtf(TAG, currentValue + "");
                 if (ivLoading != null)
                     ivLoading.setImageResource(loadingRes[currentValue]);
             }
@@ -388,7 +387,6 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @OnClick({R.id.reply})
     public void reply() {
-        Log.d(TAG, "clickReply");
         String commentContent = etReply.getText().toString().trim();
         if (isReplyName) {
             presenter.publishReply(replyToId, replyToUserId, commentContent);
@@ -580,14 +578,12 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     @OnClick({R.id.iv_back})
     @Override
     public void finishView() {
-        Log.wtf(TAG, "finishView");
         finish();
     }
 
 
     @Override
     public void finish() {
-        Log.wtf(TAG, "finish");
         Intent intent = new Intent();
         intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, null == content ?
                 0 : content.getCommentCount());
@@ -715,7 +711,6 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void onBackPressed() {
-        Log.wtf(TAG, "onBackGround");
         Intent intent = new Intent();
         intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
                 0 : content.getCommentCount());

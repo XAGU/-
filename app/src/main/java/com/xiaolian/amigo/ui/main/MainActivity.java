@@ -206,19 +206,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     .subscribe(granted -> {
                         if (granted) {
-
-<<<<<<< HEAD
                     } else {
                         showMessage("没有SD卡权限");
                     }
                 });
-        android.util.Log.e(TAG, "onCreate: " +  TimeUtils.getCountTimeStamp());
-=======
-                        } else {
-                            showMessage("没有SD卡权限");
-                        }
-                    });
->>>>>>> feature/userBleCount
     }
 
 
@@ -640,14 +631,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }else {
             // 注册信鸽推送
             registerXGPush();
-<<<<<<< HEAD
-            Log.d(TAG ,"onResume");
-=======
->>>>>>> feature/userBleCount
             presenter.noticeCount();
             presenter.deleteFile();
-<<<<<<< HEAD
-
             startBleCountService();
         }
 
@@ -659,9 +644,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private void startBleCountService(){
         Intent intent = new Intent(this , BleCountService.class);
         startService(intent);
-=======
-        }
->>>>>>> feature/userBleCount
     }
 
     private void uploadDeviceInfo() {

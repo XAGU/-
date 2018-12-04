@@ -1134,9 +1134,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 if (chosenResidenceId != -1) {
                     residenceId = chosenResidenceId;
                 }
-
                 // 重新连接设备
                 showConnecting();
+                android.util.Log.e(TAG, "onActivityResult: " + residenceId + " chosenResidenceId >>>>> " + chosenResidenceId  );
+                presenter.setResidenceId(residenceId);
                 presenter.clearObservers(); // 清空旧连接
                 presenter.resetSubscriptions(); // 此步骤非常重要，不加会造成重连请求掉进黑洞的现象
                 presenter.resetContext();

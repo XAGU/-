@@ -59,11 +59,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
@@ -1719,12 +1721,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
      * @param name    文件名
      */
     private void writeFile(String name ,String content){
-        rx.Observable.just(1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(integer -> {
                     String timeStampsFileDirName = Environment.getExternalStorageDirectory().getAbsolutePath() +"/xiaolian/"+COUNT_NAME;
-                    Log.e(TAG ,"fileName >>>>>>>>" + timeStampsFileDirName);
+
                     File timeStampsFileDir = new File(timeStampsFileDirName);
                     if (!timeStampsFileDir.exists() && !timeStampsFileDir.mkdirs()){
                         android.util.Log.e(TAG, "writeFile: >>>>>  创建文件失败"  );
@@ -1741,7 +1739,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     }catch (IOException e){
                         Log.e(TAG ,e.getMessage());
                     }
-                });
 
     }
 
@@ -1754,7 +1751,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void writeLogFile(String content ){
         rx.Observable.just(1)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
+                .observeOn(Schedulers.newThread())
                 .subscribe(integer -> {
                     String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/" + deviceDataManager.getUser().getId()+"/";
                     File path = new File(filePath);
@@ -1786,41 +1783,47 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
      *  String 格式为 type:SCAN、target:SERVER、result:success、time:120;
      */
     private void recordUseNumber(Type type , Target target , Result result , long time){
-        StringBuffer recordString = new StringBuffer();
-        recordString.append("type")
-                .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                .append(type.getContent())
-                .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
-                .append("target")
-                .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                .append(target.getContent())
-                .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
-                .append("result")
-                .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                .append(result.getContent())
-                .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
-                .append("time")
-                .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                .append(time)
-                .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
-                .append("macAddress")
-                .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                .append(deviceNo)
-                .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
-                .append("supplierId")
-                .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                .append(supplier.getId())
-                .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
-                .append("deviceType")
-                .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                .append(deviceType)
-                .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
-                .append("residenceId")
-                .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                .append(residenceId)
-                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR);
+        rx.Observable.just(1)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.io())
+                .subscribe(integer -> {
+                    StringBuffer recordString = new StringBuffer();
+                    recordString.append("type")
+                            .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
+                            .append(type.getContent())
+                            .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
+                            .append("target")
+                            .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
+                            .append(target.getContent())
+                            .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
+                            .append("result")
+                            .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
+                            .append(result.getContent())
+                            .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
+                            .append("time")
+                            .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
+                            .append(time)
+                            .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
+                            .append("macAddress")
+                            .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
+                            .append(deviceNo)
+                            .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
+                            .append("supplierId")
+                            .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
+                            .append(supplier.getId())
+                            .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
+                            .append("deviceType")
+                            .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
+                            .append(deviceType)
+                            .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
+                            .append("residenceId")
+                            .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
+                            .append(residenceId)
+                            .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR);
 
-        String fileName = "" + TimeUtils.getCountTimeStamp() + deviceDataManager.getUser().getId()+".txt" ;
-        writeFile(fileName ,recordString.toString());
+                    String fileName = "" + TimeUtils.getCountTimeStamp() + deviceDataManager.getUser().getId()+".txt" ;
+                    writeFile(fileName ,recordString.toString());
+                });
+
     }
 }
