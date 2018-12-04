@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.util.Log;
+
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -39,6 +41,7 @@ public class EditPasswordPresenter<V extends IEditPasswordView> extends BasePres
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
+                    Log.e(TAG, "onReady: ::" + result.getData().toString() );
                     if (result.getData().getResult()) {
                         getMvpView().onSuccess(R.string.change_password_success);
                         getMvpView().finishView();
@@ -46,12 +49,12 @@ public class EditPasswordPresenter<V extends IEditPasswordView> extends BasePres
                     } else if (!result.getData().getResult() && result.getData().getRemaining() != null) {
                         //检查密码错误剩余次数
                         if (1 == result.getData().getRemaining()) {
-                            LoginActivity activity = (LoginActivity) getMvpView();
+                            EditPasswordActivity activity = (EditPasswordActivity) getMvpView();
                             getMvpView().showTipDialog(activity.getString(R.string.verify_password_only_one_titile), activity.getString(R.string.verify_password_tip));
                         }
                     } else if (!result.getData().getResult() && result.getData().getProtectInMinutes() != null) {
                         //检查剩余分钟数
-                        LoginActivity activity = (LoginActivity) getMvpView();
+                        EditPasswordActivity activity = (EditPasswordActivity) getMvpView();
                         int rest = result.getData().getProtectInMinutes();
                         String title = activity.getResources().getString(R.string.verify_password_failed_title, rest);
                         getMvpView().showTipDialog(title, activity.getString(R.string.verify_password_failed_stop));
@@ -59,6 +62,7 @@ public class EditPasswordPresenter<V extends IEditPasswordView> extends BasePres
                         getMvpView().onError("请输入正确的登录密码");
                     }
                 }else{
+                    Log.e(TAG, "onReady: eroor =" + result.getError().getDebugMessage() );
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
 
