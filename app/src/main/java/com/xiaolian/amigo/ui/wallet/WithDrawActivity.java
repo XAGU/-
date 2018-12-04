@@ -88,7 +88,7 @@ public class WithDrawActivity extends WalletBaseActivity implements IWithDrawVie
 
     private void setData() {
         if (dto == null) return;
-        tvTime.setText("退款说明：" + dto.getTimeRange());
+        tvTime.setText("退款时间：" + dto.getTimeRange());
         if (dto != null && dto.isAll()) {
             tvObject.setVisibility(View.GONE);
             status = CERTIFICATION_PASS;

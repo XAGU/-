@@ -461,7 +461,6 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
 
             @Override
             public void onReady(ApiResult<LoginRespDTO> result) {
-                Log.e(TAG, "onReady: result ===" + result.getData().toString() );
                 if(null == result.getError()){
                     //微信和账号已经绑定过，直接登录
                     if (result.getData().getBound()){
@@ -546,7 +545,6 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<LoginRespDTO> result) {
                 if (null == result.getError()){
-                    Log.e(TAG, "onReady: wechat registr::" + result.getData().toString() );
                     if (result.getData().getWechatBound()){
                         loginDataManager.setUserInfo(result.getData().getUser().transform());
                         loginDataManager.setAccessToken(result.getData().getAccessToken());

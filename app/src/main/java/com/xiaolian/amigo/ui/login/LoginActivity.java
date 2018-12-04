@@ -424,6 +424,9 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
                 String weChatCode = (String)event.getMsg();
                 presenter.weChatLogin(weChatCode);
                 break;
+            case CANCEL_WECHAT_AUTH:
+                onError("已经退出微信授权");
+                break;
             default:
                 break;
         }

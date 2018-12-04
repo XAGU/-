@@ -495,7 +495,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 String weChatCode = (String)event.getMsg();
                 presenter.bindWeChat(weChatCode);
                 break;
-
+            case CANCEL_WECHAT_AUTH:
+                onError("已经退出微信授权");
+                break;
             default:
                 break;
         }
@@ -531,7 +533,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             UNBIND_ALIPAY(4),
             BIND_WECHAT(5),
             BIND_ALIPAY(6),
-            WECHAT_CODE(7);
+            WECHAT_CODE(7),
+            CANCEL_WECHAT_AUTH(8);
             int type;
 
             EventType(int type) {

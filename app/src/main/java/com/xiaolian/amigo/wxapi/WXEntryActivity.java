@@ -74,10 +74,12 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 }
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
-                Log.e(TAG, "onResp:ERR_USER_CANCEL ");
+                EditProfileActivity.Event event = new EditProfileActivity.Event(EditProfileActivity.Event.EventType.CANCEL_WECHAT_AUTH);
+                EventBus.getDefault().post(event);
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
-                Log.e(TAG, "onResp:ERR_AUTH_DENIED " );
+                EditProfileActivity.Event event1 = new EditProfileActivity.Event(EditProfileActivity.Event.EventType.CANCEL_WECHAT_AUTH);
+                EventBus.getDefault().post(event1);
                 break;
             default:
                 break;

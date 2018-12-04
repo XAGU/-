@@ -223,7 +223,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
 
                             } else {
                                 // 其他状态值则为授权失败
-                                getMvpView().onError("支付宝授权失败");
+                                getMvpView().onError("已退出支付宝授权");
 
                             }
                         }
