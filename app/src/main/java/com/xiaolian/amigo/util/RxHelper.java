@@ -4,6 +4,8 @@ package com.xiaolian.amigo.util;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Scheduler;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -50,6 +52,26 @@ public class RxHelper {
         return Observable.just(time).delay(time ,timeUnit)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
+    /**
+     * 定时发送
+     * @param time
+     * @param action1
+     * @return
+     */
+    public static Subscription intervel(int time ,Action1<Long> action1){
+        if (time < 0) return null ;
+
+        //  0  表示第一次执行任务时延时多久
+        return Observable.interval(0,time ,TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(action1);
+
+
+
     }
 
 

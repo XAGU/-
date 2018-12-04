@@ -347,15 +347,6 @@ public class MessageReceiver extends XGPushBaseReceiver {
                         }
                     }
                 });
-//                .subscribe(result -> {
-//                    if (result.getError() == null){
-//                        Log.wtf(TAG ,result.getData().getFailReason() +"    " +result.getData().isResult());
-//                    }
-//                });
-
-
-
-
     }
 
 

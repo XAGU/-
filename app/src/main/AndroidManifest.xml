@@ -707,6 +707,12 @@
 
         <service android:name=".ui.main.update.DownLoadService" />
 
+
+        <service android:name=".ui.service.BleCountService">
+
+
+        </service>
+
         <!-- ACRA -->
         <activity
             android:name=".util.crash.acra.dialog.CrashReportDialog"

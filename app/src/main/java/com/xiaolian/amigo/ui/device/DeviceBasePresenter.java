@@ -1799,24 +1799,23 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 .append("time")
                 .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
                 .append(time)
-                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR)
+                .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
                 .append("macAddress")
                 .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                .append(currentMacAddress)
-                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR)
+                .append(deviceNo)
+                .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
                 .append("supplierId")
                 .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
                 .append(supplier.getId())
-                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR)
+                .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
                 .append("deviceType")
                 .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
                 .append(deviceType)
-                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR)
+                .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
                 .append("residenceId")
                 .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
                 .append(residenceId)
-                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR)
-                .append("'\n'");
+                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR);
 
         String fileName = "" + TimeUtils.getCountTimeStamp() + deviceDataManager.getUser().getId()+".txt" ;
         writeFile(fileName ,recordString.toString());

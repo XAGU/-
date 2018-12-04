@@ -98,9 +98,9 @@ android {
 //            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.19:5097/c\"" //
 
             // 炼炼
-//            buildConfigField "String", "SERVER", "\"http://10.0.0.6:5081/\"" //
-//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.0.0.6:5082/\"" //
-//            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.6:5097/c\"" //
+            buildConfigField "String", "SERVER", "\"http://10.0.0.23:5081/\"" //
+            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.0.0.23:5082/\"" //
+            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.23:5097/c\"" //
 
             // qa3
             buildConfigField "String", "SERVER", "\"http://39.108.74.164:5081/\"" //

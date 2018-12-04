@@ -55,6 +55,7 @@ import com.xiaolian.amigo.ui.main.update.IVersionModel;
 import com.xiaolian.amigo.ui.main.update.IntentKey;
 import com.xiaolian.amigo.ui.main.update.UpdateActivity;
 import com.xiaolian.amigo.ui.repair.RepairActivity;
+import com.xiaolian.amigo.ui.service.BleCountService;
 import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
@@ -566,11 +567,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
             }
             presenter.deleteFile();
+
+            startBleCountService();
         }
 
+    }
 
-
-
+    /**
+     * 启动上传蓝牙统计服务
+     */
+    private void startBleCountService(){
+        Intent intent = new Intent(this , BleCountService.class);
+        startService(intent);
     }
 
     private void uploadDeviceInfo() {

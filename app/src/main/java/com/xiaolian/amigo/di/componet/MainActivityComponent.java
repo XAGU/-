@@ -22,7 +22,6 @@ import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.main.HomeFragment2;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.main.SplashActivity;
-import com.xiaolian.amigo.ui.notice.MessageReceiver;
 
 import dagger.Component;
 
