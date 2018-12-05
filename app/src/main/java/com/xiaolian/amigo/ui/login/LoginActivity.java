@@ -425,7 +425,6 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     public void onBackPressed() {
         super.onBackPressed();
         status = THIRD_STATUS_LOGIN;
-        Log.e(TAG, "onBackPressed: activity" );
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
