@@ -13,6 +13,7 @@
         android:paddingTop="14dp"
         android:paddingBottom="24dp"
         android:id="@+id/iv_back"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/close" />
@@ -20,6 +21,7 @@
 
     <LinearLayout
         android:paddingLeft="21dp"
+        android:layout_marginTop="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="21dp"

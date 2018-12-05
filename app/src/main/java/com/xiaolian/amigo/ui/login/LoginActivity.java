@@ -93,8 +93,6 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     ImageView wechat;
 
 
-
-
     LoginFragment loginFragment;
     RegisterStep1Fragment registerStep1Fragment;
     RegisterStep2Fragment registerStep2Fragment;
@@ -421,10 +419,19 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         availabilityDialog.show();
     }
 
+    //重写返回键逻辑
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        status = THIRD_STATUS_LOGIN;
+        if (status != THIRD_STATUS_LOGIN || !loginFragment.isVisible()) {
+            super.onBackPressed();
+            status = THIRD_STATUS_LOGIN;
+            return;
+        }else{
+            Intent mIntent = new Intent();
+            mIntent.setAction(Intent.ACTION_MAIN);
+            mIntent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(mIntent);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
