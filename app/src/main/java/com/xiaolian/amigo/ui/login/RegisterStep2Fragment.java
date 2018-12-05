@@ -51,6 +51,10 @@ public class RegisterStep2Fragment extends Fragment {
 
     @OnClick(R.id.bt_submit)
     void register() {
+        if (etUserpwd.getText().toString().trim().length() < 6) {
+            ((LoginActivity) getActivity()).onError("请输入至少6位数的密码");
+            return;
+        }
         //为绑定第三方账号注册电话号码
         if (((LoginActivity) getActivity()).isThirdLogin()){
             ((LoginActivity) getActivity()).registerForThirdAccount(etUserpwd.getText().toString(),
@@ -115,7 +119,7 @@ public class RegisterStep2Fragment extends Fragment {
     private void toggleButton() {
         boolean valid = !TextUtils.isEmpty(tvSchool.getText())
                 && !TextUtils.isEmpty(etUserpwd.getText())
-                && etUserpwd.getText().length() >= 6;
+                && etUserpwd.getText().length() >= 1;
         btSubmit.setEnabled(valid);
     }
 

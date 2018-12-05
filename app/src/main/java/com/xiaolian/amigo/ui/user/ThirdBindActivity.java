@@ -25,6 +25,7 @@ public class ThirdBindActivity extends UserBaseActivity implements IThirdBindVie
     private int type;
     private String nick_name;
     AvailabilityDialog availabilityDialog;
+    private static final int REQUEST_CODE_PASSWORD_VERIFY_UNBIND = 0x00;
 
     @Inject
     IThirdBindPresenter<IThirdBindView> presenter;
@@ -100,7 +101,9 @@ public class ThirdBindActivity extends UserBaseActivity implements IThirdBindVie
             availabilityDialog.setTip("解除支付宝后可重新绑定");
         }
         availabilityDialog.setOnOkClickListener(dialog1 -> {
-            presenter.unbind(type);
+            Intent intent = new Intent(this,PasswordVerifyActivity.class);
+            intent.putExtra("type",PasswordVerifyActivity.TYPE_MONEY_RETURN);
+            startActivityForResult(intent,REQUEST_CODE_PASSWORD_VERIFY_UNBIND);
         });
         availabilityDialog.show();
     }
@@ -125,5 +128,15 @@ public class ThirdBindActivity extends UserBaseActivity implements IThirdBindVie
         Intent intent = new Intent(this,EditProfileActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK ){
+            if (requestCode == REQUEST_CODE_PASSWORD_VERIFY_UNBIND){
+                presenter.unbind(type);
+            }
+        }
     }
 }

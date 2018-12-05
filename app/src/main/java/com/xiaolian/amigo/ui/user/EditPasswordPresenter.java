@@ -47,10 +47,12 @@ public class EditPasswordPresenter<V extends IEditPasswordView> extends BasePres
                         getMvpView().finishView();
 
                     } else if (!result.getData().getResult() && result.getData().getRemaining() != null) {
+                        Integer remain = result.getData().getRemaining();
                         //检查密码错误剩余次数
-                        if (1 == result.getData().getRemaining()) {
+                        if (1 == remain || 2 == remain) {
                             EditPasswordActivity activity = (EditPasswordActivity) getMvpView();
-                            getMvpView().showTipDialog(activity.getString(R.string.verify_password_only_one_titile), activity.getString(R.string.verify_password_tip));
+                            String title =activity.getResources().getString(R.string.verify_password_only_one_titile,remain);
+                            getMvpView().showTipDialog(title,activity.getString(R.string.verify_password_tip));
                         }
                     } else if (!result.getData().getResult() && result.getData().getProtectInMinutes() != null) {
                         //检查剩余分钟数

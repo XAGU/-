@@ -34,11 +34,12 @@ public class PasswordVerifyPresenter <V extends IPasswordVerifyView> extends Bas
                         //密码验证成功
                         getMvpView().goToChangeView();
                     }else if(!result.getData().isResult() && null != result.getData().getRemaining()) {
+                        Integer remain = result.getData().getRemaining();
                         //检查密码错误剩余次数
-                        if (1 == result.getData().getRemaining()) {
+                        if (1 == remain || 2 == remain) {
                             PasswordVerifyActivity activity = (PasswordVerifyActivity) getMvpView();
-                            getMvpView().showTipDialog(activity.getString(R.string.verify_password_only_one_titile)
-                                    ,activity.getString(R.string.verify_password_tip));
+                            String title =activity.getResources().getString(R.string.verify_password_only_one_titile,remain);
+                            getMvpView().showTipDialog(title,activity.getString(R.string.verify_password_tip));
                         }
 
                     }else if(!result.getData().isResult() && null != result.getData().getProtectInMinutes()){

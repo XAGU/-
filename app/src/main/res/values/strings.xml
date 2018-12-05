@@ -46,7 +46,7 @@
     <string name="edit_mobile">修改手机号</string>
     <string name="two_mobile_equal">新手机号不能与老手机号一致</string>
     <string name="change_mobile_equal">手机号修改成功</string>
-    <string name="verify_password_only_one_titile">还可进行1次密码验证</string>
+    <string name="verify_password_only_one_titile">还可进行%1$d次密码验证</string>
     <string name="verify_password_tip">连续失败5次,将进行2小时密码保护</string>
     <string name="verify_password_failed_title">请%1$d分钟后再尝试验证密码</string>
     <string name="verify_password_failed">因已连续失败5次,已进行密码保护</string>

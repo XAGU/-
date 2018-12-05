@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.util.ObjectsCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -20,13 +19,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.CountDownButtonHelper;
 import com.xiaolian.amigo.util.ViewUtil;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,10 +80,14 @@ public class RegisterStep1Fragment extends Fragment {
 
     @OnClick(R.id.bt_send_verification_code)
     void sendVerificationCode() {
+        if (!isMobileNO(etMobile.getText().toString().trim())){
+            ((LoginActivity) getActivity()).onError("手机号不合法");
+            return;
+        }
+
         if (getActivity() instanceof LoginActivity) {
             ((LoginActivity) getActivity()).sendVerificationCode(etMobile.getText().toString());
         }
-        etVerificationCode.requestFocus();
     }
 
     @OnClick(R.id.tv_agreement)
@@ -197,6 +202,17 @@ public class RegisterStep1Fragment extends Fragment {
         btSendVerificationCode.setTextColor(color);
         btSendVerificationCode.setBackgroundResource(R.drawable.bg_rect_gray_stroke);
         cdb.start();
+        //让输入验证码Editview获取焦点
+        etVerificationCode.requestFocus();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(
+                                Context.INPUT_METHOD_SERVICE);
+                inputManager.showSoftInput(etVerificationCode, 0);
+            }
+        },100);
     }
 
     @Override
@@ -223,6 +239,7 @@ public class RegisterStep1Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         Log.e("Test", "onResume: register" );
         ((LoginActivity) getActivity()).showThirdLoginView(false);
         if (etMobile != null) {
@@ -232,5 +249,12 @@ public class RegisterStep1Fragment extends Fragment {
                 imm.showSoftInput(etMobile, InputMethodManager.SHOW_IMPLICIT);
             }
         }
+    }
+    private  boolean isMobileNO(String mobileNums) {
+        String telRegex = "^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$";
+        if (TextUtils.isEmpty(mobileNums))
+            return false;
+        else
+            return mobileNums.matches(telRegex);
     }
 }

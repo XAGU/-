@@ -43,6 +43,8 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -102,10 +104,12 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                        getMvpView().onSuccess(R.string.login_success);
                        getMvpView().gotoMainView();
                      }else if(!result.getData().getResult() && result.getData().getRemaining() != null){
+                        Integer remain = result.getData().getRemaining();
                         //检查密码错误剩余次数
-                        if (1 == result.getData().getRemaining()) {
+                        if (1 == remain || 2 == remain) {
                             LoginActivity activity = (LoginActivity) getMvpView();
-                            getMvpView().showTipDialog(activity.getString(R.string.verify_password_only_one_titile),activity.getString(R.string.verify_password_tip));
+                            String title =activity.getResources().getString(R.string.verify_password_only_one_titile,remain);
+                            getMvpView().showTipDialog(title,activity.getString(R.string.verify_password_tip));
                         }
                      }else if(!result.getData().getResult() && result.getData().getProtectInMinutes() != null) {
                          //检查剩余分钟数
