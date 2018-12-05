@@ -452,7 +452,8 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                 if (null == result.getError()) {
                     userDataManager.saveDeviceCategory(result.getData().getDevices());
                     getMvpView().startShower(result.getData().getLocation()
-                            ,result.getData().getDefaultMacAddress() , result.getData().getDefaultSupplierId());
+                            ,result.getData().getDefaultMacAddress() , result.getData().getDefaultSupplierId()
+                            ,result.getData().getResidenceId());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

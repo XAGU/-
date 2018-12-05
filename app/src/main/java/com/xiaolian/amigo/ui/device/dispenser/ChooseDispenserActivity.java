@@ -42,6 +42,8 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_RESIDENCE_ID;
+
 /**
  * 附近饮水机页面
  *
@@ -313,6 +315,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                         favor)
                 .putExtra(DispenserActivity.INTENT_KEY_ID,
                         residenceId)
+                .putExtra(INTENT_KEY_RESIDENCE_ID , residenceId)
                 .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE,
                         usefor)
                 .putExtra(MainActivity.INTENT_KEY_LOCATION, location)
@@ -331,6 +334,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                         isFavor)
                 .putExtra(DispenserActivity.INTENT_KEY_ID,
                         residenceId)
+                .putExtra(INTENT_KEY_RESIDENCE_ID ,residenceId)
                 .putExtra(MainActivity.INTENT_KEY_LOCATION, location)
                 .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DRYER.getType())
                 .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo));

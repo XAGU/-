@@ -128,7 +128,7 @@ public class BleCountService extends Service {
         if (timer == null){
             Log.e(TAG, "onStartCommand: " );
 //            handleUploadTradSatistic(fileName);
-            timer = RxHelper.intervel(300, aLong ->
+            timer = RxHelper.intervel(60, aLong ->
                     handleUploadTradSatistic(fileName)
             );
         }
@@ -257,15 +257,16 @@ public class BleCountService extends Service {
                                                 int maxTime = item.getMaxTime();
 
 
-                                                avgTime = (count * avgTime + item.getAvgTime()) / (count + 1);
+                                                avgTime = (count * avgTime + itemsBean.getAvgTime()) / (count + 1);
                                                 count = count + 1 ;
                                                 item.setCount(count);
-                                                Log.e(TAG, "fromFilesToReqDto: >>>> count" + count );
-                                                Log.e(TAG, "fromFilesToReqDto: >>>>  avgTime" + avgTime );
                                                 item.setAvgTime(avgTime);
-                                                minTime = Math.min(minTime, item.getMinTime());
-                                                item.setAvgTime(minTime);
-                                                maxTime = Math.max(maxTime, item.getMaxTime());
+                                                minTime = Math.min(minTime, itemsBean.getMinTime());
+                                                Log.e(TAG, "fromFilesToReqDto:  nowMinTime " + minTime + "   oldMinTime :  "  + item.getMinTime()  );
+                                                item.setMinTime(minTime);
+                                                maxTime = Math.max(maxTime, itemsBean.getMaxTime());
+
+                                                Log.e(TAG, "fromFilesToReqDto:  nowMaxTime " + maxTime + "  oldMaxTime :  "  + item.getMaxTime()  );
                                                 item.setMaxTime(maxTime);
                                                 break;
                                             }

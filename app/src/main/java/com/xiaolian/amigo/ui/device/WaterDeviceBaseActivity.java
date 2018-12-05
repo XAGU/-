@@ -308,6 +308,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         setBleCallback(() -> {
             initView();
             presenter.setDeviceType(deviceType);
+            android.util.Log.e(TAG, "onCreate: " + residenceId );
             presenter.setResidenceId(residenceId);
             if (isScan){
                 presenter.onPreConnect(macAddress , true);

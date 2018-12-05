@@ -54,6 +54,7 @@ import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_R
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_LOCATION;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_MAC_ADDRESS;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_RESIDENCE_ID;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_SUPPLIER_ID;
 
 /**
@@ -573,11 +574,12 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     }
 
     @Override
-    public void startShower(String residenceName ,String macAddress , long supplierId ) {
+    public void startShower(String residenceName ,String macAddress , long supplierId , long residenceId ) {
         startActivity(new Intent(this , HeaterActivity.class)
                 .putExtra(INTENT_KEY_LOCATION ,residenceName)
                 .putExtra(INTENT_KEY_MAC_ADDRESS ,macAddress)
-                .putExtra(INTENT_KEY_SUPPLIER_ID , supplierId));
+                .putExtra(INTENT_KEY_SUPPLIER_ID , supplierId)
+                .putExtra(INTENT_KEY_RESIDENCE_ID ,residenceId));
         this.finish();
     }
 

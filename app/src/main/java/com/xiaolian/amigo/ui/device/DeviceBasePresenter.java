@@ -174,6 +174,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     public void setResidenceId(long residenceId) {
+        android.util.Log.e(TAG, "setResidenceId: " + residenceId );
         this.residenceId = residenceId;
     }
 
@@ -1790,15 +1791,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     StringBuffer recordString = new StringBuffer();
                     recordString.append("type")
                             .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                            .append(type.getContent())
+                            .append(type == null ? "null" : type.getContent())
                             .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
                             .append("target")
                             .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                            .append(target.getContent())
+                            .append(target == null ? "null" : target.getContent())
                             .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
                             .append("result")
                             .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                            .append(result.getContent())
+                            .append(result == null ? "null" : result.getContent())
                             .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
                             .append("time")
                             .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
