@@ -83,4 +83,8 @@ public class WithDrawExplainAlertDialog extends Dialog {
         void onOkClick(Dialog dialog);
     }
 
+    public void showObject(boolean show) {
+        object.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
 }

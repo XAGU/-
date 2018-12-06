@@ -4,21 +4,23 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="62dp"
         android:id="@+id/iv_third"
         android:layout_centerHorizontal="true"
         android:src="@drawable/bangdingzhi"
-        android:layout_width="300dp"
-        android:layout_height="300dp" />
+        android:layout_width="162dp"
+        android:layout_height="229dp" />
 
     <TextView
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="39dp"
         android:layout_below="@id/iv_third"
         android:id="@+id/tv_nickName"
-        android:textSize="@dimen/sp15"
+        android:textSize="14sp"
         android:gravity="center"
+        android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#222222"
         android:text="已绑定微信号："
        />
 
@@ -29,26 +31,34 @@
         android:layout_alignParentBottom="true" />
 
     <RelativeLayout
-        android:layout_above="@id/bottom"
         android:id="@+id/rel_unbind"
-        android:visibility="visible"
-        android:onClick="onclick"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:layout_above="@id/bottom"
+        android:layout_alignParentStart="true"
         android:gravity="center"
-        style="@style/ListItemRel">
-
+        android:onClick="onclick"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/imageView_apay"
-            style="@style/ListItemImage"
-            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:src="@drawable/arrow_right" />
 
         <TextView
             android:id="@+id/tv_apay_tip"
-            style="@style/ListItemSubText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageView_apay"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
             android:layout_toLeftOf="@id/imageView_apay"
+            android:gravity="center"
             android:text="解除绑定"
-            />
+            android:textColor="#999999"
+            android:textSize="@dimen/sp12" />
 
     </RelativeLayout>
 

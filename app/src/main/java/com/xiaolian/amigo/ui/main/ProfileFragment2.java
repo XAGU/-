@@ -290,10 +290,11 @@ public class ProfileFragment2 extends BaseFragment {
             presenter.getNoticeAmount();
             User user = presenter.getUserInfo();
             setAvatar(user.getPictureUrl());
+            android.util.Log.e(TAG, "initView: nickNmae =" + user.getNickName());
             if (tvNickName != null) {
-                android.util.Log.e(TAG, "initView: " + user.getNickName() );
-                if (!user.getNickName().equals(tvNickName.getText().toString()))
+                if( null != user.getNickName() && !user.getNickName().equals(tvNickName.getText().toString())){
                     tvNickName.setText(user.getNickName());
+                }
             }
 
             if (tvSchoolName != null)
@@ -308,6 +309,18 @@ public class ProfileFragment2 extends BaseFragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        User user = presenter.getUserInfo();
+        setAvatar(user.getPictureUrl());
+        if (tvNickName != null) {
+            if( null != user.getNickName() && !user.getNickName().equals(tvNickName.getText().toString())){
+                tvNickName.setText(user.getNickName());
+            }
+        }
+    }
 
     @Data
     public static class Event {

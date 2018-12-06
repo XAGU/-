@@ -60,6 +60,13 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     private int currentLoginType = -1;
 
     private static final int SDK_AUTH_FLAG = 2;
+
+    //记录第三方登录时候的状态，以便显示不同的标题
+    private final int THIRD_STATUS_LOGIN = 0;
+    private final int THIRD_STATUS_VERIFY_PHONE = 1;
+    private final int THIRD_STATUS_REGISTER = 2;
+
+    private int status = THIRD_STATUS_LOGIN;
     @Inject
     ILoginPresenter<ILoginView> presenter;
 //    @BindView(R.id.etMobile)
@@ -86,8 +93,6 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     ImageView wechat;
 
 
-
-
     LoginFragment loginFragment;
     RegisterStep1Fragment registerStep1Fragment;
     RegisterStep2Fragment registerStep2Fragment;
@@ -102,16 +107,6 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     private boolean isThirdLogin;
 
-    public boolean isChooseSchool() {
-        return chooseSchool;
-    }
-
-    public void setChooseSchool(boolean chooseSchool) {
-        this.chooseSchool = chooseSchool;
-    }
-
-    private boolean chooseSchool;
-
     @Override
     protected void setUp() {
 
@@ -120,7 +115,6 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(TAG, "onCreate: fdfjfdskf" );
         setContentView(R.layout.activity_login_registry_group);
 
         setUnBinder(ButterKnife.bind(this));
@@ -181,6 +175,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
             Log.e(TAG, "gotoRegisterStep1: set" );
             tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
             tvLogin.setText("绑定手机号");
+            status = THIRD_STATUS_VERIFY_PHONE;
         }else{
             tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextGray));
             tvRegistry.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
@@ -208,10 +203,25 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e(TAG, "onResume: loginActivity" );
+        if (status == THIRD_STATUS_VERIFY_PHONE ){
+            tvRegistry.setVisibility(View.GONE);
+            view.setVisibility(View.GONE);
+            tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
+            tvLogin.setText("绑定手机号");
+        }else if(status == THIRD_STATUS_REGISTER){
+            tvRegistry.setVisibility(View.GONE);
+            view.setVisibility(View.GONE);
+            tvLogin.setText("设置密码");
+            tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
+        }
     }
 
     @OnClick(R.id.tv_login)
     void gotoLogin() {
+
+        showThirdLoginView(true);
+
         if(isThirdLogin)
             return;
 
@@ -241,6 +251,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
             view.setVisibility(View.GONE);
             tvLogin.setText("设置密码");
             tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
+            status = THIRD_STATUS_REGISTER;
         }
 
         if (registerStep2Fragment == null) {
@@ -408,20 +419,32 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         availabilityDialog.show();
     }
 
+    //重写返回键逻辑
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (status != THIRD_STATUS_LOGIN || !loginFragment.isVisible()) {
+            super.onBackPressed();
+            status = THIRD_STATUS_LOGIN;
+            return;
+        }else{
+            Intent mIntent = new Intent();
+            mIntent.setAction(Intent.ACTION_MAIN);
+            mIntent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(mIntent);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EditProfileActivity.Event event) {
-        Log.e(TAG, "onEvent: ---login" );
         if (isLogined) return;
 
         switch (event.getType()){
             case WECHAT_CODE :
                 String weChatCode = (String)event.getMsg();
                 presenter.weChatLogin(weChatCode);
+                break;
+            case CANCEL_WECHAT_AUTH:
+                onError("已经退出微信授权");
                 break;
             default:
                 break;
@@ -442,10 +465,14 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         return isThirdLogin;
     }
 
+    public int getStatus(){
+        return status;
+    }
+
     @OnClick(R.id.bt_wechat)
     void weCharLogin(){
         if (!MvpApp.mWxApi.isWXAppInstalled()) {
-            Toast.makeText(getContext(),"weChat not installed",Toast.LENGTH_LONG);
+            onError("未安装微信，请安装");
             return;
         }
         weChatLogin();

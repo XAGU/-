@@ -1,7 +1,0 @@
-# ninja log v5
-0	95	0	CMakeFiles/algor.dir/src/main/cpp/src/des.c.o	e566c978685ddeb1
-0	99	0	CMakeFiles/algor.dir/src/main/cpp/src/trade_rule.c.o	15acc5b8eaa5a1f
-0	114	0	CMakeFiles/algor.dir/src/main/cpp/src/aes.c.o	1ce4f6bd53955ef9
-114	153	0	../../../../libs/arm64-v8a/libalgor.so	f023698e3a28c1d
-154	336	0	CMakeFiles/xiaolian-lib.dir/src/main/cpp/src/xiaolian-lib.cpp.o	3da0095ab19a2028
-336	408	0	../../../../libs/arm64-v8a/libxiaolian-lib.so	4fb5e93c7ce27486

@@ -69,6 +69,15 @@ public class LoginFragment extends Fragment {
 
     @OnClick(R.id.bt_submit)
     void login() {
+        if (!isMobileNO(etMobile.getText().toString())){
+            ((LoginActivity) getActivity()).onError("手机号不合法");
+            return;
+        }
+        if (etUserpwd.getText().toString().trim().length() == 0){
+            ((LoginActivity) getActivity()).onError("请输入登录密码");
+            return;
+        }
+
         if (getActivity() instanceof LoginActivity) {
             ((LoginActivity) getActivity()).login(etMobile.getText().toString(), etUserpwd.getText().toString());
         }
@@ -114,7 +123,8 @@ public class LoginFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (etMobile.length() >= MOBILE_LENGTH && etUserpwd.length() >= PASSWORD_MIN_LENGTH) {
+           // if (etMobile.length() >= MOBILE_LENGTH && etUserpwd.length() >= PASSWORD_MIN_LENGTH) {
+            if (etMobile.getText().toString().trim().length() > 0) {
                 btSubmit.setEnabled(true);
             } else {
                 btSubmit.setEnabled(false);
@@ -125,9 +135,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         ((LoginActivity) getActivity()).showThirdLoginView(true);
 
-        if (!((LoginActivity)getActivity()).isChooseSchool()) {
+        if (((LoginActivity)getActivity()).getStatus() == 0) {
             ((LoginActivity) getActivity()).setThirdLogin(false);
             ((LoginActivity) getActivity()).showLoginAndRegister();
         }
@@ -147,5 +158,13 @@ public class LoginFragment extends Fragment {
                 }
             }
         }
+    }
+
+    private  boolean isMobileNO(String mobileNums) {
+        String telRegex = "^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$";
+        if (TextUtils.isEmpty(mobileNums))
+            return false;
+        else
+            return mobileNums.matches(telRegex);
     }
 }

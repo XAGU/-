@@ -7,6 +7,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordView;
 import com.xiaolian.amigo.ui.widget.ClearableEditText;
+import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.ViewUtil;
 
@@ -39,6 +40,8 @@ public class EditPasswordActivity extends UserBaseActivity implements IEditPassw
 
     @BindView(R.id.et_new_password_again)
     ClearableEditText etNewPasswordAgain;
+
+    AvailabilityDialog availabilityDialog;
 
     @OnClick(R.id.bt_submit)
     void onSubmitClick() {
@@ -97,5 +100,23 @@ public class EditPasswordActivity extends UserBaseActivity implements IEditPassw
     @Override
     public void finishView() {
         finish();
+    }
+
+    @Override
+    public void showTipDialog(String title,String content) {
+        if (null == availabilityDialog) {
+            availabilityDialog = new AvailabilityDialog(this);
+        }
+        if (availabilityDialog.isShowing()) {
+            return;
+        }
+        availabilityDialog.setCancelVisible(false);
+        availabilityDialog.setOkText(getString(R.string.confirm));
+        availabilityDialog.setTitle(title);
+        availabilityDialog.setTip(content);
+        availabilityDialog.setOnOkClickListener(dialog1 -> {
+
+        });
+        availabilityDialog.show();
     }
 }

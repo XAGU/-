@@ -247,7 +247,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan|stateVisible" />
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
         <!-- 热水器设备页 -->
         <activity

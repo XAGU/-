@@ -20,7 +20,7 @@ public final class Constant {
     /**
      * 验证码时间
      */
-    public static final int VERIFY_CODE_TIME = 30;
+    public static final int VERIFY_CODE_TIME = 60;
     /**
      * 温馨提示最大提醒次数
      */

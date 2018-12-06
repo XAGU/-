@@ -164,6 +164,4 @@ public class PasswordVerifyActivity extends UserBaseActivity implements IPasswor
         }
         this.finish();
     }
-
-
 }

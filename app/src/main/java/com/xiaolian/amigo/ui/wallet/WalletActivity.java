@@ -8,6 +8,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -273,6 +274,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
 
     @Override
     public void startWithDraw(WithdrawExplanationRespDTO data , int status) {
+        Log.e(TAG, "startWithDraw: data ------" + data.toString() );
 
         Intent intent = new Intent(this ,WithDrawActivity.class);
         intent.putExtra(KEY_WITHDRAW_DATA  ,data);

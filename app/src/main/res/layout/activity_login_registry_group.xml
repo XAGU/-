@@ -13,6 +13,7 @@
         android:paddingTop="14dp"
         android:paddingBottom="24dp"
         android:id="@+id/iv_back"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/close" />
@@ -20,6 +21,7 @@
 
     <LinearLayout
         android:paddingLeft="21dp"
+        android:layout_marginTop="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="21dp"
@@ -75,7 +77,7 @@
         android:paddingLeft="21dp"
         android:layout_width="match_parent"
         android:gravity="bottom"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="42dp"
         android:layout_height="100dp">
 
         <LinearLayout
@@ -100,8 +102,9 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textColor="#BBBBBB"
                 android:text="第三方登录"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <View
                 android:layout_width="0dp"
@@ -114,7 +117,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="21dp"
             android:layout_below="@+id/ll_third"
             android:layout_width="match_parent"
             android:orientation="horizontal"
@@ -123,16 +126,16 @@
             <ImageView
                 android:id="@+id/bt_apay_login"
                 android:layout_weight="1"
-                android:layout_width="48dp"
+                android:layout_width="40dp"
                 android:src="@drawable/zhifubao"
-                android:layout_height="48dp" />
+                android:layout_height="40dp" />
 
             <ImageView
                 android:id="@+id/bt_wechat"
                 android:layout_weight="1"
-                android:layout_width="48dp"
+                android:layout_width="40dp"
                 android:src="@drawable/weixin"
-                android:layout_height="48dp" />
+                android:layout_height="40dp" />
 
         </LinearLayout>
 

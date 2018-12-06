@@ -245,6 +245,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
             public void onReady(ApiResult<WithdrawExplanationRespDTO> result) {
                 if (result.getError() == null){
                     if (result.getData().isSetExplanation()) {
+                        android.util.Log.e(TAG, "onReady: recharge ="  + result.getData().toString() );
                         getMvpView().showWithDrawDialog(result.getData());
                     }
                 }else{

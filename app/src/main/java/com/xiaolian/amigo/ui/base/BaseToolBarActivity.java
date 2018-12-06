@@ -15,10 +15,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.XLScrollView;
 import com.xiaolian.amigo.util.DensityUtil;
 import com.xiaolian.amigo.util.Log;
 
 import me.everything.android.ui.overscroll.IOverScrollDecor;
+import me.everything.android.ui.overscroll.IOverScrollState;
 import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
@@ -33,9 +35,10 @@ public abstract class BaseToolBarActivity extends BaseActivity {
 
     private TextView tvToolbarTitle,tvTitle;
     private LinearLayout llMainContent;
-    private ScrollView svMainContainer;
+    private XLScrollView svMainContainer;
     private RelativeLayout rlToolBar;
     private View viewLine;
+    private boolean showTile = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +55,20 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         initInject();
         initView();
 
-        iOverScrollDecor.setOverScrollUpdateListener((decor, state, offset) -> {
+        svMainContainer.setOnScrollListener((scrollY -> {
+            if (scrollY > (tvToolbarTitle.getHeight()) + tvToolbarTitle.getPaddingTop()) {
+                setTitleVisiable(View.VISIBLE);
+                showTile = true;
+            } else {
+                setTitleVisiable(View.GONE);
+                showTile = false;
+            }
+
+        }));
+
+       iOverScrollDecor.setOverScrollUpdateListener((decor, state, offset) -> {
+            if (showTile)
+                return;
             if (offset < -(tvToolbarTitle.getHeight()) + tvToolbarTitle.getPaddingTop()) {
                 setTitleVisiable(View.VISIBLE);
             } else {

@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.util.Log;
+
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.funds.PersonalWalletDTO;
@@ -137,7 +139,7 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<WithdrawExplanationRespDTO> result) {
                 if (result.getError() == null){
-                        if (result.getData().isMatch() || result.getData().isAll()){
+                        if (result.getData().isMatch()){
                             getMvpView().gotoWithDraw();
                         }else{
                             getMvpView().startWithDraw(result.getData() , getUserCertificationStatus());

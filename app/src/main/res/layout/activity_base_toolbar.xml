@@ -5,7 +5,7 @@
     xmlns:tool="http://schemas.android.com/tools"
     android:background="@color/colorBackgroundGray">
 
-    <ScrollView xmlns:tool="http://schemas.android.com/tools"
+    <com.xiaolian.amigo.ui.XLScrollView xmlns:tool="http://schemas.android.com/tools"
         android:id="@+id/sv_main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -56,7 +56,7 @@
                 android:orientation="vertical" />
         </LinearLayout>
 
-    </ScrollView>
+    </com.xiaolian.amigo.ui.XLScrollView>
 
     <RelativeLayout
         android:id="@+id/rl_toolbar"

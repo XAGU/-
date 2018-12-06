@@ -194,8 +194,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             MobclickAgent.enableEncrypt(true);
             MobclickAgent.setCatchUncaughtExceptions(true);
             if (presenter.isLogin()) {
+                android.util.Log.e(TAG, "onCreate: "  );
                 presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                         AppUtils.getVersionName(this));
+                uploadDeviceInfo();
             }
             if (fragments == null)
             fragments = new Fragment[3];
@@ -519,6 +521,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         super.onNewIntent(intent);
         setIntent(intent);
         if (presenter.isLogin()) {
+            android.util.Log.e(TAG, "onNewIntent: " );
             presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                     AppUtils.getVersionName(this));
             uploadDeviceInfo();
