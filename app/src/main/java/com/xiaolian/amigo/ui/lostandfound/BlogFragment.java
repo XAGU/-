@@ -236,7 +236,6 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     protected void initView() {
         android.util.Log.e(TAG, "initView: " );
         if ((mPotsData== null || mPotsData.size() == 0 )&& (mHotPotsData == null || mHotPotsData.size() ==0)) {
-            android.util.Log.e(TAG, "initView: " );
             requestNet();
         }
     }

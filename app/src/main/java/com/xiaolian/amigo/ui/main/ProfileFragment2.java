@@ -286,11 +286,9 @@ public class ProfileFragment2 extends BaseFragment {
         android.util.Log.e(TAG, "initView: "  + (presenter == null));
         if (presenter == null) return;
         if (presenter.isLogin()) {
-            Log.e(TAG ,"profileFragment2>>>>>>>>  initView");
             presenter.getNoticeAmount();
             User user = presenter.getUserInfo();
             setAvatar(user.getPictureUrl());
-            android.util.Log.e(TAG, "initView: nickNmae =" + user.getNickName());
             if (tvNickName != null) {
                 if( null != user.getNickName() && !user.getNickName().equals(tvNickName.getText().toString())){
                     tvNickName.setText(user.getNickName());
@@ -300,7 +298,6 @@ public class ProfileFragment2 extends BaseFragment {
             if (tvSchoolName != null)
                 tvSchoolName.setVisibility(View.GONE);
         } else {
-            android.util.Log.e(TAG, "initView:   未登录>>>>>>" + presenter.isLogin()  );
             setAvatar("");
             if (tvNickName != null)
                 tvNickName.setText("登录/注册");

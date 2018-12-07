@@ -26,6 +26,7 @@ import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.MD5Util;
+import com.xiaolian.amigo.util.SoftInputUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -215,6 +216,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
             tvLogin.setText("设置密码");
             tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
         }
+
     }
 
     @OnClick(R.id.tv_login)
@@ -452,6 +454,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     }
 
+
     public void showThirdLoginView(boolean enable){
             thirdLogin.setVisibility(enable ? View.VISIBLE : View.GONE);
     }
@@ -471,11 +474,17 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     @OnClick(R.id.bt_wechat)
     void weCharLogin(){
+        if (loginFragment != null) {
+            if (loginFragment.etMobile != null) SoftInputUtils.hideSoftInputFromWindow(this ,loginFragment.etMobile);
+            if (loginFragment.etUserpwd != null) SoftInputUtils.hideSoftInputFromWindow(this ,loginFragment.etUserpwd);
+        }
+
         if (!MvpApp.mWxApi.isWXAppInstalled()) {
             onError("未安装微信，请安装");
             return;
         }
         weChatLogin();
+
     }
 
     @OnClick(R.id.bt_apay_login)

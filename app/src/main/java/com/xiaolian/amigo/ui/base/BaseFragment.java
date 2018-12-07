@@ -117,6 +117,13 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
 
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        // 经验证 没有用
+        android.util.Log.e(TAG, "setUserVisibleHint: " + isVisibleToUser );
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden());

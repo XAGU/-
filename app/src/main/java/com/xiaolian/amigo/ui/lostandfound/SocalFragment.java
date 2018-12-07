@@ -370,7 +370,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         android.util.Log.e(TAG, "initView: "  );
         if (mSocialTagDatas == null || mSocialTagDatas.size() == 0) presenter.getTopicList();
          if (null != mainPresenter) {
-             Log.e(TAG ,"SocalFragment>>>>>>>>  initView");
              mainPresenter.getNoticeAmount();
          }
         presenter.getLostList("", 1, "", 0);
