@@ -554,6 +554,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                 return;
                             }
 
+                            /**
+                             * notify成功，就表明物理连接成功，取消倒计时,还未做处理
+                             */
+
                             afterBleConnected();
                             bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                                     UUID.fromString(supplier.getWriteUuid()), data -> {
@@ -714,8 +718,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                         handleDisConnectError("好年华设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
 //                                        uploadLog();
                                         recordUseNumber(Type.CONNECT , Target.DEVICE,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+
                                         return;
                                     }
+
+                                    /**
+                                     * 设置notify成功，就已经表明物理连接上了,取消定时器，还未做处理
+                                     */
 
                                     bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                                             characteristic.getUuid(), data -> {
@@ -881,8 +890,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 网络请求获取下发费率指令，若存在则直接先对设备进行费率更新
     @Override
     public void onUpdateDeviceRate(@Nullable String macAddress) {
+        serviceTimeStamps = System.currentTimeMillis() ;
         UpdateDeviceRateCommandReqDTO reqDTO = new UpdateDeviceRateCommandReqDTO();
         reqDTO.setMacAddress(macAddress);
+        android.util.Log.e(TAG, "onUpdateDeviceRate: " );
         addObserver(deviceDataManager.getUpdateDeviceRateCommand(reqDTO), new NetworkObserver<ApiResult<UpdateDeviceRateCommandRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<UpdateDeviceRateCommandRespDTO> result) {
@@ -891,10 +902,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     if (!TextUtils.isEmpty(updateDeviceRateCmd)) /*指令存在，需要进行费率更新*/{
                         writeLogFile("onUpdateDeviceRate" , "macAddress："+ macAddress ,"指令存在，需要进行费率更新");
                         onWrite(updateDeviceRateCmd);
+
                     } else /*指令不存在，直接进行预支付开阀使用*/{
                         getMvpView().realPay();
                         writeLogFile("onUpdateDeviceRate" , "macAddress："+ macAddress ,"指令不存在，直接进行预支付开阀使用");
                     }
+                    recordUseNumber(Type.UPDATE_RATE ,Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                }else{
+                    recordUseNumber(Type.UPDATE_RATE ,Target.SERVER ,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                 }
             }
 
@@ -904,6 +919,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 //异常情况处理，容错处理，进行握手
                 writeLogFile("onUpdateDeviceRate" , "macAddress："+ macAddress ,"异常情况处理，容错处理，进行握手");
                 getMvpView().realPay();
+                recordUseNumber(Type.UPDATE_RATE ,Target.SERVER ,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
             }
         }, Schedulers.io());
     }
@@ -924,7 +940,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             && result.getData().getDeviceToken() != null) {
                         deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                         Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
-                        recordUseNumber(Type.SHAKE_HANDS_DEVICE , Target.SERVER,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                        recordUseNumber(Type.SHAKE_HANDS , Target.SERVER,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                     }
                     synchronized (connectCmdLock) {
                         connectCmd = result.getData().getConnectCmd();
@@ -947,7 +963,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         }
                     }
 
-                    recordUseNumber(Type.SHAKE_HANDS_DEVICE , Target.SERVER,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                    recordUseNumber(Type.SHAKE_HANDS , Target.SERVER,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
 //                    uploadLog();
                 }
             }
@@ -962,7 +978,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 }
 //                uploadLog();
 
-                recordUseNumber(Type.SHAKE_HANDS_DEVICE , Target.SERVER,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                recordUseNumber(Type.SHAKE_HANDS , Target.SERVER,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
             }
         }, Schedulers.io());
     }
@@ -1024,7 +1040,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         try{
             String prefix = result.substring(0 , 4);
             if (TextUtils.equals(Command.CONNECT.getRespPrefix() , prefix)){
-                type = Type.CONNECT ;
+                type = Type.SHAKE_HANDS ;
             }else if (TextUtils.equals(Command.PRE_CHECK.getRespPrefix() ,prefix)){
                 type = Type.PRE_CHECK ;
             }else if (TextUtils.equals(Command.CHECK_OUT.getRespPrefix() ,prefix)){
@@ -1075,8 +1091,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
 //            uploadLog();
         }
-
-        Log.wtf(TAG , "processCommandResult>>>>>" + result  + "   " + deviceNo);
         serviceTimeStamps = System.currentTimeMillis() ;
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
@@ -1093,7 +1107,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 writeLogFile("processCommandResult" ,"result : "  + result   ,"通知主线程更新数据 ：" +  result1.getData()   );
                 Log.i(TAG, "通知主线程更新数据。" + result1.getData());
                 handleResult(result1);
+//                recordUseNumber(type, Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() , serviceTimeStamps));
             }
+
 
             @Override
             public void onError(Throwable e) {
@@ -1136,7 +1152,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 case CONNECT:
                     // 如果用户本人在三小时之内再次连接该设备，需要进入第二步账单结算页面
                     // 表明用户是正在使用状态
-                    recordUseNumber(Type.SHAKE_HANDS_DEVICE,Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                    recordUseNumber(Type.SHAKE_HANDS,Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                     if (!reconnect && null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {
                         // 记录预结账指令，此时阀门已经被长按关闭，但是订单没有被其它用户带回
                         Log.i(TAG, "用户在该设备上存在未结账订单，直接跳转至结算页面，获取到预结账指令。command:" + nextCommand);
@@ -1731,7 +1747,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
                     if (TextUtils.isEmpty(name) || TextUtils.isEmpty(content)) return ;
                     File file = new File(timeStampsFileDirName ,name);
-                    Log.e(TAG ,  "文件名>>>>>>>>>>" + file.getAbsolutePath());
                     try{
                         if (!file.exists()){
                             file.createNewFile();

@@ -620,7 +620,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         super.onResume();
         FragmentInit();
 
-
     }
 
     /**
@@ -635,6 +634,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             // 注册信鸽推送
             registerXGPush();
             presenter.noticeCount();
+            presenter.getSchoolBusiness();
+            presenter.getNoticeAmount();
             presenter.deleteFile();
             startBleCountService();
         }

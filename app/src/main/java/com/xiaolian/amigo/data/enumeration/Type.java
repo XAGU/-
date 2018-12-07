@@ -17,7 +17,7 @@ public enum Type {
     /**
      * 握手
      */
-    SHAKE_HANDS_DEVICE(3 , "SHAKE_HANDS_DEVICE"),
+    SHAKE_HANDS(3 , "SHAKE_HANDS"),
     /**
      * 开阀
      */

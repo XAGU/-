@@ -183,10 +183,12 @@ public class BleCountService extends Service {
                                         if (uploadFile.size() > 0){
                                             for (File file : uploadFile){
                                                     boolean b = file.delete();
-                                                    if (b) {
-                                                        uploadFile.remove(file);
-                                                        Log.e(TAG, "onDelete: " + file.getName() );
-                                                    }
+
+                                                // TODO: 2018/12/7  测试先不删 
+//                                                    if (b) {
+//                                                        uploadFile.remove(file);
+//                                                        Log.e(TAG, "onDelete: " + file.getName() );
+//                                                    }
                                             }
                                         }
                                     }

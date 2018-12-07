@@ -634,7 +634,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     @Override
     public void noticeCount() {
         addObserver(userDataManager.noticeCount(),
-                new NetworkObserver<ApiResult<NoticeCountDTO>>(false) {
+                new NetworkObserver<ApiResult<NoticeCountDTO>>(false , true) {
 
 
                     @Override
