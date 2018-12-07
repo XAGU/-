@@ -82,13 +82,12 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
 
     private LoadingDialog mProgressDialog;
 
-
     private Unbinder mUnBinder;
 
     ActionSheetDialog actionSheetDialog;
     // 申请蓝牙访问权限后的回调
     private BaseActivity.Callback blePermissonCallback;
-
+    
     @Inject
     ISharedPreferencesHelp sharedPreferencesHelp;
     private Toast toast;
