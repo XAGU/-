@@ -1,4 +1,0 @@
-/Users/max/android_amigo/encrypt/.externalNativeBuild/cmake/debug/x86/CMakeFiles/edit_cache.dir
-/Users/max/android_amigo/encrypt/.externalNativeBuild/cmake/debug/x86/CMakeFiles/rebuild_cache.dir
-/Users/max/android_amigo/encrypt/.externalNativeBuild/cmake/debug/x86/CMakeFiles/algor.dir
-/Users/max/android_amigo/encrypt/.externalNativeBuild/cmake/debug/x86/CMakeFiles/xiaolian-lib.dir

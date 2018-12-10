@@ -1542,7 +1542,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     // 向设备下发开阀指令
                     openCmd = result.getData().getOpenValveCommand();
                     Log.i(TAG, "开始下发开阀指令。command>>>>>>>>" + openCmd);
-                    
+
                     onWrite(openCmd);
 
                     writeLogFile("pay" ,"prepay:  " + prepay   +",bonusId :" +bonusId  +",deviceNo:"  + deviceNo,"支付创建订单成功。orderId：" + orderId  +",\"开始下发开阀指令。command：\" + openCmd");
