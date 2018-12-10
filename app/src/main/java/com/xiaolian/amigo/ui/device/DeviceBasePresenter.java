@@ -1518,6 +1518,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             return;
         }
 
+        serviceTimeStamps = System.currentTimeMillis() ;
         PayReqDTO reqDTO = new PayReqDTO();
         reqDTO.setMacAddress(deviceNo);
         reqDTO.setBonusId(bonusId);
@@ -1541,18 +1542,18 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     // 向设备下发开阀指令
                     openCmd = result.getData().getOpenValveCommand();
                     Log.i(TAG, "开始下发开阀指令。command>>>>>>>>" + openCmd);
-
-
+                    
+                    onWrite(openCmd);
 
                     writeLogFile("pay" ,"prepay:  " + prepay   +",bonusId :" +bonusId  +",deviceNo:"  + deviceNo,"支付创建订单成功。orderId：" + orderId  +",\"开始下发开阀指令。command：\" + openCmd");
-                    onWrite(openCmd);
+                    recordUseNumber(Type.OPEN ,Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                 } else {
                     Log.wtf(TAG, "支付创建订单失败。");
                     if (getMvpView() != null) {
                         getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
                     }
                     writeLogFile("pay" ,"prepay:  " + prepay   +",bonusId :" +bonusId  +",deviceNo:"  + deviceNo,"支付创建订单失败：" + result.getError().getDebugMessage());
-//                    uploadLog();
+                    recordUseNumber(Type.OPEN ,Target.SERVER ,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                 }
             }
 
@@ -1564,7 +1565,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 }
 
                 writeLogFile("pay" ,"prepay:  " + prepay   +",bonusId :" +bonusId  +",deviceNo:"  + deviceNo,"支付创建订单失败：" + e.getMessage());
-//                uploadLog();
+                recordUseNumber(Type.OPEN ,Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
             }
         }, Schedulers.io());
     }

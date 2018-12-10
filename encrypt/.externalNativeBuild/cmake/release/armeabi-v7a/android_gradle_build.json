@@ -1,0 +1,69 @@
+
+{
+	"buildFiles" : [ "/Users/max/android_amigo/encrypt/CMakeLists.txt" ],
+	"cFileExtensions" : [ "c" ],
+	"cleanCommands" : 
+	[
+		"/Users/max/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/max/android_amigo/encrypt/.externalNativeBuild/cmake/release/armeabi-v7a --target clean"
+	],
+	"cppFileExtensions" : [ "cpp" ],
+	"libraries" : 
+	{
+		"algor-Release-armeabi-v7a" : 
+		{
+			"abi" : "armeabi-v7a",
+			"artifactName" : "algor",
+			"buildCommand" : "/Users/max/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/max/android_amigo/encrypt/.externalNativeBuild/cmake/release/armeabi-v7a --target algor",
+			"buildType" : "release",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=armv7-none-linux-androideabi --gcc-toolchain=/Users/max/Library/Android/sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/max/Library/Android/sdk/ndk-bundle/sysroot -Dalgor_EXPORTS -I../../../../src/main/cpp/include  -isystem /Users/max/Library/Android/sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=18 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG  -fPIC      -c ",
+					"src" : "/Users/max/android_amigo/encrypt/src/main/cpp/src/aes.c",
+					"workingDirectory" : "/Users/max/android_amigo/encrypt/.externalNativeBuild/cmake/release/armeabi-v7a"
+				},
+				
+				{
+					"flags" : "  --target=armv7-none-linux-androideabi --gcc-toolchain=/Users/max/Library/Android/sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/max/Library/Android/sdk/ndk-bundle/sysroot -Dalgor_EXPORTS -I../../../../src/main/cpp/include  -isystem /Users/max/Library/Android/sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=18 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG  -fPIC      -c ",
+					"src" : "/Users/max/android_amigo/encrypt/src/main/cpp/src/des.c",
+					"workingDirectory" : "/Users/max/android_amigo/encrypt/.externalNativeBuild/cmake/release/armeabi-v7a"
+				},
+				
+				{
+					"flags" : "  --target=armv7-none-linux-androideabi --gcc-toolchain=/Users/max/Library/Android/sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/max/Library/Android/sdk/ndk-bundle/sysroot -Dalgor_EXPORTS -I../../../../src/main/cpp/include  -isystem /Users/max/Library/Android/sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=18 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security  -Os -DNDEBUG  -fPIC      -c ",
+					"src" : "/Users/max/android_amigo/encrypt/src/main/cpp/src/trade_rule.c",
+					"workingDirectory" : "/Users/max/android_amigo/encrypt/.externalNativeBuild/cmake/release/armeabi-v7a"
+				}
+			],
+			"output" : "/Users/max/android_amigo/encrypt/libs/armeabi-v7a/libalgor.so",
+			"toolchain" : "16302222775034258047"
+		},
+		"xiaolian-lib-Release-armeabi-v7a" : 
+		{
+			"abi" : "armeabi-v7a",
+			"artifactName" : "xiaolian-lib",
+			"buildCommand" : "/Users/max/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/max/android_amigo/encrypt/.externalNativeBuild/cmake/release/armeabi-v7a --target xiaolian-lib",
+			"buildType" : "release",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=armv7-none-linux-androideabi --gcc-toolchain=/Users/max/Library/Android/sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/max/Library/Android/sdk/ndk-bundle/sysroot  -Dxiaolian_lib_EXPORTS -I../../../../src/main/cpp/include -isystem /Users/max/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /Users/max/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include -isystem /Users/max/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -isystem /Users/max/Library/Android/sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=18 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security   -Os -DNDEBUG  -fPIC    -c ",
+					"src" : "/Users/max/android_amigo/encrypt/src/main/cpp/src/xiaolian-lib.cpp",
+					"workingDirectory" : "/Users/max/android_amigo/encrypt/.externalNativeBuild/cmake/release/armeabi-v7a"
+				}
+			],
+			"output" : "/Users/max/android_amigo/encrypt/libs/armeabi-v7a/libxiaolian-lib.so",
+			"toolchain" : "16302222775034258047"
+		}
+	},
+	"toolchains" : 
+	{
+		"16302222775034258047" : 
+		{
+			"cCompilerExecutable" : "/Users/max/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+			"cppCompilerExecutable" : "/Users/max/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+		}
+	}
+}
