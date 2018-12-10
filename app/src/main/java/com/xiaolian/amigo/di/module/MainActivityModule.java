@@ -22,9 +22,9 @@ import com.xiaolian.amigo.data.manager.MainDataManager;
 import com.xiaolian.amigo.data.manager.UserDataManager;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
-import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
-import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
+import com.xiaolian.amigo.data.network.IDeviceConnectErrorApi;
 import com.xiaolian.amigo.di.MainActivityContext;
+import com.xiaolian.amigo.di.UserServer;
 import com.xiaolian.amigo.ui.main.MainPresenter;
 import com.xiaolian.amigo.ui.main.SplashPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
@@ -34,6 +34,7 @@ import com.xiaolian.amigo.ui.main.intf.ISplashView;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit2.Retrofit;
 
 @Module
 public class MainActivityModule {
@@ -42,6 +43,10 @@ public class MainActivityModule {
 
     public MainActivityModule(AppCompatActivity activity) {
         this.mActivity = activity;
+    }
+
+    public MainActivityModule(){
+
     }
 
     @Provides
@@ -75,6 +80,11 @@ public class MainActivityModule {
 
     @Provides
     IUserDataManager provideUserDataManager(UserDataManager manager){return manager;}
+
+    @Provides
+    IDeviceConnectErrorApi provideDeviceConnectErrorApi(@UserServer Retrofit retrofit){
+        return retrofit.create(IDeviceConnectErrorApi.class);
+    }
 
 
 

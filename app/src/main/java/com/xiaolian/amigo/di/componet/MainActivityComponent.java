@@ -22,6 +22,7 @@ import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.main.HomeFragment2;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.main.SplashActivity;
+import com.xiaolian.amigo.ui.service.BleCountService;
 
 import dagger.Component;
 
@@ -37,6 +38,8 @@ public interface MainActivityComponent {
     void inject(HomeFragment2 fragment2);
 
     void inject(WebActivity activity);
+
+    void inject(BleCountService service);
 
 
 }

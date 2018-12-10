@@ -12,12 +12,15 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.network.IDeviceConnectErrorApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.connecterror.AppTradeStatisticDataReqDTO;
 import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
+import com.xiaolian.amigo.di.componet.DaggerMainActivityComponent;
+import com.xiaolian.amigo.di.module.MainActivityModule;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Constant;
@@ -30,6 +33,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -66,9 +71,8 @@ public class BleCountService extends Service {
 
     private String fileName  =  Environment.getExternalStorageDirectory().getAbsolutePath() +"/xiaolian/"+COUNT_NAME;
 
-    private SharedPreferencesHelp sharedPreferencesHelp ;
-
-    private IDeviceConnectErrorApi deviceConnectErrorApi ;
+     @Inject
+     IDeviceConnectErrorApi deviceConnectErrorApi ;
 
     @Nullable
     @Override
@@ -79,56 +83,23 @@ public class BleCountService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        initRequestVariable();
+        init();
     }
 
-    /**
-     * 初始化网络请求变量
-     */
-    private void initRequestVariable() {
-        //  优化   使用dagger2
-        if (sharedPreferencesHelp == null){
-            Gson gson = new Gson() ;
-            sharedPreferencesHelp = new SharedPreferencesHelp(this ,gson);
-        }
-
-        if (deviceConnectErrorApi == null){
-            LogInterceptor logInterceptor = new LogInterceptor(sharedPreferencesHelp);
-            Retrofit retrofit = provideRetrofit(logInterceptor);
-            deviceConnectErrorApi = retrofit.create(IDeviceConnectErrorApi.class);
-        }
+    private void init(){
+        DaggerMainActivityComponent.builder()
+                .mainActivityModule(new MainActivityModule())
+                .applicationComponent(((MvpApp) getApplication()).getComponent())
+                .build().inject(this);
     }
 
-
-    /**
-     * 获取
-     * @param logInterceptor
-     * @return
-     */
-    Retrofit provideRetrofit(LogInterceptor logInterceptor) {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .addInterceptor(logInterceptor)
-                .connectTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                .writeTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                .readTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-                .addNetworkInterceptor(new HttpLoggingInterceptor())
-                .build();
-        return new Retrofit.Builder()
-                .baseUrl(Constant.SERVER)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(client)
-                .build();
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        initRequestVariable();
         Log.e(TAG, "onStartCommand: " );
         if (timer == null){
             Log.e(TAG, "onStartCommand: " );
-//            handleUploadTradSatistic(fileName);
-            timer = RxHelper.intervel(300, aLong ->
+            timer = RxHelper.intervel(60, aLong ->
                     handleUploadTradSatistic(fileName)
             );
         }
@@ -183,7 +154,6 @@ public class BleCountService extends Service {
                                         if (uploadFile.size() > 0){
                                             for (File file : uploadFile){
                                                     boolean b = file.delete();
-
                                                     if (b) {
                                                         uploadFile.remove(file);
                                                         Log.e(TAG, "onDelete: " + file.getName() );
