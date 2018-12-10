@@ -128,7 +128,7 @@ public class BleCountService extends Service {
         if (timer == null){
             Log.e(TAG, "onStartCommand: " );
 //            handleUploadTradSatistic(fileName);
-            timer = RxHelper.intervel(60, aLong ->
+            timer = RxHelper.intervel(300, aLong ->
                     handleUploadTradSatistic(fileName)
             );
         }
@@ -184,11 +184,10 @@ public class BleCountService extends Service {
                                             for (File file : uploadFile){
                                                     boolean b = file.delete();
 
-                                                // TODO: 2018/12/7  测试先不删 
-//                                                    if (b) {
-//                                                        uploadFile.remove(file);
-//                                                        Log.e(TAG, "onDelete: " + file.getName() );
-//                                                    }
+                                                    if (b) {
+                                                        uploadFile.remove(file);
+                                                        Log.e(TAG, "onDelete: " + file.getName() );
+                                                    }
                                             }
                                         }
                                     }
