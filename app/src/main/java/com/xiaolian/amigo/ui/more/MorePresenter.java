@@ -58,10 +58,16 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
 
             @Override
             public void onReady(ApiResult<Void> voidApiResult) {
+                moreDataManager.logout();
+            }
 
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                moreDataManager.logout();
             }
         });
-        moreDataManager.logout();
+
         getMvpView().onSuccess("退出登录成功");
         getMvpView().backToMain();
         getMvpView().redirectToLogin();
