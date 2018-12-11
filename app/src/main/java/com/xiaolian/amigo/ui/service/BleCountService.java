@@ -99,7 +99,7 @@ public class BleCountService extends Service {
         Log.e(TAG, "onStartCommand: " );
         if (timer == null){
             Log.e(TAG, "onStartCommand: " );
-            timer = RxHelper.intervel(60, aLong ->
+            timer = RxHelper.intervel(300, aLong ->
                     handleUploadTradSatistic(fileName)
             );
         }
@@ -389,9 +389,11 @@ public class BleCountService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (timer != null){
+        if (timer != null && !timer.isUnsubscribed()){
             timer.unsubscribe();
         }
+
+        timer = null ;
     }
 
 
