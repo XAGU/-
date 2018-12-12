@@ -235,7 +235,7 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
 
     @Override
     public void repairSuccess() {
-        if (credits == null) /*没有积分，只显示成功*/{
+        if (credits == null ||  credits == -1) /*没有积分，只显示成功*/{
             onSuccess("评价成功");
         } else {
             String message = "评价完成，已获得" + credits.toString() + "积分";
