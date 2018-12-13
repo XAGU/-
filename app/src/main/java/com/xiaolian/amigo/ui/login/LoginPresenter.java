@@ -155,6 +155,8 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<LoginRespDTO> result) {
                 if (null == result.getError()) {
+                    loginDataManager.setAccessToken(result.getData().getAccessToken());
+                    loginDataManager.setRefreshToken(result.getData().getRefreshToken());
                     loginDataManager.setUserInfo(result.getData().getUser().transform());
                     getMvpView().onSuccess(R.string.register_success);
                     loginDataManager.setRememberMobile(mobile);

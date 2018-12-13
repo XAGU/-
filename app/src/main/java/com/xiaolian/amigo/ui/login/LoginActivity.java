@@ -302,6 +302,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         isLogined = true;
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        this.finish();
     }
 
     public void sendVerificationCode(String mobile) {

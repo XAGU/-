@@ -55,7 +55,6 @@ public class RegisterStep1Fragment extends Fragment {
         if (((LoginActivity) getActivity()).isThirdLogin()){
             ((LoginActivity) getActivity()).ThirdLoginPhoneBind(etMobile.getText().toString(),
                     etVerificationCode.getText().toString());
-            Log.e("Test", "checkVerification: --" );
             return;
         }
 
