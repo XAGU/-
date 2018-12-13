@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.user;
 
 import android.text.TextUtils;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordPresenter;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * 修改密码页面
@@ -25,6 +27,7 @@ import butterknife.OnClick;
  */
 
 public class EditPasswordActivity extends UserBaseActivity implements IEditPasswordView {
+
 
     @Inject
     IEditPasswordPresenter<IEditPasswordView> presenter;
@@ -70,10 +73,28 @@ public class EditPasswordActivity extends UserBaseActivity implements IEditPassw
         ViewUtil.setEditHintAndSize(getString(R.string.please_enter_new_password_again),
                 14, etNewPasswordAgain);
 
+
         ViewUtil.setEditPasswordInputFilter(etOldPassword);
         ViewUtil.setEditPasswordInputFilter(etNewPassword);
         ViewUtil.setEditPasswordInputFilter(etNewPasswordAgain);
         CommonUtil.showSoftInput(this, etOldPassword);
+    }
+
+
+    @OnTextChanged({ R.id.et_new_password , R.id.et_new_password_again , R.id.et_old_password} )
+    public void textChange(){
+        btSubmit.setEnabled(editLengthCheckout(etNewPassword) && editLengthCheckout(etNewPasswordAgain)
+        && etOldPassword.length() > 1);
+    }
+
+    /**
+     * 新密码长度验证
+     * @return
+     */
+    private boolean editLengthCheckout(EditText editText){
+        if (editText == null) return false ;
+
+        return editText.getText().length()>= 6;
     }
 
     @Override

@@ -6,9 +6,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -81,6 +83,7 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
         addTextChangedListener(this);
         maxLength = getMaxHeight() ;
     }
+
 
     private void setClearIconVisible(boolean visible) {
         Drawable right = visible ? mDrawableRight : null;

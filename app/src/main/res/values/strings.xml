@@ -428,4 +428,6 @@
     <!--三方登录-->
     <string name="wechat_bind">微信绑定</string>
     <string name="alipay_bind">支付宝绑定</string>
+
+    <string name="input_password_digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
 </resources>
