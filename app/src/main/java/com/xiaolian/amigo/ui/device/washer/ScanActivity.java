@@ -46,6 +46,7 @@ import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.qrcode.CustomCaptureManager;
 import com.xiaolian.amigo.util.Constant;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -206,15 +207,23 @@ public class ScanActivity extends WasherBaseActivity
      * 处理扫一扫进入的扫描内容 ； 内容格式为 （type , mac , siBle）
      */
     private void handleScanContent(String scanContent) {
-        if (scanContent.startsWith("https://www.xiaolian365.com/net-washing")) {//在线洗衣机 supplierId=7&deviceType=4&deviceNo=CH9527
+        if (scanContent.startsWith("https://www.xiaolian365.com/net-washing") || scanContent.startsWith("https://www.xiaolian365.com/apply/device/4")) {//在线洗衣机 supplierId=7&deviceType=4&deviceNo=CH9527
             Uri uri = Uri.parse(scanContent);
             Intent intent = new Intent(this, WebActivity.class);
             String sid = uri.getQueryParameter("supplierId");
             String deviceType = uri.getQueryParameter("deviceType");
             String deviceNo = uri.getQueryParameter("deviceNo");
+            if (null == sid || sid.isEmpty()) /*新格式的联网洗衣机*/{
+                //联网新模式https://www.xiaolian365.com/apply/device/4/7/CH9527
+                String [] params = scanContent.split("/");
+                sid = params[6];
+                deviceType = params[5];
+                deviceNo = params[7];
+            }
 
             if (TextUtils.isEmpty(sid) || TextUtils.isEmpty(deviceNo) || TextUtils.isEmpty(deviceType)) {
                 Log.e(TAG, "handleScanContent: 解析在线洗衣机参数异常");
+//                showMessage("解析在线洗衣机参数异常!");
                 return;
             }
 
