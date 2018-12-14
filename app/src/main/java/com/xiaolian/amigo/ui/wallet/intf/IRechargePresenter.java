@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.wallet.intf;
 
+import android.widget.Button;
+
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**
@@ -21,7 +23,7 @@ public interface IRechargePresenter<V extends IRechargeView> extends IBasePresen
      * @param amount 金额
      * @param type   类型
      */
-    void recharge(Double amount, int type);
+    void recharge(Double amount, int type , Button button);
 
     /**
      * 解析支付结果

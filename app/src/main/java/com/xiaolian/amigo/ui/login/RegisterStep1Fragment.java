@@ -42,6 +42,8 @@ import butterknife.OnTextChanged;
  */
 
 public class RegisterStep1Fragment extends Fragment {
+
+    private static final String TAG = RegisterStep1Fragment.class.getSimpleName();
     private static final String GET_VERIFICATION_CODE = "获取验证码";
     private static final int MOBILE_LENGTH = 1;
 
@@ -79,13 +81,16 @@ public class RegisterStep1Fragment extends Fragment {
 
     @OnClick(R.id.bt_send_verification_code)
     void sendVerificationCode() {
+        Log.e(TAG, "sendVerificationCode: " );
+        btSendVerificationCode.setEnabled(false);
         if (!isMobileNO(etMobile.getText().toString().trim())){
             ((LoginActivity) getActivity()).onError("手机号不合法");
+            btSendVerificationCode.setEnabled(true);
             return;
         }
 
         if (getActivity() instanceof LoginActivity) {
-            ((LoginActivity) getActivity()).sendVerificationCode(etMobile.getText().toString());
+            ((LoginActivity) getActivity()).sendVerificationCode(etMobile.getText().toString() , btSendVerificationCode);
         }
     }
 
@@ -192,6 +197,15 @@ public class RegisterStep1Fragment extends Fragment {
             }
         });
         toggleButton();
+
+        ((LoginActivity) getActivity()).showThirdLoginView(false);
+        if (etMobile != null) {
+            etMobile.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.showSoftInput(etMobile, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }
     }
 
 
@@ -235,20 +249,22 @@ public class RegisterStep1Fragment extends Fragment {
         btSubmit.setEnabled(valid);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
-        Log.e("Test", "onResume: register" );
-        ((LoginActivity) getActivity()).showThirdLoginView(false);
-        if (etMobile != null) {
-            etMobile.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.showSoftInput(etMobile, InputMethodManager.SHOW_IMPLICIT);
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            ((LoginActivity) getActivity()).showThirdLoginView(false);
+            if (etMobile != null) {
+                etMobile.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.showSoftInput(etMobile, InputMethodManager.SHOW_IMPLICIT);
+                }
             }
         }
     }
+
     private  boolean isMobileNO(String mobileNums) {
         String telRegex = "^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$";
         if (TextUtils.isEmpty(mobileNums))

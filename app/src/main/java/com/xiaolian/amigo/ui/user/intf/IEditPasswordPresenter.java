@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.user.intf;
 
+import android.widget.Button;
+
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**
@@ -16,5 +18,5 @@ public interface IEditPasswordPresenter<V extends IEditPasswordView> extends IBa
      * @param newPassword 新密码
      * @param oldPassword 旧密码
      */
-    void updatePassword(String newPassword, String oldPassword);
+    void updatePassword(String newPassword, String oldPassword , Button button);
 }

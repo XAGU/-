@@ -193,8 +193,9 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
             onError("请选择充值方式");
             return;
         }
+        btSubmit.setEnabled(false);
         presenter.recharge(recharges.get(rechargeSelectedPosition).getAmount(),
-                rechargeTypes.get(rechargeTypeSelectedPosition).getType());
+                rechargeTypes.get(rechargeTypeSelectedPosition).getType() , btSubmit);
     }
 
     private void toggleSubmitButton() {

@@ -51,20 +51,22 @@ public class RegisterStep2Fragment extends Fragment {
 
     @OnClick(R.id.bt_submit)
     void register() {
+        btSubmit.setEnabled(false);
         if (etUserpwd.getText().toString().trim().length() < 6) {
             ((LoginActivity) getActivity()).onError("请输入至少6位数的密码");
+            btSubmit.setEnabled(true);
             return;
         }
         //为绑定第三方账号注册电话号码
         if (((LoginActivity) getActivity()).isThirdLogin()){
             ((LoginActivity) getActivity()).registerForThirdAccount(etUserpwd.getText().toString(),
-                    schoolId);
+                    schoolId , btSubmit);
             return;
         }
 
         if (getActivity() instanceof LoginActivity) {
             ((LoginActivity) getActivity()).register(etUserpwd.getText().toString(),
-                    schoolId);
+                    schoolId , btSubmit);
         }
     }
 
@@ -92,6 +94,13 @@ public class RegisterStep2Fragment extends Fragment {
         ViewUtil.setEditHintAndSize(getString(R.string.please_enter_least_six_password), 14, etUserpwd);
         ViewUtil.setEditHintAndSize(getString(R.string.school_hint), 14, tvSchool);
         ViewUtil.setEditPasswordInputFilter(etUserpwd);
+        ((LoginActivity) getActivity()).showThirdLoginView(false);
+
+        if (etUserpwd != null) {
+            etUserpwd.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(etUserpwd, InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 
     @Override
@@ -124,15 +133,16 @@ public class RegisterStep2Fragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        Log.e("Test", "onResume: step2" );
-        super.onResume();
-        ((LoginActivity) getActivity()).showThirdLoginView(false);
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            ((LoginActivity) getActivity()).showThirdLoginView(false);
 
-        if (etUserpwd != null) {
-            etUserpwd.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(etUserpwd, InputMethodManager.SHOW_IMPLICIT);
+            if (etUserpwd != null) {
+                etUserpwd.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(etUserpwd, InputMethodManager.SHOW_IMPLICIT);
+            }
         }
     }
 }

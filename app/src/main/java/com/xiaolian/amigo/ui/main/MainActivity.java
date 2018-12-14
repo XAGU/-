@@ -1093,6 +1093,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void routeToRoomShower(BathRouteRespDTO dto) {
+        enableView();
         setBleCallback(() -> checkDeviceUsage(HEATER));
         getBlePermission();
 
@@ -1101,6 +1102,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void routeToBathroomShower(BathRouteRespDTO dto) {
+        enableView();
         startActivity(new Intent(this, ChooseBathroomActivity.class)
                 .putExtra(KEY_BUILDING_ID, dto.getBuildingId())
                 .putExtra(KEY_RESIDENCE_TYPE, dto.getResidenceType())
@@ -1140,6 +1142,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void gotoCompleteInfoActivity(BathRouteRespDTO dto) {
         //跳转到配置信息页面
+        enableView();
         startActivity(new Intent(this, CompleteInfoActivity.class)
                 .putExtra(CompleteInfoActivity.KEY_BATHROUTERESPDTO, dto));
     }
@@ -1172,6 +1175,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                             AppUtils.getVersionName(this));
                 });
 
+    }
+
+    @Override
+    public void enableView() {
+        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
     }
 
 
@@ -1270,32 +1278,41 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 if (checkLogin()) {
                     gotoDispenser();
                 }
+                enableView();
                 break;
             case GOTO_DRYER:
                 if (checkLogin()) {
                     gotoDryer();
                 }
+                enableView();
                 break;
             case GOTO_WASHER:
+
                 if (checkLogin()) {
                     gotoWasher();
                 }
+                enableView();
                 break;
             case GOTO_DRAYER2:
+
                 if (checkLogin()){
                     gotoDryer2();
                 }
+                enableView();
                 break;
             case GOTO_GATE:
+
                 if (checkLogin()) {
                     gotoGate();
                 }
+                enableView();
                 break;
             case GOTO_LOST_AND_FOUND:
+
                 if (checkLogin()) {
                     gotoLostAndFound();
                 }
-                EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
+                enableView();
                 break;
             case START_ACTIVITY:
                 if (checkLogin()) {

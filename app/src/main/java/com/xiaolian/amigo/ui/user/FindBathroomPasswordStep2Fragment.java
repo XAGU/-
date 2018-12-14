@@ -115,7 +115,8 @@ public class FindBathroomPasswordStep2Fragment extends BaseFragment {
      */
     private void confirmPassword() {
         if (getContext() instanceof FindBathroomPasswordActivity) {
-            ((FindBathroomPasswordActivity) getContext()).updateBathroomPassword(etUserpwd.getText().toString().trim());
+            btSubmit.setEnabled(false);
+            ((FindBathroomPasswordActivity) getContext()).updateBathroomPassword(etUserpwd.getText().toString().trim() , btSubmit);
         }
     }
 

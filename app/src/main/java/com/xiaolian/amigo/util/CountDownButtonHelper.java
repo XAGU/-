@@ -13,6 +13,8 @@ import android.widget.Button;
  * @date 17/9/18
  */
 public class CountDownButtonHelper {
+
+    private static final String TAG = CountDownButtonHelper.class.getSimpleName();
     /**
      * 倒计时timer
      */
@@ -67,6 +69,7 @@ public class CountDownButtonHelper {
      * 开始倒计时
      */
     public void start() {
+        Log.e(TAG ,"开启倒计时");
         isFinished = false;
         button.setEnabled(false);
         countDownTimer.start();

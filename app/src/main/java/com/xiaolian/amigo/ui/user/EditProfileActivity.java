@@ -152,8 +152,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     }
 
 
-
-
     @Override
     protected int setTitle() {
         return R.string.edit_profile;

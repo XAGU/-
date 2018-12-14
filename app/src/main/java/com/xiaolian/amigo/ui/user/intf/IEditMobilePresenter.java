@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.user.intf;
 
+import android.widget.Button;
+
 import com.xiaolian.amigo.di.UserActivityContext;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
@@ -16,7 +18,7 @@ public interface IEditMobilePresenter<V extends IEditMobileView> extends IBasePr
      *
      * @param mobile 手机号
      */
-    void getVerifyCode(String mobile);
+    void getVerifyCode(String mobile , Button button);
 
     /**
      * 更新手机号
@@ -24,5 +26,5 @@ public interface IEditMobilePresenter<V extends IEditMobileView> extends IBasePr
      * @param mobile 手机号
      * @param code   验证码
      */
-    void updateMobile(String mobile, String code);
+    void updateMobile(String mobile, String code , Button button);
 }

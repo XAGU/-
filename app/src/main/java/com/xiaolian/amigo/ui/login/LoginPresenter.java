@@ -19,6 +19,7 @@ package com.xiaolian.amigo.ui.login;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Button;
 
 import com.alipay.sdk.app.AuthTask;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -79,7 +80,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     @Override
     public void onLoginClick(String mobile, String password, String androidId,
                              String brand, String model, String systemVersion,
-                             String appVersion) {
+                             String appVersion , Button button) {
         LoginReqDTO dto = new LoginReqDTO();
         dto.setMobile(mobile);
         dto.setPassword(password);
@@ -95,6 +96,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<LoginRespDTO> result) {
                 if (null == result.getError()) {
+                    button.setEnabled(true);
                     if(result.getData().getResult()) {
                        loginDataManager.setUserInfo(result.getData().getUser().transform());
                        loginDataManager.setAccessToken(result.getData().getAccessToken());
@@ -122,6 +124,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    button.setEnabled(true);
                 }
             }
 
@@ -129,6 +132,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
             public void onError(Throwable e) {
                 super.onError(e);
                 getMvpView().onError("网络错误");
+                button.setEnabled(true);
             }
         });
     }
@@ -138,7 +142,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                          String password, Long schoolId,
                          String androidId, String brand,
                          String model, String systemVersion,
-                         String appVersion) {
+                         String appVersion , Button button) {
         RegisterReqDTO dto = new RegisterReqDTO();
         dto.setCode(code);
         dto.setMobile(mobile);
@@ -161,15 +165,23 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                     getMvpView().onSuccess(R.string.register_success);
                     loginDataManager.setRememberMobile(mobile);
                     getMvpView().gotoMainView();
+                    button.setEnabled(true);
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    button.setEnabled(true);
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                button.setEnabled(true);
             }
         });
     }
 
     @Override
-    public void getVerification(String mobile) {
+    public void getVerification(String mobile , Button button) {
         VerificationCodeGetReqDTO dto = new VerificationCodeGetReqDTO();
         dto.setMobile(mobile);
         addObserver(loginDataManager.getVerification(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
@@ -182,12 +194,21 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                         getMvpView().startTimer();
                     } else {
                         getMvpView().onError("验证码发送失败，请重试");
+                        button.setEnabled(true);
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    button.setEnabled(true);
                 }
             }
-        });
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        button.setEnabled(true);
+                    }
+                }
+        );
     }
 
     @Override
@@ -407,7 +428,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         });
     }
 
-    public void registerAlipay(String password,Long schoolId){
+    public void registerAlipay(String password,Long schoolId , Button button){
         AlipayBindReq req = new AlipayBindReq();
         req.setPassword(password);
         req.setSchoolId(schoolId.intValue());
@@ -429,17 +450,22 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                     ((LoginActivity) getMvpView()).setThirdLogin(false);
                     getMvpView().onSuccess(R.string.login_success);
                     getMvpView().gotoMainView();
+                    button.setEnabled(true);
                 } else if (null == result.getError() && !result.getData().isBinding()){
                     getMvpView().onError("注册失败请重试");
+                    button.setEnabled(true);
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    button.setEnabled(true);
                 }
+
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
                 getMvpView().onError("网络出错");
+                button.setEnabled(true);
             }
         });
 
@@ -535,7 +561,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
    }
 
     @Override
-    public void registerWeChat(String password, Long schoolId) {
+    public void registerWeChat(String password, Long schoolId , Button button) {
         WeChatResiterReqDTO req = new WeChatResiterReqDTO();
         req.setPassword(password);
         req.setSchoolId(schoolId.intValue());
@@ -560,12 +586,21 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                         ((LoginActivity) getMvpView()).setThirdLogin(false);
                         getMvpView().onSuccess(R.string.login_success);
                         getMvpView().gotoMainView();
+                        button.setEnabled(true);
                     }else{
                         getMvpView().onError("注册失败请重试");
+                        button.setEnabled(true);
                     }
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    button.setEnabled(true);
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                button.setEnabled(true);
             }
         });
     }

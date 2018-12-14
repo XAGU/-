@@ -208,7 +208,6 @@
             android:id="@+id/imageView7"
             style="@style/ListItemImage"
             android:layout_alignParentRight="true"
-
             android:src="@drawable/arrow_right" />
 
         <TextView

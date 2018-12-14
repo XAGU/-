@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.text.TextUtils;
+import android.widget.Button;
 
 import com.xiaolian.amigo.data.enumeration.AlipayPayOrderCheckResult;
 import com.xiaolian.amigo.data.enumeration.PayWay;
@@ -87,7 +88,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
     }
 
     @Override
-    public void recharge(Double amount, int type) {
+    public void recharge(Double amount, int type , Button button) {
         String amountStr = String.format(Locale.getDefault(), "%.2f", amount);
         manager.setLastRechargeAmount(amountStr);
         Log.i(TAG, "储存充值amount: " + amountStr);
@@ -98,6 +99,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
 
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
+                button.setEnabled(true);
                 if (null == result.getError()) {
                     if (PayWay.getPayWay(type) == PayWay.ALIAPY) {
                         requestAlipayArgs(result.getData().getId());
@@ -108,6 +110,12 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                button.setEnabled(true);
             }
         });
     }

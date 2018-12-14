@@ -124,7 +124,8 @@ public class FindBathroomPasswordStep1Fragment extends BaseFragment {
     @OnClick(R.id.bt_send_verification_code)
     public void getVerificationCode() {
         if (mActivity instanceof  FindBathroomPasswordActivity){
-            ((FindBathroomPasswordActivity) mActivity).presenter.getVerifyCode(etMobile.getText().toString().trim());
+            btSendVerificationCode.setEnabled(false);
+            ((FindBathroomPasswordActivity) mActivity).presenter.getVerifyCode(etMobile.getText().toString().trim() , btSendVerificationCode);
         }
     }
 
@@ -206,8 +207,9 @@ public class FindBathroomPasswordStep1Fragment extends BaseFragment {
     @OnClick(R.id.bt_submit)
     public void onNext() {
              if (mActivity instanceof FindBathroomPasswordActivity){
+                 btSubmit.setEnabled(false);
                  ((FindBathroomPasswordActivity) mActivity).presenter.checkVerifyCode(etMobile.getText().toString().trim() ,
-                         etVerificationCode.getText().toString().trim());
+                         etVerificationCode.getText().toString().trim() , btSubmit);
              }
     }
 

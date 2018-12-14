@@ -336,7 +336,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
             @Override
             public void onReady(ApiResult<DeviceCheckRespDTO> result) {
-                EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
+                getMvpView().enableView();
                 if (null == result.getError()) {
                     mainDataManager.saveDeviceCategory(result.getData().getDevices());
                     getMvpView().showDeviceUsageDialog(type, result.getData());
@@ -348,7 +348,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
+                getMvpView().enableView();
             }
         });
     }
@@ -516,8 +516,15 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         }
                     }
                 } else {
+                    getMvpView().enableView();
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().enableView();
             }
         });
     }

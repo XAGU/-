@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
 import android.util.Log;
+import android.widget.Button;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
@@ -32,7 +33,7 @@ public class EditPasswordPresenter<V extends IEditPasswordView> extends BasePres
     }
 
     @Override
-    public void updatePassword(String newPassword, String oldPassword) {
+    public void updatePassword(String newPassword, String oldPassword , Button button) {
         PasswordUpdateReqDTO dto = new PasswordUpdateReqDTO();
         dto.setNewPassword(newPassword);
         dto.setOldPassword(oldPassword);
@@ -41,6 +42,7 @@ public class EditPasswordPresenter<V extends IEditPasswordView> extends BasePres
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
+                    button.setEnabled(true);
                     Log.e(TAG, "onReady: ::" + result.getData().toString() );
                     if (result.getData().getResult()) {
                         getMvpView().onSuccess(R.string.change_password_success);
@@ -64,10 +66,17 @@ public class EditPasswordPresenter<V extends IEditPasswordView> extends BasePres
                         getMvpView().onError("请输入正确的登录密码");
                     }
                 }else{
+                    button.setEnabled(true);
                     Log.e(TAG, "onReady: eroor =" + result.getError().getDebugMessage() );
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
 
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                button.setEnabled(true);
             }
         });
     }

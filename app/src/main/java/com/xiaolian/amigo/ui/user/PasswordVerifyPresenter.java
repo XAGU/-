@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.widget.Button;
+
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -23,13 +25,14 @@ public class PasswordVerifyPresenter <V extends IPasswordVerifyView> extends Bas
     }
 
     @Override
-    public void verifyPassword(String passsword) {
+    public void verifyPassword(String passsword , Button button) {
         PasswordCheckReqDTO dto = new PasswordCheckReqDTO();
         dto.setPassword(passsword);
         addObserver(userDataManager.verifyPassword(dto), new NetworkObserver<ApiResult<PasswordVerifyRespDTO>>() {
             @Override
             public void onReady(ApiResult<PasswordVerifyRespDTO> result) {
                 if(null == result.getError()){
+                    button.setEnabled(true);
                     if(result.getData().isResult()){
                         //密码验证成功
                         getMvpView().goToChangeView();
@@ -54,6 +57,7 @@ public class PasswordVerifyPresenter <V extends IPasswordVerifyView> extends Bas
 
                     }
                 }else{
+                    button.setEnabled(true);
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
@@ -62,6 +66,7 @@ public class PasswordVerifyPresenter <V extends IPasswordVerifyView> extends Bas
             public void onError(Throwable e) {
                 super.onError(e);
                 getMvpView().onError("网络错误");
+                button.setEnabled(true);
             }
         });
     }

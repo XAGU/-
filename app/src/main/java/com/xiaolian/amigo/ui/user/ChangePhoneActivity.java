@@ -59,15 +59,18 @@ public class ChangePhoneActivity extends UserBaseActivity implements IChangePhon
         });
 
         submitPhone.setOnClickListener((view)->{
-            presenter.changePhoneNumber(etPhone.getText().toString(),etCode.getText().toString());
+            submitPhone.setEnabled(false);
+            presenter.changePhoneNumber(etPhone.getText().toString(),etCode.getText().toString() , submitPhone);
         });
 
         btVerifyCode.setOnClickListener((view)->{
+            btVerifyCode.setEnabled(false);
             if (etPhone.getText().toString().length() != 11 || !isMobileNO(etPhone.getText().toString())){
                 onError("请输入正确的电话号码");
+                btVerifyCode.setEnabled(true);
                 return;
             }
-            presenter.getVerification(etPhone.getText().toString());
+            presenter.getVerification(etPhone.getText().toString() , btVerifyCode);
         });
     }
 

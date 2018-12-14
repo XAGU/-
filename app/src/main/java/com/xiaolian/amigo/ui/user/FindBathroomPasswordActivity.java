@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -81,8 +82,12 @@ public class FindBathroomPasswordActivity extends UserBaseActivity implements IF
     /**
      * 确认浴室密码
      */
-    public void updateBathroomPassword(String password) {
-        if (presenter != null) presenter.updateBathroomPassword(password);
+    public void updateBathroomPassword(String password , Button button) {
+        if (presenter != null){
+            presenter.updateBathroomPassword(password , button);
+        }else{
+            button.setEnabled(true);
+        }
     }
 
     @Override

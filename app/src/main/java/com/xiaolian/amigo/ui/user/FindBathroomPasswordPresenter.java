@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.widget.Button;
+
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
@@ -31,7 +33,7 @@ implements IFindBathroomPasswordPresenter<V>{
 
 
     @Override
-    public void updateBathroomPassword(String password ) {
+    public void updateBathroomPassword(String password , Button button ) {
 
         BathPasswordUpdateReqDTO  reqDTO = new BathPasswordUpdateReqDTO();
         reqDTO.setBathPassword(password);
@@ -41,6 +43,7 @@ implements IFindBathroomPasswordPresenter<V>{
 
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
+                button.setEnabled(true);
                 if(null == result.getError() ){
                     getMvpView().onSuccess("浴室密码更新成功");
                     manager.setBathroomPassword();
@@ -48,6 +51,12 @@ implements IFindBathroomPasswordPresenter<V>{
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                button.setEnabled(true);
             }
         });
     }
@@ -67,7 +76,7 @@ implements IFindBathroomPasswordPresenter<V>{
     }
 
     @Override
-    public void getVerifyCode(String mobile) {
+    public void getVerifyCode(String mobile , Button button) {
         VerificationCodeGetReqDTO reqDTO = new VerificationCodeGetReqDTO();
         reqDTO.setMobile(mobile);
         addObserver(manager.getVerification(reqDTO),
@@ -75,6 +84,7 @@ implements IFindBathroomPasswordPresenter<V>{
 
                     @Override
                     public void onReady(ApiResult<BooleanRespDTO> result) {
+                        button.setEnabled(true);
                         if (null == result.getError()) {
                             getMvpView().onSuccess("验证码发送成功");
                             getMvpView().startTimer();
@@ -82,11 +92,17 @@ implements IFindBathroomPasswordPresenter<V>{
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        button.setEnabled(true);
+                    }
                 });
     }
 
     @Override
-    public void checkVerifyCode(String mobile, String code) {
+    public void checkVerifyCode(String mobile, String code , Button button) {
         VerificationCodeCheckReqDTO reqDTO = new VerificationCodeCheckReqDTO();
         reqDTO.setCode(code);
         reqDTO.setMobile(mobile);
@@ -95,6 +111,7 @@ implements IFindBathroomPasswordPresenter<V>{
 
                     @Override
                     public void onReady(ApiResult<BooleanRespDTO> result) {
+                        button.setEnabled(true);
                         if (null == result.getError()) {
                             getMvpView().nextStep();
                             FindBathroomPasswordPresenter.this.code = code ;
@@ -102,6 +119,12 @@ implements IFindBathroomPasswordPresenter<V>{
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        button.setEnabled(true);
                     }
                 });
     }

@@ -45,14 +45,16 @@ public class EditMobileActivity extends UserBaseActivity implements IEditMobileV
 
     @OnClick(R.id.bt_verify_code)
     void onVerifyCodeButtonClick() {
+        btVerifyCode.setEnabled(false);
         if (verify(etMobile.getText().toString())) {
-            presenter.getVerifyCode(etMobile.getText().toString());
+            presenter.getVerifyCode(etMobile.getText().toString() , btVerifyCode);
         }
     }
 
     @OnClick(R.id.bt_submit)
     void onSubmitButtonClick() {
-        presenter.updateMobile(etMobile.getText().toString().trim(), etVerifyCode.getText().toString());
+        btSubmit.setEnabled(false);
+        presenter.updateMobile(etMobile.getText().toString().trim(), etVerifyCode.getText().toString() , btSubmit);
     }
 
     private boolean verify(String s) {

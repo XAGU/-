@@ -48,11 +48,13 @@ public class EditPasswordActivity extends UserBaseActivity implements IEditPassw
 
     @OnClick(R.id.bt_submit)
     void onSubmitClick() {
+        btSubmit.setEnabled(false);
         if (TextUtils.equals(etNewPassword.getText(), etNewPasswordAgain.getText())) {
             presenter.updatePassword(etNewPassword.getText().toString().trim(),
-                    etOldPassword.getText().toString().trim());
+                    etOldPassword.getText().toString().trim() , btSubmit);
         } else {
             showMessage("两次输入的密码不一致");
+            btSubmit.setEnabled(true);
         }
     }
 

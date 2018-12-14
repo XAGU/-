@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.widget.Button;
+
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -31,7 +33,7 @@ public class EditMobilePresenter<V extends IEditMobileView> extends BasePresente
     }
 
     @Override
-    public void getVerifyCode(String mobile) {
+    public void getVerifyCode(String mobile , Button button) {
         VerificationCodeGetReqDTO dto = new VerificationCodeGetReqDTO();
         dto.setMobile(mobile);
         addObserver(userDataManager.getVerifyCode(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
@@ -39,6 +41,7 @@ public class EditMobilePresenter<V extends IEditMobileView> extends BasePresente
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
+                    button.setEnabled(true);
                     if (result.getData().isResult()) {
                         getMvpView().onSuccess(R.string.get_success);
                         getMvpView().startTimer();
@@ -46,14 +49,21 @@ public class EditMobilePresenter<V extends IEditMobileView> extends BasePresente
                         getMvpView().onError(R.string.get_fail);
                     }
                 } else {
+                    button.setEnabled(true);
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                button.setEnabled(true);
             }
         });
     }
 
     @Override
-    public void updateMobile(String mobile, String code) {
+    public void updateMobile(String mobile, String code , Button button) {
         MobileUpdateReqDTO dto = new MobileUpdateReqDTO();
         dto.setMobile(mobile);
         dto.setCode(code);
@@ -62,11 +72,19 @@ public class EditMobilePresenter<V extends IEditMobileView> extends BasePresente
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
+                    button.setEnabled(true);
                     getMvpView().onSuccess(R.string.change_mobile_success);
                     getMvpView().finishView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    button.setEnabled(true);
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                button.setEnabled(true);
             }
         });
     }

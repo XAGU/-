@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.widget.Button;
+
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -27,13 +29,14 @@ public class ChangePhonePresenter <v extends IChangePhoneView> extends BasePrese
     }
 
     @Override
-    public void getVerification(String mobile) {
+    public void getVerification(String mobile , Button button) {
         VerificationCodeGetReqDTO dto = new VerificationCodeGetReqDTO();
         dto.setMobile(mobile);
         addObserver(userDataManager.getVerification(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
+                    button.setEnabled(true);
                     if (result.getData().isResult()) {
                         getMvpView().onSuccess("验证码发送成功");
                         getMvpView().startTimer();
@@ -41,14 +44,21 @@ public class ChangePhonePresenter <v extends IChangePhoneView> extends BasePrese
                         getMvpView().onError("验证码发送失败，请重试");
                     }
                 } else {
+                    button.setEnabled(true);
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                button.setEnabled(true);
             }
         });
     }
 
     @Override
-    public void changePhoneNumber(String mobile, String code) {
+    public void changePhoneNumber(String mobile, String code , Button button) {
         VerificationCodeCheckReqDTO dto = new VerificationCodeCheckReqDTO();
         dto.setMobile(mobile);
         dto.setCode(code);
@@ -56,11 +66,19 @@ public class ChangePhonePresenter <v extends IChangePhoneView> extends BasePrese
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
+                    button.setEnabled(true);
                     getMvpView().onSuccess("修改手机号成功");
                     getMvpView().finishView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    button.setEnabled(true);
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                button.setEnabled(true);
             }
         });
     }

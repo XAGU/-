@@ -123,10 +123,12 @@ public class PasswordVerifyActivity extends UserBaseActivity implements IPasswor
 
     @OnClick(R.id.bt_submit)
     void verify_password(View v){
+        submit.setEnabled(false);
         if (!TextUtils.isEmpty(login_password.getText().toString().trim())){
-            presenter.verifyPassword(login_password.getText().toString().trim());
+            presenter.verifyPassword(login_password.getText().toString().trim() , submit);
         } else {
             onError("请输入登录密码");
+            submit.setEnabled(true);
         }
 
     }

@@ -11,6 +11,7 @@ import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -305,21 +306,21 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         this.finish();
     }
 
-    public void sendVerificationCode(String mobile) {
-        presenter.getVerification(mobile);
+    public void sendVerificationCode(String mobile , Button button) {
+        presenter.getVerification(mobile , button);
     }
 
     public void checkVerificationCode(String mobile, String code) {
         presenter.checkVerification(mobile, code);
     }
 
-    public void registerForThirdAccount(String password,Long schoolId){
+    public void registerForThirdAccount(String password,Long schoolId , Button button){
         switch (currentLoginType){
             case THIRD_LOGIN_ALIPAY :
-                presenter.registerAlipay(password, schoolId);
+                presenter.registerAlipay(password, schoolId , button);
                 break;
             case THIRD_LOGIN_WECHAT :
-                presenter.registerWeChat(password, schoolId);
+                presenter.registerWeChat(password, schoolId , button);
                 break;
             default:
                 break;
@@ -332,7 +333,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         this.code = code;
     }
 
-    public void register(String password, Long schoolId) {
+    public void register(String password, Long schoolId , Button button) {
         @SuppressLint("HardwareIds")
         String androidId = Settings.Secure.getString(getContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
@@ -341,10 +342,10 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         int systemVersion = Build.VERSION.SDK_INT;
         String appVersion = AppUtils.getVersionName(this);
         presenter.register(this.code, this.mobile, password, schoolId,
-                androidId, brand, model, String.valueOf(systemVersion), appVersion);
+                androidId, brand, model, String.valueOf(systemVersion), appVersion , button);
     }
 
-    public void login(String mobile, String password) {
+    public void login(String mobile, String password , Button button) {
         currentLoginType = LOGIN_NORMAL;
         @SuppressLint("HardwareIds")
         String androidId = Settings.Secure.getString(getContext().getContentResolver(),
@@ -354,7 +355,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         int systemVersion = Build.VERSION.SDK_INT;
         String appVersion = AppUtils.getVersionName(this);
         presenter.onLoginClick(mobile, password, androidId, brand,
-                model, String.valueOf(systemVersion), appVersion);
+                model, String.valueOf(systemVersion), appVersion , button);
     }
 
     private void weChatLogin(){

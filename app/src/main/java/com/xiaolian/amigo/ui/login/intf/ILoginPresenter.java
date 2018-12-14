@@ -16,6 +16,8 @@
 package com.xiaolian.amigo.ui.login.intf;
 
 
+import android.widget.Button;
+
 import com.xiaolian.amigo.di.LoginActivityContext;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
@@ -41,7 +43,7 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
      */
     void onLoginClick(String mobile, String password, String androidId,
                       String brand, String model, String systemVersion,
-                      String appVersion);
+                      String appVersion , Button button);
 
     /**
      * 注册
@@ -60,14 +62,14 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
                   String password, Long schoolId,
                   String androidId, String brand,
                   String model, String systemVersion,
-                  String appVersion);
+                  String appVersion , Button button);
 
     /**
      * 获取验证码
      *
      * @param mobile 手机号
      */
-    void getVerification(String mobile);
+    void getVerification(String mobile , Button button);
 
     /**
      * 校验验证码
@@ -115,7 +117,7 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
                    String brand, String model,
                    String systemVersion, String appVersion);
     void checkAlipayPhoneBind(String mobile, String code);
-    void registerAlipay(String password,Long schoolId);
+    void registerAlipay(String password,Long schoolId , Button button);
     //支付宝登录 end
 
     //微信登录
@@ -123,6 +125,6 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
     void weChatLogin(String code);
     void checkWechatPhoneBind(String moblie,String code);
 
-    void registerWeChat(String password, Long schoolId);
+    void registerWeChat(String password, Long schoolId , Button button);
     //微信登录 end
 }

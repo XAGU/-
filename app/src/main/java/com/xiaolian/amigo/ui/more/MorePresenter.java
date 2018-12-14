@@ -62,7 +62,7 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
                 getMvpView().onSuccess("退出登录成功");
                 getMvpView().redirectToLogin();
             }
-            
+
             @Override
             public void onError(Throwable e) {
                 super.onError(e);

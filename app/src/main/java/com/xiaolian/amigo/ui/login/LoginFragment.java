@@ -69,17 +69,20 @@ public class LoginFragment extends Fragment {
 
     @OnClick(R.id.bt_submit)
     void login() {
+        btSubmit.setEnabled(false);
         if (!isMobileNO(etMobile.getText().toString())){
             ((LoginActivity) getActivity()).onError("手机号不合法");
+            btSubmit.setEnabled(true);
             return;
         }
         if (etUserpwd.getText().toString().trim().length() == 0){
             ((LoginActivity) getActivity()).onError("请输入登录密码");
+            btSubmit.setEnabled(true);
             return;
         }
 
         if (getActivity() instanceof LoginActivity) {
-            ((LoginActivity) getActivity()).login(etMobile.getText().toString(), etUserpwd.getText().toString());
+            ((LoginActivity) getActivity()).login(etMobile.getText().toString(), etUserpwd.getText().toString() , btSubmit);
         }
     }
 
@@ -89,6 +92,7 @@ public class LoginFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.activity_login, container, false);
         ButterKnife.bind(this, view);
+        ((LoginActivity) getActivity()).showThirdLoginView(true);
         return view;
     }
 
@@ -108,6 +112,7 @@ public class LoginFragment extends Fragment {
             }
         }
         ViewUtil.setEditPasswordInputFilter(etUserpwd);
+
     }
 
 
@@ -133,10 +138,40 @@ public class LoginFragment extends Fragment {
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            ((LoginActivity) getActivity()).showThirdLoginView(true);
+
+
+            if (((LoginActivity)getActivity()).getStatus() == 0) {
+                ((LoginActivity) getActivity()).setThirdLogin(false);
+                ((LoginActivity) getActivity()).showLoginAndRegister();
+            }
+
+
+            if (etMobile != null && etUserpwd != null) {
+                if (!TextUtils.isEmpty(etMobile.getText())) {
+                    etUserpwd.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.showSoftInput(etUserpwd, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                } else {
+                    etMobile.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.showSoftInput(etMobile, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                }
+            }
+        }
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-
-        ((LoginActivity) getActivity()).showThirdLoginView(true);
 
         if (((LoginActivity)getActivity()).getStatus() == 0) {
             ((LoginActivity) getActivity()).setThirdLogin(false);
