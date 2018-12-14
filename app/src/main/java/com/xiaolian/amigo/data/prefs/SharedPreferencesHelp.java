@@ -42,6 +42,7 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_SCHOOL_ID = "PREF_KEY_SCHOOL_ID";
     private static final String PREF_KEY_SCHOOL_NAME = "PREF_KEY_SCHOOL_NAME";
     private static final String PREF_KEY_NICKNAME = "PREF_KEY_NICKNAME";
+    private static final String PREF_KEY_ALIPAY_NICKNAME = "PREF_KEY_ALIPAY_NICKNAME";
     private static final String PREF_KEY_UID = "PREF_KEY_UID";
     private static final String PREF_KEY_MOBILE = "PREF_KEY_MOBILE";
     private static final String PREF_KEY_PICTURE_URL = "PREF_KEY_PICTURE_URL";
@@ -251,7 +252,7 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
         userHolder.setStudentId(mSharedPreferences.getString(PREF_KEY_STUDENT_ID , ""));
         userHolder.setDormitory(mSharedPreferences.getString(PREF_KEY_DORMITORY , ""));
         if (mSharedPreferences.getBoolean(PREF_KEY_APY_IS_BIND,false)){
-            String apayNickName = mSharedPreferences.getString(PREF_KEY_NICKNAME,"");
+            String apayNickName = mSharedPreferences.getString(PREF_KEY_ALIPAY_NICKNAME,"");
             long apayUserId = mSharedPreferences.getLong(PREF_KEY_APY_USER_ID,-1);
             User.AlipayBindBean alipayBindBean = new User.AlipayBindBean();
             alipayBindBean.setAlipayNickName(apayNickName);
@@ -335,7 +336,7 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
         }
 
         if (null != user.getAlipayBind() && user.getAlipayBind().isIsBinding()){
-            mSharedPreferences.edit().putString(PREF_KEY_NICKNAME, user.getAlipayBind().getAlipayNickName()).apply();
+            mSharedPreferences.edit().putString(PREF_KEY_ALIPAY_NICKNAME, user.getAlipayBind().getAlipayNickName()).apply();
             mSharedPreferences.edit().putLong(PREF_KEY_APY_USER_ID, user.getAlipayBind().getAlipayUserId()).apply();
             mSharedPreferences.edit().putBoolean(PREF_KEY_APY_IS_BIND, user.getAlipayBind().isIsBinding()).apply();
         }
