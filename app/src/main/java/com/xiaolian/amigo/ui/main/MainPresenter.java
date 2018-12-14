@@ -336,12 +336,13 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
             @Override
             public void onReady(ApiResult<DeviceCheckRespDTO> result) {
-                getMvpView().enableView();
+
                 if (null == result.getError()) {
                     mainDataManager.saveDeviceCategory(result.getData().getDevices());
                     getMvpView().showDeviceUsageDialog(type, result.getData());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    getMvpView().enableView();
                 }
             }
 

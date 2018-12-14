@@ -35,6 +35,7 @@ import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
 import com.xiaolian.amigo.util.Log;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -154,51 +155,51 @@ public class HomeFragment2 extends BaseFragment {
         adaptor.addItemViewDelegate(new HomeSmallDelegate(getActivity()));
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView,
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position, MotionEvent e) {
-                        try {
-                            view.setEnabled(false);
-                            Log.d(TAG, "recycler view onItemClick " + position);
-                            if (items.get(position).getType() != HomeAdaptor.NORMAL_TYPE
-                                    && items.get(position).getType() != HomeAdaptor.SMALL_TYPE) {
-                                view.dispatchTouchEvent(e);
-                                view.setEnabled(true);
-                                return;
-                            }
-                            if (items.get(position).getType() == HomeAdaptor.NORMAL_TYPE
-                                    || items.get(position).getType() == HomeAdaptor.SMALL_TYPE) {
-                                disabledView = view;
-                                view.setEnabled(false);
-                                if (items.get(position).getRes() == R.drawable.shower) {
-                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
-                                } else if (items.get(position).getRes() == R.drawable.water) {
-                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
-                                } else if (items.get(position).getRes() == R.drawable.lost) {
-                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
-                                } else if (items.get(position).getRes() == R.drawable.dryer) {
-                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRYER));
-                                } else if (items.get(position).getRes() == R.drawable.washer2) {
-                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
-                                } else if (items.get(position).getRes() == R.drawable.gate) {
-                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_GATE));
-                                }else if (items.get(position).getRes() == R.drawable.hongganji_long){
-                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRAYER2));
-                                }
-                            }
-                        } catch (ArrayIndexOutOfBoundsException ex) {
-                            Log.wtf(TAG, "数组越界", ex);
-                        } catch (Exception ex) {
-                            Log.wtf(TAG, ex);
+        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                holder.itemView.setEnabled(false);
+                try {
+                    view.setEnabled(false);
+                    Log.d(TAG, "recycler view onItemClick " + position);
+                    if (items.get(position).getType() != HomeAdaptor.NORMAL_TYPE
+                            && items.get(position).getType() != HomeAdaptor.SMALL_TYPE) {
+//                        view.dispatchTouchEvent(e);
+                        view.setEnabled(true);
+                        return;
+                    }
+                    if (items.get(position).getType() == HomeAdaptor.NORMAL_TYPE
+                            || items.get(position).getType() == HomeAdaptor.SMALL_TYPE) {
+                        disabledView = view;
+                        view.setEnabled(false);
+                        if (items.get(position).getRes() == R.drawable.shower) {
+                            EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
+                        } else if (items.get(position).getRes() == R.drawable.water) {
+                            EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
+                        } else if (items.get(position).getRes() == R.drawable.lost) {
+                            EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
+                        } else if (items.get(position).getRes() == R.drawable.dryer) {
+                            EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRYER));
+                        } else if (items.get(position).getRes() == R.drawable.washer2) {
+                            EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
+                        } else if (items.get(position).getRes() == R.drawable.gate) {
+                            EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_GATE));
+                        }else if (items.get(position).getRes() == R.drawable.hongganji_long){
+                            EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRAYER2));
                         }
                     }
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    Log.wtf(TAG, "数组越界", ex);
+                } catch (Exception ex) {
+                    Log.wtf(TAG, ex);
+                }
+            }
 
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        Log.d(TAG, "recycler view onLongItemClick");
-                    }
-                }));
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
 
 

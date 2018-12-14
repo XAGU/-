@@ -717,6 +717,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         intent.putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHOOSE_DISPENSER);
         intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
         startActivity(intent);
+        enableView();
     }
 
     private void gotoChooseDryer() {
@@ -725,6 +726,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         intent.putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHOOSE_DRYER);
         intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
         startActivity(intent);
+        enableView();
     }
 
 
@@ -744,6 +746,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
             startActivity(intent);
         }
+        enableView();
     }
 
     public void gotoDryer(String macAddress, Long supplierId, String location, Long residenceId,
@@ -763,6 +766,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
             startActivity(intent);
         }
+
+        enableView();
     }
 
     public void gotoDispenser(String macAddress, Long supplierId, String location, Long residenceId,
@@ -784,6 +789,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
             startActivity(intent);
         }
+        enableView();
     }
 
     @Override
@@ -861,6 +867,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 || data.getPrepay() == null || data.getMinPrepay() == null
                 || data.getTimeValid() == null) {
             onError("服务器飞走啦，努力修复中");
+            enableView();
             return;
         }
         if (orderPreInfo == null) {
@@ -917,6 +924,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 }
             }
         }
+
     }
 
     @Override
@@ -941,6 +949,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showNoDeviceDialog() {
+        enableView();
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
         }
@@ -1278,16 +1287,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 if (checkLogin()) {
                     gotoDispenser();
                 }
-                enableView();
                 break;
             case GOTO_DRYER:
                 if (checkLogin()) {
                     gotoDryer();
                 }
-                enableView();
                 break;
             case GOTO_WASHER:
-
                 if (checkLogin()) {
                     gotoWasher();
                 }
