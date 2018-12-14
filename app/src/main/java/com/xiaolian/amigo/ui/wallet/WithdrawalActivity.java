@@ -238,6 +238,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     public void showWithdrawAccount(String accountName, Long id) {
         withdrawId = id;
         tvWithdrawWay2.setText(accountName);
+        toggleButton();
     }
 
     @Override
@@ -256,6 +257,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
                         ChooseWithdrawAdapter.Item item = (ChooseWithdrawAdapter.Item) data.getSerializableExtra(Constant.EXTRA_KEY);
                         tvWithdrawWay2.setText(item.getContent());
                         withdrawId = item.getId();
+                        toggleButton();
                     }
                     break;
                 case REQUEST_CODE_PASSWORD_VERIFY://密码验证成功后才能进入退款流程
@@ -275,6 +277,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
                     this.withdrawId = null;
                     tvWithdrawWay2.setText("");
                     presenter.clearAccount();
+                    toggleButton();
                 }
                 break;
             default:

@@ -201,7 +201,7 @@
         <TextView
             android:id="@+id/text_room"
             style="@style/ListItemMainText"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:text="宿舍信息" />
 
         <ImageView
@@ -230,15 +230,12 @@
         android:id="@+id/tv_toolbar_title"
         style="@style/ToolBarTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_height="68dp"
+        android:gravity="center_vertical"
         android:text="安全设置" />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"
         android:background="#eee" />
     <RelativeLayout
         android:id="@+id/rel_edit_mobile"
