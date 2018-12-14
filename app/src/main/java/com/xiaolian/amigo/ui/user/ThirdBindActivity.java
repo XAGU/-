@@ -44,7 +44,6 @@ public class ThirdBindActivity extends UserBaseActivity implements IThirdBindVie
         getActivityComponent().inject(this);
         presenter.onAttach(this);
         setUnBinder(ButterKnife.bind(this));
-
         if(!TextUtils.isEmpty(nick_name)){
             setNickName(nick_name);
         }
@@ -53,6 +52,7 @@ public class ThirdBindActivity extends UserBaseActivity implements IThirdBindVie
         }else if(type == 1){
             iv_thrid.setImageResource(R.drawable.bangdingwei);
         }
+        setMainBackground(R.color.white);
     }
 
     @Override
