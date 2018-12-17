@@ -99,15 +99,17 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
 
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
-                button.setEnabled(true);
+
                 if (null == result.getError()) {
+
                     if (PayWay.getPayWay(type) == PayWay.ALIAPY) {
-                        requestAlipayArgs(result.getData().getId());
+                        requestAlipayArgs(result.getData().getId() , button);
                     } else if (PayWay.getPayWay(type) == PayWay.WECHAT) {
 //                        getMvpView().onError("暂不支持微信支付");
-                        requestWxpayArgs(result.getData().getId());
+                        requestWxpayArgs(result.getData().getId() , button);
                     }
                 } else {
+                    button.setEnabled(true);
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
@@ -120,7 +122,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
         });
     }
 
-    private void requestWxpayArgs(Long fundsId) {
+    private void requestWxpayArgs(Long fundsId , Button button) {
         this.fundsId = fundsId;
         WxpayTradeAppPayArgsReqDTO reqDTO = new WxpayTradeAppPayArgsReqDTO();
         reqDTO.setFundsId(fundsId);
@@ -131,13 +133,20 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                     getMvpView().wxpay(result.getData());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    button.setEnabled(true);
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                button.setEnabled(true);
             }
         });
 
     }
 
-    private void requestAlipayArgs(Long fundsId) {
+    private void requestAlipayArgs(Long fundsId , Button button) {
         this.fundsId = fundsId;
         AlipayTradeAppPayArgsReqDTO reqDTO = new AlipayTradeAppPayArgsReqDTO();
         reqDTO.setFundsId(fundsId);
@@ -150,8 +159,15 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                     getMvpView().alipay(result.getData().getReqArgs());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    button.setEnabled(true);
                 }
 
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                button.setEnabled(true);
             }
         });
     }

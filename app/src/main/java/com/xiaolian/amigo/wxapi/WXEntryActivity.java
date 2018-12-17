@@ -68,6 +68,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 }
                 //如果code值不为空，则说明是微信登录
                 if (!TextUtils.isEmpty(code)) {
+                    Log.e("WEIXIN", "onResp: "  + code);
                     EditProfileActivity.Event event = new EditProfileActivity.Event(EditProfileActivity.Event.EventType.WECHAT_CODE);
                     event.setMsg(code);
                     EventBus.getDefault().post(event);

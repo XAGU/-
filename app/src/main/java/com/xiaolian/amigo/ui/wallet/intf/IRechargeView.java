@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.wallet.intf;
 
+import android.widget.Button;
+
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeAdaptor;
@@ -35,7 +37,7 @@ public interface IRechargeView extends IBaseView {
      *
      * @param reqArgs 请求参数
      */
-    void alipay(String reqArgs);
+    void alipay(String reqArgs );
 
     void wxpay(PayUtil.IWeChatPayReq req);
 

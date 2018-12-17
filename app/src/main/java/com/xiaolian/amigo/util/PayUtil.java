@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.util;
 
 import android.app.Activity;
+import android.widget.Button;
 
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -103,6 +104,7 @@ public class PayUtil {
                 Log.d(TAG, result.toString());
                 EventBus.getDefault().post(new RechargeActivity.PayEvent(PayWay.ALIAPY,
                         result));
+                EventBus.getDefault().post(new RechargeActivity.ClickEvent(true));
             }
         };
         Thread payThread = new Thread(payRunnable);

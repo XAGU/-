@@ -490,6 +490,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 tv_alipay.setText(aliPayNickName);
                 break;
             case WECHAT_CODE:
+                Log.e("WEIXIN", "onEvent: WECHAT_CODE"   );
                 String weChatCode = (String)event.getMsg();
                 presenter.bindWeChat(weChatCode);
                 break;

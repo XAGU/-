@@ -211,7 +211,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     @Override
     public void alipay(String reqArgs) {
-        PayUtil.alpay(this, reqArgs);
+        PayUtil.alpay(this, reqArgs );
     }
 
     @Override
@@ -223,12 +223,14 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
                         // 检测是否安装微信
                         if (!msgApi.isWXAppInstalled()) {
                             onError("未安装微信");
+                            btSubmit.setEnabled(true);
                             return;
                         }
                         showLoading();
                         // 将该app注册到微信
                         msgApi.registerApp(req.getAppId());
                         PayUtil.weChatPay(msgApi, req);
+                        btSubmit.setEnabled(true);
                     } else {
                         onError("没有sd卡权限");
                     }
@@ -297,6 +299,16 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
         }
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void clickEvent(ClickEvent clickEvent){
+        if (clickEvent.isClick){
+            btSubmit.setEnabled(true);
+        }else{
+            btSubmit.setEnabled(false);
+        }
+    }
+
     @Data
     public static class PayEvent {
         private PayWay type;
@@ -314,4 +326,17 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
         }
     }
 
+
+    /**
+     * 是否可以点击事件
+     */
+    @Data
+    public static class ClickEvent{
+
+        private boolean isClick ;
+
+        public ClickEvent(boolean isClick){
+            this.isClick = isClick ;
+        }
+    }
 }
