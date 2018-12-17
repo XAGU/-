@@ -200,6 +200,51 @@ public class HomeFragment2 extends BaseFragment {
                 return false;
             }
         });
+//        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView,
+//                new RecyclerItemClickListener.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(View view, int position, MotionEvent e) {
+//                        try {
+//                            view.setEnabled(false);
+//                            Log.d(TAG, "recycler view onItemClick " + position);
+//                            if (items.get(position).getType() != HomeAdaptor.NORMAL_TYPE
+//                                    && items.get(position).getType() != HomeAdaptor.SMALL_TYPE) {
+//                                view.dispatchTouchEvent(e);
+//                                view.setEnabled(true);
+//                                return;
+//                            }
+//                            if (items.get(position).getType() == HomeAdaptor.NORMAL_TYPE
+//                                    || items.get(position).getType() == HomeAdaptor.SMALL_TYPE) {
+//                                disabledView = view;
+//                                view.setEnabled(false);
+//                                if (items.get(position).getRes() == R.drawable.shower) {
+//                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
+//                                } else if (items.get(position).getRes() == R.drawable.water) {
+//                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
+//                                } else if (items.get(position).getRes() == R.drawable.lost) {
+//                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
+//                                } else if (items.get(position).getRes() == R.drawable.dryer) {
+//                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRYER));
+//                                } else if (items.get(position).getRes() == R.drawable.washer2) {
+//                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
+//                                } else if (items.get(position).getRes() == R.drawable.gate) {
+//                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_GATE));
+//                                }else if (items.get(position).getRes() == R.drawable.hongganji_long){
+//                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRAYER2));
+//                                }
+//                            }
+//                        } catch (ArrayIndexOutOfBoundsException ex) {
+//                            Log.wtf(TAG, "数组越界", ex);
+//                        } catch (Exception ex) {
+//                            Log.wtf(TAG, ex);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onLongItemClick(View view, int position) {
+//                        Log.d(TAG, "recycler view onLongItemClick");
+//                    }
+//                }));
     }
 
 
