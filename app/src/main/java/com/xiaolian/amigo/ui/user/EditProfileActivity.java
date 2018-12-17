@@ -147,7 +147,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(EditProfileActivity.this);
-        presenter.getPersonProfile();
         setMainBackground(R.color.white);
     }
 

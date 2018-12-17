@@ -56,6 +56,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         Log.d(TAG, "onPayFinish, errCode = " + resp.errCode
                 + " type = " + resp.getType());
 
+        EventBus.getDefault().post(new RechargeActivity.ClickEvent(true));
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             switch (resp.errCode) {
                 case PayUtil.SUCCESS:

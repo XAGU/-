@@ -16,6 +16,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
+import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.util.Constant;
 
 import org.greenrobot.eventbus.EventBus;
@@ -52,6 +53,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onResp(BaseResp resp) {
         int result = 0;
+
+        // 收到微信会调后让充值按钮可以点击
+        EventBus.getDefault().post(new RechargeActivity.ClickEvent(true));
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 Log.e(TAG, "onResp: ERR_OK" );
@@ -81,6 +85,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 EditProfileActivity.Event event1 = new EditProfileActivity.Event(EditProfileActivity.Event.EventType.CANCEL_WECHAT_AUTH);
                 EventBus.getDefault().post(event1);
+
                 break;
             default:
                 break;

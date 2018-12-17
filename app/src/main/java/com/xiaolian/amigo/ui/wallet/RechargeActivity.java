@@ -230,7 +230,6 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
                         // 将该app注册到微信
                         msgApi.registerApp(req.getAppId());
                         PayUtil.weChatPay(msgApi, req);
-                        btSubmit.setEnabled(true);
                     } else {
                         onError("没有sd卡权限");
                     }

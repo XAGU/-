@@ -104,7 +104,7 @@ public class PayUtil {
                 Log.d(TAG, result.toString());
                 EventBus.getDefault().post(new RechargeActivity.PayEvent(PayWay.ALIAPY,
                         result));
-                EventBus.getDefault().post(new RechargeActivity.ClickEvent(true));
+
             }
         };
         Thread payThread = new Thread(payRunnable);
