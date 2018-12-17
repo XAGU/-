@@ -61,6 +61,7 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
             newStateCode = newState ;
             handler.post(() -> {
                 if (bluetoothConnectStatusListener != null) {
+                    Log.e(TAG, "onConnectionStateChange: " + newState +'\n' + newStateCode );
                     bluetoothConnectStatusListener.onConnectStatusChanged(newState , newStateCode);
                 }
             });
@@ -319,9 +320,19 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
 
         handler.post(() -> {
             if (bluetoothConnectStatusListener != null) {
+                Log.e(TAG, "closeGatt: " );
                 bluetoothConnectStatusListener.onConnectStatusChanged(BluetoothConstants.STATE_DISCONNECTED , newStateCode);
             }
         });
+    }
+
+    @Override
+    public void closeGattNoSendListener() {
+        if (bluetoothGatt != null) {
+            bluetoothGatt.close();
+            bluetoothGatt = null;
+        }
+        connectState = BluetoothConstants.STATE_DISCONNECTED;
     }
 
     @Override

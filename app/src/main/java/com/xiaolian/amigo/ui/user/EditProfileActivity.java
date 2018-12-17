@@ -152,6 +152,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     }
 
 
+
+
     @Override
     protected int setTitle() {
         return R.string.edit_profile;
@@ -389,11 +391,12 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     @Override
     protected void onResume() {
         super.onResume();
-        if (isNeedRefresh) {
-            presenter.getPersonProfile();
-            isNeedRefresh = false;
-        }
+//        if (isNeedRefresh) {
+//            presenter.getPersonProfile();
+//            isNeedRefresh = false;
+//        }
 
+        presenter.getPersonProfile();
         getCertificationStatus(presenter.getCertificationStatus());
     }
 
@@ -502,12 +505,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
     @Data
     public static class Event {

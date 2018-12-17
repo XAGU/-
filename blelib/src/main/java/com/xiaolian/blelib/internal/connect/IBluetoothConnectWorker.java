@@ -38,6 +38,11 @@ public interface IBluetoothConnectWorker {
 
     void closeGatt();
 
+    /**
+     * 连接时如果已经连接时，先关闭连接，不需要发送未连接消息
+     */
+    void closeGattNoSendListener();
+
     boolean discoverService();
 
     int getCurrentStatus();

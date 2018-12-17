@@ -813,6 +813,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 Log.i(TAG, "设备连接到达30s用户仍然未支付进入用水环节。");
 
                 // 关闭蓝牙连接
+
+                android.util.Log.e("DeviceBasePresenter", "onFinish: >>>>>> 10  " );
                 presenter.closeBleConnection();
 
 
@@ -950,11 +952,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Override
     public void getBlePermission() {
 //        super.getBlePermission();
-
         RxPermissions rxPermissions = RxPermissions.getInstance(this);
         if (rxPermissions.isGranted(Manifest.permission.BLUETOOTH)
-                &&rxPermissions.isGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
-                && rxPermissions.isGranted(Manifest.permission.ACCESS_FINE_LOCATION)){
+                &&(rxPermissions.isGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
+                || rxPermissions.isGranted(Manifest.permission.ACCESS_FINE_LOCATION))){
             if (!isBleOpen()){
                 startBleTipActivity();
             }else{
@@ -1218,6 +1219,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 结账中不关闭观察者
         if (presenter.getStep() != TradeStep.CLOSE_VALVE) {
             // 异常发生时关闭蓝牙连接
+            android.util.Log.e("DeviceBasePresenter", "onError: >>>>> 10    tag ::  " + tradeError.getBtnTag() +'\n' + "title ::" + tradeError.getErrorTip()   );
             presenter.closeBleConnection();
         }
 

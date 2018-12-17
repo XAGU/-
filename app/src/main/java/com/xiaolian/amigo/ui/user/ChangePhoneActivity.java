@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.app.Dialog;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,6 +14,8 @@ import com.xiaolian.amigo.ui.user.intf.IChangePhonePresenter;
 import com.xiaolian.amigo.ui.user.intf.IChangePhoneView;
 import com.xiaolian.amigo.ui.widget.ClearableEditText;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
+import com.xiaolian.amigo.ui.widget.dialog.BookingCancelDialog;
+import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.CountDownButtonHelper;
 import com.xiaolian.amigo.util.ViewUtil;
@@ -23,7 +26,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ChangePhoneActivity extends UserBaseActivity implements IChangePhoneView {
+public class ChangePhoneActivity extends UserBaseActivity implements IChangePhoneView  ,PrepayDialog.OnOkClickListener
+ , PrepayDialog.OnCancelClickListener {
 
     @BindView(R.id.bt_submit)
     Button submitPhone;
@@ -42,6 +46,7 @@ public class ChangePhoneActivity extends UserBaseActivity implements IChangePhon
 
     CountDownButtonHelper cdb;
 
+    BookingCancelDialog bookingCancelDialog ;
     @Override
     protected void initView() {
         getActivityComponent().inject(this);
@@ -57,10 +62,9 @@ public class ChangePhoneActivity extends UserBaseActivity implements IChangePhon
                 showVerifyCode(true);
             }
         });
-
+        initDialog();
         submitPhone.setOnClickListener((view)->{
-            submitPhone.setEnabled(false);
-            presenter.changePhoneNumber(etPhone.getText().toString(),etCode.getText().toString() , submitPhone);
+            if (bookingCancelDialog != null) bookingCancelDialog.show();
         });
 
         btVerifyCode.setOnClickListener((view)->{
@@ -72,6 +76,16 @@ public class ChangePhoneActivity extends UserBaseActivity implements IChangePhon
             }
             presenter.getVerification(etPhone.getText().toString() , btVerifyCode);
         });
+    }
+
+    private void initDialog(){
+        if (bookingCancelDialog == null){
+            bookingCancelDialog = new BookingCancelDialog(this);
+            bookingCancelDialog.setTvTitle("确认修改手机号码？");
+            bookingCancelDialog.setTvTip("修改手机号需重新登录");
+            bookingCancelDialog.setOnCancelClickListener(this);
+            bookingCancelDialog.setOnOkClickListener(this);
+        }
     }
 
     @Override
@@ -124,5 +138,16 @@ public class ChangePhoneActivity extends UserBaseActivity implements IChangePhon
     protected void onDestroy() {
         super.onDestroy();
         cdb.cancel();
+    }
+
+    @Override
+    public void onOkClick(Dialog dialog) {
+        dialog.dismiss();
+    }
+
+    @Override
+    public void onCancelClick(Dialog dialog) {
+        presenter.changePhoneNumber(etPhone.getText().toString(),etCode.getText().toString() , submitPhone);
+        dialog.dismiss();
     }
 }

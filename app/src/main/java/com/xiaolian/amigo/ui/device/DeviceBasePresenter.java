@@ -366,6 +366,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             public void onFinish() {
                 Log.i(TAG, "设备连接超时。");
                 // 关闭蓝牙连接
+                android.util.Log.e(TAG, "onFinish:>>>>> 1 " );
                 closeBleConnection();
                 writeLogFile("onConnect" ,"macAddress : "  + macAddress   ,"设备连接超时");
                 if (getMvpView() != null) {
@@ -486,6 +487,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         // 3、创建共享连接q
         Log.d(TAG, "注册连接监听");
         bleDataManager.registerConnectStatusListener(currentMacAddress, (status ,newStatus) -> {
+            android.util.Log.e(TAG, "realConnect: " + status +'\n' + newStatus );
             // 处理蓝牙连接状态
             switch (status) {
                 case BluetoothConstants.STATE_CONNECTED:
@@ -778,6 +780,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             writeLogFile("onWrite" , "command：" + command,"蓝牙未连接status："+ bleDataManager.getConnectStatus(currentMacAddress));
 
             if (getMvpView() != null) {
+                android.util.Log.e(TAG, "onWrite:  >>> 蓝牙未连接 " );
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
             }
             return;
@@ -856,6 +859,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
             // 跳转至连接失败页面
             if (getMvpView() != null) {
+
+                android.util.Log.e(TAG, "handleDisConnectError: "  );
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
             }
             handleBleClose.set(false);
@@ -873,6 +878,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         if (null != timer) {
             timer.cancel();
         }
+        android.util.Log.e(TAG, "onDisConnect:>>>>>> 2  " );
         closeBleConnection();
     }
 
@@ -1135,6 +1141,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             String nextCommand = result.getData().getNextCommand();
             if (result.getData().getSrcCommandType() == null) {
                 Log.wtf(TAG, "服务器未返回ScrCommandType");
+                android.util.Log.e(TAG, "handleResult: >>>>>> 3 " );
                 closeBleConnection();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.SYSTEM_ERROR);
@@ -1357,6 +1364,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
                     } else {
                         // 提示用户设备已被其它用户使用
+
+                        android.util.Log.e(TAG, "handleResult: >>>>>> 4 " );
                         closeBleConnection();
                         if (getMvpView() != null) {
                             getMvpView().onError(TradeError.DEVICE_BUSY);
@@ -1366,6 +1375,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     }
                 }
             } else if (result.getError().getCode() == BleErrorType.BLE_UNKNOWN_ERROR.getCode()) {
+                android.util.Log.e(TAG, "handleResult: >>>>>> 5" );
                 closeBleConnection();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.DEVICE_BROKEN_2);
@@ -1375,6 +1385,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             } else if (result.getError().getCode() == BleErrorType.BLE_CMD_RESULT_ERROR.getCode()) {
                 Log.i(TAG, "设备未完全开启");
                 if (getMvpView() != null) {
+                    android.util.Log.e(TAG, "handleResult: ");
                     getMvpView().onError(TradeError.CONNECT_ERROR_1);
                 }
 //                uploadLog();
@@ -1384,6 +1395,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 // 确认支付时异常
                 if (Command.OPEN_VALVE == Command.getCommand(cmdType)) {
                     Log.wtf(TAG, "设备开阀异常");
+                    android.util.Log.e(TAG, "handleResult: >>>>> 6"  );
                     closeBleConnection();
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.DEVICE_BROKEN_2);
@@ -1392,6 +1404,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 //                    uploadLog();
                 } else if (Command.CLOSE_VALVE == Command.getCommand(cmdType) || Command.PRE_CHECK == Command.getCommand(cmdType) || Command.CHECK_OUT == Command.getCommand(cmdType)) {
                     Log.wtf(TAG, "订单结算异常");
+
+                    android.util.Log.e(TAG, "handleResult:>>>>>> 7 " );
                     closeBleConnection();
                     // 结算时异常
                     if (getMvpView() != null) {
@@ -1404,6 +1418,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             } else {
                 // 系统异常
                 Log.wtf(TAG, String.format("服务器后台出错, errorCode:%s, errorMsg:%s", result.getError().getCode(), result.getError().getDisplayMessage()));
+                android.util.Log.e(TAG, "handleResult: >>>>>> 8  " );
                 closeBleConnection();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.SYSTEM_ERROR);
@@ -1611,6 +1626,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         writeLogFile("onClose" ,"","获取缓存中的设备响应，去重新获取关阀指令 . saveDeviceResult： " + saveDeviceResult +"， orderId：" + orderId);
                         if (TextUtils.isEmpty(saveDeviceResult)) {
                             Log.wtf(TAG, "从缓存中获取上一次的设备响应失败");
+
+                            android.util.Log.e(TAG, "onClose: " );
+                            android.util.Log.e(TAG, "onClose: >>>>> 9  " );
                             closeBleConnection();
                             if (getMvpView() != null) {
                                 getMvpView().onError(TradeError.CONNECT_ERROR_2);
@@ -1639,7 +1657,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void closeBleConnection() {
-
+        android.util.Log.e(TAG, "closeBleConnection: " );
         // 清空连接观察者
         clearObservers();
         bleDataManager.unregisterConnectStatusListener(currentMacAddress);

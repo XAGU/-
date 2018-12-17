@@ -66,7 +66,9 @@ public class BluetoothClient implements IBluetoothClient {
         if (bluetoothConnectWorker != null) {
             if (bluetoothConnectWorker.getCurrentStatus() == BluetoothConstants.STATE_CONNECTED) {
                 Log.d(TAG, "[connect]bluetoothConnectWorker不为空，且STATE_CONNECTED, 关闭GATT");
-                bluetoothConnectWorker.closeGatt();
+//                bluetoothConnectWorker.closeGatt();
+                // 不发送关闭Gatt消息
+                bluetoothConnectWorker.closeGattNoSendListener();
                 handler.postDelayed(() -> {
                     Log.d(TAG, "[connect]500毫秒延时后重新开启GATT");
                     bluetoothConnectWorker = new BluetoothConnectWorker(macAddress);

@@ -70,7 +70,6 @@ import com.xiaolian.amigo.util.MD5Util;
 import com.xiaolian.amigo.util.MyInterpolator;
 import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.ScreenUtils;
-import com.xiaolian.amigo.util.TimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

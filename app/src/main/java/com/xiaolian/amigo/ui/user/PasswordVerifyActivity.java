@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.user.intf.IPasswordVerifyPresenter;
 import com.xiaolian.amigo.ui.user.intf.IPasswordVerifyView;
-import com.xiaolian.amigo.ui.widget.ClearableEditText;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.util.ViewUtil;
 
