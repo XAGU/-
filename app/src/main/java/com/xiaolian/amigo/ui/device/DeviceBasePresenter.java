@@ -59,13 +59,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
@@ -247,6 +245,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             writeLogFile("cancelTimer" , "","倒计时为空，不需要取消");
         }
     }
+
+
 
 
     /**
@@ -1058,7 +1058,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }else if (TextUtils.equals(Command.UPDATE_DEVICE_RATE.getRespPrefix() ,prefix)){
                 type = Type.UPDATE_RATE ;
             }
-            recordUseNumber(type,Target.DEVICE ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,deviceTimeStamps));
+            if (type != null) {
+                recordUseNumber(type, Target.DEVICE, Result.SUCCESS, TimeUtils.diffTime(System.currentTimeMillis(), deviceTimeStamps));
+            }
         }catch (Exception e){
             android.util.Log.e(TAG, "recordCommandResult: " + e.getMessage() );
         }
@@ -1113,7 +1115,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 writeLogFile("processCommandResult" ,"result : "  + result   ,"通知主线程更新数据 ：" +  result1.getData()   );
                 Log.i(TAG, "通知主线程更新数据。" + result1.getData());
                 handleResult(result1);
-//                recordUseNumber(type, Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() , serviceTimeStamps));
             }
 
 
@@ -1127,8 +1128,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
                 }
                 writeLogFile("processCommandResult" ,"result : "  + result   ," 服务器获取指令失败 ："  + e.getMessage()    );
-//                uploadLog();
-                recordUseNumber(type, Target.SERVER ,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() , serviceTimeStamps));
+                if(type != null) {
+                    recordUseNumber(type, Target.SERVER, Result.FAILED, TimeUtils.diffTime(System.currentTimeMillis(), serviceTimeStamps));
+                }
             }
         }, AndroidSchedulers.mainThread());
     }
@@ -1560,7 +1562,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
                     onWrite(openCmd);
 
-                    writeLogFile("pay" ,"prepay:  " + prepay   +",bonusId :" +bonusId  +",deviceNo:"  + deviceNo,"支付创建订单成功。orderId：" + orderId  +",\"开始下发开阀指令。command：\" + openCmd");
+                    writeLogFile("pay" ,"prepay:  " + prepay   +",bonusId :" +bonusId  +",deviceNo:"  + deviceNo,"支付创建订单成功。orderId：" + orderId  +",'\t'开始下发开阀指令。command: '\t'" + openCmd);
                     recordUseNumber(Type.OPEN ,Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                 } else {
                     Log.wtf(TAG, "支付创建订单失败。");

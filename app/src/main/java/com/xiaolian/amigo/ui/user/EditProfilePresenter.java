@@ -86,7 +86,6 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                         }else{
                             nick_name = result.getData().getWechatBind().getNickname();
                         }
-
                         getMvpView().showWechatBind(nick_name);
                     }else{
                         getMvpView().showWechatBind(null);

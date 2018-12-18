@@ -815,13 +815,13 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 // 关闭蓝牙连接
 
                 android.util.Log.e("DeviceBasePresenter", "onFinish: >>>>>> 10  " );
-                presenter.closeBleConnection();
-
-
+                if (presenter.getStep() == TradeStep.CLOSE_VALVE) {
+                    presenter.closeBleConnection();
+                }
                 onError(TradeError.CONNECT_ERROR_1);
             }
         };
-        Log.i(TAG, "启动30s定时器，监测用户是否长时间占用设备连接。");
+        android.util.Log.e(TAG, "initConnectSuccessTimer: 启动30s定时器，监测用户是否长时间占用设备连接。");
         timer.start();
     }
 
@@ -1222,7 +1222,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             android.util.Log.e("DeviceBasePresenter", "onError: >>>>> 10    tag ::  " + tradeError.getBtnTag() +'\n' + "title ::" + tradeError.getErrorTip()   );
             presenter.closeBleConnection();
         }
-
+        
         // 显示错误页面，必须加这行判断，否则在activity销毁时会报空指针错误
         if (null != llContentNormal && null != llContentShower && null != llContentUnconnected && null != llError) {
             llContentNormal.setVisibility(View.GONE);
@@ -1267,6 +1267,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     protected void back2Main() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        this.finish();
     }
 
     public void changeDormitory() {
@@ -1276,6 +1277,23 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     new Intent(this, EditDormitoryActivity.class)
                             .putExtra(EditDormitoryActivity.INTENT_KEY_LAST_DORMITORY, residenceId),
                     CHOOSE_DORMITORY_CODE);
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (timer != null){
+            timer.start();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (timer != null){
+            timer.cancel();
         }
     }
 

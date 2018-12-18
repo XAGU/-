@@ -2,7 +2,6 @@ package com.xiaolian.amigo.ui.user;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -247,24 +246,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 break;
             case R.id.rel_edit_room:
                 isNeedRefresh = true;
-//                if (TextUtils.isEmpty(tvResidence.getText())) {
-//                    intent = new Intent(this, EditDormitoryActivity.class);
-//                    intent.putExtra(Constant.EXTRA_KEY, false);
-//                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
-//                    intent = new Intent(this, ListChooseActivity.class);
-//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-//                            ListChooseActivity.ACTION_LIST_BUILDING);
-//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.EDIT_PROFILE_ACTIVITY_SRC);
-//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
-//                    startActivity(intent);
-//                } else {
-//                    intent = new Intent(this, EditDormitoryActivity.class);
-//                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
-//                }
-
-//                intent = new Intent(this, EditDormitoryActivity.class);
-//                startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
                 intent = new Intent(this, ListChooseActivity.class);
                 intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                 intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
@@ -358,6 +339,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
     @Override
     public void showWechatBind(String nickName) {
+        Log.e(TAG, "showWechatBind: " + nickName );
         if(!TextUtils.isEmpty(nickName)) {
             tv_wechat.setText(nickName);
             weChatNickName = nickName;
@@ -390,11 +372,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     @Override
     protected void onResume() {
         super.onResume();
-//        if (isNeedRefresh) {
-//            presenter.getPersonProfile();
-//            isNeedRefresh = false;
-//        }
-
         presenter.getPersonProfile();
         getCertificationStatus(presenter.getCertificationStatus());
     }
@@ -492,7 +469,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 tv_alipay.setText(aliPayNickName);
                 break;
             case WECHAT_CODE:
-                Log.e("WEIXIN", "onEvent: WECHAT_CODE"   );
                 String weChatCode = (String)event.getMsg();
                 presenter.bindWeChat(weChatCode);
                 break;
@@ -544,7 +520,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     }
 
     private void showUserPhone(String str) {
-        // String sFinalAge=getResources().getString(R.string.alert,nAge);
         if (!TextUtils.isEmpty(str)) {
             userPhone = str;
             String hide = "****";
