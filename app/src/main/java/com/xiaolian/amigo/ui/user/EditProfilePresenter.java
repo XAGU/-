@@ -10,7 +10,6 @@ import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.alipay.AliPayBindInAppReq;
-import com.xiaolian.amigo.data.network.model.alipay.AliPayBindQueryReq;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayAuthInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AuthResult;
 import com.xiaolian.amigo.data.network.model.common.ApplySchoolCheckRespDTO;
@@ -29,8 +28,9 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -56,6 +56,10 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
     @Override
     public void getPersonProfile() {
         addObserver(userDataManager.getUserInfo(), new NetworkObserver<ApiResult<EntireUserDTO>>() {
+            @Override
+            public void onStart() {
+
+            }
 
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
@@ -67,7 +71,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     getMvpView().setResidenceName(result.getData().getResidenceName());
                     getMvpView().showBathroomPassword(userDataManager.isExistBathroomBiz(), result.getData().isHadSetBathPassword());
                     if (result.getData().getAlipayBind() != null && result.getData().getAlipayBind().isIsBinding()){
-                        String nick_name = "";
+                        String nick_name ;
                         if (null == result.getData().getAlipayBind().getAlipayNickName()){
                             nick_name = "未设置昵称";
                         }else{
@@ -80,7 +84,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     }
 
                     if(result.getData().getWechatBind() != null && result.getData().getWechatBind().getResult()) {
-                        String nick_name = "";
+                        String nick_name ;
                         if (null == result.getData().getWechatBind().getNickname()){
                             nick_name = "未设置昵称";
                         }else{
@@ -197,42 +201,47 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
 
     private void apayAuth(final String authInfo, final Activity activity){
         Log.e(TAG, "apayAuth: "+authInfo );
-
-        Observable.create(new Observable.OnSubscribe<AuthResult>(){
-
-            @Override
-            public void call(Subscriber<? super AuthResult> subscriber) {
-                AuthTask authTask = new AuthTask(activity);
-                // 调用授权接口，获取授权结果
-                Map<String, String> result = authTask.authV2(authInfo, true);
-                AuthResult authResult = new AuthResult(result, true);
-                subscriber.onNext(authResult);
-                Log.e(TAG, "apayAuth call: " );
-            }
-        }).subscribeOn(Schedulers.io())
+        Observable.just(authInfo)
+                .map(s -> {
+                    AuthTask authTask = new AuthTask(activity);
+                    Map<String, String> result = authTask.authV2(authInfo, true);
+                    AuthResult authResult = new AuthResult(result, true);
+                    return authResult ;
+                }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((authResult) -> {
-                            String resultStatus = authResult.getResultStatus();
-                            // 判断resultStatus 为“9000”且result_code
-                            // 为“200”则代表授权成功，具体状态码代表含义可参考授权接口文档
-                            if (TextUtils.equals(resultStatus, "9000") && TextUtils.equals(authResult.getResultCode(), "200")) {
-                                String authCode = authResult.getAuthCode();
-                                //传递给服务端获取其他信息
-                                bindAlipay(authCode);
+                .subscribe(authResult -> {
+                    String resultStatus = authResult.getResultStatus();
+                    // 判断resultStatus 为“9000”且result_code
+                    // 为“200”则代表授权成功，具体状态码代表含义可参考授权接口文档
+                    if (TextUtils.equals(resultStatus, "9000") && TextUtils.equals(authResult.getResultCode(), "200")) {
+                        String authCode = authResult.getAuthCode();
+                        //传递给服务端获取其他信息
+                        bindAlipay(authCode);
 
-                            } else {
-                                // 其他状态值则为授权失败
-                                getMvpView().onError("已退出支付宝授权");
+                    } else {
+                        // 其他状态值则为授权失败
+                        getMvpView().onError("已退出支付宝授权");
 
-                            }
-                        }
-                );
+                    }
+                });
+//        Observable.create((Observable.OnSubscribe<AuthResult>) subscriber -> {
+//            AuthTask authTask = new AuthTask(activity);
+//            // 调用授权接口，获取授权结果
+//
+//            subscriber.onNext(authResult);
+//            Log.e(TAG, "apayAuth call: " );
+//        }).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe((authResult) -> {
+//
+//                );
     }
 
     private void bindAlipay(String authCode){
         AliPayBindInAppReq req = new AliPayBindInAppReq();
         req.setAuthCode(authCode);
         addObserver(userDataManager.bindAlipayInApp(req),new NetworkObserver<ApiResult<User.AlipayBindBean>>(){
+
             @Override
             public void onReady(ApiResult<User.AlipayBindBean> result) {
                 if(null == result.getError()){
