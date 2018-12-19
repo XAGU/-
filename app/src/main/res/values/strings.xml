@@ -65,7 +65,7 @@
     <string name="find_password">找回密码</string>
     <string name="please_enter_new_six_pure_number_password">请输入新的6位纯数字密码</string>
     <string name="save">保存</string>
-    <string name="bathroom_password_find">浴室密码找回</string>
+    <string name="bathroom_password_find">修改浴室密码</string>
     <string name="get_verification_code">获取验证码</string>
     <string name="description_bathroom_password">浴室密码说明</string>
     <string name="choose_bonus">挑选代金券</string>
