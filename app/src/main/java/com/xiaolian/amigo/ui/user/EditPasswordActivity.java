@@ -51,14 +51,14 @@ public class EditPasswordActivity extends UserBaseActivity implements IEditPassw
         btSubmit.setEnabled(false);
         if (TextUtils.equals(etNewPassword.getText(), etNewPasswordAgain.getText())) {
             if (TextUtils.equals(etNewPassword.getText() ,etOldPassword.getText())){
-                showMessage("新密码与原密码一致");
+                onError("新密码与原密码一致");
                 btSubmit.setEnabled(true);
             }else {
                 presenter.updatePassword(etNewPassword.getText().toString().trim(),
                         etOldPassword.getText().toString().trim(), btSubmit);
             }
         } else {
-            showMessage("两次输入的密码不一致");
+            onError("两次输入的密码不一致");
             btSubmit.setEnabled(true);
         }
     }
