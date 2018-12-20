@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.more;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -19,6 +20,9 @@ import com.xiaolian.amigo.ui.more.intf.IAboutUsView;
 import com.xiaolian.amigo.ui.widget.dialog.ChangeHostDialog;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.FileUtils;
+
+import java.io.File;
 
 import javax.inject.Inject;
 
@@ -35,6 +39,9 @@ import butterknife.OnLongClick;
  */
 
 public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
+
+    private static final String DeviceLogFileName ="DeviceLog.txt" ;
+
     @Inject
     IAboutUsPresenter<IAboutUsView> presenter;
     @BindView(R.id.tv_version)
@@ -43,6 +50,9 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
     RelativeLayout rlUpdate;
     @BindView(R.id.tv_new_version)
     TextView tvNewVersion;
+
+    @BindView(R.id.rl_upload_error)
+    RelativeLayout rlUploadError ;
     private RxPermissions rxPermissions;
     private String versionName;
     private Integer versionCode;
@@ -100,6 +110,18 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
         tvNewVersion.setText("V" + version.getVersionName());
     }
 
+
+    @OnClick(R.id.rl_upload_error)
+    public void uploadError(){
+        rlUploadError.setEnabled(false);
+        if (presenter != null) {
+            presenter.uploadErrorLog();
+        }else{
+            rlUploadError.setEnabled(true);
+        }
+    }
+
+
     @OnClick(R.id.rl_update)
     void onUpdateClick() {
         showUpdateDialog(model);
@@ -125,6 +147,41 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
         return true;
     }
 
+
+    @Override
+    public String getVersionName() {
+        return AppUtils.getVersionName(this);
+    }
+
+
+    @Override
+    public void uploadSuccess() {
+        onSuccess("故障信息已提交成功");
+        deleteErrorLogFile();
+    }
+
+    @Override
+    public void rlClickAble() {
+        rlUploadError.setEnabled(true);
+    }
+
+    private void deleteErrorLogFile(){
+        if (presenter == null) return ;
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/" +presenter.getUserId()+"/";
+        File path = new File(filePath);
+        if (!path.exists() && !path.mkdirs()) {
+            return ;
+        }
+
+        File outputImage = new File(filePath, DeviceLogFileName );
+        try {
+            if (outputImage.exists()) {
+                FileUtils.deleteFile(outputImage);
+            }
+        } catch (Exception e) {
+            com.xiaolian.amigo.util.Log.e(TAG, e.getMessage());
+        }
+    }
     @Override
     protected void onDestroy() {
         presenter.onDetach();

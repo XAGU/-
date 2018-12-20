@@ -27,6 +27,7 @@ import com.xiaolian.amigo.data.vo.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import rx.Observable;
 import rx.Observer;
@@ -183,4 +184,10 @@ public interface IMainDataManager {
     void setIsFirstAfterLogin(boolean b);
 
     Observable<ApiResult<Void>> revokeToken();
+
+
+    /**
+     * 上传错误日志
+     */
+    Observable<ApiResult<BooleanRespDTO>> uploadLog(@Body RequestBody body);
 }

@@ -24,4 +24,10 @@ public interface IAboutUsView extends IBaseView {
      * @param version 版本信息
      */
     void showUpdateButton(VersionDTO version);
+
+    String getVersionName();
+
+    void uploadSuccess();
+
+    void rlClickAble();
 }

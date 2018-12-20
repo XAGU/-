@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.IBathroomApi;
 import com.xiaolian.amigo.data.network.IDeviceApi;
+import com.xiaolian.amigo.data.network.IDeviceConnectErrorApi;
 import com.xiaolian.amigo.data.network.INotifyApi;
 import com.xiaolian.amigo.data.network.IOrderApi;
 import com.xiaolian.amigo.data.network.ISchoolApi;
@@ -44,6 +45,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import rx.Observable;
@@ -70,6 +72,7 @@ public class MainDataManager implements IMainDataManager {
     private IVersionApi versionApi;
     private IBathroomApi bathroomApi;
     private ITokenApi tokenApi ;
+    private IDeviceConnectErrorApi connectErrorApi ;
 
     @Inject
     public MainDataManager(@BathroomServer Retrofit bathroomRetrofit,
@@ -86,6 +89,7 @@ public class MainDataManager implements IMainDataManager {
         this.versionApi = retrofit.create(IVersionApi.class);
         this.tokenApi = retrofit.create(ITokenApi.class);
         this.bathroomApi = bathroomRetrofit.create(IBathroomApi.class);
+        this.connectErrorApi = retrofit.create(IDeviceConnectErrorApi.class);
     }
 
 
@@ -327,6 +331,12 @@ public class MainDataManager implements IMainDataManager {
     @Override
     public Observable<ApiResult<Void>> revokeToken() {
        return  tokenApi.revokeToken();
+    }
+
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> uploadLog(RequestBody body) {
+        return connectErrorApi.uploadLog(body);
     }
 
 }

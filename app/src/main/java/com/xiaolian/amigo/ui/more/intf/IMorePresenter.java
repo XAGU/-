@@ -38,6 +38,6 @@ public interface IMorePresenter<V extends IMoreView> extends IBasePresenter<V> {
 
     void setPushTag(String pushTag);
 
-    void uploadErrorLog();
+
 
 }

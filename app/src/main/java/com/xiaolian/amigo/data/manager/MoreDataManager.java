@@ -25,11 +25,9 @@ public class MoreDataManager implements IMoreDataManager {
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
-    private IDeviceConnectErrorApi connectErrorApi ;
     @Inject
-    public MoreDataManager(ISharedPreferencesHelp sharedPreferencesHelp , @UserServer Retrofit retrofit) {
+    public MoreDataManager(ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
-        this.connectErrorApi  = retrofit.create(IDeviceConnectErrorApi.class) ;
     }
 
     @Override
@@ -83,8 +81,4 @@ public class MoreDataManager implements IMoreDataManager {
         return sharedPreferencesHelp.getUserInfo().getMobile();
     }
 
-    @Override
-    public Observable<ApiResult<BooleanRespDTO>> uploadLog(RequestBody body) {
-        return connectErrorApi.uploadLog(body);
-    }
 }

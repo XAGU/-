@@ -20,5 +20,5 @@ public interface IMoreView extends IBaseView {
      */
     void showTransfer();
 
-    String getVersionName();
+
 }

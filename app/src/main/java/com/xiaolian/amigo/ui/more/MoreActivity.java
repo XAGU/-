@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.more;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -17,8 +18,10 @@ import com.xiaolian.amigo.ui.more.intf.IMoreView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.FileUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,11 +40,12 @@ import butterknife.OnClick;
 public class MoreActivity extends MoreBaseActivity implements IMoreView {
     private static final String TAG = MoreActivity.class.getSimpleName();
 
+
+
     List<MoreAdapter.MoreModel> items = new ArrayList<MoreAdapter.MoreModel>() {
         {
             add(new MoreAdapter.MoreModel("帮助中心", WebActivity.class, Constant.H5_HELP));
             add(new MoreAdapter.MoreModel("意见反馈", WebActivity.class, Constant.H5_FEEDBACK));
-            add(new MoreAdapter.MoreModel("错误上报", null, ""));
             add(new MoreAdapter.MoreModel("用户协议", WebActivity.class, Constant.H5_AGREEMENT));
             add(new MoreAdapter.MoreModel("关于我们", AboutUsActivity.class));
         }
@@ -70,12 +74,7 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
                 if (clz != null) {
                     startActivity(new Intent(MoreActivity.this, clz)
                             .putExtra(WebActivity.INTENT_KEY_URL, items.get(position).getExtra()
-                                    + "?accessToken=" + presenter.getAccessToken() +"&refreshToken=" + presenter.getRefreshToken()));
-                }else{
-                    if (presenter != null){
-                        presenter.uploadErrorLog();
-                    }
-
+                                    + "?accessToken=" + presenter.getAccessToken() + "&refreshToken=" + presenter.getRefreshToken()));
                 }
             }
 
@@ -124,10 +123,8 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
         items.add(new MoreAdapter.MoreModel("\"校OK\"账户迁移", WebActivity.class, Constant.H5_MIGRATE));
     }
 
-    @Override
-    public String getVersionName() {
-        return AppUtils.getVersionName(this);
-    }
+
+
 
     @Override
     protected void onDestroy() {
