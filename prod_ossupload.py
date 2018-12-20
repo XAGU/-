@@ -10,7 +10,8 @@ login_payload   = ''
 headers         = {'content-type':'application/json'}
 oss_url         = 'https://api.xiaolian365.com/c/oss/credential/one'
 oss_payload     = ''
-token           = ''
+accessToken     = ''
+refreshToken    = ''
 AccessKeyId     = ''
 AccessKeySecret = ''
 SecurityToken   = ''
@@ -59,7 +60,7 @@ def getParam():
     global Bucket
     global headers
     global oss_url
-    headers = {'content-type':'application/json', 'token': token}
+    headers = {'content-type':'application/json', 'accessToken': accessToken , 'refreshToken': refreshToken}
     response = requests.post(oss_url, headers=headers)
     data = json.loads(response.text)
     AccessKeyId     = data['data']['accessKeyId']
@@ -74,7 +75,8 @@ def login():
     global fileName
     global login_url
     global login_payload
-    global token
+    global accessToken
+    global refreshToken
     global uploadConstant
     if ( len(sys.argv) > 2 ):
         mobile     = sys.argv[1]
@@ -90,7 +92,8 @@ def login():
         login_payload = {'mobile': mobile, 'password': password ,'appVersion':version,'system':2, 'brand':0, 'model':0 }
         response = requests.post(login_url, data=json.dumps(login_payload), headers=headers)
         print(response.text)
-        token = json.loads(response.text)['data']['token']
+        accessToken = json.loads(response.text)['data']['accessToken']
+        refreshToken = json.loads(response.text)['data']['refreshToken']
         getParam()
     else:
         print("Example: %s mobile password version" % sys.argv[0])

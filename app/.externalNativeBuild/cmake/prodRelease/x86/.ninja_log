@@ -1,0 +1,7 @@
+# ninja log v5
+5	685	0	CMakeFiles/algor.dir/src/main/cpp/src/trade_rule.c.o	4feb4c13e66e7f7c
+4	806	0	CMakeFiles/algor.dir/src/main/cpp/src/des.c.o	257b098d7c151a89
+1	945	0	CMakeFiles/algor.dir/src/main/cpp/src/aes.c.o	244ba5f8dd995c0b
+945	1042	0	/Users/max/android_amigo/encrypt/libs/x86/libalgor.so	1dbb6228408b798e
+1042	2353	0	CMakeFiles/xiaolian-lib.dir/src/main/cpp/src/xiaolian-lib.cpp.o	ba3aac6800013e0f
+2353	2459	0	/Users/max/android_amigo/encrypt/libs/x86/libxiaolian-lib.so	7bd73e65c6e8a1e3
