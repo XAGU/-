@@ -83,11 +83,11 @@ public class RegisterStep1Fragment extends Fragment {
     void sendVerificationCode() {
         Log.e(TAG, "sendVerificationCode: " );
         btSendVerificationCode.setEnabled(false);
-        if (!isMobileNO(etMobile.getText().toString().trim())){
-            ((LoginActivity) getActivity()).onError("手机号不合法");
-            btSendVerificationCode.setEnabled(true);
-            return;
-        }
+//        if (!isMobileNO(etMobile.getText().toString().trim())){
+//            ((LoginActivity) getActivity()).onError("手机号不合法");
+//            btSendVerificationCode.setEnabled(true);
+//            return;
+//        }
 
         if (getActivity() instanceof LoginActivity) {
             ((LoginActivity) getActivity()).sendVerificationCode(etMobile.getText().toString() , btSendVerificationCode);
@@ -265,11 +265,11 @@ public class RegisterStep1Fragment extends Fragment {
         }
     }
 
-    private  boolean isMobileNO(String mobileNums) {
-        String telRegex = "^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$";
-        if (TextUtils.isEmpty(mobileNums))
-            return false;
-        else
-            return mobileNums.matches(telRegex);
-    }
+//    private  boolean isMobileNO(String mobileNums) {
+//        String telRegex = "^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$";
+//        if (TextUtils.isEmpty(mobileNums))
+//            return false;
+//        else
+//            return mobileNums.matches(telRegex);
+//    }
 }

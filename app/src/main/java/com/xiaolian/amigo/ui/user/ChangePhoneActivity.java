@@ -69,11 +69,11 @@ public class ChangePhoneActivity extends UserBaseActivity implements IChangePhon
 
         btVerifyCode.setOnClickListener((view)->{
             btVerifyCode.setEnabled(false);
-            if (etPhone.getText().toString().length() != 11 || !isMobileNO(etPhone.getText().toString())){
-                onError("请输入正确的电话号码");
-                btVerifyCode.setEnabled(true);
-                return;
-            }
+//            if (etPhone.getText().toString().length() != 11 || !isMobileNO(etPhone.getText().toString())){
+//                onError("请输入正确的电话号码");
+//                btVerifyCode.setEnabled(true);
+//                return;
+//            }
             presenter.getVerification(etPhone.getText().toString() , btVerifyCode);
         });
     }
@@ -99,13 +99,13 @@ public class ChangePhoneActivity extends UserBaseActivity implements IChangePhon
     }
 
 
-    private  boolean isMobileNO(String mobileNums) {
-        String telRegex = "^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$";
-        if (TextUtils.isEmpty(mobileNums))
-            return false;
-        else
-            return mobileNums.matches(telRegex);
-    }
+//    private  boolean isMobileNO(String mobileNums) {
+//        String telRegex = "^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$";
+//        if (TextUtils.isEmpty(mobileNums))
+//            return false;
+//        else
+//            return mobileNums.matches(telRegex);
+//    }
 
     @Override
     public void startTimer() {

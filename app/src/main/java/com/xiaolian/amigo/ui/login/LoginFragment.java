@@ -70,11 +70,11 @@ public class LoginFragment extends Fragment {
     @OnClick(R.id.bt_submit)
     void login() {
         btSubmit.setEnabled(false);
-        if (!isMobileNO(etMobile.getText().toString())){
-            ((LoginActivity) getActivity()).onError("手机号不合法");
-            btSubmit.setEnabled(true);
-            return;
-        }
+//        if (!isMobileNO(etMobile.getText().toString())){
+//            ((LoginActivity) getActivity()).onError("手机号不合法");
+//            btSubmit.setEnabled(true);
+//            return;
+//        }
         if (etUserpwd.getText().toString().trim().length() == 0){
             ((LoginActivity) getActivity()).onError("请输入登录密码");
             btSubmit.setEnabled(true);
@@ -195,11 +195,11 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private  boolean isMobileNO(String mobileNums) {
-        String telRegex = "^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$";
-        if (TextUtils.isEmpty(mobileNums))
-            return false;
-        else
-            return mobileNums.matches(telRegex);
-    }
+//    private  boolean isMobileNO(String mobileNums) {
+//        String telRegex = "^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$";
+//        if (TextUtils.isEmpty(mobileNums))
+//            return false;
+//        else
+//            return mobileNums.matches(telRegex);
+//    }
 }
