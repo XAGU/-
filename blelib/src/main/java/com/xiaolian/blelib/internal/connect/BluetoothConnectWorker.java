@@ -73,6 +73,7 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
                     connectState = BluetoothConstants.STATE_CONNECTING;
                 } else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
                     connectState = BluetoothConstants.STATE_DISCONNECTING;
+                    refreshDeviceCache(bluetoothGatt);
                     closeGatt();
                     handler.post(() -> {
                         if (bluetoothConnectCallback != null) {
@@ -84,6 +85,7 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
                 }
             } else {
                 connectState = BluetoothConstants.STATE_DISCONNECTING;
+                refreshDeviceCache(bluetoothGatt);
                 closeGatt();
                 handler.post(() -> {
                     if (bluetoothConnectCallback != null) {
@@ -209,6 +211,29 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
         } else {
             throw new IllegalStateException("ble adapter null");
         }
+    }
+
+
+    /**
+     * Clears the internal cache and forces a refresh of the services from the
+     * remote device.
+     */
+    private boolean refreshDeviceCache(BluetoothGatt mBluetoothGatt) {
+        if (mBluetoothGatt != null) {
+            try {
+                BluetoothGatt localBluetoothGatt = mBluetoothGatt;
+                Method localMethod = localBluetoothGatt.getClass().getMethod(
+                        "refresh");
+                if (localMethod != null) {
+                    boolean bool = (Boolean) localMethod.invoke(
+                            localBluetoothGatt, new Object[0]);
+                    return bool;
+                }
+            } catch (Exception localException) {
+                Log.i(TAG, "An exception occured while refreshing device");
+            }
+        }
+        return false;
     }
 
     @Override

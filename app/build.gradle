@@ -11,7 +11,7 @@ static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
-//当前版本1.2.1 code 为34
+//当前版本1.2.21 code 为36
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
@@ -19,8 +19,8 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 34
-        versionName "1.2.3"
+        versionCode 36
+        versionName "1.2.21"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -83,6 +83,11 @@ android {
 //            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.106.62.186/b/\""
 //            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186:5097/\""
 
+            // qa1
+            buildConfigField "String", "SERVER", "\"http://47.107.53.127:5081/\"" // qa2
+            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.53.127:5082/\"" //qa2
+            buildConfigField "String", "H5_SERVER", "\"http://47.107.53.127:5097/c\"" //qa2
+
             // qa2
 
 //            buildConfigField "String", "SERVER", "\"http://39.108.97.229:5081/\"" // qa2
@@ -97,9 +102,9 @@ android {
 
 
             // qa3
-            buildConfigField "String", "SERVER", "\"http://39.108.74.164:5081/\"" //
-            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\"" //
-            buildConfigField "String", "H5_SERVER", "\"http://39.108.74.164:5097/c\"" //
+//            buildConfigField "String", "SERVER", "\"http://39.108.74.164:5081/\"" //
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\"" //
+//            buildConfigField "String", "H5_SERVER", "\"http://39.108.74.164:5097/c\"" //
 
 
              // qa4
