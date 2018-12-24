@@ -104,7 +104,7 @@ public class MvpApp extends Application {
                 .applicationModule(new ApplicationModule(this)).build();
 
         mApplicationComponent.inject(this);
-        
+
         registToWX();
         closeAndroidPDialog();
     }

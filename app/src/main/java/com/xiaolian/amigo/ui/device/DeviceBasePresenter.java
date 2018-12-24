@@ -1810,7 +1810,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 });
     }
 
-
     /**
      * 记录用户使用次数
      * @param type    类型：  比如 SCAN  、  CONNECT 等
