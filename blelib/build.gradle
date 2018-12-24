@@ -3,7 +3,6 @@ apply from: '../buildsystem/dependencies.gradle'
 
 android {
     compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
 
     defaultConfig {
         minSdkVersion versions.minSdk
@@ -27,6 +26,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
     }
 
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {

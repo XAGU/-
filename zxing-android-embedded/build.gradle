@@ -8,18 +8,17 @@ InputStream inputStream = project.rootProject.file('local.properties').newDataIn
 properties.load( inputStream )
 
 dependencies {
-    compile deps.zxing
+    implementation deps.zxing
 
-    compile deps.support.v4
+    implementation deps.support.v4
 
-    testCompile deps.junit
+    testImplementation deps.junit
 //    testCompile "org.mockito:mockito-core:1.9.5"
 }
 
 android {
     resourcePrefix 'zxing_'
     compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
 
     sourceSets {
         main {
@@ -47,6 +46,7 @@ android {
         // We test with primitives such as Rect, and rely on their default behaviour working.
         unitTests.returnDefaultValues = true
     }
+    buildToolsVersion '27.0.3'
 }
 
 task sourceJar(type: Jar) {

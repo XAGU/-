@@ -14,7 +14,6 @@ static def releaseTime() {
 //当前版本1.2.21 code 为36
 android {
     compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
     defaultConfig {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
@@ -189,6 +188,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
