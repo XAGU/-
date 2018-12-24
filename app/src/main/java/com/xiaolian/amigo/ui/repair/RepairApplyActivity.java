@@ -37,6 +37,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
+import static com.xiaolian.amigo.util.Constant.IMAGE_PREFIX;
+
 /**
  * 报修申请
  *
@@ -138,7 +140,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
     private void initImageAdd() {
         addImages.add(new ImageAddAdapter.ImageItem());
-        imageAddAdapter = new ImageAddAdapter(this, R.layout.item_image_add, addImages);
+        imageAddAdapter = new ImageAddAdapter(this, R.layout.item_image_add, addImages , 2 );
         imageAddAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -298,9 +300,9 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     public void addImage(String url, int position) {
         if (this.images.size() > position) {
             this.images.remove(position);
-            this.images.add(position, url);
+            this.images.add(position,   url);
         } else {
-            this.images.add(url);
+            this.images.add(  url);
         }
         refreshAddImage();
     }

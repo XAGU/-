@@ -18,6 +18,8 @@ import java.util.List;
 
 import lombok.Data;
 
+import static com.xiaolian.amigo.util.Constant.IMAGE_PREFIX;
+
 /**
  * 添加图片
  *
@@ -34,10 +36,13 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
     private int viewWidth ;
 
     private boolean isNetImage ;
+
+    private int isRepair ;
     public ImageAddAdapter(Context context, int layoutId, List<ImageItem> datas) {
         super(context, layoutId, datas);
         this.context = context;
         this.imageSize = ScreenUtils.dpToPxInt(context, 77);
+        this.isRepair = 1 ;
     }
 
     public ImageAddAdapter(Context context, int layoutId, List<ImageItem> datas , boolean isNetImage) {
@@ -45,7 +50,16 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
         this.context = context;
         this.imageSize = ScreenUtils.dpToPxInt(context, 77);
         this.isNetImage = isNetImage ;
+        this.isRepair = 1 ;
     }
+
+    public ImageAddAdapter(Context context, int layoutId, List<ImageItem> datas , int isRepair) {
+        super(context, layoutId, datas);
+        this.context = context;
+        this.imageSize = ScreenUtils.dpToPxInt(context, 77);
+        this.isRepair = 2 ;
+    }
+
 
 
     public void setViewWidth(int viewWidth){
@@ -70,8 +84,17 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
             ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             holder.setImageResource(R.id.iv_image, DEFAULT_RES);
         } else {
+            
+            if (isRepair ==2 ){
+                Glide.with(context).load(IMAGE_PREFIX + imageItem.getImageUrl())
+                        .asBitmap()
+                        .into((ImageView) holder.getView(R.id.iv_image));
+                ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
+                return ;
+            }
+
             if (isNetImage){
-                GildeUtils.setImage(context ,((ImageView)holder.getView(R.id.iv_image)) ,imageItem.getImageUrl());
+                GildeUtils.setImage(context ,(holder.getView(R.id.iv_image)) ,imageItem.getImageUrl());
                 ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
             }else {
                 if (!TextUtils.isEmpty(imageItem.getImageUrl())) {
