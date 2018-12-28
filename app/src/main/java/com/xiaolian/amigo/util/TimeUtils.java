@@ -383,6 +383,7 @@ public class TimeUtils {
      * @return
      */
     public static long  diffTime(long currentTime , long beforeTime){
+        if (beforeTime <= 0) return 0 ;
         if (beforeTime > currentTime) return 0 ;
         long diffTime =  currentTime - beforeTime ;
         return diffTime ;

@@ -376,7 +376,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
                 }
 
-                recordUseNumber(Type.SCAN , Target.DEVICE,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+                recordUseNumber(Type.SCAN , Target.DEVICE,Result.FAILED ,15000);
             }
         };
 
@@ -1819,6 +1819,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
      *  String 格式为 type:SCAN、target:SERVER、result:success、time:120;
      */
     private void recordUseNumber(Type type , Target target , Result result , long time){
+
+        //  大于30分分钟的时间 不记录
+        if (time > 30 * 60 *1000)  return ;
+        
         rx.Observable.just(1)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(Schedulers.io())
