@@ -783,6 +783,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 android.util.Log.e(TAG, "onWrite:  >>> 蓝牙未连接 " );
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
             }
+            recordCommandResult(command , Result.FAILED);
             return;
         }
 
@@ -799,6 +800,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     if (code == BluetoothConstants.GATT_OTHER_FAILURE) {
                         writeLogFile("onWrite" , "command：" + command,"指令写入失败  code："+code);
                         handleWriteError(command);
+                        recordCommandResult(command , Result.FAILED);
                     } else if (code == BluetoothConstants.GATT_SUCCESS) {
                         writeLogFile("onWrite" , "command：" + command,"指令写入成功");
                         Log.d(TAG, "发送指令成功 command: " + command + " thread " + Thread.currentThread().getName());
@@ -1039,12 +1041,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     /**
      * 记录设备返回数据的状态
-     * @param result
+     * @param command 指令
+     * @Param result 结果
      */
-    private void  recordCommandResult(String result){
-        if (TextUtils.isEmpty(result))  return ;
+    private void  recordCommandResult(String command ,Result  result){
+        if (TextUtils.isEmpty(command))  return ;
         try{
-            String prefix = result.substring(0 , 4);
+            String prefix = command.substring(0 , 4);
             if (TextUtils.equals(Command.CONNECT.getRespPrefix() , prefix)){
                 type = Type.SHAKE_HANDS ;
             }else if (TextUtils.equals(Command.PRE_CHECK.getRespPrefix() ,prefix)){
@@ -1059,20 +1062,17 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 type = Type.UPDATE_RATE ;
             }
             if (type != null) {
-                recordUseNumber(type, Target.DEVICE, Result.SUCCESS, TimeUtils.diffTime(System.currentTimeMillis(), deviceTimeStamps));
+                recordUseNumber(type, Target.DEVICE, result, TimeUtils.diffTime(System.currentTimeMillis(), deviceTimeStamps));
             }
         }catch (Exception e){
             android.util.Log.e(TAG, "recordCommandResult: " + e.getMessage() );
         }
 
-
     }
-
-
 
     // 网络请求处理设备响应结果
     private void processCommandResult(String result) {
-        recordCommandResult(result);
+        recordCommandResult(result , Result.SUCCESS);
         try {
             String prefix = result.substring(0, 4);
             if (TextUtils.equals(Command.CLOSE_VALVE.getRespPrefix(), prefix)) {
