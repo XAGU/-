@@ -567,6 +567,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                             String result = HexBytesUtils.bytesToHexString(data);
                                             Log.i(TAG, "接收到设备数据" + result + " thread" + Thread.currentThread().getName());
                                             writeLogFile("connectXinNaDevice" , "" ,"接收到设备数据"+result);
+                                            recordCommandResult(result , Result.SUCCESS);
                                             processCommandResult(result);
                                         } else {
                                             writeLogFile("connectXinNaDevice" , "" ,"接收到设备数据为空");
@@ -734,6 +735,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                                     String result = HexBytesUtils.bytesToHexString(data);
                                                     Log.i(TAG, "接收到设备数据" + result + " thread " + Thread.currentThread().getName());
                                                     writeLogFile("connectHaoNianHaoDevice" , "" ,"接收到设备数据"+result);
+                                                    recordCommandResult(result , Result.SUCCESS);
                                                     processCommandResult(result);
                                                 } else {
                                                     writeLogFile("connectHaoNianHaoDevice" , "" ,"接收到设备数据为空");
@@ -1072,7 +1074,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     // 网络请求处理设备响应结果
     private void processCommandResult(String result) {
-        recordCommandResult(result , Result.SUCCESS);
         try {
             String prefix = result.substring(0, 4);
             if (TextUtils.equals(Command.CLOSE_VALVE.getRespPrefix(), prefix)) {
