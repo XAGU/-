@@ -495,4 +495,18 @@
         <item name="android:lineSpacingExtra">5dp</item>
 
     </style>
+    
+    
+    <!--share_dialog-->
+
+    <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/share_copy"-->
+        <!--android:layout_below="@id/share_title"-->
+        <!--android:layout_marginTop="29dp"-->
+        <!--android:layout_marginStart="44dp"-->
+        <!--android:id="@+id/copy"/>-->
+    
+    <style name="share_dialog"
 </resources>
