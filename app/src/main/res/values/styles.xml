@@ -251,6 +251,9 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+
+
+
     <style name="LostAndFoundPopupDialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -503,5 +506,13 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">29dp</item>
+    </style>
+
+    <style name="share_dialog_txt">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/sp12</item>
+        <item name="android:textColor">@color/colorDark6</item>
+        <item name="android:layout_marginTop">10dp</item>
     </style>
 </resources>

@@ -24,10 +24,9 @@
         android:id="@+id/copy"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/share_dialog_txt"
         android:text="复制链接"
-        android:textColor="@color/colorDark6"
+        android:id="@+id/copy_txt"
         android:layout_alignStart="@id/copy"
         android:layout_below="@id/copy"
         />
@@ -36,15 +35,56 @@
         style="@style/share_dialog_image"
         android:src="@drawable/share_qq"
         android:layout_below="@id/share_title"
-        android:layout_marginEnd="67dp"
-        android:id="@+id/qq"
-        android:layout_toEndOf="@id/copy"/>
+        android:layout_centerHorizontal="true"
+        android:id="@+id/qq" />
+
+    <TextView
+        style="@style/share_dialog_txt"
+        android:layout_centerHorizontal="true"
+        android:text="QQ好友"
+        android:gravity="center"
+        android:id="@+id/qq_txt"
+        android:layout_below="@id/qq"
+        />
 
     <ImageView
         style="@style/share_dialog_image"
         android:src="@drawable/share_wx"
         android:layout_below="@id/share_title"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="44dp"
         android:id="@+id/wx"
-        android:layout_toEndOf="@id/qq"/>
+        />
 
+    <TextView
+        style="@style/share_dialog_txt"
+        android:text="微信好友"
+        android:gravity="center"
+        android:id="@+id/wx_txt"
+        android:layout_alignStart="@id/wx"
+        android:layout_below="@id/wx"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_below="@id/wx_txt"
+        android:layout_marginTop="29dp"
+        android:id="@+id/line"
+        android:background="@color/colorDarke">
+    </View>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="取消"
+        android:gravity="center_horizontal"
+        android:id="@+id/cancel"
+        android:paddingTop="13dp"
+        android:layout_below="@id/line"
+        android:paddingBottom="13dp"
+        />
 </RelativeLayout>

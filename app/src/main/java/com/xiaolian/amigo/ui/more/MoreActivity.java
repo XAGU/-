@@ -16,6 +16,7 @@ import com.xiaolian.amigo.ui.more.adapter.MoreAdapter;
 import com.xiaolian.amigo.ui.more.intf.IMorePresenter;
 import com.xiaolian.amigo.ui.more.intf.IMoreView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
+import com.xiaolian.amigo.ui.widget.dialog.ShareAlertDialog;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.FileUtils;
@@ -48,6 +49,7 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
             add(new MoreAdapter.MoreModel("意见反馈", WebActivity.class, Constant.H5_FEEDBACK));
             add(new MoreAdapter.MoreModel("用户协议", WebActivity.class, Constant.H5_AGREEMENT));
             add(new MoreAdapter.MoreModel("关于我们", AboutUsActivity.class));
+            add(new MoreAdapter.MoreModel("推荐好友" ,null , null));
         }
     };
 
@@ -58,6 +60,8 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
     RecyclerView recyclerView;
 
     MoreAdapter adapter;
+
+    private ShareAlertDialog shareAlertDialog ;
 
     @Override
     protected void initView() {
@@ -75,6 +79,8 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
                     startActivity(new Intent(MoreActivity.this, clz)
                             .putExtra(WebActivity.INTENT_KEY_URL, items.get(position).getExtra()
                                     + "?accessToken=" + presenter.getAccessToken() + "&refreshToken=" + presenter.getRefreshToken()));
+                }else{
+                    share();
                 }
             }
 
@@ -87,6 +93,14 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+    }
+
+    private void share(){
+        if (shareAlertDialog == null){
+            shareAlertDialog = new ShareAlertDialog(this ,"分享链接");
+            shareAlertDialog.Builder();
+        }
+        shareAlertDialog.show();
     }
 
     @OnClick(R.id.bt_logout)
@@ -125,10 +139,10 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
 
 
 
-
     @Override
     protected void onDestroy() {
         presenter.onDetach();
+        if (shareAlertDialog != null) shareAlertDialog.finish();
         super.onDestroy();
     }
 }
