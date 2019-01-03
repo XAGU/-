@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.widget.dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,8 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tencent.tauth.IUiListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.ShareUtils;
 
@@ -26,8 +29,6 @@ public class ShareAlertDialog implements View.OnClickListener {
 
     private Context context ;
     private Dialog dialog ;
-
-    private String shareUrl  = "分享笑联";
     private ImageView copy ;
     private TextView txtCopy ;
     private ImageView qq ;
@@ -39,9 +40,10 @@ public class ShareAlertDialog implements View.OnClickListener {
     private Toast toast;
     private CountDownTimer toastCountDown;
 
-    public ShareAlertDialog(Context context , String shareUrl){
+    private ShareQQListener shareQQListener ;
+
+    public ShareAlertDialog(Context context){
         this.context = context ;
-        this.shareUrl = shareUrl ;
     }
 
     public ShareAlertDialog Builder(){
@@ -68,6 +70,10 @@ public class ShareAlertDialog implements View.OnClickListener {
         return this ;
     }
 
+    public void setShareQQListener(ShareQQListener shareQQListener) {
+        this.shareQQListener = shareQQListener;
+    }
+
     private void initListener(){
         copy.setOnClickListener(this);
         txtCopy.setOnClickListener(this);
@@ -79,15 +85,19 @@ public class ShareAlertDialog implements View.OnClickListener {
     }
 
     private void copy(){
-        CommonUtil.copy(shareUrl, context);
+        CommonUtil.copy(Constant.SHARE_URL, context);
         showSuccessToast("复制成功");
         if (dialog != null) dialog.dismiss();
     }
 
 
     private void shareWX(){
-        ShareUtils.shareWX(shareUrl ,"" ,context);
+        ShareUtils.shareWX(Constant.SHARE_URL,"笑联" , "笑联测试" ,context);
         dialog.dismiss();
+    }
+
+    private void shareQQ() {
+        if (shareQQListener != null) shareQQListener.shareQQ();
     }
 
     public void show(){
@@ -146,13 +156,13 @@ public class ShareAlertDialog implements View.OnClickListener {
                 copy();
                 break;
             case R.id.cancel:
-                if (dialog != null){
-                    dialog.dismiss();
-                }
+                dismiss();
                 break;
             case R.id.qq:
+                shareQQ();
                 break;
             case R.id.qq_txt:
+                shareQQ();
                 break;
             case R.id.wx:
                 shareWX();
@@ -163,5 +173,17 @@ public class ShareAlertDialog implements View.OnClickListener {
                 default:
                     break;
         }
+    }
+
+    public void dismiss(){
+        if (dialog != null){
+            dialog.dismiss();
+        }
+    }
+
+     public   interface  ShareQQListener{
+        // 分享QQ
+
+        void shareQQ();
     }
 }

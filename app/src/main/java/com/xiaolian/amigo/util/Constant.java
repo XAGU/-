@@ -35,6 +35,18 @@ public final class Constant {
     public static final String WECHAT_APP_ID = "wx479340ea4dbfe792";
 
     /**
+     * QQ app id
+     */
+    public static final String QQ_APP_ID = "1106511016";
+
+    /**
+     * 分享
+     */
+    public static final String SHARE_URL = "https://h5.xiaolian365.com/c/download";
+
+
+
+    /**
      * 页内内容条数
      */
     public static final int PAGE_SIZE = 10;

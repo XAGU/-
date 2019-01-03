@@ -1,7 +1,7 @@
 package com.xiaolian.amigo.ui.more;
 
 import android.content.Intent;
-import android.os.Environment;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -9,6 +9,11 @@ import android.util.Log;
 import android.view.View;
 
 import com.tencent.android.tpush.XGPushManager;
+import com.tencent.connect.common.Constants;
+import com.tencent.connect.share.QQShare;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.main.MainActivity;
@@ -17,12 +22,10 @@ import com.xiaolian.amigo.ui.more.intf.IMorePresenter;
 import com.xiaolian.amigo.ui.more.intf.IMoreView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.widget.dialog.ShareAlertDialog;
-import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.FileUtils;
+import com.xiaolian.amigo.util.PictureUtil;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +41,7 @@ import butterknife.OnClick;
  * @author zcd
  * @date 17/10/13
  */
-public class MoreActivity extends MoreBaseActivity implements IMoreView {
+public class MoreActivity extends MoreBaseActivity implements IMoreView ,IUiListener , ShareAlertDialog.ShareQQListener {
     private static final String TAG = MoreActivity.class.getSimpleName();
 
 
@@ -62,6 +65,11 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
     MoreAdapter adapter;
 
     private ShareAlertDialog shareAlertDialog ;
+
+    public static Tencent mTencent;
+
+    private int shareType = QQShare.SHARE_TO_QQ_TYPE_DEFAULT;
+    private int mExtarFlag = 0x00;
 
     @Override
     protected void initView() {
@@ -97,8 +105,9 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
 
     private void share(){
         if (shareAlertDialog == null){
-            shareAlertDialog = new ShareAlertDialog(this ,"分享链接");
+            shareAlertDialog = new ShareAlertDialog(this);
             shareAlertDialog.Builder();
+            shareAlertDialog.setShareQQListener(this);
         }
         shareAlertDialog.show();
     }
@@ -145,4 +154,63 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
         if (shareAlertDialog != null) shareAlertDialog.finish();
         super.onDestroy();
     }
+
+
+    @Override
+    public void shareQQ() {
+        if (mTencent == null){
+            mTencent = Tencent.createInstance(Constant.QQ_APP_ID, MoreActivity.this);
+        }
+        Bundle bundle = new Bundle();
+        //这条分享消息被好友点击后的跳转URL。
+        bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL, Constant.SHARE_URL);
+        //分享的标题。注：PARAM_TITLE、PARAM_IMAGE_URL、PARAM_SUMMARY不能全为空，最少必须有一个是有值的。
+        bundle.putString(QQShare.SHARE_TO_QQ_TITLE, "我在测试");
+
+        //分享的消息摘要，最长50个字
+        bundle.putString(QQShare.SHARE_TO_QQ_SUMMARY, "测试");
+
+        // 网络图片
+        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,"http://inews.gtimg.com/newsapp_bt/0/876781763/1000");
+
+        // 本地图片
+//        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL,PictureUtil.getPathFromDrawableRes(this ,R.mipmap.ic_launcher));
+
+        bundle.putString(QQShare.SHARE_TO_QQ_APP_NAME, "笑联");
+        bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, shareType);
+        mTencent.shareToQQ(this ,bundle ,this);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.REQUEST_QQ_SHARE) {
+            Tencent.onActivityResultData(requestCode,resultCode,data,this);
+        }
+    }
+
+    /**
+     * QQ分享回调
+     * @param o
+     */
+    @Override
+    public void onComplete(Object o) {
+//        onSuccess("分享成功");
+        if (shareAlertDialog != null) shareAlertDialog.dismiss();
+    }
+
+    @Override
+    public void onError(UiError uiError) {
+//        onError("分享失败");
+        if (shareAlertDialog != null) shareAlertDialog.dismiss();
+    }
+
+    @Override
+    public void onCancel() {
+//        onError("取消分享");
+        if (shareAlertDialog != null) shareAlertDialog.dismiss();
+    }
+
+
 }

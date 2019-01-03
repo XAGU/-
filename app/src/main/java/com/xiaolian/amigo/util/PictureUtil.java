@@ -1,9 +1,13 @@
 package com.xiaolian.amigo.util;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Uri;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -111,5 +115,23 @@ public class PictureUtil {
         }
         return inSampleSize;
     }
+
+
+    /**
+     * 得到资源文件中图片的Uri
+     * @param context 上下文对象
+     * @param id 资源id
+     * @return Uri
+     */
+    public static String getPathFromDrawableRes(Context context, int id) {
+        Resources resources = context.getResources();
+        String path = ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                + resources.getResourcePackageName(id) + "/"
+                + resources.getResourceTypeName(id) + "/"
+                + resources.getResourceEntryName(id);
+        return path;
+    }
+
+
 
 }
