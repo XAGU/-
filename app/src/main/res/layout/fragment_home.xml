@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -30,11 +31,40 @@
             android:layout_marginRight="21dp"
             />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/white_10"
-            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+    <!--滚动公告-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:background="@drawable/rolling_notice_bg">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/rolling_notice"
+            android:layout_marginStart="12dp"
+            android:id="@+id/rolling_notice"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/rolling_off"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="7dp"
+            android:id="@+id/rolling_off"/>
+
+        <com.xiaolian.amigo.ui.widget.TextSwitcherView
+        android:layout_width="match_parent"
+        android:layout_height="19dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/rolling_notice"
+        android:layout_toStartOf="@id/rolling_off"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="21dp"
+        android:id="@+id/marqueeview" />
     </RelativeLayout>
     <android.support.v7.widget.RecyclerView
         android:visibility="visible"

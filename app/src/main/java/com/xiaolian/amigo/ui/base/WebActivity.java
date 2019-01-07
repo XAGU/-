@@ -48,6 +48,7 @@ import com.xiaolian.amigo.util.Log;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Base64;
 
 import javax.inject.Inject;
 
@@ -61,6 +62,7 @@ import butterknife.ButterKnife;
  * @date 17/9/14
  */
 public class WebActivity extends BaseActivity {
+    private static final String UTF8 = "UTF-8";
     public static final String INTENT_KEY_URL = "intent_key_url";
     public static final String INTENT_KEY_WASHER_URL = "intent_key_url_washer";
     private static final int FILECHOOSER_RESULTCODE = 0x0012;
@@ -249,6 +251,19 @@ public class WebActivity extends BaseActivity {
             }
         }catch (UnsupportedEncodingException e){
             Log.e(TAG ,e.getMessage());
+        }
+
+        if (newUrl.contains("?")){
+          String[] urls =   newUrl.split("'?'");
+          if (urls.length >=2 ) {
+              String oldString = urls[1];
+              try {
+               String newString =   new  String(android.util.Base64.encode(oldString.getBytes(UTF8), android.util.Base64.NO_WRAP), UTF8);
+               newUrl = urls[0]+newString ;
+              } catch (UnsupportedEncodingException e) {
+                  e.printStackTrace();
+              }
+          }
         }
         return newUrl;
     }

@@ -16,10 +16,12 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.sunfusheng.marqueeview.MarqueeView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
@@ -34,6 +36,7 @@ import com.xiaolian.amigo.ui.main.adaptor.HomeSmallDelegate;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
+import com.xiaolian.amigo.ui.widget.TextSwitcherView;
 import com.xiaolian.amigo.util.Log;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
@@ -117,6 +120,11 @@ public class HomeFragment2 extends BaseFragment {
     TextView schoolName;
     @BindView(R.id.scan)
     ImageView scan;
+
+//    滚动公告
+
+    @BindView(R.id.marqueeview)
+    TextSwitcherView marqueeView ;
     /**
      * 未找零账单个数
      */
@@ -143,6 +151,7 @@ public class HomeFragment2 extends BaseFragment {
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, homeView);
         initRequestView();
+        initRollingNotice();
         return homeView;
     }
 
@@ -154,6 +163,17 @@ public class HomeFragment2 extends BaseFragment {
                     schoolName.setText(presenter.getUserInfo().getSchoolName());
             }
         }
+    }
+
+    /**
+     * 设置滚动公告
+     */
+    private void initRollingNotice(){
+        List<String> info  = new ArrayList<>();
+        info.add("1.你是第一个滚动条");
+        info.add("2.你是第二个滚动条，你要超过一行才可以显示走马灯效果，还差点字数吧再凑凑凑凑哦");
+        info.add("3.你是第三条，最后一条");
+        marqueeView.getResoure((ArrayList<String>) info);
     }
 
     @Override
