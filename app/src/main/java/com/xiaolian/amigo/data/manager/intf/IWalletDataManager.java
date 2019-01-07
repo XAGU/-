@@ -3,7 +3,10 @@ package com.xiaolian.amigo.data.manager.intf;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.SchoolWechatAccountRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WechatWithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryMonthlyBillReqDTO;
@@ -175,4 +178,10 @@ public interface IWalletDataManager {
     void setIsShowWithDrawDialog(boolean b);
 
     int getUserCertification();
+
+    Observable<ApiResult<SchoolWechatAccountRespDTO>> wechatAccountInfoAppid();
+
+    Observable<ApiResult<SimpleRespDTO>> wechatWithdraw(WechatWithdrawReqDTO reqDTO);
+
+    Observable<ApiResult<QueryRechargeTypeListRespDTO>> typeList();
 }

@@ -13,7 +13,7 @@ static def releaseTime() {
 
 //当前版本1.2.21 code 为36
 android {
-    compileSdkVersion versions.compileSdk
+    compileSdkVersion 26
     defaultConfig {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
@@ -102,7 +102,7 @@ android {
             // qa3
             buildConfigField "String", "SERVER", "\"http://39.108.74.164:5081/\"" //
             buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\"" //
-            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.26:5000\"" //
+            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.26:5000/c\"" //
 //            buildConfigField "String", "H5_SERVER", "\"http://39.108.74.164:5097/c\"" //
 
 

@@ -1,11 +1,14 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.util.ObjectsCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -14,17 +17,25 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.PayWay;
+import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.user.PasswordVerifyActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.ChooseWithdrawAdapter;
+import com.xiaolian.amigo.ui.wallet.adaptor.RechargeTypeAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalView;
+import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.ScreenUtils;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -61,6 +72,27 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
      */
     @BindView(R.id.rl_choose_withdraw_way2)
     RelativeLayout rlChooseWithdrawWay2;
+    /**
+     * 提现方式
+     */
+    @BindView(R.id.withdraw_type)
+    RecyclerView withdrawType ;
+
+    /**
+     * 提现微信
+     */
+
+    @BindView(R.id.ll_wx)
+    LinearLayout llWx ;
+
+    @BindView(R.id.edit_name)
+    EditText editName ;
+
+    @BindView(R.id.rl_choose_withdraw_way_xw)
+    RelativeLayout rlChooseWithdrawWayWX ;
+
+    @BindView(R.id.tv_withdraw_way_wx)
+    TextView tvWithdrawWayWX ;
 
     @BindView(R.id.tv_withdraw_way)
     TextView tvWithdrawWay;
@@ -79,6 +111,17 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     private Long withdrawId;
     private String balance;
 
+    private RechargeTypeAdaptor typeAdaptor;
+    /**
+     * 充值方式列表
+     */
+    List<RechargeTypeAdaptor.RechargeWrapper> rechargeTypes = new ArrayList<>();
+
+    private int rechargeSelectedPosition = -1;
+    private int rechargeTypeSelectedPosition = 0;
+
+    private String appid ;
+
     @Override
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
@@ -87,8 +130,59 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         presenter.onAttach(WithdrawalActivity.this);
         tvWithdrawAvailable.setText(getString(R.string.withdraw_available, balance));
         presenter.requestAccounts(PayWay.ALIAPY.getType());
-
+        presenter.withdrawType();
         CommonUtil.showSoftInput(this, etAmount);
+        initWithdrawType();
+    }
+
+    private void initWithdrawType(){
+        typeAdaptor = new RechargeTypeAdaptor(this, R.layout.item_recharge_type, rechargeTypes);
+        withdrawType.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false));
+        withdrawType.addItemDecoration(new GridSpacesItemDecoration(2, ScreenUtils.dpToPxInt(this, 10), false));
+        typeAdaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                if (rechargeTypeSelectedPosition != -1) {
+                    rechargeTypes.get(rechargeTypeSelectedPosition).setSelected(false);
+                    rechargeTypes.get(position).setSelected(true);
+                } else {
+                    rechargeTypes.get(position).setSelected(true);
+                }
+                rechargeTypeSelectedPosition = position;
+                typeAdaptor.notifyDataSetChanged();
+                toggleSubmitButton();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+        withdrawType.setAdapter(typeAdaptor);
+    }
+
+    private void toggleSubmitButton() {
+        if (rechargeSelectedPosition != -1 && rechargeTypeSelectedPosition != -1) {
+            btSubmit.setEnabled(true);
+        }
+
+        if (rechargeSelectedPosition == 0){
+            choseAPay();
+        }else{
+            choseWX();
+            // 获取学校appId服务号
+            presenter.getWechatAppid();
+        }
+    }
+
+    private void choseAPay(){
+        rlChooseWithdrawWay2.setVisibility(View.VISIBLE);
+        llWx.setVisibility(View.GONE);
+    }
+
+    private void choseWX(){
+        rlChooseWithdrawWay2.setVisibility(View.GONE);
+        llWx.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -222,6 +316,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
                 REQUEST_CODE_CHOOSE_WITHDRAW_WAY2);
     }
 
+
     @Override
     public void back() {
         onBackPressed();
@@ -239,6 +334,27 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         withdrawId = id;
         tvWithdrawWay2.setText(accountName);
         toggleButton();
+    }
+
+    @Override
+    public void setAppid(String appId) {
+        this.appid = appId ;
+    }
+
+    @Override
+    public void showTypeList(QueryRechargeTypeListRespDTO data) {
+        rechargeTypes.clear();
+        List<Integer> typeList = data.getRechargeTypes();
+        if (typeList != null && typeList.size() > 0){
+            for (Integer type : typeList){
+                if (type == PayWay.ALIAPY.getType()){
+                    rechargeTypes.add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.ALIAPY.getType(), PayWay.ALIAPY.getDrawableRes(), "支付宝", true));
+                }else if (type == PayWay.WECHAT.getType()){
+                    rechargeTypes.add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.WECHAT.getType(), PayWay.WECHAT.getDrawableRes(), "微信", false));
+                }
+            }
+            typeAdaptor.notifyDataSetChanged();
+        }
     }
 
     @Override

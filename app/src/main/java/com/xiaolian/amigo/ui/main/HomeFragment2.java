@@ -172,7 +172,7 @@ public class HomeFragment2 extends BaseFragment {
         info.add("1.你是第一个滚动条");
         info.add("2.你是第二个滚动条，你要超过一行才可以显示走马灯效果，还差点字数吧再凑凑凑凑哦");
         info.add("3.你是第三条，最后一条");
-//        marqueeView.getResoure((ArrayList<String>) info);
+        marqueeView.getResoure((ArrayList<String>) info);
     }
 
     @Override

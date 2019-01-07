@@ -48,5 +48,5 @@ public class PersonalWalletDTO {
     /**
      * 是否显示提现入口
      */
-    private boolean showWithdraw;
+    private boolean showWithdrawNew;
 }

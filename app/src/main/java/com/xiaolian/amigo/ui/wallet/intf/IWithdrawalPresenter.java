@@ -30,4 +30,20 @@ public interface IWithdrawalPresenter<V extends IWithdrawalView> extends IBasePr
      * 清除账户
      */
     void clearAccount();
+
+    /**
+     * 获取学校微信商户账号appId
+     * @return
+     */
+    void getWechatAppid();
+
+    /**
+     * 微信提现
+     */
+    void wechatWithdraw(float amount ,String code ,String userRealName);
+
+    /**
+     * 获取退款类型
+     */
+    void withdrawType();
 }

@@ -4,6 +4,9 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.SchoolWechatAccountRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WechatWithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAccountRespDTO;
@@ -83,4 +86,57 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
         walletDataManager.setLastWithdrawName("");
         walletDataManager.setLastWithdrawId(null);
     }
+
+    @Override
+    public void getWechatAppid() {
+        addObserver(walletDataManager.wechatAccountInfoAppid() ,new NetworkObserver<ApiResult<SchoolWechatAccountRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<SchoolWechatAccountRespDTO> result) {
+                if (result.getError() == null) {
+                    getMvpView().setAppid(result.getData().getAppId());
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void wechatWithdraw(float amount, String code, String userRealName) {
+        WechatWithdrawReqDTO reqDTO = new WechatWithdrawReqDTO();
+        reqDTO.setAmount(amount);
+        reqDTO.setCode(code);
+        reqDTO.setUserRealName(userRealName);
+        // 应用类型 1 - 原生 ； 2 -小程序
+        reqDTO.setAppSource(1);
+        addObserver(walletDataManager.wechatWithdraw(reqDTO) , new NetworkObserver<ApiResult<SimpleRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<SimpleRespDTO> result) {
+                if (result.getError() == null){  // 退款成功
+//                    getMvpView().
+                }else{
+                    getMvpView().onError("退款失败");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void withdrawType() {
+        addObserver(walletDataManager.typeList(), new NetworkObserver<ApiResult<QueryRechargeTypeListRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<QueryRechargeTypeListRespDTO> result) {
+                if (result.getError() == null){
+                    getMvpView().showTypeList(result.getData());
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
 }

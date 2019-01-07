@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.widget.marqueeview.WaterTextView;
 import com.xiaolian.amigo.util.Log;
 
 import java.io.UnsupportedEncodingException;
@@ -92,6 +93,8 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
     };
 
 
+
+
     public void updateTextSwitcher() {
         if (this.info != null && this.info.size()>0) {
             this.setText(this.info.get(resIndex++));
@@ -170,7 +173,6 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         }
 
     }
-
     private void updateText(){
 
         if (this.dataFlag ==1 ){
@@ -178,7 +180,7 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
             if (this.info != null && this.info.size() > 0){
 
                  try{
-                     subStr(info.get(resIndex) , 20);
+                     subStr(info.get(resIndex) , 14);
                      if (subArrayList!=null && subArrayList.size() > 0){
                             if (subArrayList.size() == 1){ // 单行
                                 waterTextStatus = false ;
@@ -210,11 +212,11 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
 
     @Override
     public View makeView() {
-        TextView textView = new TextView(getContext());
+        WaterTextView textView = new WaterTextView(getContext());
         textView.setTextSize(12);
+        textView.setTextColor(getContext().getResources().getColor(R.color.colorFullRed));
         textView.setSingleLine();
         textView.setEllipsize(MARQUEE);
-        textView.setTextColor(getContext().getResources().getColor(R.color.colorFullRed));
         textView.setMarqueeRepeatLimit(1);
         android.util.Log.e(TAG, "makeView: " +  textView.isShown());
         return textView;

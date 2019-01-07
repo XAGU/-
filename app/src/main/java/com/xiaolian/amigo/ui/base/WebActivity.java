@@ -55,6 +55,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * web页面
  *
@@ -253,18 +255,20 @@ public class WebActivity extends BaseActivity {
             Log.e(TAG ,e.getMessage());
         }
 
+        //  将后面拼接的参数全部用base64加密，防止（）h5读取不了
         if (newUrl.contains("?")){
-          String[] urls =   newUrl.split("'?'");
+          String[] urls =   newUrl.split("\\?");
           if (urls.length >=2 ) {
               String oldString = urls[1];
               try {
                String newString =   new  String(android.util.Base64.encode(oldString.getBytes(UTF8), android.util.Base64.NO_WRAP), UTF8);
-               newUrl = urls[0]+newString ;
+               newUrl = urls[0]+"?params="+newString ;
               } catch (UnsupportedEncodingException e) {
                   e.printStackTrace();
               }
           }
         }
+        android.util.Log.e(TAG, "addUrlSuffix: " + newUrl);
         return newUrl;
     }
 

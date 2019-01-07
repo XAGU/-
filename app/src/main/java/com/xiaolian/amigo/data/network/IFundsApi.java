@@ -3,10 +3,13 @@ package com.xiaolian.amigo.data.network;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryPersonalFundsListReqDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.RechargeReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.funds.SchoolWechatAccountRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WechatWithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.FundsDTO;
@@ -22,7 +25,7 @@ import rx.Observable;
 /**
  * 资金相关api
  *
- * @author zcd
+ * @author zcdC
  * @date 17/12/14
  */
 
@@ -82,5 +85,25 @@ public interface IFundsApi {
      */
     @POST("funds/withdraw/explanation")
     Observable<ApiResult<WithdrawExplanationRespDTO>> withDrawExplanation();
+
+    /**
+     * 获取学校微信商户账号信息
+     * @return
+     */
+    @POST("funds/school/wechatAccountInfo/appid")
+    Observable<ApiResult<SchoolWechatAccountRespDTO>> wechatAccountInfoAppid();
+
+    /**
+     * 微信提现
+     */
+    @POST("funds/wechat/withdraw")
+    Observable<ApiResult<SimpleRespDTO>> wechatWithdraw(@Body WechatWithdrawReqDTO reqDTO);
+
+    /**
+     * 充值类型列表
+     */
+    @POST("funds/recharge/type/list")
+    Observable<ApiResult<QueryRechargeTypeListRespDTO>> typeList();
+
 
 }

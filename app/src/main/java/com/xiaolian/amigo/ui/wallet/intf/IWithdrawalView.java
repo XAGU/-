@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet.intf;
 
+import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -26,4 +27,12 @@ public interface IWithdrawalView extends IBaseView {
      * @param id 提现账单id
      */
     void showWithdrawAccount(String accountName, Long id);
+
+    /**
+     * 设置退款服务商微信号appId
+     * @param appId
+     */
+    void setAppid(String appId);
+
+    void showTypeList(QueryRechargeTypeListRespDTO data);
 }
