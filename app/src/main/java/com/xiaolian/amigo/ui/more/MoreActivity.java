@@ -44,8 +44,6 @@ import butterknife.OnClick;
 public class MoreActivity extends MoreBaseActivity implements IMoreView ,IUiListener , ShareAlertDialog.ShareQQListener {
     private static final String TAG = MoreActivity.class.getSimpleName();
 
-
-
     List<MoreAdapter.MoreModel> items = new ArrayList<MoreAdapter.MoreModel>() {
         {
             add(new MoreAdapter.MoreModel("帮助中心", WebActivity.class, Constant.H5_HELP));

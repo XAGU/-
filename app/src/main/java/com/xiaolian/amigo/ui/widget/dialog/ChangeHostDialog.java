@@ -35,13 +35,11 @@ import lombok.Data;
 
 public class ChangeHostDialog extends Dialog {
 
-    private static final String QA1 = "http://116.62.236.67";
+    private static final String QA1 = "http://47.107.53.127";
     private static final String QA2 = "http://39.108.97.229";
     private static final String QA3= "http://39.108.74.164";
-    private static final String QA4 = "http://47.107.47.24";
+    private static final String QA4 = "http://39.108.165.72";
     private static final String QA5 = "http://47.107.45.109";
-    private static final String BATH2 ="http://120.77.214.212";
-    private static final String BATH1 = "http://39.108.85.163";
 
     private static final String HOST1 = ":5081/";
     private static final String HOST2 = ":5082/";
@@ -64,8 +62,6 @@ public class ChangeHostDialog extends Dialog {
             add(new HostAddress("qa3", QA3 + HOST1));
             add(new HostAddress("qa4", QA4+ HOST1));
             add(new HostAddress("qa5" , QA5 + HOST1));
-            add(new HostAddress("bath1" ,BATH1 + HOST1));
-            add(new HostAddress("bath2" , BATH2 + HOST1));
             add(new HostAddress("预发", "http://47.106.62.186/c/"));
         }
     };
@@ -77,8 +73,6 @@ public class ChangeHostDialog extends Dialog {
             add(new HostAddress("qa3", QA3 + HOST2));
             add(new HostAddress("qa4", QA4+ HOST2));
             add(new HostAddress("qa5" , QA5 + HOST2));
-            add(new HostAddress("bath1" ,BATH1 + HOST2));
-            add(new HostAddress("bath2" , BATH2 + HOST2));
             add(new HostAddress("预发", "http://47.106.62.186/b/"));
         }
     };
@@ -91,8 +85,6 @@ public class ChangeHostDialog extends Dialog {
             add(new HostAddress("qa3", QA3 + HOST3));
             add(new HostAddress("qa4", QA4+ HOST3));
             add(new HostAddress("qa5" , QA5 + HOST3));
-            add(new HostAddress("bath1" ,BATH1 + HOST3));
-            add(new HostAddress("bath2" , BATH2 + HOST3));
             add(new HostAddress("预发", "http://47.106.62.186:5097/c"));
         }
     };

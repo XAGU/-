@@ -7,10 +7,10 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextSwitcher;
+import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.widget.marqueeview.WaterTextView;
 import com.xiaolian.amigo.util.Log;
 
 import java.io.UnsupportedEncodingException;
@@ -37,6 +37,8 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
     int startAgainCount ;
 
     int waterloopTime ;
+
+    private List<View> views = new ArrayList<>();
     public TextSwitcherView(Context context) {
         this(context , null);
     }
@@ -79,8 +81,8 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case UPDATE_TEXTSWITCHER:
-//                    updateTextSwitcher();
-                    updateText();
+                    updateTextSwitcher();
+//                    updateText();
                     break;
                     default:
                         break;
@@ -103,11 +105,13 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
     public void getResoure(ArrayList<String> info){
         this.info = info ;
         this.dataFlag = 1 ;
+        views.clear();
     }
     String string ;
 
     public void setDefaultData(String string){
         this.string = string ;
+        views.clear();
     }
 
     int byteCount ;
@@ -119,11 +123,11 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
 
         char[] array = str.toCharArray();  //获取字节
 
-        Log.d("zsr", "strbyte/arraybyte: " + str.toString().getBytes("GBK").length + "  " + array.length);
+        Log.d(TAG, "strbyte/arraybyte: " + str.toString().getBytes("GBK").length + "  " + array.length);
         if (str.toString().getBytes("GBK").length > subSLength) {
             int shi = str.toString().getBytes("GBK").length / subSLength;
             int ge = str.toString().getBytes("GBK").length % subSLength;
-            if (shi > 0 && ge != 0) {  //不小于一行，分开显示
+            if (shi > 1 && ge != 0) {  //不小于一行，分开显示
                 for (int i = 0; i < array.length; i++) {
                     if ((char) (byte) array[i] != array[i]) {
                         byteCount += 2;  //如果是中文，则自加2
@@ -138,7 +142,7 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
                         stringCount = 0;
                     }
                 }
-                Log.d("zsr_count", "shi/ge: "+shi+"  "+ge);
+                Log.d(TAG, "shi/ge: "+shi+"  "+ge);
                 if (ge>0 && ge<=7) {
                     waterloopTime = 3*shi;
                 }else if (ge>7 && ge<=16) {
@@ -150,7 +154,7 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
                 }else {
                     waterloopTime = 6*shi+2;
                 }
-                Log.d("zsr_count", "waterloopTime: "+waterloopTime);
+                Log.d(TAG, "waterloopTime: "+waterloopTime);
                 for (int i = 0; i <= shi; i++) {
                     if (i == shi) {
                         subArrayList.add(str.substring(getRealCount*i,str.length()));
@@ -160,12 +164,13 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
                 }
             } else {
                 subArrayList.add(str); //小于一行则正常显示
-                Log.d("zsr", "cannot read?");
+                Log.d(TAG, "cannot read?");
             }
 
         }
 
     }
+
     private void updateText(){
 
         if (this.dataFlag ==1 ){
@@ -173,7 +178,7 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
             if (this.info != null && this.info.size() > 0){
 
                  try{
-                     subStr(info.get(resIndex) , 12);
+                     subStr(info.get(resIndex) , 20);
                      if (subArrayList!=null && subArrayList.size() > 0){
                             if (subArrayList.size() == 1){ // 单行
                                 waterTextStatus = false ;
@@ -201,16 +206,17 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
             this.setText(this.string);
         }
 
-        }
+    }
 
     @Override
     public View makeView() {
-        WaterTextView textView = new WaterTextView(getContext());
+        TextView textView = new TextView(getContext());
         textView.setTextSize(12);
         textView.setSingleLine();
         textView.setEllipsize(MARQUEE);
         textView.setTextColor(getContext().getResources().getColor(R.color.colorFullRed));
         textView.setMarqueeRepeatLimit(1);
+        android.util.Log.e(TAG, "makeView: " +  textView.isShown());
         return textView;
     }
 }

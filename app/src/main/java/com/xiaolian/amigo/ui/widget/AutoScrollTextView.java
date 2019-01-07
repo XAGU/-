@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -41,6 +42,9 @@ public class AutoScrollTextView extends TextView implements View.OnClickListener
         initView();
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
 
     private void initView()
     {
@@ -137,6 +141,7 @@ public class AutoScrollTextView extends TextView implements View.OnClickListener
 
     public void startScroll()
     {
+        Log.e(TAG, "startScroll: " );
         isStarting = true;
         invalidate();
     }

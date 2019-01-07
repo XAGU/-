@@ -1,1 +1,1 @@
-include ':app', ':zxing-android-embedded', ':blelib', ':loglib','MarqueeView'
+include ':app', ':zxing-android-embedded', ':blelib', ':loglib'

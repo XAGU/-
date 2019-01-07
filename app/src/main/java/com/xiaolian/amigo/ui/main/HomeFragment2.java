@@ -21,7 +21,6 @@ import android.widget.ViewFlipper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.sunfusheng.marqueeview.MarqueeView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
