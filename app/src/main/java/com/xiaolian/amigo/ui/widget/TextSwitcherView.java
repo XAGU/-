@@ -81,8 +81,8 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case UPDATE_TEXTSWITCHER:
-                    updateTextSwitcher();
-//                    updateText();
+//                    updateTextSwitcher();
+                    updateText();
                     break;
                     default:
                         break;
