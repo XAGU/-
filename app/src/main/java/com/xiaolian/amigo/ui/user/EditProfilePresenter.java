@@ -100,6 +100,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     if (result.getData().getSex() != null) {
                         getMvpView().setSex(result.getData().getSex());
                     }
+
                     User user = new User(result.getData());
                     userDataManager.setUser(user);
                 } else {

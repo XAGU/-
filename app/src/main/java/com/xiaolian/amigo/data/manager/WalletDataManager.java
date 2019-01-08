@@ -6,6 +6,7 @@ import com.xiaolian.amigo.data.network.IComplaintApi;
 import com.xiaolian.amigo.data.network.ICsApi;
 import com.xiaolian.amigo.data.network.IFundsApi;
 import com.xiaolian.amigo.data.network.ITimeRangeApi;
+import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.IUserBillApi;
 import com.xiaolian.amigo.data.network.IUserThirdAccountApi;
 import com.xiaolian.amigo.data.network.IWxpayApi;
@@ -17,6 +18,7 @@ import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.SchoolWechatAccountRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.WechatWithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
+import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryMonthlyBillReqDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryPersonalMaxConsumeOrderListReqDTO;
@@ -74,6 +76,7 @@ public class WalletDataManager implements IWalletDataManager {
     private IUserThirdAccountApi userThirdAccountApi;
     private IComplaintApi complaintApi;
     private IUserBillApi userBillApi;
+    private IUserApi userApi ;
 
     @Inject
     public WalletDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
@@ -85,6 +88,7 @@ public class WalletDataManager implements IWalletDataManager {
         userThirdAccountApi = retrofit.create(IUserThirdAccountApi.class);
         complaintApi = retrofit.create(IComplaintApi.class);
         userBillApi = retrofit.create(IUserBillApi.class);
+        userApi = retrofit.create(IUserApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
@@ -231,6 +235,11 @@ public class WalletDataManager implements IWalletDataManager {
     @Override
     public Observable<ApiResult<QueryRechargeTypeListRespDTO>> typeList() {
         return fundsApi.typeList();
+    }
+
+    @Override
+    public Observable<ApiResult<EntireUserDTO>> getUserInfo() {
+        return userApi.getUserInfo();
     }
 
     @Override

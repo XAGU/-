@@ -15,16 +15,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/content_border"
         android:orientation="vertical"
-        android:paddingLeft="14dp"
-        android:paddingRight="14dp">
+        >
 
         <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="21dp"
             android:id="@+id/withdraw_type"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackgroundGray"
+            android:layout_marginBottom="21dp"/>
 
         <RelativeLayout
             android:visibility="gone"
@@ -71,7 +70,11 @@
         <RelativeLayout
             android:id="@+id/rl_choose_withdraw_way2"
             android:layout_width="match_parent"
-            android:layout_height="48dp">
+            android:layout_height="48dp"
+            android:background="@drawable/content_border"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            >
 
             <TextView
                 style="@style/ContentText_main"
@@ -114,6 +117,9 @@
                android:id="@+id/rl_choose_withdraw_way_xw"
                android:layout_width="match_parent"
                android:layout_height="48dp"
+                android:background="@drawable/content_border"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
                 >
             <TextView
                 style="@style/ContentText_main"
@@ -152,6 +158,9 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:background="@drawable/content_border"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
                 >
                 <TextView
                     style="@style/ContentText_main"

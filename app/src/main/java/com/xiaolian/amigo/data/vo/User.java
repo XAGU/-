@@ -221,6 +221,8 @@ public class User {
         this.buildingId = entireUserDTO.getBuildingId();
         this.hadSetBathPassword = entireUserDTO.isHadSetBathPassword();
         this.alipayBind = entireUserDTO.getAlipayBind();
+        this.weChatBind = entireUserDTO.getWechatBind();
+        this.alipayBind = entireUserDTO.getAlipayBind();
     }
 
     @Data

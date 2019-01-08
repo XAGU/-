@@ -24,11 +24,10 @@ public class ShareUtils {
         msg.title = title;
         msg.description =  description ;
 
-        Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher);
+        Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.share_logo);
         Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
         bmp.recycle();
         msg.thumbData = bmpToByteArray(thumbBmp, true);
-
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.message = msg ;

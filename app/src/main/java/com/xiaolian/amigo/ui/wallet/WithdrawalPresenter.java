@@ -2,6 +2,8 @@ package com.xiaolian.amigo.ui.wallet;
 
 import android.text.TextUtils;
 
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
@@ -11,6 +13,7 @@ import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAcco
 import com.xiaolian.amigo.data.network.model.funds.WithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAccountRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalView;
@@ -138,6 +141,21 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
                 }
             }
         });
+    }
+
+    @Override
+    public User getUserInfo() {
+        return  walletDataManager.getUser();
+    }
+
+    @Override
+    public void getWeChatCode() {
+        new Thread(()->{
+            final SendAuth.Req req = new SendAuth.Req();
+            req.scope = "snsapi_userinfo";
+            req.state = "amigo_wx_login";
+            MvpApp.mWxApi.sendReq(req);
+        }).start();
     }
 
 }

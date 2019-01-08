@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,6 +29,7 @@ import javax.inject.Inject;
  * @date 17/9/15
  */
 public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
+    private static final String TAG = SharedPreferencesHelp.class.getSimpleName();
     private static final String PREF_FILE_NAME = "amigo";
     private static final String PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN";
 
@@ -133,6 +135,10 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_APY_USER_ID= "PREF_KEY_APY_USER_ID";
 
     private static final String PREF_KEY_APY_IS_BIND= "PREF_KEY_APY_IS_BIND";
+
+    private static final String PREF_KEY_WECHAT_IS_BIND = "PREF_KEY_WECHAT_IS_BIND";
+
+    private static final String PREF_KEY_WECHAT_NICKNAME = "PREF_KEY_WECHAT_NICKNAME";
 
 
     /**
@@ -335,10 +341,12 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
             mSharedPreferences.edit().putString(PREF_KEY_DORMITORY, user.getDormitory()).apply();
         }
 
+
         if (null != user.getAlipayBind() && user.getAlipayBind().isIsBinding()){
             mSharedPreferences.edit().putString(PREF_KEY_ALIPAY_NICKNAME, user.getAlipayBind().getAlipayNickName()).apply();
             mSharedPreferences.edit().putLong(PREF_KEY_APY_USER_ID, user.getAlipayBind().getAlipayUserId()).apply();
             mSharedPreferences.edit().putBoolean(PREF_KEY_APY_IS_BIND, user.getAlipayBind().isIsBinding()).apply();
+        }else{
         }
     }
 

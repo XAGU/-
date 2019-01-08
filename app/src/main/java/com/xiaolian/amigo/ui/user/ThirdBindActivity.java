@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.user.intf.IThirdBindPresenter;
 import com.xiaolian.amigo.ui.user.intf.IThirdBindView;
+import com.xiaolian.amigo.ui.wallet.WithdrawalActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -129,6 +130,7 @@ public class ThirdBindActivity extends UserBaseActivity implements IThirdBindVie
         startActivity(intent);
         finish();
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

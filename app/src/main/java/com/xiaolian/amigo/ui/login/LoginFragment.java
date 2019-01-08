@@ -70,11 +70,6 @@ public class LoginFragment extends Fragment {
     @OnClick(R.id.bt_submit)
     void login() {
         btSubmit.setEnabled(false);
-//        if (!isMobileNO(etMobile.getText().toString())){
-//            ((LoginActivity) getActivity()).onError("手机号不合法");
-//            btSubmit.setEnabled(true);
-//            return;
-//        }
         if (etUserpwd.getText().toString().trim().length() == 0){
             ((LoginActivity) getActivity()).onError("请输入登录密码");
             btSubmit.setEnabled(true);

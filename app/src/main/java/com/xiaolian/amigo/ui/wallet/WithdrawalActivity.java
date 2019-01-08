@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,11 +16,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
+import com.xiaolian.amigo.data.network.model.login.WeChatBindRespDTO;
+import com.xiaolian.amigo.data.vo.User;
+import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.user.PasswordVerifyActivity;
+import com.xiaolian.amigo.ui.user.ThirdBindActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.ChooseWithdrawAdapter;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeTypeAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalPresenter;
@@ -43,6 +52,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+
+import static com.xiaolian.amigo.ui.user.EditProfileActivity.WECHAT_BIND;
 
 /**
  * 提现
@@ -122,6 +133,10 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
 
     private String appid ;
 
+    private String wechatCode ;
+
+    private IWXAPI mWxApi ;
+
     @Override
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
@@ -133,6 +148,17 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         presenter.withdrawType();
         CommonUtil.showSoftInput(this, etAmount);
         initWithdrawType();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EditProfileActivity.Event event) {
+        switch (event.getType()) {
+            case WECHAT_CODE:
+                wechatCode = (String) event.getMsg();
+                break;
+            default:
+                break;
+        }
     }
 
     private void initWithdrawType(){
@@ -166,12 +192,14 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
             btSubmit.setEnabled(true);
         }
 
-        if (rechargeSelectedPosition == 0){
+        if (rechargeTypeSelectedPosition == 0){
             choseAPay();
         }else{
             choseWX();
             // 获取学校appId服务号
-            presenter.getWechatAppid();
+            if (TextUtils.isEmpty(appid)) {
+                presenter.getWechatAppid();
+            }
         }
     }
 
@@ -192,6 +220,20 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
             balance = getIntent().getStringExtra(Constant.EXTRA_KEY);
         }
     }
+
+    @OnClick(R.id.rl_choose_withdraw_way_xw)
+    public void chooseWX(){
+            new Thread(()->{
+                final SendAuth.Req req = new SendAuth.Req();
+                req.scope = "snsapi_userinfo";
+                req.state = "amigo_wx_login";
+                mWxApi = WXAPIFactory.createWXAPI(this,appid, false);
+                mWxApi.sendReq(req);
+            }).start();
+    }
+
+
+
 
     @Override
     protected int setTitle() {

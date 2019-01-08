@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet.intf;
 
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**
@@ -46,4 +47,11 @@ public interface IWithdrawalPresenter<V extends IWithdrawalView> extends IBasePr
      * 获取退款类型
      */
     void withdrawType();
+
+    /**
+     * 获取userInfo
+     */
+    User getUserInfo();
+
+    void getWeChatCode();
 }
