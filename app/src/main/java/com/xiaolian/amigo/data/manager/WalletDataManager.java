@@ -222,7 +222,7 @@ public class WalletDataManager implements IWalletDataManager {
     public Observable<ApiResult<SchoolWechatAccountRespDTO>> wechatAccountInfoAppid() {
         return fundsApi.wechatAccountInfoAppid();
     }
-    
+
     @Override
     public Observable<ApiResult<SimpleRespDTO>> wechatWithdraw(WechatWithdrawReqDTO reqDTO) {
         return fundsApi.wechatWithdraw(reqDTO);

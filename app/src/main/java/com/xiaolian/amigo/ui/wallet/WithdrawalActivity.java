@@ -256,6 +256,13 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
             onError("请选择提现账户");
             return;
         }
+
+        if (rechargeSelectedPosition == 1){
+            if (TextUtils.isEmpty(editName.getText())){
+                onError("请填写微信真实姓名");
+                return ;
+            }
+        }
         double withdrawAmount;
         double balanceAmount;
         try {
@@ -377,8 +384,13 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
                     }
                     break;
                 case REQUEST_CODE_PASSWORD_VERIFY://密码验证成功后才能进入退款流程
-                    presenter.withdraw(etAmount.getText().toString().trim(), tvWithdrawWay2.getText().toString().trim(),
-                            withdrawId);
+                    if (rechargeSelectedPosition == 0) {
+                        presenter.withdraw(etAmount.getText().toString().trim(), tvWithdrawWay2.getText().toString().trim(),
+                                withdrawId);
+                    }else if (rechargeSelectedPosition == 1){
+                        presenter.wechatWithdraw(etAmount.getText().toString().trim() , appid ,editName.getText().toString().trim());
+                    }
+
                 default:
                     break;
             }

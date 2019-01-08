@@ -8,7 +8,7 @@ public class WechatWithdrawReqDTO {
     /**
      * 提现金额
      */
-    private float amount ;
+    private String amount ;
 
     /**
      * 应用类型：1-原生； 2-小程序

@@ -104,8 +104,9 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
     }
 
     @Override
-    public void wechatWithdraw(float amount, String code, String userRealName) {
+    public void wechatWithdraw(String amount, String code, String userRealName) {
         WechatWithdrawReqDTO reqDTO = new WechatWithdrawReqDTO();
+
         reqDTO.setAmount(amount);
         reqDTO.setCode(code);
         reqDTO.setUserRealName(userRealName);

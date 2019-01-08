@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -13,12 +14,16 @@ import android.widget.ViewSwitcher;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.marqueeview.WaterTextView;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.RxHelper;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import rx.functions.Action1;
 
 import static android.text.TextUtils.TruncateAt.MARQUEE;
 
@@ -57,6 +62,7 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         this.setOutAnimation(getContext() , R.anim.anim_get_out);
         Timer timer = new Timer();
         timer.schedule(timerTask ,1 ,3000);
+
     }
 
     TimerTask timerTask = new TimerTask() {
@@ -82,8 +88,8 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case UPDATE_TEXTSWITCHER:
-//                    updateTextSwitcher();
-                    updateText();
+                    updateTextSwitcher();
+//                    updateText();
                     break;
                     default:
                         break;
@@ -91,13 +97,14 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
             }
         }
     };
-
-
-
-
+    
     public void updateTextSwitcher() {
         if (this.info != null && this.info.size()>0) {
             this.setText(this.info.get(resIndex++));
+            RxHelper.delay(500 , TimeUnit.MILLISECONDS)
+                    .subscribe(integer -> {
+                        ((MarqueeText)getCurrentView()).startFor0();
+                    });
             if (resIndex > this.info.size()-1) {
                 resIndex = 0;
             }
@@ -130,7 +137,7 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         if (str.toString().getBytes("GBK").length > subSLength) {
             int shi = str.toString().getBytes("GBK").length / subSLength;
             int ge = str.toString().getBytes("GBK").length % subSLength;
-            if (shi > 1 && ge != 0) {  //不小于一行，分开显示
+            if (shi > 0 && ge != 0) {  //不小于一行，分开显示
                 for (int i = 0; i < array.length; i++) {
                     if ((char) (byte) array[i] != array[i]) {
                         byteCount += 2;  //如果是中文，则自加2
@@ -212,12 +219,12 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
 
     @Override
     public View makeView() {
-        WaterTextView textView = new WaterTextView(getContext());
+        MarqueeText textView = new MarqueeText(getContext());
         textView.setTextSize(12);
         textView.setTextColor(getContext().getResources().getColor(R.color.colorFullRed));
         textView.setSingleLine();
-        textView.setEllipsize(MARQUEE);
-        textView.setMarqueeRepeatLimit(1);
+//        textView.setEllipsize(MARQUEE);
+//        textView.setMarqueeRepeatLimit(1);
         android.util.Log.e(TAG, "makeView: " +  textView.isShown());
         return textView;
     }
