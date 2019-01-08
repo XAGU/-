@@ -3,7 +3,6 @@ package com.xiaolian.amigo.ui.widget.dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,11 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tencent.tauth.IUiListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.ShareUtils;
 
 /**
@@ -92,7 +89,7 @@ public class ShareAlertDialog implements View.OnClickListener {
 
 
     private void shareWX(){
-        ShareUtils.shareWX(Constant.SHARE_URL,"笑联" , "笑联测试" ,context);
+        ShareUtils.shareWX(Constant.SHARE_URL,"笑联-以科技和创新改善校园生活" , "校园高品质生活服务专家" ,context);
         dialog.dismiss();
     }
 

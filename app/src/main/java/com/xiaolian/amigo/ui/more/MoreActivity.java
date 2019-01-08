@@ -23,7 +23,6 @@ import com.xiaolian.amigo.ui.more.intf.IMoreView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.widget.dialog.ShareAlertDialog;
 import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.PictureUtil;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
@@ -163,13 +162,13 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView ,IUiList
         //这条分享消息被好友点击后的跳转URL。
         bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL, Constant.SHARE_URL);
         //分享的标题。注：PARAM_TITLE、PARAM_IMAGE_URL、PARAM_SUMMARY不能全为空，最少必须有一个是有值的。
-        bundle.putString(QQShare.SHARE_TO_QQ_TITLE, "我在测试");
+        bundle.putString(QQShare.SHARE_TO_QQ_TITLE, "笑联-以科技和创新改善校园生活");
 
         //分享的消息摘要，最长50个字
-        bundle.putString(QQShare.SHARE_TO_QQ_SUMMARY, "测试");
+        bundle.putString(QQShare.SHARE_TO_QQ_SUMMARY, "校园高品质生活服务专家");
 
         // 网络图片
-        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,"http://inews.gtimg.com/newsapp_bt/0/876781763/1000");
+        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,"https://s.xiaolian365.com/found/129731_1546939243367_0171.jpg");
 
         // 本地图片
 //        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL,PictureUtil.getPathFromDrawableRes(this ,R.mipmap.ic_launcher));
