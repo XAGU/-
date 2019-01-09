@@ -23,6 +23,7 @@ import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryWithdrawTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.WechatUserAccountBasicInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.login.WeChatBindRespDTO;
 import com.xiaolian.amigo.data.vo.User;
@@ -132,13 +133,23 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     private int rechargeSelectedPosition = -1;
     private int rechargeTypeSelectedPosition = 0;
 
+    /**
+     *  微信退款
+     */
+
+    // 商户id
     private String appid = null ;
 
+    //  获取微信授权code
     private String wechatCode ;
 
     private IWXAPI mWxApi ;
 
+    // 用户openId
     private String openId ;
+
+    // 用户昵称
+    private String nickName ;
 
     @Override
     protected void initView() {
@@ -424,9 +435,9 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     }
 
     @Override
-    public void showTypeList(QueryRechargeTypeListRespDTO data) {
+    public void showTypeList(QueryWithdrawTypeListRespDTO data) {
         rechargeTypes.clear();
-        List<Integer> typeList = data.getRechargeTypes();
+        List<Integer> typeList = data.getWithdrawTypes();
         if (typeList != null && typeList.size() > 0){
             for (Integer type : typeList){
                 if (type == PayWay.ALIAPY.getType()){
@@ -441,10 +452,10 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
 
     @Override
     public void showWXNickname(WechatUserAccountBasicInfoRespDTO respDTO) {
-        String  nickname =  respDTO.getNickname();
+        nickName =  respDTO.getNickname();
         openId = respDTO.getOpenId();
-        if (null != nickname && !TextUtils.isEmpty(nickname)) {
-            tvWithdrawWayWX.setText(nickname);
+        if (null != nickName && !TextUtils.isEmpty(nickName)) {
+            tvWithdrawWayWX.setText(nickName);
         }
     }
 
@@ -474,7 +485,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
                         presenter.withdraw(etAmount.getText().toString().trim(), tvWithdrawWay2.getText().toString().trim(),
                                 withdrawId);
                     }else if (rechargeTypeSelectedPosition == 1){
-                        presenter.wechatWithdraw(etAmount.getText().toString().trim() , openId ,editName.getText().toString().trim());
+                        presenter.wechatWithdraw(etAmount.getText().toString().trim() , openId ,editName.getText().toString().trim() , nickName);
                     }
 
                 default:

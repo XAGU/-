@@ -41,7 +41,7 @@ public interface IWithdrawalPresenter<V extends IWithdrawalView> extends IBasePr
     /**
      * 微信提现
      */
-    void wechatWithdraw(String amount ,String openId ,String userRealName);
+    void wechatWithdraw(String amount ,String openId ,String userRealName , String nickName);
 
     /**
      * 获取退款类型

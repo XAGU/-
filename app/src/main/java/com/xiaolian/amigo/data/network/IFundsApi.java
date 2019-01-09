@@ -5,6 +5,7 @@ import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryPersonalFundsListReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryWithdrawTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.RechargeReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
@@ -104,8 +105,8 @@ public interface IFundsApi {
     /**
      * 充值类型列表
      */
-    @POST("funds/recharge/type/list")
-    Observable<ApiResult<QueryRechargeTypeListRespDTO>> typeList();
+    @POST("funds/withdraw//type/list")
+    Observable<ApiResult<QueryWithdrawTypeListRespDTO>> typeList();
 
     /**
      * 获取微信昵称

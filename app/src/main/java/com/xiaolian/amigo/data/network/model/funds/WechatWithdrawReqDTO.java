@@ -24,4 +24,9 @@ public class WechatWithdrawReqDTO {
      * 用户真实姓名
      */
     private String userRealName ;
+
+    /**
+     * 微信昵称
+     */
+    private String nickName ;
 }

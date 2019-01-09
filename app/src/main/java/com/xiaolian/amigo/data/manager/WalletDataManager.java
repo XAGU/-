@@ -15,6 +15,7 @@ import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryWithdrawTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.SchoolWechatAccountRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.WechatUserAccountBasicInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.WechatUserBasicInfoReqDTO;
@@ -235,7 +236,7 @@ public class WalletDataManager implements IWalletDataManager {
     }
 
     @Override
-    public Observable<ApiResult<QueryRechargeTypeListRespDTO>> typeList() {
+    public Observable<ApiResult<QueryWithdrawTypeListRespDTO>> typeList() {
         return fundsApi.typeList();
     }
 

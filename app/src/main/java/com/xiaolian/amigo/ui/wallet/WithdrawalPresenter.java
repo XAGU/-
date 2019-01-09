@@ -3,11 +3,14 @@ package com.xiaolian.amigo.ui.wallet;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryWithdrawTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.SchoolWechatAccountRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.WechatUserAccountBasicInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.WechatUserBasicInfoReqDTO;
@@ -110,12 +113,13 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
     }
 
     @Override
-    public void wechatWithdraw(String amount, String openId, String userRealName) {
+    public void wechatWithdraw(String amount, String openId, String userRealName , String nickName) {
         WechatWithdrawReqDTO reqDTO = new WechatWithdrawReqDTO();
 
         reqDTO.setAmount(amount);
         reqDTO.setOpenId(openId);
         reqDTO.setUserRealName(userRealName);
+        reqDTO.setNickName(nickName);
         // 应用类型 1 - 原生 ； 2 -小程序
         reqDTO.setAppSource(1);
         Log.e(TAG, "wechatWithdraw: " );
@@ -135,10 +139,10 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
 
     @Override
     public void withdrawType() {
-        addObserver(walletDataManager.typeList(), new NetworkObserver<ApiResult<QueryRechargeTypeListRespDTO>>(){
+        addObserver(walletDataManager.typeList(), new NetworkObserver<ApiResult<QueryWithdrawTypeListRespDTO>>(){
 
             @Override
-            public void onReady(ApiResult<QueryRechargeTypeListRespDTO> result) {
+            public void onReady(ApiResult<QueryWithdrawTypeListRespDTO> result) {
                 if (result.getError() == null){
                     getMvpView().showTypeList(result.getData());
                 }else{
