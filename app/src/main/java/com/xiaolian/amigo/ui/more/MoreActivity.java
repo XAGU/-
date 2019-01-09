@@ -168,7 +168,7 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView ,IUiList
         bundle.putString(QQShare.SHARE_TO_QQ_SUMMARY, "校园高品质生活服务专家");
 
         // 网络图片
-        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,"https://s.xiaolian365.com/found/129731_1546939243367_0171.jpg");
+        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,"https://s.xiaolian365.com/found/129731_1546940816897_7221.jpg");
 
         // 本地图片
 //        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL,PictureUtil.getPathFromDrawableRes(this ,R.mipmap.ic_launcher));

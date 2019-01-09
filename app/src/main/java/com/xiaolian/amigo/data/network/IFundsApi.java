@@ -9,6 +9,8 @@ import com.xiaolian.amigo.data.network.model.funds.RechargeReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.SchoolWechatAccountRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WechatUserAccountBasicInfoRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WechatUserBasicInfoReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WechatWithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawReqDTO;
@@ -90,7 +92,7 @@ public interface IFundsApi {
      * 获取学校微信商户账号信息
      * @return
      */
-    @POST("funds/school/wechatAccountInfo/appid")
+    @POST("funds/school/wechatAccountInfo/appId")
     Observable<ApiResult<SchoolWechatAccountRespDTO>> wechatAccountInfoAppid();
 
     /**
@@ -104,6 +106,12 @@ public interface IFundsApi {
      */
     @POST("funds/recharge/type/list")
     Observable<ApiResult<QueryRechargeTypeListRespDTO>> typeList();
+
+    /**
+     * 获取微信昵称
+     */
+    @POST("wechat/user/account/native/info")
+    Observable<ApiResult<WechatUserAccountBasicInfoRespDTO>> accountInfo(@Body WechatUserBasicInfoReqDTO reqDTO);
 
 
 }

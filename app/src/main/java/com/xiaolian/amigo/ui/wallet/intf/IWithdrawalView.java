@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.wallet.intf;
 
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WechatUserAccountBasicInfoRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -35,4 +36,11 @@ public interface IWithdrawalView extends IBaseView {
     void setAppid(String appId);
 
     void showTypeList(QueryRechargeTypeListRespDTO data);
+
+    /**
+     * 显示昵称
+     * @param nickname
+     */
+    void showWXNickname(WechatUserAccountBasicInfoRespDTO respDTO);
+
 }
