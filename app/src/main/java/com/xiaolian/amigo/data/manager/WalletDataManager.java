@@ -15,7 +15,10 @@ import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryWithdrawTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.SchoolWechatAccountRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WechatUserAccountBasicInfoRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WechatUserBasicInfoReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WechatWithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
@@ -233,13 +236,18 @@ public class WalletDataManager implements IWalletDataManager {
     }
 
     @Override
-    public Observable<ApiResult<QueryRechargeTypeListRespDTO>> typeList() {
+    public Observable<ApiResult<QueryWithdrawTypeListRespDTO>> typeList() {
         return fundsApi.typeList();
     }
 
     @Override
     public Observable<ApiResult<EntireUserDTO>> getUserInfo() {
         return userApi.getUserInfo();
+    }
+
+    @Override
+    public Observable<ApiResult<WechatUserAccountBasicInfoRespDTO>> getWXNickname(WechatUserBasicInfoReqDTO reqDTO) {
+        return fundsApi.accountInfo(reqDTO);
     }
 
     @Override

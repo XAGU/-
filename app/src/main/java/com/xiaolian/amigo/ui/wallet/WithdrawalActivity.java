@@ -23,6 +23,8 @@ import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryWithdrawTypeListRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WechatUserAccountBasicInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.login.WeChatBindRespDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
@@ -131,11 +133,23 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     private int rechargeSelectedPosition = -1;
     private int rechargeTypeSelectedPosition = 0;
 
-    private String appid ;
+    /**
+     *  微信退款
+     */
 
+    // 商户id
+    private String appid = null ;
+
+    //  获取微信授权code
     private String wechatCode ;
 
     private IWXAPI mWxApi ;
+
+    // 用户openId
+    private String openId ;
+
+    // 用户昵称
+    private String nickName ;
 
     @Override
     protected void initView() {
@@ -154,7 +168,10 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     public void onEvent(EditProfileActivity.Event event) {
         switch (event.getType()) {
             case WECHAT_CODE:
+                //  取得微信授权码后，获取微信昵称
                 wechatCode = (String) event.getMsg();
+                Log.e(TAG, "onEvent: " + wechatCode );
+                presenter.getWxNickName(wechatCode);
                 break;
             default:
                 break;
@@ -195,10 +212,11 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         if (rechargeTypeSelectedPosition == 0){
             choseAPay();
         }else{
-            choseWX();
             // 获取学校appId服务号
-            if (TextUtils.isEmpty(appid)) {
+            if (appid == null ||TextUtils.isEmpty(appid)) {
                 presenter.getWechatAppid();
+            }else {
+                choseWX();
             }
         }
     }
@@ -206,11 +224,13 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     private void choseAPay(){
         rlChooseWithdrawWay2.setVisibility(View.VISIBLE);
         llWx.setVisibility(View.GONE);
+        toggleButton();
     }
 
     private void choseWX(){
         rlChooseWithdrawWay2.setVisibility(View.GONE);
         llWx.setVisibility(View.VISIBLE);
+        toggleWXButton();
     }
 
     @Override
@@ -227,6 +247,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
                 final SendAuth.Req req = new SendAuth.Req();
                 req.scope = "snsapi_userinfo";
                 req.state = "amigo_wx_login";
+                Log.e(TAG, "chooseWX: " + appid );
                 mWxApi = WXAPIFactory.createWXAPI(this,appid, false);
                 mWxApi.sendReq(req);
             }).start();
@@ -288,18 +309,40 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         toggleButton();
     }
 
+
+    @OnTextChanged({R.id.tv_withdraw_way_wx , R.id.edit_name , R.id.et_amount})
+    void onEditWXTextChange(){
+        toggleWXButton();
+    }
+
+    private void toggleWXButton() {
+        if (TextUtils.isEmpty(etAmount.getText())
+                || TextUtils.isEmpty(tvWithdrawWayWX.getText().toString())
+                || TextUtils.isEmpty(editName.getText())) {
+            btSubmit.setEnabled(false);
+        } else {
+            btSubmit.setEnabled(true);
+        }
+    }
+
+
     @OnClick(R.id.bt_submit)
     void onSubmit() {
         if (TextUtils.isEmpty(etAmount.getText())) {
             onError("请输入提现金额");
             return;
         }
-        if (withdrawId == null) {
-            onError("请选择提现账户");
-            return;
-        }
 
-        if (rechargeSelectedPosition == 1){
+        if (rechargeTypeSelectedPosition == 0) {
+            if (withdrawId == null) {
+                onError("请选择提现账户");
+                return;
+            }
+        }else{
+            if (TextUtils.isEmpty(tvWithdrawWayWX.getText().toString().trim())){
+                onError("请选择提现账户");
+                return ;
+            }
             if (TextUtils.isEmpty(editName.getText())){
                 onError("请填写微信真实姓名");
                 return ;
@@ -388,12 +431,13 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     @Override
     public void setAppid(String appId) {
         this.appid = appId ;
+        choseWX();
     }
 
     @Override
-    public void showTypeList(QueryRechargeTypeListRespDTO data) {
+    public void showTypeList(QueryWithdrawTypeListRespDTO data) {
         rechargeTypes.clear();
-        List<Integer> typeList = data.getRechargeTypes();
+        List<Integer> typeList = data.getWithdrawTypes();
         if (typeList != null && typeList.size() > 0){
             for (Integer type : typeList){
                 if (type == PayWay.ALIAPY.getType()){
@@ -405,6 +449,16 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
             typeAdaptor.notifyDataSetChanged();
         }
     }
+
+    @Override
+    public void showWXNickname(WechatUserAccountBasicInfoRespDTO respDTO) {
+        nickName =  respDTO.getNickname();
+        openId = respDTO.getOpenId();
+        if (null != nickName && !TextUtils.isEmpty(nickName)) {
+            tvWithdrawWayWX.setText(nickName);
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -426,11 +480,12 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
                     }
                     break;
                 case REQUEST_CODE_PASSWORD_VERIFY://密码验证成功后才能进入退款流程
-                    if (rechargeSelectedPosition == 0) {
+                    Log.e(TAG, "onActivityResult: " + rechargeTypeSelectedPosition );
+                    if (rechargeTypeSelectedPosition == 0) {
                         presenter.withdraw(etAmount.getText().toString().trim(), tvWithdrawWay2.getText().toString().trim(),
                                 withdrawId);
-                    }else if (rechargeSelectedPosition == 1){
-                        presenter.wechatWithdraw(etAmount.getText().toString().trim() , appid ,editName.getText().toString().trim());
+                    }else if (rechargeTypeSelectedPosition == 1){
+                        presenter.wechatWithdraw(etAmount.getText().toString().trim() , openId ,editName.getText().toString().trim() , nickName);
                     }
 
                 default:
@@ -469,7 +524,5 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
-
-
 
 }

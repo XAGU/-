@@ -172,9 +172,10 @@
 
                 <EditText
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:gravity="center_vertical"
+                    android:gravity="right"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="16dp"
                     android:hint="请输入真实姓名"
                     android:textSize="14sp"

@@ -18,10 +18,15 @@ public class WechatWithdrawReqDTO {
     /**
      * 微信临时授权码
      */
-    private String code ;
+    private String openId ;
 
     /**
      * 用户真实姓名
      */
     private String userRealName ;
+
+    /**
+     * 微信昵称
+     */
+    private String nickName ;
 }

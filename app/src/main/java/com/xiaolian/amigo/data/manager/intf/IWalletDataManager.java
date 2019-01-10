@@ -5,7 +5,10 @@ import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryWithdrawTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.SchoolWechatAccountRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WechatUserAccountBasicInfoRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WechatUserBasicInfoReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WechatWithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
@@ -184,10 +187,16 @@ public interface IWalletDataManager {
 
     Observable<ApiResult<SimpleRespDTO>> wechatWithdraw(WechatWithdrawReqDTO reqDTO);
 
-    Observable<ApiResult<QueryRechargeTypeListRespDTO>> typeList();
+    Observable<ApiResult<QueryWithdrawTypeListRespDTO>> typeList();
 
     /**
      * 获取用户个人信息
      */
     Observable<ApiResult<EntireUserDTO>> getUserInfo();
+
+    /**
+     * 通过code 获取昵称
+     * @return
+     */
+    Observable<ApiResult<WechatUserAccountBasicInfoRespDTO>> getWXNickname(WechatUserBasicInfoReqDTO reqDTO);
 }

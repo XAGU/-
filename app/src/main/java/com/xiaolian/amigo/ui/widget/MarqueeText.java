@@ -3,19 +3,20 @@ package com.xiaolian.amigo.ui.widget;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.support.v7.widget.AppCompatTextView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
+
+import com.xiaolian.amigo.util.RxHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarqueeText extends TextView implements Runnable{
+import rx.functions.Action1;
+
+public class MarqueeText extends AppCompatTextView implements Runnable{
 
     public final static String TAG = MarqueeText.class.getSimpleName();
 
@@ -27,11 +28,16 @@ public class MarqueeText extends TextView implements Runnable{
     //text每次滚动长度
     private int speed = 2;
     //text两次滚动时间间隔 ms
-    private int delayed = 8;
+    private int delayed = 16;
     private int endX; // 滚动到哪个位置
     private boolean isFirstDraw = true; // 当首次或文本改变时重置
     //text一次滚动完成后，多长时间启动第二次滚动
     private int delayAgain =1000 ;
+
+    //   当前设置的文字
+    private CharSequence nowText ;
+
+    private ScrollFinishListener scrollFinishListener ;
 
     private List<String> list = new ArrayList<String>();
 
@@ -47,16 +53,34 @@ public class MarqueeText extends TextView implements Runnable{
         super(context, attrs, defStyle);
     }
 
+    public void setScrollFinishListener(ScrollFinishListener scrollFinishListener) {
+        this.scrollFinishListener = scrollFinishListener;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+        Log.d(TAG, "onDraw: " + getText() + isFirstDraw );
+        if (isFirstDraw){
+            super.onDraw(canvas);
+        }else{
+            if (nowText.equals(getText())) {
+                super.onDraw(canvas);
+            }else{
+                Log.e(TAG, "onDraw: " );
+            }
+        }
+
         if (isFirstDraw) {
             getTextWidth();
             firstScrollX = getScrollX(); // 起始位置不一定为0,改变内容后会变，需重新赋值
             currentScrollX = firstScrollX;
             mWidth = this.getWidth();
-//			endX = firstScrollX + textWidth - mWidth / 2;//字体滚动到一半的时候就从头滚动
             endX = firstScrollX + textWidth;//字体滚完整个屏幕后再从头滚动
+            if (endX <= mWidth){
+                endX = 0 ;
+            }else{
+                endX -= mWidth ;
+            }
             isFirstDraw = false;
         }
     }
@@ -82,6 +106,20 @@ public class MarqueeText extends TextView implements Runnable{
 
     }
 
+
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        nowText =  text ;
+        Log.e(TAG, "setText: " + nowText );
+        super.setText(text, type);
+    }
+
+    @Override
+    public CharSequence getText() {
+        super.getText();
+        return nowText ;
+    }
+
     /**
      * 获取文字宽度
      */
@@ -93,41 +131,32 @@ public class MarqueeText extends TextView implements Runnable{
 
     @Override
     public void run() {
-        // currentScrollX += 1;// 滚动速度
-        currentScrollX += speed;// 滚动速度,每次滚动几点
-        scrollTo(currentScrollX, 0);
+
         if (isStop) {
             return;
         }
-        // 从头开始
+        currentScrollX += speed;// 滚动速度,每次滚动几点
+        Log.d(TAG, "run: "  + currentScrollX);
         if (currentScrollX >= endX) {
-            // scrollTo(0, 0);
-            // currentScrollX = 0; //原文重置为0,发现控件所放的位置不同，初始位置不一定为0
-            scrollTo(firstScrollX, 0);
-            currentScrollX = firstScrollX;
-            //postDelayed(this, 1000);
-            if(list.size()!=0){
-                int current = list.indexOf(getText().toString());
-                if(current+1<list.size()){
-                    setText(list.get(current+1));
-                }else{
-                    setText(list.get(0));
-                }
-            }
+            scrollTo(endX, 0);
+            RxHelper.delay(1, aLong -> {
+                    if (scrollFinishListener != null){
+                        isStop = true; // 停止滚动
+                        this.removeCallbacks(this); // 清空队列
+                        scrollFinishListener.scrollFinish();
+                    }
+                });
         } else {
+            scrollTo(currentScrollX, 0);
             postDelayed(this, delayed);
         }
     }
+
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
-        isStop = true; // 停止滚动
-        this.removeCallbacks(this); // 清空队列
-        currentScrollX = firstScrollX; // 滚动到初始位置
-        this.scrollTo(currentScrollX, 0);
-        super.onTextChanged(text, start, lengthBefore, lengthAfter);
+//        super.onTextChanged(text, start, lengthBefore, lengthAfter);
         isFirstDraw = true; // 需重新设置参数
-        isStop = false;
-        postDelayed(this, 4000); // 头部停4秒
+        Log.e(TAG, "onTextChanged: "  + getText());
     }
     // 开始滚动
     public void startScroll() {
@@ -143,5 +172,10 @@ public class MarqueeText extends TextView implements Runnable{
     public void startFor0() {
         currentScrollX = 0;
         startScroll();
+    }
+
+    interface ScrollFinishListener{
+
+        void scrollFinish();
     }
 }
