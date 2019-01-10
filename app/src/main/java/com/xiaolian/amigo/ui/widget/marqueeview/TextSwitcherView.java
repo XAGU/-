@@ -1,22 +1,12 @@
-package com.xiaolian.amigo.ui.widget;
+package com.xiaolian.amigo.ui.widget.marqueeview;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.TextSwitcher;
-import android.widget.ViewSwitcher;
-
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.util.RxHelper;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-
-import rx.functions.Action1;
 
 public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewFactory ,MarqueeText.ScrollFinishListener {
     private static final String TAG = TextSwitcherView.class.getSimpleName();
@@ -35,21 +25,24 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         init();
     }
 
-    private void init(){
+    private void init() {
         this.setFactory(this::makeView);
-        this.setInAnimation(getContext() , R.anim.anim_come_in);
+        this.setInAnimation(getContext(), R.anim.anim_come_in);
         this.setOutAnimation(getContext() , R.anim.anim_get_out);
     }
 
     boolean isAnimation ;
+    MarqueeText currentView ;
+
     public void updateText() {
         if (this.info != null && this.info.size() > 0 && isScroll) {
+            currentView = (MarqueeText) getCurrentView();
             this.setText(info.get(resIndex++));
             if (getInAnimation() != null) {
                 getInAnimation().setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        Log.e(TAG, "In>>>>>>>>>>>onAnimationStart: ");
+
                         if (isAnimation) {
                             animation.cancel();
                         }
@@ -58,7 +51,7 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        Log.e(TAG, "In>>>>>>>>>>>onAnimationEnd: ");
+
                         if (getCurrentView() != null && getCurrentView() instanceof MarqueeText) {
                             ((MarqueeText) getCurrentView()).startFor0();
                         }
@@ -87,6 +80,7 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
             ((MarqueeText) view).stopScroll();
         }
     }
+
 
     public void getResoure(ArrayList<String> info){
         this.info = info ;

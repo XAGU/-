@@ -9,14 +9,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
@@ -34,8 +32,7 @@ import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeSmallDelegate;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
-import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
-import com.xiaolian.amigo.ui.widget.TextSwitcherView;
+import com.xiaolian.amigo.ui.widget.marqueeview.TextSwitcherView;
 import com.xiaolian.amigo.util.Log;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 

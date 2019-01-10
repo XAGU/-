@@ -1,27 +1,17 @@
-package com.xiaolian.amigo.ui.widget;
+package com.xiaolian.amigo.ui.widget.marqueeview;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.v7.widget.AppCompatTextView;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.Animation;
-import android.widget.TextView;
 
-import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.ScreenUtils;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import rx.functions.Action1;
 
 public class MarqueeText extends AppCompatTextView implements Runnable{
 
@@ -71,18 +61,7 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.e(TAG, "onDraw: "  + getText() + "  :" + getScrollX() );
-        if (isFirstDraw){
-            super.onDraw(canvas);
-        }else{
-            if (nowText == null || nowText.equals(getText())){
-                super.onDraw(canvas);
-            }else{
-                scrollTo(endX ,0);
-                super.onDraw(canvas);
-            }
-        }
-//        super.onDraw(canvas);
+        super.onDraw(canvas);
         if (isFirstDraw) {
             getTextWidth();
             firstScrollX = getScrollX(); // 起始位置不一定为0,改变内容后会变，需重新赋值
@@ -96,6 +75,12 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
             }
             isFirstDraw = false;
         }
+    }
+
+    @Override
+    public void startAnimation(Animation animation) {
+
+        super.startAnimation(animation);
     }
 
     // 每次滚动几点
@@ -149,11 +134,6 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
             if (scrollFinishListener != null){
                 scrollFinishListener.scrollFinish();
             }
-//            RxHelper.delay(500 , TimeUnit.MILLISECONDS)
-//                .subscribe(aLong -> {
-//
-//                });
-
         } else {
             scrollTo(currentScrollX, 0);
             postDelayed(this, delayed);
@@ -187,4 +167,8 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
 
         void scrollFinish();
     }
+
+
+
+
 }
