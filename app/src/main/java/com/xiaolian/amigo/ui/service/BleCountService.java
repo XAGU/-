@@ -370,11 +370,10 @@ public class BleCountService extends Service {
             for (int i =0 ; i < files.length ; i ++){
                 String mFileName = files[i].getName() ;
 
-                long time = Long.parseLong(mFileName.substring(0 , 13));
                 long currentTime = TimeUtils.getCountTimeStamp();
 
                 // 将现在5分钟时间片的文件不上传到服务器。
-                if (currentTime != time){
+                if (!mFileName.startsWith(Long.toString(currentTime))){
                    fileList.add(files[i]);
                 }
             }

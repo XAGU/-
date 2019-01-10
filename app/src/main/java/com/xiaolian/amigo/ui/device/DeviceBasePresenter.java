@@ -1040,17 +1040,19 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         if (TextUtils.isEmpty(command))  return ;
         try{
             String prefix = command.substring(0 , 4);
-            if (TextUtils.equals(Command.CONNECT.getRespPrefix() , prefix)){
+            String prefixV2 = command.substring(2,6);
+            if (TextUtils.equals(Command.CONNECT.getRespPrefix() , prefix) || TextUtils.equals("0801" , prefixV2)){
                 type = Type.SHAKE_HANDS ;
-            }else if (TextUtils.equals(Command.PRE_CHECK.getRespPrefix() ,prefix)){
+            }else if (TextUtils.equals(Command.PRE_CHECK.getRespPrefix() ,prefix) || TextUtils.equals("0802" , prefixV2)){
                 type = Type.PRE_CHECK ;
-            }else if (TextUtils.equals(Command.CHECK_OUT.getRespPrefix() ,prefix)){
+            }else if (TextUtils.equals(Command.CHECK_OUT.getRespPrefix() ,prefix) || TextUtils.equals("0805" , prefixV2)){
                 type = Type.CHECKOUT ;
-            }else if (TextUtils.equals(Command.OPEN_VALVE.getRespPrefix() , prefix)){
+            }else if (TextUtils.equals(Command.OPEN_VALVE.getRespPrefix() , prefix) || TextUtils.equals("0803" , prefixV2)){
                 type = Type.OPEN ;
-            }else if (TextUtils.equals(Command.CLOSE_VALVE.getRespPrefix() , prefix)){
+            }else if (TextUtils.equals(Command.CLOSE_VALVE.getRespPrefix() , prefix) || TextUtils.equals("0804" , prefixV2) || TextUtils.equals("0806" , prefixV2)) {
+                //推送不单独定义，也算做关阀统计
                 type = Type.CLOSE ;
-            }else if (TextUtils.equals(Command.UPDATE_DEVICE_RATE.getRespPrefix() ,prefix)){
+            }else if (TextUtils.equals(Command.UPDATE_DEVICE_RATE.getRespPrefix() ,prefix) || TextUtils.equals("0810" , prefixV2)){
                 type = Type.UPDATE_RATE ;
             }
             if (type != null) {

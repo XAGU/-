@@ -302,23 +302,11 @@ public class TimeUtils {
      * @return
      */
     public static long getCountTimeStamp(){
-        long currentTime = System.currentTimeMillis();
-        Date currentDate = new Date(currentTime);
-        String time = MY_DATE_TIME_FORMAT.format(currentDate);
-        StringBuffer timeStringBuffer = new StringBuffer(time);
-        Log.e(TAG, "getCountTimeStamp: " + time );
-        int minute  = 0 ;
-        try {
-            minute = Integer.parseInt(time.substring(14 ,16));
-        }catch (NumberFormatException e){
-            Log.e(TAG, "getCountTimeStamp: " + e.getMessage() );
-        }
-        int residual = minute % 5 ;
-        minute =  minute - residual ;
-        timeStringBuffer.replace(14 ,16 , minute+"");
-        Log.e(TAG, "getCountTimeStamp: " + timeStringBuffer );
-
-        return covertStringTolong(timeStringBuffer.toString() ,MY_DATE_TIME_FORMAT) ;
+        //获取当前时间戳所属的最近的五分钟的时间片整的时间戳
+        long currentTime1 = System.currentTimeMillis()/1000;//获取距离1970 1 1的标准时间戳秒数
+        int fiveMinTimestamps = 5 * 60; //5分钟的秒数
+        long currentFiveFragment = currentTime1 - (currentTime1 % fiveMinTimestamps);
+        return currentFiveFragment;
 
     }
 

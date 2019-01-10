@@ -139,6 +139,10 @@ public class WebActivity extends BaseActivity {
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setTextZoom(100);
+        //debug模式下开启调试
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+//            WebView.setWebContentsDebuggingEnabled(true);
+//        }
 //        webView.setWebChromeClient(new WebChromeClient());
         url = addUrlSuffix(url);
         webView.setWebViewClient(new WebViewClient() {
