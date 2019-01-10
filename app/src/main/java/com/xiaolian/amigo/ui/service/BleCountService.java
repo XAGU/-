@@ -183,7 +183,7 @@ public class BleCountService extends Service {
             for (File file : files){
                 String time = file.getName() ;
                 if (time.length() > 10){
-                    time = time.substring(0 , 13);
+                    time = time.substring(0 , 10);//用于记录文件，不需要再细化到毫秒
                 }
 
                 String content =  FileIOUtils.readFile2String(file);
