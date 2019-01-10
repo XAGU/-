@@ -83,9 +83,9 @@ android {
 //            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186:5097/\""
 
             // qa1
-//            buildConfigField "String", "SERVER", "\"http://47.107.53.127:5081/\"" // qa2
-//            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.53.127:5082/\"" //qa2
-//            buildConfigField "String", "H5_SERVER", "\"http://47.107.53.127:5097/c\"" //qa2
+            buildConfigField "String", "SERVER", "\"http://47.107.53.127:5081/\"" // qa2
+            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.53.127:5082/\"" //qa2
+            buildConfigField "String", "H5_SERVER", "\"http://47.107.53.127:5097/c\"" //qa2
 
 
 //            buildConfigField "String", "SERVER", "\"http://39.108.97.229:5081/\"" // qa2
@@ -107,9 +107,9 @@ android {
 
 
              // qa4
-            buildConfigField "String", "SERVER", "\"http://39.108.165.72:5081/\"" //qa4
-            buildConfigField "String", "SERVER_BATHROOM", "\"http:/39.108.165.72:5082/\"" //qa4
-            buildConfigField "String", "H5_SERVER", "\"http://39.108.165.72:5097/c\"" //qa4
+//            buildConfigField "String", "SERVER", "\"http://39.108.165.72:5081/\"" //qa4
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http:/39.108.165.72:5082/\"" //qa4
+//            buildConfigField "String", "H5_SERVER", "\"http://39.108.165.72:5097/c\"" //qa4
 
 
             //qa5

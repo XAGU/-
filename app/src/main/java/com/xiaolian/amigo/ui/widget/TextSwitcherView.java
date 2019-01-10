@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextSwitcher;
 import android.widget.ViewSwitcher;
 
@@ -41,44 +42,27 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
     }
 
     boolean isAnimation ;
-
-    public void updateText(){
-
-        if (this.info != null && this.info.size()>0 && isScroll) {
-            setText(info.get(resIndex++));
-            RxHelper.delay(1, aLong -> {
-                if (getCurrentView() != null && getCurrentView() instanceof  MarqueeText) {
-                    ((MarqueeText) getCurrentView()).startFor0();
-                }
-            });
-        }
-    }
-    public void updateTextSwitcher() {
-        if (this.info != null && this.info.size()>0 && isScroll) {
-            showNext();
-            if(getInAnimation() != null){
+    public void updateText() {
+        if (this.info != null && this.info.size() > 0 && isScroll) {
+            this.setText(info.get(resIndex++));
+            if (getInAnimation() != null) {
                 getInAnimation().setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        if (isAnimation){
+                        Log.e(TAG, "In>>>>>>>>>>>onAnimationStart: ");
+                        if (isAnimation) {
                             animation.cancel();
                         }
-                        ((MarqueeText) getCurrentView()).setText(info.get(resIndex++));
-                        isAnimation = true ;
+                        isAnimation = true;
                     }
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-//                        setText(info.get(resIndex++));
-                        RxHelper.delay(1, aLong -> {
-                            if (getCurrentView() != null && getCurrentView() instanceof  MarqueeText) {
-                                ((MarqueeText) getCurrentView()).startFor0();
-                            }
-                        });
-
-                        if (resIndex > info.size()-1) {
-                            resIndex = 0;
+                        Log.e(TAG, "In>>>>>>>>>>>onAnimationEnd: ");
+                        if (getCurrentView() != null && getCurrentView() instanceof MarqueeText) {
+                            ((MarqueeText) getCurrentView()).startFor0();
                         }
+                        isAnimation = false;
                     }
 
                     @Override
@@ -86,25 +70,27 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
 
                     }
                 });
+
+                if (resIndex > this.info.size() - 1) {
+                    resIndex = 0;
+                }
             }
-
-
-
         }
-
     }
 
     /**
      * 停止滚动
      */
     public  void onStop(){
-        isScroll = false ;
+        View view = getCurrentView();
+        if (view != null && view instanceof MarqueeText){
+            ((MarqueeText) view).stopScroll();
+        }
     }
 
     public void getResoure(ArrayList<String> info){
         this.info = info ;
         isScroll = true ;
-//        updateTextSwitcher();
         updateText();
     }
 
@@ -120,7 +106,7 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
 
     @Override
     public void scrollFinish() {
-        updateTextSwitcher();
+        updateText();
     }
 
     public void start() {
