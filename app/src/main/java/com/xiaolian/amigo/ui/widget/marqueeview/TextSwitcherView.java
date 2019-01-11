@@ -53,7 +53,11 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
                     public void onAnimationEnd(Animation animation) {
 
                         if (getCurrentView() != null && getCurrentView() instanceof MarqueeText) {
-                            ((MarqueeText) getCurrentView()).startFor0();
+                            if (info.size() ==1){
+                                ((MarqueeText) getCurrentView()).startScrollForever();
+                            }else {
+                                ((MarqueeText) getCurrentView()).startFor0();
+                            }
                         }
                         isAnimation = false;
                     }
@@ -71,6 +75,17 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         }
     }
 
+    public void destory(){
+        int childCount = getChildCount();
+        if (childCount > 0){
+           View view =  getChildAt(childCount);
+           if (view != null && view instanceof MarqueeText){
+               ((MarqueeText)view).onCancel();
+           }
+        }
+        removeAllViews();
+    }
+
     /**
      * 停止滚动
      */
@@ -83,9 +98,18 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
 
 
     public void getResoure(ArrayList<String> info){
+
         this.info = info ;
         isScroll = true ;
         updateText();
+    }
+
+
+    public void setString(String info){
+        MarqueeText marqueeText = (MarqueeText) makeView();
+        marqueeText.setText(info);
+        addView(marqueeText);
+        marqueeText.startScrollForever();
     }
 
     @Override

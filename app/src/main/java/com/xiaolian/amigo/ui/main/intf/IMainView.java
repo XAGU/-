@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.main.intf;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
+import com.xiaolian.amigo.data.network.model.notify.RollingNotifyRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
@@ -174,4 +175,10 @@ public interface IMainView extends IBaseView {
     void startNet();
 
     void enableView();
+
+    /**
+     * 显示滚动公告
+     * @param data
+     */
+    void showRollingNotify(RollingNotifyRespDTO data);
 }

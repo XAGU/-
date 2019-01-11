@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
@@ -121,6 +122,8 @@ public class HomeFragment2 extends BaseFragment {
 
     @BindView(R.id.marqueeview)
     TextSwitcherView marqueeView ;
+    @BindView(R.id.rl_scroll)
+    RelativeLayout rlScroll ;
 
     /**
      * 未找零账单个数
@@ -148,7 +151,10 @@ public class HomeFragment2 extends BaseFragment {
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, homeView);
         initRequestView();
-        initRollingNotice();
+//        marqueeView.setString("一条公告");
+        List<String> info = new ArrayList<>();
+        info.add("第一条公告，要超长的公告哦,还不够长哦，再长一点哦");
+        marqueeView.getResoure((ArrayList<String>) info);
         return homeView;
     }
 
@@ -162,14 +168,17 @@ public class HomeFragment2 extends BaseFragment {
         }
     }
 
+    @OnClick(R.id.rolling_off)
+    public void rollOff(){
+        if (marqueeView != null) {
+            marqueeView.destory();
+        }
+        rlScroll.setVisibility(View.GONE);
+    }
     /**
      * 设置滚动公告
      */
-    private void initRollingNotice(){
-        List<String> info  = new ArrayList<>();
-        info.add("1.你是第一个滚动条，你是第一个滚动条 ， 你是第一个滚动条 ， 你是第一个滚动条");
-        info.add("2.你是第二个滚动条，你要超过一行才可以显示走马灯效果，还差点字数吧再凑凑凑凑哦");
-        info.add("3.你是第三条，最后一条");
+    private void initRollingNotice(List<String> info){
         marqueeView.getResoure((ArrayList<String>) info);
     }
 
@@ -504,6 +513,8 @@ public class HomeFragment2 extends BaseFragment {
             case INIT_BIZ:
                 notifyAdaptor();
                 break;
+            case ROLLING_NOTIFY:
+                initRollingNotice((List<String>)event.getObject());
             default:
                 break;
         }
@@ -615,7 +626,12 @@ public class HomeFragment2 extends BaseFragment {
             /**
              * 初始化学校业务
              */
-            INIT_BIZ(5);
+            INIT_BIZ(5),
+
+            /**
+             * 滚动公告
+             */
+            ROLLING_NOTIFY(6);
 
             EventType(int type) {
                 this.type = type;

@@ -33,6 +33,7 @@ import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.notify.RollingNotifyRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
@@ -197,11 +198,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                         AppUtils.getVersionName(this));
                 uploadDeviceInfo();
+                presenter.rollingNotify();
             }
             if (fragments == null)
             fragments = new Fragment[3];
-
-
             initTable(savedInstanceState);
 
             rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -541,6 +541,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 tableBottomImageChange(0);
 
             }
+            presenter.rollingNotify();
         }
     }
 
@@ -1188,6 +1189,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void enableView() {
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
+    }
+
+    @Override
+    public void showRollingNotify(RollingNotifyRespDTO data) {
+        if (data.getRollingNotifyList() == null || data.getRollingNotifyList().size() == 0) return ;
+
+//        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ROLLING_NOTIFY ,data.getRollingNotifyList()));
     }
 
 

@@ -222,4 +222,8 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
 
     void deleteFile();
 
+    /**
+     * 获取滚动公告
+     */
+    void rollingNotify();
 }

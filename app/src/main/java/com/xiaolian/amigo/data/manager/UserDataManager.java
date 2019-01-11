@@ -8,6 +8,7 @@ import com.xiaolian.amigo.data.network.IDeviceApi;
 import com.xiaolian.amigo.data.network.IFileApi;
 import com.xiaolian.amigo.data.network.ILoginApi;
 import com.xiaolian.amigo.data.network.ILostAndFoundApi;
+import com.xiaolian.amigo.data.network.INotifyApi;
 import com.xiaolian.amigo.data.network.IOssApi;
 import com.xiaolian.amigo.data.network.IResidenceApi;
 import com.xiaolian.amigo.data.network.ISchoolApi;
@@ -40,6 +41,7 @@ import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WeChatBindRespDTO;
 import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
+import com.xiaolian.amigo.data.network.model.notify.RollingNotifyRespDTO;
 import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
@@ -98,6 +100,7 @@ public class UserDataManager implements IUserDataManager {
     private IDeviceApi deviceApi ;
     private ILostAndFoundApi lostAndFoundApi ;
     private ISharedPreferencesHelp sharedPreferencesHelp;
+    private INotifyApi notifyApi ;
 
     @Inject
     public UserDataManager(@BathroomServer Retrofit bathroomRetrofit, @UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
@@ -109,6 +112,7 @@ public class UserDataManager implements IUserDataManager {
         ossApi = retrofit.create(IOssApi.class);
         deviceApi = retrofit.create(IDeviceApi.class);
         lostAndFoundApi = retrofit.create(ILostAndFoundApi.class);
+        notifyApi = retrofit.create(INotifyApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
         bathroomApi = bathroomRetrofit.create(IBathroomApi.class);
     }
@@ -368,10 +372,6 @@ public class UserDataManager implements IUserDataManager {
         return schoolApi.getSchoolNameList();
     }
 
-//    @Override
-//    public Observable<ApiResult<BooleanRespDTO>> certify(UserAuthCertifyReqDTO dto) {
-//        return userApi.certify(dto);
-//    }
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> certify(RequestBody dto) {
@@ -406,6 +406,11 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public int getCertifyStatus() {
         return sharedPreferencesHelp.getCertifyStatus();
+    }
+
+    @Override
+    public Observable<ApiResult<RollingNotifyRespDTO>> rollingNotify() {
+        return notifyApi.rollingList();
     }
 
     @Override
