@@ -1185,7 +1185,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 });
 
     }
-
+    
     @Override
     public void enableView() {
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
@@ -1195,7 +1195,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public void showRollingNotify(RollingNotifyRespDTO data) {
         if (data.getRollingNotifyList() == null || data.getRollingNotifyList().size() == 0) return ;
 
-//        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ROLLING_NOTIFY ,data.getRollingNotifyList()));
+        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ROLLING_NOTIFY ,data.getRollingNotifyList()));
     }
 
 

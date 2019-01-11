@@ -151,11 +151,6 @@ public class HomeFragment2 extends BaseFragment {
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, homeView);
         initRequestView();
-        List<String> info = new ArrayList<>();
-        info.add("第一条公告，要超长的公告哦,还不够长哦，再长一点哦");
-        info.add("第一条公告，要超长的公告哦,还不够长哦，再长一点哦");
-        info.add("第一条公告，要超长的公告哦,还不够长哦，再长一点哦");
-        marqueeView.getResoure((ArrayList<String>) info);
         return homeView;
     }
 
@@ -180,6 +175,7 @@ public class HomeFragment2 extends BaseFragment {
      * 设置滚动公告
      */
     private void initRollingNotice(List<String> info){
+        rlScroll.setVisibility(View.VISIBLE);
         marqueeView.getResoure((ArrayList<String>) info);
     }
 
