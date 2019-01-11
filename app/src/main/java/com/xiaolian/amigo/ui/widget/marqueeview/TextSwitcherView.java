@@ -32,11 +32,12 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
     }
 
     boolean isAnimation ;
-    MarqueeText currentView ;
+    MarqueeText nextView ;
 
     public void updateText() {
         if (this.info != null && this.info.size() > 0 && isScroll) {
-            currentView = (MarqueeText) getCurrentView();
+            nextView = (MarqueeText) getNextView();
+            if (nextView == null) return ;
             this.setText(info.get(resIndex++));
             if (getInAnimation() != null) {
                 getInAnimation().setAnimationListener(new Animation.AnimationListener() {
@@ -54,9 +55,9 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
 
                         if (getCurrentView() != null && getCurrentView() instanceof MarqueeText) {
                             if (info.size() ==1){
-                                ((MarqueeText) getCurrentView()).startScrollForever();
+                                 nextView.startScrollForever();
                             }else {
-                                ((MarqueeText) getCurrentView()).startFor0();
+                                nextView.startFor0();
                             }
                         }
                         isAnimation = false;

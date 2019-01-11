@@ -253,9 +253,6 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
             }).start();
     }
 
-
-
-
     @Override
     protected int setTitle() {
         return R.string.withdrawal;

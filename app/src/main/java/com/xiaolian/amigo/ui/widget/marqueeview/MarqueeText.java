@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.animation.Animation;
@@ -67,6 +68,7 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
 
     @Override
     protected void onDraw(Canvas canvas) {
+        Log.e(TAG, "onDraw: " + getText() +"   " + isFirstDraw  );
         super.onDraw(canvas);
         if (isFirstDraw) {
             getTextWidth();
@@ -81,12 +83,6 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
             }
             isFirstDraw = false;
         }
-    }
-
-    @Override
-    public void startAnimation(Animation animation) {
-
-        super.startAnimation(animation);
     }
 
     // 每次滚动几点
@@ -134,23 +130,22 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
         }
 
         if (endX == 0) return ;
-        currentScrollX += speed;// 滚动速度,每次滚动几点
-        if (currentScrollX >= endX) {
+        if (!canScrollForever){
+            currentScrollX += speed;// 滚动速度,每次滚动几点
+            if (currentScrollX >= endX) {
                 scrollTo(currentScrollX , 0);
-            if (canScrollForever){
-                postDelayed(this ,delayed);
-            }else {
-                scrollTo(endX, 0);
-                isStop = true; // 停止滚动
-                this.removeCallbacks(this); // 清空队列
-                if (scrollFinishListener != null) {
-                    scrollFinishListener.scrollFinish();
-                }
+                    scrollTo(endX, 0);
+                    isStop = true; // 停止滚动
+                    this.removeCallbacks(this); // 清空队列
+                    if (scrollFinishListener != null) {
+                        scrollFinishListener.scrollFinish();
+                    }
+            } else {
+                scrollTo(currentScrollX, 0);
+                postDelayed(this, delayed);
             }
-        } else {
-            scrollTo(currentScrollX, 0);
-            postDelayed(this, delayed);
         }
+
     }
 
     /**
@@ -186,7 +181,12 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
 
     public void startScrollForever(){
         setCanScrollForever(true);
-        startFor0();
+        this.setMarqueeRepeatLimit(-1);
+        this.setFocusable(true);
+        this.setFocusableInTouchMode(true);
+        this.setHorizontallyScrolling(true);
+        this.setSelected(true);
+        this.setEllipsize(TextUtils.TruncateAt.MARQUEE);
     }
 
 
