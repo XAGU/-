@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListReqDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListRespDTO;
+import com.xiaolian.amigo.data.network.model.notify.RollingNotifyRespDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -37,4 +38,11 @@ public interface INotifyApi {
      */
     @POST("notify/one")
     Observable<ApiResult<NotifyDTO>> getNotice(@Body SimpleReqDTO reqDTO);
+
+    /**
+     * 滚动公告
+     */
+    @POST("notify/rolling/list")
+    Observable<ApiResult<RollingNotifyRespDTO>> rollingList();
+
 }

@@ -27,6 +27,7 @@ import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WeChatBindRespDTO;
 import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
+import com.xiaolian.amigo.data.network.model.notify.RollingNotifyRespDTO;
 import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
@@ -342,4 +343,10 @@ public interface IUserDataManager {
     void setDeleteFileTime(long l);
 
     int getCertifyStatus();
+
+    /**
+     * 滚动公告
+     * @return
+     */
+    Observable<ApiResult<RollingNotifyRespDTO>> rollingNotify();
 }

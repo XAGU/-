@@ -17,6 +17,7 @@ import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
+import com.xiaolian.amigo.data.network.model.notify.RollingNotifyRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
@@ -615,6 +616,20 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                 });
     }
 
+    @Override
+    public void rollingNotify() {
+        addObserver(userDataManager.rollingNotify() ,new NetworkObserver<ApiResult<RollingNotifyRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<RollingNotifyRespDTO> result) {
+                if (result.getError() == null){
+                     getMvpView().showRollingNotify(result.getData());
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
 
 
     private void deleteLogFile(){

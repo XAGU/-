@@ -34,6 +34,8 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
     //   当前设置的文字
     private static CharSequence nowText ;
 
+    private boolean canScrollForever = false  ;
+
     private ScrollFinishListener scrollFinishListener ;
 
     private List<String> list = new ArrayList<String>();
@@ -57,6 +59,10 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
 
     public void setScrollFinishListener(ScrollFinishListener scrollFinishListener) {
         this.scrollFinishListener = scrollFinishListener;
+    }
+
+    public void setCanScrollForever(boolean canScrollForever) {
+        this.canScrollForever = canScrollForever;
     }
 
     @Override
@@ -126,18 +132,33 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
         if (isStop) {
             return;
         }
+
+        if (endX == 0) return ;
         currentScrollX += speed;// 滚动速度,每次滚动几点
         if (currentScrollX >= endX) {
-            scrollTo(endX, 0);
-            isStop = true; // 停止滚动
-            this.removeCallbacks(this); // 清空队列
-            if (scrollFinishListener != null){
-                scrollFinishListener.scrollFinish();
+                scrollTo(currentScrollX , 0);
+            if (canScrollForever){
+                postDelayed(this ,delayed);
+            }else {
+                scrollTo(endX, 0);
+                isStop = true; // 停止滚动
+                this.removeCallbacks(this); // 清空队列
+                if (scrollFinishListener != null) {
+                    scrollFinishListener.scrollFinish();
+                }
             }
         } else {
             scrollTo(currentScrollX, 0);
             postDelayed(this, delayed);
         }
+    }
+
+    /**
+     * 释放view
+     */
+    public void onCancel(){
+        isStop = true ;
+        this.removeCallbacks(this);
     }
 
     @Override
@@ -162,6 +183,13 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
         isFirstDraw = true ;
         startScroll();
     }
+
+    public void startScrollForever(){
+        setCanScrollForever(true);
+        startFor0();
+    }
+
+
 
     interface ScrollFinishListener{
 
