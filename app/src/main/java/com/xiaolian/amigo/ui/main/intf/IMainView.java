@@ -181,4 +181,10 @@ public interface IMainView extends IBaseView {
      * @param data
      */
     void showRollingNotify(RollingNotifyRespDTO data);
+
+    /**
+     * 配置联子Fragment显示或隐藏
+     * @param canShowBlogFragment
+     */
+    void showOrHideBlogFragment(boolean canShowBlogFragment);
 }

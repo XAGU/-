@@ -1208,6 +1208,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ROLLING_NOTIFY ,data.getRollingNotifyList()));
     }
 
+    @Override
+    public void showOrHideBlogFragment(boolean canShowBlogFragment) {
+        if (canShowBlogFragment){
+            socialRl.setVisibility(View.VISIBLE);
+        }else{
+            socialRl.setVisibility(View.GONE);
+        }
+    }
+
 
     /**
      * 点击进入饮水机页面
