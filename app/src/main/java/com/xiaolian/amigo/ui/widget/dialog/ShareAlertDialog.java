@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
@@ -89,6 +90,10 @@ public class ShareAlertDialog implements View.OnClickListener {
 
 
     private void shareWX(){
+        if (!MvpApp.mWxApi.isWXAppInstalled()) {
+            shareQQListener.unInstallWX("未安装微信，请安装");
+            return;
+        }
         ShareUtils.shareWX(Constant.SHARE_URL,"笑联-以科技和创新改善校园生活" , "校园高品质生活服务专家" ,context);
         dialog.dismiss();
     }
@@ -182,5 +187,8 @@ public class ShareAlertDialog implements View.OnClickListener {
         // 分享QQ
 
         void shareQQ();
+
+        void unInstallWX(String tip);
+
     }
 }

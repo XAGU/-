@@ -84,11 +84,6 @@ public interface IUserDataManager {
     Observable<ApiResult<EntireUserDTO>> getUserInfo();
 
     /**
-     * 用户个人中心额外信息
-     */
-    Observable<ApiResult<PersonalExtraInfoDTO>> getUserExtraInfo();
-
-    /**
      * 更新用户个人信息
      */
     Observable<ApiResult<EntireUserDTO>> updateUserInfo(@Body PersonalUpdateReqDTO body);

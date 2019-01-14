@@ -124,7 +124,6 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
 
     @Override
     public void run() {
-
         if (isStop) {
             return;
         }

@@ -127,10 +127,6 @@ public class UserDataManager implements IUserDataManager {
         return userApi.getUserInfo();
     }
 
-    @Override
-    public Observable<ApiResult<PersonalExtraInfoDTO>> getUserExtraInfo() {
-        return userApi.getUserExtraInfo();
-    }
 
     @Override
     public Observable<ApiResult<EntireUserDTO>> updateUserInfo(@Body PersonalUpdateReqDTO body) {

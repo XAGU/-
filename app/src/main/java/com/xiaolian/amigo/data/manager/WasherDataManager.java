@@ -73,7 +73,7 @@ public class WasherDataManager implements IWasherDataManager {
     public Observable<ApiResult<DryerModeRespDTO>> getDryerMode() {
         return tradeApi.getDryerMode();
     }
-
+    
     @Override
     public void setDeviceToken(String deviceNo, String deviceToken) {
         sharedPreferencesHelp.setDeviceToken(deviceNo, deviceToken);

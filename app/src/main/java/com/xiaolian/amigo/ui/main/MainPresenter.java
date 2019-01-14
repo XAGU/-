@@ -169,14 +169,19 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         mainDataManager.setBonusAmount(result.getData().getBonusAmount());
                     }
                     PersonalExtraInfoDTO dto = result.getData();
-                    if (dto.getLastRepairTime() != null && mainDataManager.getLastRepairTime() < dto.getLastRepairTime()) {
-                        dto.setNeedShowDot(true);
-                        isShowRepair = true ;
-                    } else {
-                        isShowRepair = false ;
-                        dto.setNeedShowDot(false);
-                        dto.setLastRepairTime(null);
-                    }
+
+                    /**
+                     * 新版本将报修记录转移为h5 用户端不需要显示小红点
+                     */
+//                    if (dto.getLastRepairTime() != null && mainDataManager.getLastRepairTime() < dto.getLastRepairTime()) {
+//                        dto.setNeedShowDot(true);
+//                        isShowRepair = true ;
+//                    } else {
+//                        isShowRepair = false ;
+//                        dto.setNeedShowDot(false);
+//                        dto.setLastRepairTime(null);
+//                    }
+
                     if (result.getData().getShowTransfer() != null && result.getData().getShowTransfer()) {
                         mainDataManager.setNeedTransfer();
                         getMvpView().showXOkMigrate();

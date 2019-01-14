@@ -67,9 +67,9 @@ public class ProfileFragment2 extends BaseFragment {
     public static final int START_EDIT_PROFILE = 01;
     private static final String TAG = ProfileFragment2.class.getSimpleName();
     ProfileAdaptor.Item wallet = new ProfileAdaptor.Item(R.drawable.profile_wallet, "我的钱包", WalletActivity.class);
-    ProfileAdaptor.Item credits = new ProfileAdaptor.Item(R.drawable.profile_credits, "积分兑换", CreditsActivity.class);
     ProfileAdaptor.Item bonus = new ProfileAdaptor.Item(R.drawable.profile_luck, "我的代金券", BonusActivity.class);
-    ProfileAdaptor.Item repair = new ProfileAdaptor.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class);
+    ProfileAdaptor.Item credits = new ProfileAdaptor.Item(R.drawable.profile_credits, "积分兑换", CreditsActivity.class);
+    ProfileAdaptor.Item service = new ProfileAdaptor.Item(R.drawable.profile_repair, "服务中心",null);
 //    ProfileAdaptor.Item legalize = new ProfileAdaptor.Item(R.drawable.profile_certification, "学生认证", null,"");
     List<ProfileAdaptor.Item> items = new ArrayList<ProfileAdaptor.Item>() {
         {
@@ -79,7 +79,7 @@ public class ProfileFragment2 extends BaseFragment {
 //            add(new ProfileAdaptor.Item(R.drawable.profile_order, "消费记录", OrderActivity.class));
             add(bonus);
 //            add(new ProfileAdaptor.Item(R.drawable.profile_favorite, "我收藏的设备", FavoriteActivity.class));
-            add(repair);
+            add(service);
             add(new ProfileAdaptor.Item(R.drawable.profile_more, "更多", MoreActivity.class));
         }
     };
@@ -253,10 +253,9 @@ public class ProfileFragment2 extends BaseFragment {
                 credits.setBonusAmount(data.getCredits());
             }
         }
-        if (data.isNeedShowDot()) {
-            repair.setShowDot(true);
-        } else {
-            repair.setShowDot(false);
+
+        if (data.getUnReadWorkOrderRemarkMessageCount() != null && data.getUnReadWorkOrderRemarkMessageCount() > 0){
+            service.setUnReadWorkOrderRemarkMessageCount(data.getUnReadWorkOrderRemarkMessageCount());
         }
         if (credits.getBonusAmount() != -1
                 && !items.contains(credits)) {

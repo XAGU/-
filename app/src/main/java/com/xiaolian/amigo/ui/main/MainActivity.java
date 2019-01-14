@@ -1329,7 +1329,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 break;
             case START_ACTIVITY:
                 if (checkLogin()) {
-                    startActivity(this, (Class) event.getObject());
+                    if (event.getObject() != null) {
+                        startActivity(this, (Class) event.getObject());
+                    }else{
+                        //  跳服务中心h5页面
+
+                    }
                 }
                 break;
             case REFRESH_NOTICE:

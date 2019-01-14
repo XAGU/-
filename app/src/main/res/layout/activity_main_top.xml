@@ -107,11 +107,5 @@
         android:background="@drawable/bg_rect_red_corner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginRight="21dp"
-        android:background="@color/white_10" />
 </RelativeLayout>
 

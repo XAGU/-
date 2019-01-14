@@ -178,6 +178,11 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView ,IUiList
         mTencent.shareToQQ(this ,bundle ,this);
     }
 
+    @Override
+    public void unInstallWX(String tip) {
+        onError(tip);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

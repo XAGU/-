@@ -35,28 +35,29 @@ public class ProfileAdaptor extends CommonAdapter<ProfileAdaptor.Item> {
         holder.setImageResource(R.id.imageLeft, item.getLeftImageId());
         holder.setText(R.id.textMid, item.getText());
         TextView rightTv = holder.getView(R.id.tv_amount);
-        if (item.getLeftImageId() == R.drawable.profile_certification){
-            rightTv.setTextColor(context.getResources().getColor(R.color.colorDark9));
-            rightTv.setText(item.getVerifiedStatus());
-        }else {
-            rightTv.setTextColor(context.getResources().getColor(R.color.colorFullRed));
-            if (item.getLeftImageId() == R.drawable.profile_wallet) {
-                holder.getView(R.id.tv_amount).setVisibility(View.VISIBLE);
-                holder.setText(R.id.tv_amount, "¥" + item.getBalance());
-            } else if (item.getLeftImageId() == R.drawable.profile_luck) {
+        rightTv.setTextColor(context.getResources().getColor(R.color.colorFullRed));
+        if (item.getLeftImageId() == R.drawable.profile_wallet) {
+            holder.getView(R.id.tv_amount).setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_amount, "¥" + item.getBalance());
+        } else if (item.getLeftImageId() == R.drawable.profile_luck) {
+            holder.getView(R.id.tv_amount).setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_amount, String.valueOf(item.getBonusAmount()));
+        } else if (item.getLeftImageId() == R.drawable.profile_credits) {
+            if (item.getBonusAmount() == -1) {
+                holder.getView(R.id.tv_amount).setVisibility(View.GONE);
+            } else {
                 holder.getView(R.id.tv_amount).setVisibility(View.VISIBLE);
                 holder.setText(R.id.tv_amount, String.valueOf(item.getBonusAmount()));
-            } else if (item.getLeftImageId() == R.drawable.profile_credits) {
-                if (item.getBonusAmount() == -1) {
-                    holder.getView(R.id.tv_amount).setVisibility(View.GONE);
-                } else {
-                    holder.getView(R.id.tv_amount).setVisibility(View.VISIBLE);
-                    holder.setText(R.id.tv_amount, String.valueOf(item.getBonusAmount()));
-                }
-            } else {
-                holder.getView(R.id.tv_amount).setVisibility(View.GONE);
             }
+        }else if (item.getLeftImageId() == R.drawable.profile_repair){
+            if ( item.getUnReadWorkOrderRemarkMessageCount() > 0){
+                holder.getView(R.id.tv_amount).setVisibility(View.VISIBLE);
+                holder.setText(R.id.tv_amount, String.valueOf(item.getUnReadWorkOrderRemarkMessageCount()));
+            }
+        } else {
+            holder.getView(R.id.tv_amount).setVisibility(View.GONE);
         }
+
         if (item.isShowDot()) {
             holder.getView(R.id.v_dot).setVisibility(View.VISIBLE);
         } else {
@@ -85,6 +86,10 @@ public class ProfileAdaptor extends CommonAdapter<ProfileAdaptor.Item> {
         Class<? extends Activity> activityClazz;
         String balance = "0";
         int bonusAmount = 0;
+        /**
+         * 服务中心未读消息数
+         */
+        int unReadWorkOrderRemarkMessageCount = 0 ;
         boolean isShowDot = false;
     }
 }

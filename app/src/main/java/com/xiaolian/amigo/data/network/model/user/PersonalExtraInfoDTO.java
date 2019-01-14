@@ -63,4 +63,9 @@ public class PersonalExtraInfoDTO {
 
     private Integer studentAuth ;
 
+    /**
+     * 未读工单数量
+     */
+    private Integer unReadWorkOrderRemarkMessageCount ;
+
 }
