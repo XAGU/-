@@ -303,16 +303,21 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
 
     @OnTextChanged(R.id.et_amount)
     void onEditTextChange() {
-        toggleButton();
+        if (rechargeTypeSelectedPosition == 0) {
+            toggleButton();
+        }else{
+            toggleWXButton();
+        }
     }
 
 
-    @OnTextChanged({R.id.tv_withdraw_way_wx , R.id.edit_name , R.id.et_amount})
+    @OnTextChanged({R.id.tv_withdraw_way_wx , R.id.edit_name })
     void onEditWXTextChange(){
         toggleWXButton();
     }
 
     private void toggleWXButton() {
+
         if (TextUtils.isEmpty(etAmount.getText())
                 || TextUtils.isEmpty(tvWithdrawWayWX.getText().toString())
                 || TextUtils.isEmpty(editName.getText())) {
