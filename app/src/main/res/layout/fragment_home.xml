@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:background="@color/white"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="72dp">
+        android:layout_height="72dp"
+        android:id="@+id/title">
 
         <TextView
             android:layout_width="wrap_content"
@@ -38,6 +40,7 @@
         android:layout_height="25dp"
         android:layout_marginStart="21dp"
         android:layout_marginEnd="21dp"
+        android:layout_below="@id/title"
         android:id="@+id/rl_scroll"
         android:visibility="gone"
         android:background="@drawable/rolling_notice_bg">
@@ -71,7 +74,39 @@
         android:visibility="visible"
         android:layout_marginTop="21dp"
         android:id="@+id/recyclerView"
+        android:layout_below="@id/rl_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:overScrollMode="never"/>
-</LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="36dp"
+        android:layout_height="37dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="18dp"
+        android:id="@+id/main_service"
+        >
+
+        <ImageView
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:src="@drawable/main_service"
+            android:id="@+id/iv_service"
+            />
+        
+        <TextView
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:gravity="center"
+            tools:text="2"
+            android:text="2"
+            android:layout_alignParentEnd="true"
+            android:textSize="10sp"
+            android:textColor="@color/colorFullRed"
+            android:background="@drawable/oval_tv_gray"
+            />
+    </RelativeLayout>
+</RelativeLayout>

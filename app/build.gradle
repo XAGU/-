@@ -94,16 +94,16 @@ android {
 
 
             // 炼炼
-            buildConfigField "String", "SERVER", "\"http://10.0.0.231:5081/\"" //
-            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.0.0.231:5082/\"" //
-            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.231:5097/c\"" //
+//            buildConfigField "String", "SERVER", "\"http://10.0.0.231:5081/\"" //
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.0.0.231:5082/\"" //
+//            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.231:5097/c\"" //
 
 
             // qa3
-//            buildConfigField "String", "SERVER", "\"http://39.108.74.164:5081/\"" //
-//            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\"" //
+            buildConfigField "String", "SERVER", "\"http://39.108.74.164:5081/\"" //
+            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\"" //
 //            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.26:5000/c\"" //
-//            buildConfigField "String", "H5_SERVER", "\"http://39.108.74.164:5097/c\"" //
+            buildConfigField "String", "H5_SERVER", "\"http://39.108.74.164:5097/c\"" //
 
 
              // qa4
