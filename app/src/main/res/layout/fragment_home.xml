@@ -19,7 +19,7 @@
             android:textSize="19sp"
             android:textColor="@color/colorDark2"
             android:id="@+id/school_name"
-            android:layout_marginLeft="21dp"
+            android:layout_marginStart="21dp"
             />
 
         <ImageView
@@ -27,9 +27,9 @@
             android:layout_height="21dp"
             android:id="@+id/scan"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:src="@drawable/icon_scan_home"
-            android:layout_marginRight="21dp"
+            android:layout_marginEnd="21dp"
             />
 
     </RelativeLayout>
@@ -85,8 +85,8 @@
         android:layout_height="37dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="16dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="18dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="18dp"
         android:id="@+id/main_service"
         >
 
@@ -95,14 +95,15 @@
             android:layout_height="31dp"
             android:src="@drawable/main_service"
             android:id="@+id/iv_service"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="1dp"
             />
-        
+
         <TextView
-            android:layout_width="13dp"
-            android:layout_height="13dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:gravity="center"
             tools:text="2"
-            android:text="2"
             android:layout_alignParentEnd="true"
             android:textSize="10sp"
             android:textColor="@color/colorFullRed"

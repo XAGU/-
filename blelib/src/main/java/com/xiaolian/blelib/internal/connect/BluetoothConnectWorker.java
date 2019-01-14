@@ -65,6 +65,7 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
                     bluetoothConnectStatusListener.onConnectStatusChanged(newState , newStateCode);
                 }
             });
+
             bluetoothGatt = gatt;
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 if (newState == BluetoothGatt.STATE_CONNECTED) {
