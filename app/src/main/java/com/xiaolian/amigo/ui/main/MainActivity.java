@@ -976,6 +976,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         presenter.setBonusAmount(data.getBonusAmount());
         presenter.setCredits(data.getCredits());
         EventBus.getDefault().post(data);
+        postReadCount(data.getUnReadWorkOrderRemarkMessageCount());
+    }
+
+    /**
+     * 服务入口未读数量
+     * @param unReadCount
+     */
+    private void postReadCount(int unReadCount){
+        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.UNREAD_COUNT,
+                unReadCount));
     }
 
     @Override

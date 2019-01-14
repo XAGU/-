@@ -125,6 +125,10 @@ public class HomeFragment2 extends BaseFragment {
     @BindView(R.id.rl_scroll)
     RelativeLayout rlScroll ;
 
+    @BindView(R.id.un_read_count)
+    TextView unReadCount ;
+
+
     /**
      * 未找零账单个数
      */
@@ -164,6 +168,11 @@ public class HomeFragment2 extends BaseFragment {
         }
     }
 
+    @OnClick(R.id.main_service)
+    public void startServiceH5(){
+        // TODO: 2019/1/14 服务入口点击事件
+    }
+
     @OnClick(R.id.rolling_off)
     public void rollOff(){
         if (marqueeView != null) {
@@ -177,6 +186,15 @@ public class HomeFragment2 extends BaseFragment {
     private void initRollingNotice(List<String> info){
         rlScroll.setVisibility(View.VISIBLE);
         marqueeView.getResoure((ArrayList<String>) info);
+    }
+
+    /**
+     * 显示服务入口数量
+     * @param unReadWorkOrderRemarkMessageCount
+     */
+    private void showUnReadWorkOrderRemarkMessageCount(int unReadWorkOrderRemarkMessageCount){
+        unReadCount.setVisibility(View.VISIBLE);
+        unReadCount.setText(unReadWorkOrderRemarkMessageCount +"");
     }
 
     @Override
@@ -498,7 +516,6 @@ public class HomeFragment2 extends BaseFragment {
                 onSchoolBizEvent((List<BriefSchoolBusiness>) event.getObject());
                 break;
             case ENABLE_VIEW:
-                Log.d(TAG, "enable View");
                 if (!disabledView.isEnabled()) {
                     disabledView.setEnabled(true);
                 }
@@ -512,6 +529,10 @@ public class HomeFragment2 extends BaseFragment {
                 break;
             case ROLLING_NOTIFY:
                 initRollingNotice((List<String>)event.getObject());
+                break;
+            case UNREAD_COUNT:
+                int unReadCount = (int) event.getObject();
+                showUnReadWorkOrderRemarkMessageCount(unReadCount);
             default:
                 break;
         }
@@ -628,7 +649,13 @@ public class HomeFragment2 extends BaseFragment {
             /**
              * 滚动公告
              */
-            ROLLING_NOTIFY(6);
+            ROLLING_NOTIFY(6),
+
+            /**
+             * 服务入口未读数量
+             * @param
+             */
+            UNREAD_COUNT(7) ;
 
             EventType(int type) {
                 this.type = type;
