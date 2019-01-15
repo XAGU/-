@@ -19,18 +19,13 @@ import android.widget.TextView;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.PayWay;
-import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryWithdrawTypeListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.WechatUserAccountBasicInfoRespDTO;
-import com.xiaolian.amigo.data.network.model.login.WeChatBindRespDTO;
-import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.user.PasswordVerifyActivity;
-import com.xiaolian.amigo.ui.user.ThirdBindActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.ChooseWithdrawAdapter;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeTypeAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalPresenter;
@@ -54,8 +49,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-
-import static com.xiaolian.amigo.ui.user.EditProfileActivity.WECHAT_BIND;
 
 /**
  * 提现
@@ -130,7 +123,6 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
      */
     List<RechargeTypeAdaptor.RechargeWrapper> rechargeTypes = new ArrayList<>();
 
-    private int rechargeSelectedPosition = -1;
     private int rechargeTypeSelectedPosition = 0;
 
     /**
@@ -150,6 +142,11 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
 
     // 用户昵称
     private String nickName ;
+
+    /**
+     * 选中的支付类型
+     */
+    private RechargeTypeAdaptor.RechargeWrapper  choseRechargeType ;
 
     @Override
     protected void initView() {
@@ -185,15 +182,18 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         typeAdaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (rechargeTypeSelectedPosition != -1) {
-                    rechargeTypes.get(rechargeTypeSelectedPosition).setSelected(false);
-                    rechargeTypes.get(position).setSelected(true);
-                } else {
-                    rechargeTypes.get(position).setSelected(true);
+                if (rechargeTypeSelectedPosition != position) {
+                    if (rechargeTypeSelectedPosition != -1) {
+                        rechargeTypes.get(rechargeTypeSelectedPosition).setSelected(false);
+                        rechargeTypes.get(position).setSelected(true);
+                    } else {
+                        rechargeTypes.get(position).setSelected(true);
+                    }
+                    rechargeTypeSelectedPosition = position;
+                    choseRechargeType = rechargeTypes.get(rechargeTypeSelectedPosition);
+                    typeAdaptor.notifyDataSetChanged();
+                    toggleSubmitButton();
                 }
-                rechargeTypeSelectedPosition = position;
-                typeAdaptor.notifyDataSetChanged();
-                toggleSubmitButton();
             }
 
             @Override
@@ -205,11 +205,8 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     }
 
     private void toggleSubmitButton() {
-        if (rechargeSelectedPosition != -1 && rechargeTypeSelectedPosition != -1) {
-            btSubmit.setEnabled(true);
-        }
-
-        if (rechargeTypeSelectedPosition == 0){
+        if (choseRechargeType == null) return ;
+        if (choseRechargeType.getType() == PayWay.ALIAPY.getType()){
             choseAPay();
         }else{
             // 获取学校appId服务号
@@ -440,15 +437,21 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     public void showTypeList(QueryWithdrawTypeListRespDTO data) {
         rechargeTypes.clear();
         List<Integer> typeList = data.getWithdrawTypes();
-        if (typeList != null && typeList.size() > 0){
-            for (Integer type : typeList){
-                if (type == PayWay.ALIAPY.getType()){
+        if (typeList != null && typeList.size() > 0) {
+            for (Integer type : typeList) {
+                if (type == PayWay.ALIAPY.getType()) {
                     rechargeTypes.add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.ALIAPY.getType(), PayWay.ALIAPY.getDrawableRes(), "支付宝", true));
-                }else if (type == PayWay.WECHAT.getType()){
+                } else if (type == PayWay.WECHAT.getType()) {
                     rechargeTypes.add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.WECHAT.getType(), PayWay.WECHAT.getDrawableRes(), "微信", false));
                 }
             }
-            typeAdaptor.notifyDataSetChanged();
+            if (rechargeTypes.size() > 0) {
+                choseRechargeType = rechargeTypes.get(0);
+                choseRechargeType.setSelected(true);
+                rechargeTypeSelectedPosition = 0;
+                typeAdaptor.notifyDataSetChanged();
+                toggleSubmitButton();
+            }
         }
     }
 

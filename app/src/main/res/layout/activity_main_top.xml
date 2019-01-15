@@ -57,15 +57,6 @@
             android:text="登录以后才能使用哦" />
     </LinearLayout>
 
-    <View
-        android:layout_below="@id/iv_avatar"
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:layout_marginLeft="@dimen/mainMarginLeftRight"
-        android:layout_marginRight="@dimen/mainMarginLeftRight"
-        android:layout_marginTop="24dp"
-        android:background="@color/colorDividingLine"
-        />
 
     <ImageView
         android:id="@+id/iv_xok_migrate"

@@ -74,6 +74,7 @@
             android:background="@drawable/content_border"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
+            android:visibility="gone"
             >
 
             <TextView
