@@ -102,7 +102,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="14dp"
                     android:layout_above="@id/tv_empty_tip"
-                    android:src="@drawable/ic_empty_box"
+                    android:src="@drawable/empty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -119,6 +119,9 @@
                     android:layout_width="86dp"
                     android:layout_height="34dp" />
             </RelativeLayout>
+
+            <!--<include layout="@layout/layout_empty"-->
+                <!--android:visibility="gone" />-->
             <RelativeLayout
                 android:id="@+id/rl_error"
                 android:layout_width="match_parent"
