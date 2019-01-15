@@ -187,4 +187,6 @@ public interface IMainView extends IBaseView {
      * @param canShowBlogFragment
      */
     void showOrHideBlogFragment(boolean canShowBlogFragment);
+
+
 }

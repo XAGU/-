@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 
 /**
- * 供水时段、提现时段提示
+ * 供水时段、提现时段提示、另一设备登录提示
  *
  * @author zcd
  * @date 17/9/25
@@ -26,7 +26,7 @@ public class AvailabilityDialog extends Dialog {
     private TextView tvSubTip;
     private TextView tvCancel;
     private TextView tvOk;
-    private View vDivide;
+    private View vDivide , vDivide2;
     private Type type;
     private OnOkClickListener listener;
     private onCancelListener cancelListener ;
@@ -49,6 +49,7 @@ public class AvailabilityDialog extends Dialog {
     private void initView() {
         setContentView(R.layout.dialog_avaliability);
         vDivide = findViewById(R.id.v_divide);
+        vDivide2 = findViewById(R.id.top_line);
         tvTitle = findViewById(R.id.tv_title);
         tvTip = findViewById(R.id.tv_tip);
         tvSubTip = findViewById(R.id.tv_sub_tip);
@@ -87,10 +88,21 @@ public class AvailabilityDialog extends Dialog {
                 tvTip.setGravity(Gravity.CENTER);
                 tvTip.setTextSize(17);
                 break;
+            case ANOTHER_DEVICE_LOGIN:
+                tvTitle.setVisibility(View.GONE);
+                tvTip.setTextSize(12);
+                tvTip.setGravity(Gravity.START);
+                vDivide.setVisibility(View.GONE);
+                tvCancel.setVisibility(View.GONE);
+                vDivide2.setVisibility(View.GONE);
+                break;
             default:
                 tvTitle.setVisibility(View.VISIBLE);
                 tvTip.setGravity(Gravity.START);
                 tvTip.setTextSize(12);
+                vDivide.setVisibility(View.GONE);
+                tvOk.setVisibility(View.VISIBLE);
+                tvCancel.setVisibility(View.GONE);
                 break;
         }
         this.type = type;
@@ -106,8 +118,11 @@ public class AvailabilityDialog extends Dialog {
     }
 
     public void setTip(String tip) {
+        tvTip.setVisibility(View.VISIBLE);
         tvTip.setText(tip);
     }
+
+
 
     public void setSubTipVisible(boolean visible) {
         tvSubTip.setVisibility(visible ? View.VISIBLE : View.GONE);
@@ -130,6 +145,8 @@ public class AvailabilityDialog extends Dialog {
         vDivide.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
+
+
     public interface OnOkClickListener {
         void onOkClick(Dialog dialog);
     }
@@ -143,7 +160,8 @@ public class AvailabilityDialog extends Dialog {
         TIME_VALID("当前时间没有热水供应", "时间段错误"),
         BIND_DORMITORY("你还没有绑定宿舍信息哦！", "绑定宿舍"),
         OPEN_LOCAION_SERVICE("", "打开位置服务"),
-        WITHDRAW_VALID("当前时间无法提现","提现时间段错误");
+        WITHDRAW_VALID("当前时间无法提现","提现时间段错误"),
+        ANOTHER_DEVICE_LOGIN("","你的账号在另一台设备登录，如非本人操作请及时修改密码。");
 
         private String title;
         private String desc;

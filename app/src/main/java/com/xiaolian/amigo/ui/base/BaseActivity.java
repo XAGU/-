@@ -73,6 +73,8 @@ import butterknife.OnClick;
 import butterknife.Optional;
 import butterknife.Unbinder;
 
+import static com.xiaolian.amigo.util.Constant.ANOTHER_DEVICE_LOGIN;
+
 public abstract class BaseActivity extends SwipeBackActivity
         implements IBaseView {
 
@@ -826,8 +828,11 @@ public abstract class BaseActivity extends SwipeBackActivity
 
 
     @Override
-    public void redirectToLogin() {
-        startActivity(this, LoginActivity.class);
+    public void redirectToLogin(boolean showAnotherDeviceLogin) {
+
+        Intent intent = new Intent(this , LoginActivity.class);
+        intent.putExtra(ANOTHER_DEVICE_LOGIN ,showAnotherDeviceLogin);
+        startActivity(intent);
     }
 
     @Override

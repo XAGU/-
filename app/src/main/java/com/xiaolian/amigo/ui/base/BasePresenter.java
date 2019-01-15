@@ -18,6 +18,8 @@ package com.xiaolian.amigo.ui.base;
 import android.os.Handler;
 import android.os.HandlerThread;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.BizError;
@@ -27,6 +29,7 @@ import com.xiaolian.amigo.data.network.model.Error;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.crash.acra.util.JsonUtils;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -90,8 +93,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
             if (e instanceof HttpException) {
                 switch (((HttpException) e).code()) {
                     case UNAUTHORIZED:
-                        getMvpView().post(() -> getMvpView().onError(R.string.please_login));
-                        getMvpView().post(() -> getMvpView().redirectToLogin());
+                        http401((HttpException) e);
                         break;
                     case IGNORE:
                         // ignore
@@ -122,7 +124,10 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         if (errorCode == CommonError.PERMISSION_DENIED.getCode()) {
             Log.w(TAG, "请重新登录");
             getMvpView().onError(CommonError.PERMISSION_DENIED.getDesc());
-            getMvpView().redirectToLogin();
+            getMvpView().redirectToLogin(false);
+        }else if (errorCode == CommonError.ANOTHER_DEVICE_LOGIN.getCode()){
+            getMvpView().onError(CommonError.ANOTHER_DEVICE_LOGIN.getDesc());
+            getMvpView().redirectToLogin(true);
         } else if (errorCode == CommonError.SERVER_SYSTEM_ERROR.getCode()) {
 //            Log.w(TAG, "服务器错误");
 //            getMvpView().onError("服务器开小差了>_<");
@@ -221,8 +226,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         if (e instanceof HttpException) {
             switch (((HttpException) e).code()) {
                 case UNAUTHORIZED:
-                    getMvpView().post(() -> getMvpView().onError(R.string.please_login));
-                    getMvpView().post(() -> getMvpView().redirectToLogin());
+                    http401((HttpException) e);
                     break;
                 default:
                     break;
@@ -348,5 +352,29 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         }
     }
 
+    /**
+     * 401 异常中分辨是未登录异常和账号异常登录异常
+     * @param e
+     */
+    public void http401(HttpException e) {
+
+        try {
+            String errorBody = ((HttpException) e).response().errorBody().string();
+            Gson gson = new Gson();
+            ApiResult result = gson.fromJson(errorBody, ApiResult.class);
+            if (result.getError() != null) {
+                if (result.getError().getCode() == CommonError.ANOTHER_DEVICE_LOGIN.getCode()) {
+                    getMvpView().post(() -> getMvpView().redirectToLogin(true));
+                } else {
+                    getMvpView().post(() -> getMvpView().onError(R.string.please_login));
+                    getMvpView().post(() -> getMvpView().redirectToLogin(false));
+                }
+            }
+        } catch (IOException e1) {
+            getMvpView().post(() -> getMvpView().onError(R.string.please_login));
+            getMvpView().post(() -> getMvpView().redirectToLogin(false));
+            android.util.Log.e(TAG, "http401: " + e.getMessage() );
+        }
+    }
 
 }

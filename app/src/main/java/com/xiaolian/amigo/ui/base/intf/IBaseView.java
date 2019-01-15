@@ -53,7 +53,7 @@ public interface IBaseView {
      */
     boolean isBleOpen();
 
-    void redirectToLogin();
+    void redirectToLogin(boolean showAnotherDeviceLogin);
 
     /**
      * 子线程提交UI更新task

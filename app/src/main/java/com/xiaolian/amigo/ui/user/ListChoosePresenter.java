@@ -136,7 +136,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                     getMvpView().onSuccess(R.string.change_school_success);
                     getMvpView().backToMain();
                     userDataManager.logout();
-                    getMvpView().redirectToLogin();
+                    getMvpView().redirectToLogin(false);
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

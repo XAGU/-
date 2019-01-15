@@ -54,4 +54,9 @@ public interface ILoginView extends IBaseView {
 
     void showTipDialog(String title,String content);
 
+    /**
+     * 此账号在另一个设备登录
+     */
+    void showAnotherDeviceLogin();
+
 }

@@ -42,7 +42,8 @@
     <View
         android:background="@color/colorDarke"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:id="@+id/top_line"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

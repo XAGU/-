@@ -179,6 +179,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private int lastFragment = -1  ;
 
     private int nowPosition = - 1 ;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1218,6 +1220,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
 
+
     /**
      * 点击进入饮水机页面
      */
@@ -1270,7 +1273,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     private boolean checkLogin() {
         if (TextUtils.isEmpty(presenter.getAccessToken()) || TextUtils.isEmpty(presenter.getRefreshToken())) {
-            redirectToLogin();
+            redirectToLogin(false);
             return false;
         }
         return true;

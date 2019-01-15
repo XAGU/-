@@ -119,8 +119,6 @@ public class ProfileFragment2 extends BaseFragment {
     private Unbinder unbinder;
 
 
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -188,7 +186,7 @@ public class ProfileFragment2 extends BaseFragment {
 
     private boolean checkLogin() {
         if (null == presenter.getAccessToken() ||  TextUtils.isEmpty(presenter.getRefreshToken())) {
-            redirectToLogin();
+            redirectToLogin(false);
             return false;
         }
         return true;

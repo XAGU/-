@@ -39,6 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.xiaolian.amigo.util.Constant.ANOTHER_DEVICE_LOGIN;
 import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
@@ -109,16 +110,24 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     private boolean isThirdLogin;
 
+    /**
+     * 其他设备登录提醒
+     */
+    private AvailabilityDialog anotherDeviceLoginDialog ;
+
+    private volatile boolean showAnotherDeviceLogin  ;
     @Override
     protected void setUp() {
-
+        if (getIntent() != null){
+            showAnotherDeviceLogin = getIntent().getBooleanExtra(ANOTHER_DEVICE_LOGIN ,false);
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_registry_group);
-
+        setUp();
         setUnBinder(ButterKnife.bind(this));
 
         getActivityComponent().inject(this);
@@ -160,12 +169,19 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        if (showAnotherDeviceLogin) showAnotherDeviceLogin();
+
     }
+
     @Override
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (availabilityDialog != null && availabilityDialog.isShowing()){
+            availabilityDialog.dismiss();
+        }
+        availabilityDialog =  null ;
     }
 
     @OnClick(R.id.tv_registry)
@@ -421,6 +437,17 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
         });
         availabilityDialog.show();
+    }
+
+    @Override
+    public void showAnotherDeviceLogin() {
+        if (anotherDeviceLoginDialog == null){
+            anotherDeviceLoginDialog = new AvailabilityDialog(this);
+            anotherDeviceLoginDialog.setType(AvailabilityDialog.Type.ANOTHER_DEVICE_LOGIN);
+            anotherDeviceLoginDialog.setTip(AvailabilityDialog.Type.ANOTHER_DEVICE_LOGIN.getDesc());
+            anotherDeviceLoginDialog.setOkText(getString(R.string.i_know));
+        }
+        anotherDeviceLoginDialog.show();
     }
 
     //重写返回键逻辑

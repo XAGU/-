@@ -56,6 +56,7 @@ import butterknife.Optional;
 import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
+import static com.xiaolian.amigo.util.Constant.ANOTHER_DEVICE_LOGIN;
 
 /**
  * @author zcd
@@ -602,8 +603,10 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
 
 
     @Override
-    public void redirectToLogin() {
-        mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
+    public void redirectToLogin(boolean showAnotherDeviceLogin) {
+        Intent intent = new Intent(getContext() , LoginActivity.class);
+        intent.putExtra(ANOTHER_DEVICE_LOGIN ,showAnotherDeviceLogin);
+        startActivity(intent);
     }
 
     @Override

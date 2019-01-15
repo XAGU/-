@@ -163,7 +163,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
             switch (((HttpException) e).code()) {
                 case 401:
                     getMvpView().post(() -> getMvpView().onError(R.string.please_login));
-                    getMvpView().post(() -> getMvpView().redirectToLogin());
+                    getMvpView().post(() -> getMvpView().redirectToLogin(false));
                     break;
                 default:
                     getMvpView().post(() ->

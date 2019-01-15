@@ -385,4 +385,10 @@ public final class Constant {
 
     public static final String TRADE_STATISTIC_ITEM_SEPARATOR = ";" ;  // 每条记录的分隔符
 
+
+    /**
+     * 是否为账号在另一个设备登录
+     */
+    public static final String ANOTHER_DEVICE_LOGIN = "ANOTHER_DEVICE_LOGIN" ;
+
 }
