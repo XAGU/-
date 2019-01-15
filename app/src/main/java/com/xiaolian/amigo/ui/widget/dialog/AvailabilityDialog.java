@@ -83,6 +83,7 @@ public class AvailabilityDialog extends Dialog {
                 tvTip.setGravity(Gravity.START);
                 tvTip.setTextSize(12);
                 break;
+
             case OPEN_LOCAION_SERVICE:
                 tvTitle.setVisibility(View.GONE);
                 tvTip.setGravity(Gravity.CENTER);

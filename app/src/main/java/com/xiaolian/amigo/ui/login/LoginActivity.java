@@ -24,6 +24,7 @@ import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
+import com.xiaolian.amigo.ui.widget.dialog.AnotherDeviceLoginDialog;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.MD5Util;
@@ -113,7 +114,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     /**
      * 其他设备登录提醒
      */
-    private AvailabilityDialog anotherDeviceLoginDialog ;
+    private AnotherDeviceLoginDialog anotherDeviceLoginDialog ;
 
     private volatile boolean showAnotherDeviceLogin  ;
     @Override
@@ -442,10 +443,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     @Override
     public void showAnotherDeviceLogin() {
         if (anotherDeviceLoginDialog == null){
-            anotherDeviceLoginDialog = new AvailabilityDialog(this);
-            anotherDeviceLoginDialog.setType(AvailabilityDialog.Type.ANOTHER_DEVICE_LOGIN);
-            anotherDeviceLoginDialog.setTip(AvailabilityDialog.Type.ANOTHER_DEVICE_LOGIN.getDesc());
-            anotherDeviceLoginDialog.setOkText(getString(R.string.i_know));
+            anotherDeviceLoginDialog = new AnotherDeviceLoginDialog(this);
         }
         anotherDeviceLoginDialog.show();
     }
