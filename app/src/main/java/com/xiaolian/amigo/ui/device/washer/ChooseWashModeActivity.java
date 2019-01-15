@@ -27,6 +27,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static com.xiaolian.amigo.ui.device.washer.WasherContent.KEY_TYPE;
+import static com.xiaolian.amigo.util.Constant.FROM_LOCATION;
 import static com.xiaolian.amigo.util.Constant.WASH_DRYER;
 
 /**
@@ -169,7 +170,8 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
     }
 
     private void gotoRecharge() {
-        startActivityForResult(new Intent(this, RechargeActivity.class),
+        startActivityForResult(new Intent(this, RechargeActivity.class)
+                .putExtra(FROM_LOCATION ,"洗衣机"),
                 REQUEST_CODE_RECHARGE);
     }
 

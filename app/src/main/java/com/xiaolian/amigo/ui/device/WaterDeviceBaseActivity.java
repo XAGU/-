@@ -58,6 +58,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
 
+import static com.xiaolian.amigo.util.Constant.FROM_LOCATION;
+
 /**
  * 用水设备baseActivity
  *
@@ -902,11 +904,21 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         noticeAlertDialog.show();
     }
 
+
     @Override
     public void realPay() {
         // 需要充值
         if (needRecharge) {
-            startActivityForResult(new Intent(this, RechargeActivity.class),
+            String fromLocation ="" ;
+            if (Device.getDevice(deviceType) == Device.HEATER) {
+                fromLocation = "热水澡";
+            } else if (Device.getDevice(deviceType) == Device.DISPENSER) {
+                fromLocation = "饮水机";
+            } else if (Device.getDevice(deviceType) == Device.DRYER) {
+                fromLocation = "吹风机";
+            }
+            startActivityForResult(new Intent(this, RechargeActivity.class)
+                    .putExtra(FROM_LOCATION ,fromLocation),
                     REQUEST_CODE_RECHARGE);
             return;
         } else {
@@ -1177,7 +1189,19 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public void showRechargeDialog(double amount) {
         new IOSAlertDialog(this).builder()
                 .setMsg("sorry,你的账户余额不足" + amount + "元~")
-                .setPositiveButton("前往充值", v -> startActivity(new Intent(getApplicationContext(), RechargeActivity.class)))
+                .setPositiveButton("前往充值", v -> {
+                            String fromLocation = "" ;
+                            if (Device.getDevice(deviceType) == Device.HEATER) {
+                                fromLocation = "热水澡" ;
+                            } else if (Device.getDevice(deviceType) == Device.DISPENSER) {
+                                fromLocation = "饮水机";
+                            } else if (Device.getDevice(deviceType) == Device.DRYER) {
+                                fromLocation = "吹风机" ;
+                            }
+                            startActivityForResult(new Intent(getApplicationContext(), RechargeActivity.class)
+                                    .putExtra(FROM_LOCATION , fromLocation) , REQUEST_CODE_RECHARGE);
+                        }
+                    )
                 .setNegativeClickListener("取消", IOSAlertDialog::dismiss).show();
     }
 

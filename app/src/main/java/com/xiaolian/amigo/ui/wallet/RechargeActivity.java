@@ -43,6 +43,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lombok.Data;
 
+import static com.xiaolian.amigo.util.Constant.FROM_LOCATION;
+
 /**
  * 我的钱包
  *
@@ -81,6 +83,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     private WithDrawExplainAlertDialog withDrawExplainAlertDialog ;
 
+    private String fromLocation  ;
 
     @Override
     protected void initView() {
@@ -146,6 +149,14 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
         presenter.getRechargeTypeList();
     }
 
+
+    @Override
+    protected void setUp() {
+        super.setUp();
+        if (getIntent() != null){
+            fromLocation = getIntent().getStringExtra(FROM_LOCATION);
+        }
+    }
 
     private void initDialog(){
         withDrawExplainAlertDialog = new WithDrawExplainAlertDialog(this);
@@ -237,8 +248,10 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     @Override
     public void gotoDetail(Long fundsId) {
+
         startActivity(new Intent(this, RechargeDetailActivity.class)
-                .putExtra(Constant.EXTRA_KEY, fundsId));
+                .putExtra(Constant.EXTRA_KEY, fundsId)
+        .putExtra(FROM_LOCATION , fromLocation));
         setResult(RESULT_OK);
         finish();
     }
