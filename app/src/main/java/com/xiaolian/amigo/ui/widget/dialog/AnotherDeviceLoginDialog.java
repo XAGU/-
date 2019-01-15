@@ -19,7 +19,7 @@ public class AnotherDeviceLoginDialog extends Dialog {
     private TextView tip ;
 
     private View line ;
-        
+
     private TextView confirm ;
     public AnotherDeviceLoginDialog(@NonNull Context context) {
         super(context, R.style.AlertDialogStyle);
