@@ -134,12 +134,15 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         }
     }
 
+    @OnClick(R.id.back_to_from)
+    public void backToFrom(){
+        this.finish();
+    }
+
     @Override
     protected int setTitle() {
         return R.string.recharge_detail;
     }
-
-
 
     @Override
     protected int setLayout() {
