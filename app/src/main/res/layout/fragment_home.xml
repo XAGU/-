@@ -26,7 +26,7 @@
             android:layout_height="21dp"
             android:id="@+id/scan"
             android:layout_centerVertical="true"
-            android:src="@drawable/icon_s       can_home"
+            android:src="@drawable/icon_scan_home"
             android:layout_marginEnd="4dp"
             android:layout_toStartOf="@id/tv_scan"
             />

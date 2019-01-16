@@ -430,8 +430,9 @@
     <string name="alipay_bind">支付宝绑定</string>
 
     <string name="input_password_digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
-
     <string name="another_device_login_hint">
         你的账号在另一台设备登录，如非本人操作请及时修改密码
     </string>
+    <string name="empty">蓝胖胖这里空空的 ...</string>
 </resources>
+

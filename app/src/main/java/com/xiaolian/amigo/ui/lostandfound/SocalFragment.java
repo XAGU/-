@@ -44,7 +44,6 @@ import com.xiaolian.amigo.di.module.LostAndFoundActivityModule;
 import com.xiaolian.amigo.ui.base.BaseFragment;
 import com.xiaolian.amigo.ui.base.RxBus;
 import com.xiaolian.amigo.ui.lostandfound.adapter.BlogAdapter;
-import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailContentDelegate;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalTagsAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocialImgAdapter;
