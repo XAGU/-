@@ -25,6 +25,7 @@ import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
+import com.xiaolian.amigo.ui.device.nbdevice.NBDeviceActivity;
 
 import dagger.Component;
 
@@ -46,5 +47,7 @@ public interface DeviceActivityComponent {
     void inject(BathIngActivity activity);
 
     void inject(BathOrderActivity activity);
+
+    void inject(NBDeviceActivity activity);
 
 }

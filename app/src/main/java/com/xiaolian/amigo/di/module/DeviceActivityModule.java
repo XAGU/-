@@ -46,6 +46,9 @@ import com.xiaolian.amigo.ui.device.intf.dryer.IDryerView;
 import com.xiaolian.amigo.ui.device.heater.HeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
+import com.xiaolian.amigo.ui.device.nbdevice.NBDevicePresenter;
+import com.xiaolian.amigo.ui.device.nbdevice.intf.INBDevicePresenter;
+import com.xiaolian.amigo.ui.device.nbdevice.intf.INBDeviceView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -131,6 +134,12 @@ public class DeviceActivityModule {
     @Provides
     @DeviceActivityContext
     IDeviceOrderPresenter<IDeviceOrderView> provideDeviceOrderPresenter(DeviceOrderPresenter<IDeviceOrderView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @DeviceActivityContext
+    INBDevicePresenter<INBDeviceView> provideNBDevicePresenter(NBDevicePresenter<INBDeviceView> presenter) {
         return presenter;
     }
 
