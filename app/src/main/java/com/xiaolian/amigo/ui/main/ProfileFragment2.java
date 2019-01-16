@@ -14,10 +14,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.umeng.analytics.MobclickAgent;
+import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BaseFragment;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.credits.CreditsActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
@@ -118,7 +120,6 @@ public class ProfileFragment2 extends BaseFragment {
 
     private Unbinder unbinder;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -151,6 +152,7 @@ public class ProfileFragment2 extends BaseFragment {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 try {
+
                         EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.START_ACTIVITY,
                                 items.get(position).getActivityClazz()));
                 } catch (ArrayIndexOutOfBoundsException e) {
@@ -193,6 +195,9 @@ public class ProfileFragment2 extends BaseFragment {
     }
 
 
+
+
+
     /**
      * 点击昵称 跳转到编辑个人信息页面
      */
@@ -226,6 +231,7 @@ public class ProfileFragment2 extends BaseFragment {
             tvNoticeCount.setVisibility(View.GONE);
         }
     }
+
 
 
     @SuppressWarnings("unchecked")

@@ -241,11 +241,6 @@ public class WalletDataManager implements IWalletDataManager {
     }
 
     @Override
-    public Observable<ApiResult<EntireUserDTO>> getUserInfo() {
-        return userApi.getUserInfo();
-    }
-
-    @Override
     public Observable<ApiResult<WechatUserAccountBasicInfoRespDTO>> getWXNickname(WechatUserBasicInfoReqDTO reqDTO) {
         return fundsApi.accountInfo(reqDTO);
     }

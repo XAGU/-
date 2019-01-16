@@ -89,16 +89,19 @@
                         android:layout_marginBottom="14dp"
                         android:id="@+id/reason_ll"
                         android:visibility="gone"
+                        tool:visibility="visible"
                         >
                         <TextView
 
                             style="@style/user_certification_txt"
+                            android:textColor="@color/colorFullRed"
                             android:text="原因："
                             />
 
                         <TextView
                             style="@style/user_certification_txt"
                             tool:text="动物医学学院范德萨发阿发发啊是是的达发打湿大大安市"
+                            android:textColor="@color/colorFullRed"
                             android:id="@+id/tv_reason"/>
                     </LinearLayout>
 

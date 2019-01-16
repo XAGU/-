@@ -557,22 +557,6 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     }
 
     @Override
-    public void getUser() {
-        addObserver(userDataManager.getUserInfo(), new NetworkObserver<ApiResult<EntireUserDTO>>() {
-
-            @Override
-            public void onReady(ApiResult<EntireUserDTO> result) {
-                if (null == result.getError()) {
-                    User user = new User(result.getData());
-                    userDataManager.setUser(user);
-                } else {
-                    getMvpView().onError(result.getError().getDisplayMessage());
-                }
-            }
-        });
-    }
-
-    @Override
     public int getNoticeCount() {
         return noticeCount;
     }

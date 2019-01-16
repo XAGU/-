@@ -189,10 +189,6 @@ public interface IWalletDataManager {
 
     Observable<ApiResult<QueryWithdrawTypeListRespDTO>> typeList();
 
-    /**
-     * 获取用户个人信息
-     */
-    Observable<ApiResult<EntireUserDTO>> getUserInfo();
 
     /**
      * 通过code 获取昵称

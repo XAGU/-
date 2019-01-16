@@ -53,6 +53,8 @@ public class ProfileAdaptor extends CommonAdapter<ProfileAdaptor.Item> {
             if ( item.getUnReadWorkOrderRemarkMessageCount() > 0){
                 holder.getView(R.id.tv_amount).setVisibility(View.VISIBLE);
                 holder.setText(R.id.tv_amount, String.valueOf(item.getUnReadWorkOrderRemarkMessageCount()));
+            }else{
+                holder.getView(R.id.tv_amount).setVisibility(View.GONE);
             }
         } else {
             holder.getView(R.id.tv_amount).setVisibility(View.GONE);

@@ -180,6 +180,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     private int nowPosition = - 1 ;
 
+    private int unReadCount ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -978,6 +979,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         presenter.setBonusAmount(data.getBonusAmount());
         presenter.setCredits(data.getCredits());
         EventBus.getDefault().post(data);
+        unReadCount = data.getUnReadWorkOrderRemarkMessageCount();
         postReadCount(data.getUnReadWorkOrderRemarkMessageCount());
     }
 
@@ -1354,8 +1356,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     if (event.getObject() != null) {
                         startActivity(this, (Class) event.getObject());
                     }else{
-                        //  跳服务中心h5页面
-
+                        startServiceH5();
                     }
                 }
                 break;
@@ -1366,6 +1367,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             default:
                 break;
         }
+    }
+
+    //  跳服务中心h5页面
+    public void startServiceH5(){
+        String url = BuildConfig.H5_SERVER + "/serviceCenter"
+                + "?accessToken=" + presenter.getAccessToken()
+                +"&refreshToken=" + presenter.getRefreshToken()
+                +"&unreadCount=" + unReadCount;
+        Intent intent = new Intent(getContext(), WebActivity.class);
+        android.util.Log.e(TAG, "startServiceH5: " + url );
+        intent.putExtra(WebActivity.INTENT_KEY_URL, url);
+        startActivity(intent);
     }
 
     private void gotoGate() {

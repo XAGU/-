@@ -20,11 +20,13 @@ import android.widget.TextView;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.base.BaseFragment;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
@@ -147,6 +149,7 @@ public class HomeFragment2 extends BaseFragment {
 
     private Unbinder unbinder ;
 
+    private int unReadWorkOrderRemarkMessageCount ;
 
     @Nullable
     @Override
@@ -170,7 +173,14 @@ public class HomeFragment2 extends BaseFragment {
 
     @OnClick(R.id.main_service)
     public void startServiceH5(){
-        // TODO: 2019/1/14 服务入口点击事件
+        String url = BuildConfig.H5_SERVER + "/serviceCenter"
+                    + "?accessToken=" + presenter.getAccessToken()
+                +"&refreshToken=" + presenter.getRefreshToken()
+                +"&unreadCount=" + unReadWorkOrderRemarkMessageCount;
+        Intent intent = new Intent(getContext(), WebActivity.class);
+        android.util.Log.e(TAG, "startServiceH5: " + url );
+        intent.putExtra(WebActivity.INTENT_KEY_URL, url);
+        startActivity(intent);
     }
 
     @OnClick(R.id.rolling_off)
@@ -193,8 +203,12 @@ public class HomeFragment2 extends BaseFragment {
      * @param unReadWorkOrderRemarkMessageCount
      */
     private void showUnReadWorkOrderRemarkMessageCount(int unReadWorkOrderRemarkMessageCount){
-        unReadCount.setVisibility(View.VISIBLE);
-        unReadCount.setText(unReadWorkOrderRemarkMessageCount +"");
+        if (unReadWorkOrderRemarkMessageCount > 0) {
+            unReadCount.setVisibility(View.VISIBLE);
+            unReadCount.setText(unReadWorkOrderRemarkMessageCount + "");
+        }else{
+            unReadCount.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -531,8 +545,8 @@ public class HomeFragment2 extends BaseFragment {
                 initRollingNotice((List<String>)event.getObject());
                 break;
             case UNREAD_COUNT:
-                int unReadCount = (int) event.getObject();
-                showUnReadWorkOrderRemarkMessageCount(unReadCount);
+                unReadWorkOrderRemarkMessageCount = (int) event.getObject();
+                showUnReadWorkOrderRemarkMessageCount(unReadWorkOrderRemarkMessageCount);
             default:
                 break;
         }
