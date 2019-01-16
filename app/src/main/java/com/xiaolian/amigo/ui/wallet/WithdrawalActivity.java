@@ -167,7 +167,9 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         switch (event.getType()) {
             case WECHAT_CODE:
                 //  取得微信授权码后，获取微信昵称
+
                 wechatCode = (String) event.getMsg();
+                Log.e(TAG, "onEvent: " + wechatCode );
                 presenter.getWxNickName(wechatCode);
                 break;
             default:
@@ -486,13 +488,14 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
                     break;
                 case REQUEST_CODE_PASSWORD_VERIFY://密码验证成功后才能进入退款流程
                     Log.e(TAG, "onActivityResult: " + rechargeTypeSelectedPosition );
-                    if (rechargeTypeSelectedPosition == 0) {
-                        presenter.withdraw(etAmount.getText().toString().trim(), tvWithdrawWay2.getText().toString().trim(),
-                                withdrawId);
-                    }else if (rechargeTypeSelectedPosition == 1){
-                        presenter.wechatWithdraw(etAmount.getText().toString().trim() , openId ,editName.getText().toString().trim() , nickName);
+                    if (choseRechargeType != null) {
+                        if (choseRechargeType.getType() == PayWay.ALIAPY.getType()) {
+                            presenter.withdraw(etAmount.getText().toString().trim(), tvWithdrawWay2.getText().toString().trim(),
+                                    withdrawId);
+                        } else {
+                            presenter.wechatWithdraw(etAmount.getText().toString().trim(), openId, editName.getText().toString().trim(), nickName);
+                        }
                     }
-
                 default:
                     break;
             }
