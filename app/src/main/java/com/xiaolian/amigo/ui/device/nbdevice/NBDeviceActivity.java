@@ -18,8 +18,8 @@ public class NBDeviceActivity extends BaseActivity implements INBDeviceView {
 
     private DeviceActivityComponent mActivityComponent;
 
-    @Inject
-    INBDevicePresenter<INBDeviceView>presenter;
+//    @Inject
+//    INBDevicePresenter<INBDeviceView>presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,12 +27,12 @@ public class NBDeviceActivity extends BaseActivity implements INBDeviceView {
 //        setContentView(R.layout.activity_offline_device);
         ButterKnife.bind(this);
         setUp();
-        mActivityComponent = DaggerDeviceActivityComponent.builder()
-                .deviceActivityModule(new DeviceActivityModule(this))
-                .applicationComponent(((MvpApp) getApplication()).getComponent())
-                .build();
-        mActivityComponent.inject(this);
-        presenter.onAttach(this);
+//        mActivityComponent = DaggerDeviceActivityComponent.builder()
+//                .deviceActivityModule(new DeviceActivityModule(this))
+//                .applicationComponent(((MvpApp) getApplication()).getComponent())
+//                .build();
+//        mActivityComponent.inject(this);
+//        presenter.onAttach(this);
     }
 
     @Override
