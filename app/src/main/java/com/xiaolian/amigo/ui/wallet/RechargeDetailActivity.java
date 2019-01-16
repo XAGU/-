@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,6 +36,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.xiaolian.amigo.util.Constant.FROM_LOCATION;
+
 /**
  * 充值详情
  *
@@ -43,6 +46,7 @@ import butterknife.OnClick;
  */
 
 public class RechargeDetailActivity extends WalletBaseActivity implements IRechargeDetailView {
+
     @Inject
     IRechargeDetailPresenter<IRechargeDetailView> presenter;
 
@@ -75,11 +79,19 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
+    @BindView(R.id.back_to_from)
+    Button backToFrom ;
+
     /**
      * orderId
      */
     private Long id;
     private String orderNo;
+
+    /**
+     * 充值从哪儿来的
+     */
+    private String fromLocation ;
 
     @Override
     protected void initView() {
@@ -104,6 +116,13 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         }else {
             presenter.requestData(id);
         }
+
+        if (fromLocation != null && !TextUtils.isEmpty(fromLocation)){
+            backToFrom.setText("返回" + fromLocation);
+            backToFrom.setVisibility(View.VISIBLE);
+        }else{
+            backToFrom.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -111,7 +130,13 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         super.setUp();
         if (getIntent() != null) {
             id = getIntent().getLongExtra(Constant.EXTRA_KEY, Constant.INVALID_ID);
+            fromLocation = getIntent().getStringExtra(FROM_LOCATION );
         }
+    }
+
+    @OnClick(R.id.back_to_from)
+    public void backToFrom(){
+        this.finish();
     }
 
     @Override

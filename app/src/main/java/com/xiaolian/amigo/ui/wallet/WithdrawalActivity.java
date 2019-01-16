@@ -49,6 +49,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import lombok.Data;
 
 /**
  * 提现
@@ -167,7 +168,6 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
             case WECHAT_CODE:
                 //  取得微信授权码后，获取微信昵称
                 wechatCode = (String) event.getMsg();
-                Log.e(TAG, "onEvent: " + wechatCode );
                 presenter.getWxNickName(wechatCode);
                 break;
             default:
@@ -523,8 +523,11 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         }
     }
 
+
+
     @Override
     protected void onDestroy() {
+        Log.e(TAG, "onDestroy: " );
         presenter.onDetach();
         super.onDestroy();
         EventBus.getDefault().unregister(this);

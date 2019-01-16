@@ -59,6 +59,7 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomHeaterActivity.KEY_BATH_ORDER_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_BATHQUEUE_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_BOOKING_ID;
+import static com.xiaolian.amigo.util.Constant.FROM_LOCATION;
 
 /**
  * 选择浴室
@@ -205,7 +206,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 if (floorsBean != null) {
                     if (needCharge){
                         onError("余额不足，请前往充值");
-                        startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
+                        startActivity(new Intent(getApplicationContext(), RechargeActivity.class)
+                        .putExtra(FROM_LOCATION ,"公共浴室"));
                     }else {
                         if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
                             if (  missedTimes < maxMissAbleTimes) {
@@ -593,7 +595,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         if (needCharge) {
 //            setBtnText("余额不足，请前往充值" , false);
             onError("余额不足，请前往充值");
-            startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
+            startActivity(new Intent(getApplicationContext(), RechargeActivity.class)
+            .putExtra(FROM_LOCATION ,"公共浴室"));
         } else {
             if (TextUtils.isEmpty(deviceNo)) {
 

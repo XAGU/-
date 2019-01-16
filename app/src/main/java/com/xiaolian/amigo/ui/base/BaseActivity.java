@@ -833,6 +833,7 @@ public abstract class BaseActivity extends SwipeBackActivity
         Intent intent = new Intent(this , LoginActivity.class);
         intent.putExtra(ANOTHER_DEVICE_LOGIN ,showAnotherDeviceLogin);
         startActivity(intent);
+        this.finish();
     }
 
     @Override

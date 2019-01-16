@@ -62,6 +62,11 @@ public final class Constant {
     public static final String EXTRA_KEY = "detail";
 
     /**
+     * 从哪儿充值来的
+     */
+    public static final String FROM_LOCATION = "FROM_LOCATION";
+
+    /**
      * 通过bundle传递数据时的key
      */
     public static final String DATA_BUNDLE = "data_bundle";
