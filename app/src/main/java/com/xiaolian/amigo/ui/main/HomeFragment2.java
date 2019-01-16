@@ -696,7 +696,7 @@ public class HomeFragment2 extends BaseFragment {
     /**
      * 扫一扫
      */
-    @OnClick(R.id.scan)
+    @OnClick({R.id.scan,R.id.tv_scan})
     public void scan() {
         if (presenter == null ) return ;
 

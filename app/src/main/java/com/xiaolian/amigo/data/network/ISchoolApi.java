@@ -37,4 +37,6 @@ public interface ISchoolApi {
      */
     @POST("school/name/list")
     Observable<ApiResult<SchoolNameListRespDTO>> getSchoolNameList ();
+
+
 }
