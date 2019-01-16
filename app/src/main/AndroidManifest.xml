@@ -563,6 +563,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!-- 账单页面 -->
+        <activity
+            android:name=".ui.wallet.BalanceDetailListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <!-- 充值详情 -->
         <activity
             android:name=".ui.wallet.RechargeDetailActivity"

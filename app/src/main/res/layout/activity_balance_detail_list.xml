@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:src="@drawable/back" />
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp15"
+                    android:textStyle="bold"
+                    android:textColor="#222"
+                    android:text="账单"/>
+
+                <View
+                    android:visibility="visible"
+                    android:id="@+id/v_divide2"
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="14dp"
+                    android:background="#eee" />
+
+                <TextView
+                    android:id="@+id/tv_title2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:text="统计"
+                    android:textColor="#bbb"
+                    android:textSize="@dimen/sp15"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_line"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="#d6d6d6"/>
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:paddingLeft="21dp"
+        android:id="@+id/sv_container"
+        android:scrollbars="none"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <LinearLayout
+            android:id="@+id/ll_main"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>
