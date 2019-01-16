@@ -68,7 +68,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     Log.e(TAG, "onResp: " + e.getMessage() );
                     finish();
                     return;
-
                 }
                 //如果code值不为空，则说明是微信登录
                 if (!TextUtils.isEmpty(code)) {
