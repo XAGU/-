@@ -101,8 +101,8 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(WalletActivity.this);
-        setToolbarSubTitle("月账单", v ->
-                startActivity(new Intent(WalletActivity.this, MonthlyBillActivity.class)));
+//        setToolbarSubTitle("月账单", v ->
+//                startActivity(new Intent(WalletActivity.this, MonthlyBillActivity.class)));
     }
 
     @Override
@@ -162,17 +162,17 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     /**
      * 消费记录
      */
-    @OnClick(R.id.rl_order)
-    void orderRecord() {
-        startActivity(new Intent(this, OrderActivity.class));
-    }
+//    @OnClick(R.id.rl_order)
+//    void orderRecord() {
+//        startActivity(new Intent(this, OrderActivity.class));
+//    }
 
     /**
-     * 充值提现记录
+     * 账单页面
      */
-    @OnClick(R.id.rl_withdrawal_record)
+    @OnClick(R.id.rl_bill_record)
     void withdrawalRecord() {
-        startActivity(new Intent(this, WithdrawalRecordActivity.class));
+        startActivity(new Intent(this, BalanceDetailListActivity.class));
     }
 
     @Override
@@ -227,7 +227,8 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
 
     @Override
     public void showGivingBalance() {
-        rlGivingBalance.setVisibility(View.VISIBLE);
+        /*永远不显示*/
+        rlGivingBalance.setVisibility(View.GONE);
     }
 
     /**
