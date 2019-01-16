@@ -628,7 +628,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
              @Override
              public void onReady(ApiResult<SchoolForumStatusDTO> result) {
                  if (result.getError() == null){
-                     if (result.getData().getSchoolForumStatus() == Constant.SCHOOL_FORUM_CLOSE){
+                     if (Constant.SCHOOL_FORUM_CLOSE.equals(result.getData().getSchoolForumStatus())){
                          getMvpView().closeSchoolForum();
                      }else{
                          getMvpView().openSchoolForum();

@@ -15,7 +15,6 @@
 
 package com.xiaolian.amigo.di.componet;
 
-
 import com.xiaolian.amigo.di.MainActivityContext;
 import com.xiaolian.amigo.di.module.MainActivityModule;
 import com.xiaolian.amigo.ui.base.WebActivity;
@@ -25,7 +24,6 @@ import com.xiaolian.amigo.ui.main.SplashActivity;
 import com.xiaolian.amigo.ui.service.BleCountService;
 
 import dagger.Component;
-
 
 @MainActivityContext
 @Component(dependencies = ApplicationComponent.class, modules = MainActivityModule.class)
@@ -40,6 +38,5 @@ public interface MainActivityComponent {
     void inject(WebActivity activity);
 
     void inject(BleCountService service);
-
 
 }

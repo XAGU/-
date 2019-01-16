@@ -154,7 +154,6 @@ public class LogInterceptor implements Interceptor {
             lastRequest = newRequest;
         } else {
             long currentTime = Calendar.getInstance().getTimeInMillis();
-            android.util.Log.e(TAG, "intercept: " + lastTime  );
             if (currentTime - lastTime < NETWORK_INTERVAL
                     && isRequestEqual(newRequest, lastRequest) && ENABLE_ANTI_SHAKE) {
                 Log.w(TAG, "请求间隔过短 url:" + request.url());

@@ -404,10 +404,10 @@ public final class Constant {
     /**
      * 开启论坛
      */
-    public static final int SCHOOL_FORUM_OPEN = 1 ;
+    public static final String SCHOOL_FORUM_OPEN = "OPEN" ;
 
     /**
      * 关闭论坛
      */
-    public static final int SCHOOL_FORUM_CLOSE = 2 ;
+    public static final String SCHOOL_FORUM_CLOSE = "CLOSE" ;
 }

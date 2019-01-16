@@ -20,13 +20,11 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.DimentionUtils;
 import com.xiaolian.amigo.util.TouchUtils;
-
 
 /**
  * @author zcd

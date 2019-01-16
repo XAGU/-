@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class SchoolForumStatusDTO {
 
-    private Integer schoolForumStatus;
+    private String schoolForumStatus;
 }
