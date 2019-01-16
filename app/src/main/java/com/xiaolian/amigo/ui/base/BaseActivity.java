@@ -54,6 +54,7 @@ import com.xiaolian.amigo.ui.base.swipeback.SwipeBackActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.HomeFragment2;
 import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.wallet.WithdrawalActivity;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LoadingDialog;
 import com.xiaolian.amigo.util.Log;
@@ -826,14 +827,13 @@ public abstract class BaseActivity extends SwipeBackActivity
         this.blePermissonCallback = callback;
     }
 
-
     @Override
     public void redirectToLogin(boolean showAnotherDeviceLogin) {
 
         Intent intent = new Intent(this , LoginActivity.class);
         intent.putExtra(ANOTHER_DEVICE_LOGIN ,showAnotherDeviceLogin);
         startActivity(intent);
-        this.finish();
+        finish();
     }
 
     @Override

@@ -51,6 +51,8 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import lombok.Data;
 
+import static com.xiaolian.amigo.util.Constant.EVENTBUS_UNREGISTER;
+
 /**
  * 提现
  *
@@ -436,6 +438,11 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     }
 
     @Override
+    public void finish() {
+        super.finish();
+    }
+
+    @Override
     public void showTypeList(QueryWithdrawTypeListRespDTO data) {
         rechargeTypes.clear();
         List<Integer> typeList = data.getWithdrawTypes();
@@ -518,6 +525,18 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         }
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getType()) {
+            case EVENTBUS_UNREGISTER:
+                EventBus.getDefault().unregister(this);
+                break;
+            default:
+                break;
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -525,8 +544,6 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
             EventBus.getDefault().register(this);
         }
     }
-
-
 
     @Override
     protected void onDestroy() {
@@ -536,4 +553,13 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         EventBus.getDefault().unregister(this);
     }
 
+
+    @Data
+    public static class Event{
+       private int type ;
+
+       public Event(int type){
+           this.type = type ;
+       }
+    }
 }

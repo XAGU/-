@@ -396,4 +396,9 @@ public final class Constant {
      */
     public static final String ANOTHER_DEVICE_LOGIN = "ANOTHER_DEVICE_LOGIN" ;
 
+
+    /**
+     * 注销EventBus
+     */
+    public static final int EVENTBUS_UNREGISTER  = 0X11111;
 }

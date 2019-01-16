@@ -13,8 +13,12 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.user.intf.IPasswordVerifyPresenter;
 import com.xiaolian.amigo.ui.user.intf.IPasswordVerifyView;
+import com.xiaolian.amigo.ui.wallet.WithdrawalActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ViewUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -109,6 +113,11 @@ public class PasswordVerifyActivity extends UserBaseActivity implements IPasswor
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().post(new WithdrawalActivity.Event(Constant.EVENTBUS_UNREGISTER));
+    }
 
     private void showOldPhoneNumber(String str) {
         // String sFinalAge=getResources().getString(R.string.alert,nAge);

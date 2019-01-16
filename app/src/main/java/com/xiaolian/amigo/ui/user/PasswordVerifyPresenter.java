@@ -24,6 +24,7 @@ public class PasswordVerifyPresenter <V extends IPasswordVerifyView> extends Bas
         this.userDataManager = userDataManager;
     }
 
+
     @Override
     public void verifyPassword(String passsword , Button button) {
         PasswordCheckReqDTO dto = new PasswordCheckReqDTO();

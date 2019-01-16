@@ -13,6 +13,7 @@ import com.xiaolian.amigo.ui.base.BaseActivity;
  * @author zcd
  * @date 18/6/29
  */
+
 public abstract class BathroomBaseActivity extends BaseActivity {
 
     private BathroomActivityComponent mActivityComponent;
