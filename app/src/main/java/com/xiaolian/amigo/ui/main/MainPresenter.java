@@ -19,6 +19,7 @@ import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.notify.RollingNotifyRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
+import com.xiaolian.amigo.data.network.model.school.SchoolForumStatusDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
@@ -618,6 +619,25 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                 }
             }
         });
+    }
+
+    @Override
+    public void getSchoolForumStatus() {
+         addObserver(userDataManager.getSchoolForumStatus() ,new NetworkObserver<ApiResult<SchoolForumStatusDTO>>(){
+
+             @Override
+             public void onReady(ApiResult<SchoolForumStatusDTO> result) {
+                 if (result.getError() == null){
+                     if (result.getData().getSchoolForumStatus() == Constant.SCHOOL_FORUM_CLOSE){
+                         getMvpView().closeSchoolForum();
+                     }else{
+                         getMvpView().openSchoolForum();
+                     }
+                 }else{
+                     getMvpView().onError(result.getError().getDisplayMessage());
+                 }
+             }
+         });
     }
 
 

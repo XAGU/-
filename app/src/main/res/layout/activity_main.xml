@@ -36,7 +36,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:id="@+id/social_rl">
+            android:id="@+id/social_rl"
+            android:visibility="gone">
             <RelativeLayout
                 android:layout_width="26dp"
                 android:layout_height="27dp"

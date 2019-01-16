@@ -225,4 +225,9 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
      * 获取滚动公告
      */
     void rollingNotify();
+
+    /**
+     * 获取首页学校论坛状态
+     */
+    void getSchoolForumStatus();
 }

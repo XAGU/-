@@ -188,5 +188,13 @@ public interface IMainView extends IBaseView {
      */
     void showOrHideBlogFragment(boolean canShowBlogFragment);
 
+    /**
+     * 关闭学校论坛入口
+     */
+    void closeSchoolForum();
 
+    /**
+     * 开启学校论坛入口
+     */
+    void openSchoolForum();
 }

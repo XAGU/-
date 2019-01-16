@@ -197,6 +197,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             MobclickAgent.enableEncrypt(true);
             MobclickAgent.setCatchUncaughtExceptions(true);
             if (presenter.isLogin()) {
+                presenter.getSchoolForumStatus();
                 android.util.Log.e(TAG, "onCreate: "  );
                 presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                         AppUtils.getVersionName(this));
@@ -524,6 +525,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         setIntent(intent);
         if (presenter.isLogin()) {
             android.util.Log.e(TAG, "onNewIntent: " );
+            presenter.getSchoolForumStatus();
             presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                     AppUtils.getVersionName(this));
             uploadDeviceInfo();
@@ -1211,7 +1213,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ROLLING_NOTIFY ,data.getRollingNotifyList()));
     }
-
+    
     @Override
     public void showOrHideBlogFragment(boolean canShowBlogFragment) {
         if (canShowBlogFragment){
@@ -1221,6 +1223,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
+    @Override
+    public void closeSchoolForum() {
+        showOrHideBlogFragment(false);
+    }
+
+    @Override
+    public void openSchoolForum() {
+        showOrHideBlogFragment(true);
+    }
 
 
     /**

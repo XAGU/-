@@ -33,6 +33,7 @@ import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolListReqDTO;
+import com.xiaolian.amigo.data.network.model.school.SchoolForumStatusDTO;
 import com.xiaolian.amigo.data.network.model.user.BindResidenceReq;
 import com.xiaolian.amigo.data.network.model.user.DeleteResidenceRespDTO;
 import com.xiaolian.amigo.data.network.model.user.MobileUpdateReqDTO;
@@ -344,4 +345,10 @@ public interface IUserDataManager {
      * @return
      */
     Observable<ApiResult<RollingNotifyRespDTO>> rollingNotify();
+
+    /**
+     * 获取学校论坛开关接口
+     * @return
+     */
+    Observable<ApiResult<SchoolForumStatusDTO>> getSchoolForumStatus();
 }

@@ -47,6 +47,7 @@ import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolListReqDTO;
+import com.xiaolian.amigo.data.network.model.school.SchoolForumStatusDTO;
 import com.xiaolian.amigo.data.network.model.user.BindResidenceReq;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.DeleteResidenceRespDTO;
@@ -407,6 +408,11 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public Observable<ApiResult<RollingNotifyRespDTO>> rollingNotify() {
         return notifyApi.rollingList();
+    }
+
+    @Override
+    public Observable<ApiResult<SchoolForumStatusDTO>> getSchoolForumStatus() {
+        return schoolApi.getSchoolSwitch();
     }
 
     @Override

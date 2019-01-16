@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolListReqDTO;
+import com.xiaolian.amigo.data.network.model.school.SchoolForumStatusDTO;
 import com.xiaolian.amigo.data.network.model.user.SchoolNameListRespDTO;
 
 import retrofit2.http.Body;
@@ -30,7 +31,6 @@ public interface ISchoolApi {
     @POST("school/business/list")
     Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
 
-
     /**
      * 获取学校列表
      * @return
@@ -38,5 +38,10 @@ public interface ISchoolApi {
     @POST("school/name/list")
     Observable<ApiResult<SchoolNameListRespDTO>> getSchoolNameList ();
 
-
+    /**
+     * 获取论坛开关
+     * @return
+     */
+    @POST("school/forum/switch")
+    Observable<ApiResult<SchoolForumStatusDTO>> getSchoolSwitch();
 }
