@@ -210,6 +210,11 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
                 }
                 tvBottomTip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 tvBottomTip.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
+
+                /**
+                 * 退款的不显示底部
+                 */
+                llBottom.setVisibility(View.GONE);
             } else {
                 if (data.isNetWashing()) {
                     llBottom.setVisibility(View.GONE);

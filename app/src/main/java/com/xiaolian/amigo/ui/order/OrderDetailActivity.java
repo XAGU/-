@@ -143,6 +143,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     @BindView(R.id.finish_time_rl)
     RelativeLayout finishTimeRl;
 
+
     private Long orderId;
 
     @Override
