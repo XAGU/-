@@ -250,8 +250,8 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     @Override
     public void gotoDispenser(String macAddress, Long supplierId,
                               boolean favor, Long residenceId,
-                              String usefor, String location) {
-        getMvpView().gotoDispenser(macAddress, supplierId, favor, residenceId, usefor, location);
+                              String usefor, String location ,List<String> preOrderCopy , List<String> afterOrderCopy) {
+        getMvpView().gotoDispenser(macAddress, supplierId, favor, residenceId, usefor, location ,preOrderCopy , afterOrderCopy);
     }
 
 

@@ -27,6 +27,8 @@
         android:text="@string/connect_error_tip_1"
         android:gravity="center"
         android:lineSpacingExtra="8dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginEnd="42dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

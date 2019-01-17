@@ -67,10 +67,13 @@ public interface IChooseDispenerView extends IBaseView {
      * @param residenceId 位置id
      * @param usefor      水温
      * @param location    设备位置
+     * @param preOrderCopy 下单前文案
+     * @param afterOrderCopy 下单后文案
      */
     void gotoDispenser(String macAddress, Long supplierId,
                        boolean favor, Long residenceId,
-                       String usefor, String location);
+                       String usefor, String location ,
+                        List<String> preOrderCopy , List<String> afterOrderCopy);
 
     /**
      * 显示扫描结束

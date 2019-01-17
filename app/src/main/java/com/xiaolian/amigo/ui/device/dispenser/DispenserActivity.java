@@ -11,6 +11,8 @@ import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserView;
 import com.xiaolian.amigo.util.AppUtils;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 /**
@@ -27,6 +29,7 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     private boolean isFavor;
     private Long id;
     private DispenserWater temperature;
+
     @Inject
     IDispenserPresenter<IDispenserView> presenter;
 

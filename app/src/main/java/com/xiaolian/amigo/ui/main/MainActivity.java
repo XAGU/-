@@ -120,6 +120,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static final String INTENT_KEY_SWITCH_TO_HOME = "intent_key_switch_to_home";
     public static final String INTENT_KEY_SERVER_ERROR = "intent_key_server_error";
     public static final String INTENT_KEY_BANNERS = "intent_key_banners";
+    public static final String INTENT_KEY_PRE_ORDER_COPY = "intent_key_pre_order_copy";
+    public static final String INTENT_KEY_AFTER_ORDER_COPY = "intent_key_after_order_copy";
 
     // 保存上一个点击的fragment
     private static final String KEY_LASTFRAGMENT ="KEY_LAST_FRAGMENT" ;

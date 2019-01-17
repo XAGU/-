@@ -42,7 +42,7 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
          * @param location    设备位置
          * @param price       价格
          */
-        void onItemClick(String deviceNo, Long supplierId, Boolean isFavor, Long residenceId, String usefor, String location, Integer price);
+        void onItemClick(String deviceNo, Long supplierId, Boolean isFavor, Long residenceId, String usefor, String location, Integer price , List<String> preOrderCopy , List<String> afterOrderCopy);
     }
 
     private OnItemClickListener itemClickListener;
@@ -101,7 +101,9 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
                         dispenserWrapper.getResidenceId(),
                         DispenserWater.ALL.getType(),
                         dispenserWrapper.getLocation(),
-                        dispenserWrapper.getDeviceGroup().getWater().get(0).getPrice());
+                        dispenserWrapper.getDeviceGroup().getWater().get(0).getPrice(),
+                        dispenserWrapper.getDeviceGroup().getPreOrderCopy() ,
+                        dispenserWrapper.getDeviceGroup().getAfterOrderCopy());
                 return;
             }
             if (lastExpandPosition != -1) {
@@ -163,7 +165,9 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
                             dispenserWrapper.getResidenceId(),
                             dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getUsefor(),
                             dispenserWrapper.getLocation(),
-                            dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getPrice());
+                            dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getPrice(),
+                            dispenserWrapper.getDeviceGroup().getPreOrderCopy() ,
+                            dispenserWrapper.getDeviceGroup().getAfterOrderCopy());
                 }
             });
         }
@@ -213,11 +217,34 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         boolean favor = false;
         Long residenceId;
 
+        private List<String> preOrderCopy ;
+
+        private List<String> afterOrderCopy ;
+
         public DispenserWrapper(ScanDeviceGroup device) {
             this.favor = device.getFavor();
             this.location = device.getLocation();
             this.deviceGroup = device;
             this.residenceId = device.getResidenceId();
+            this.preOrderCopy =  device.getPreOrderCopy();
+            this.afterOrderCopy = device.getPreOrderCopy();
+        }
+
+
+        public List<String> getPreOrderCopy() {
+            return preOrderCopy;
+        }
+
+        public void setPreOrderCopy(List<String> preOrderCopy) {
+            this.preOrderCopy = preOrderCopy;
+        }
+
+        public List<String> getAfterOrderCopy() {
+            return afterOrderCopy;
+        }
+
+        public void setAfterOrderCopy(List<String> afterOrderCopy) {
+            this.afterOrderCopy = afterOrderCopy;
         }
 
         public String getLocation() {

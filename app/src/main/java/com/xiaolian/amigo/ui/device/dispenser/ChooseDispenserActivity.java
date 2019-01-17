@@ -42,6 +42,8 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_AFTER_ORDER_COPY;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_PRE_ORDER_COPY;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_RESIDENCE_ID;
 
 /**
@@ -154,13 +156,13 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     private void initRecyclerView() {
         adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser,
                 items, Device.getDevice(deviceType));
-        adaptor.setOnItemClickListener((deviceNo, supplierId, isFavor, residenceId, usefor, location, price) -> {
+        adaptor.setOnItemClickListener((deviceNo, supplierId, isFavor, residenceId, usefor, location, price ,preOrderCopy , afterOrderCopy) -> {
             if (orderPreInfo != null) {
                 orderPreInfo.setPrice(price);
             }
             if (Device.getDevice(deviceType) == Device.DISPENSER) {
                 presenter.closeBleConnection();
-                presenter.gotoDispenser(deviceNo, supplierId, isFavor, residenceId, usefor, location);
+                presenter.gotoDispenser(deviceNo, supplierId, isFavor, residenceId, usefor, location , preOrderCopy , afterOrderCopy);
             } else if (Device.getDevice(deviceType) == Device.DRYER) {
                 presenter.closeBleConnection();
                 presenter.gotoDryer(deviceNo, supplierId, isFavor, residenceId, location);
@@ -306,7 +308,8 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     }
 
     @Override
-    public void gotoDispenser(String macAddress, Long supplierId, boolean favor, Long residenceId, String usefor, String location) {
+    public void gotoDispenser(String macAddress, Long supplierId, boolean favor, Long residenceId, String usefor, String location
+                    , List<String> preOrderCopy , List<String> afterOrderCopy) {
         startActivity(new Intent(this, DispenserActivity.class)
                 .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS,
                         macAddress)
@@ -320,7 +323,9 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                         usefor)
                 .putExtra(MainActivity.INTENT_KEY_LOCATION, location)
                 .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType())
-                .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo));
+                .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo)
+                .putStringArrayListExtra(INTENT_KEY_PRE_ORDER_COPY , (ArrayList<String>) preOrderCopy)
+                .putStringArrayListExtra(INTENT_KEY_AFTER_ORDER_COPY , (ArrayList<String>) afterOrderCopy));
         finish();
     }
 

@@ -2,6 +2,8 @@ package com.xiaolian.amigo.ui.device.intf.dispenser;
 
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
+import java.util.List;
+
 /**
  * 选择饮水机
  *
@@ -90,8 +92,11 @@ public interface IChooseDispenserPresenter<V extends IChooseDispenerView> extend
      * @param residenceId 位置id
      * @param usefor      水温
      * @param location    设备位置
+     * @param preOrderCopy 下单前文案
+     * @param afterOrderCopy 下单后文案
      */
     void gotoDispenser(String macAddress, Long supplierId, boolean favor,
-                       Long residenceId, String usefor, String location);
+                       Long residenceId, String usefor, String location ,
+                       List<String> preOrderCopy , List<String> afterOrderCopy);
 
 }

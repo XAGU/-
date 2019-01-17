@@ -52,12 +52,15 @@ import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.TimeUtils;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
 
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_AFTER_ORDER_COPY;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_PRE_ORDER_COPY;
 import static com.xiaolian.amigo.util.Constant.FROM_LOCATION;
 
 /**
@@ -293,6 +296,16 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     private  boolean isScan ;
 
+    /**
+     * 下单前文案
+     */
+    private List<String> preOrderCopy ;
+
+    /**
+     * 下单后文案
+     */
+    private List<String> afterOrderCopy ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -345,6 +358,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
             isScan = getIntent().getBooleanExtra(CONN_TYPE , false);
             orderPreInfo = getIntent().getParcelableExtra(INTENT_PREPAY_INFO);
+            preOrderCopy = getIntent().getStringArrayListExtra(INTENT_KEY_PRE_ORDER_COPY);
+            afterOrderCopy = getIntent().getStringArrayListExtra(INTENT_KEY_AFTER_ORDER_COPY);
             if (orderPreInfo != null) {
                 price = orderPreInfo.getPrice();
                 balance = orderPreInfo.getBalance();
@@ -533,7 +548,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             if (balance == 0) {
                 // 代金券金额大于等于最小预付金额
                 if (bonusAmount >= minPrepay) {
-                    tip = getString(R.string.connect_prepay_tip_5, df.format(minPrepay));
+
+                    //  如果后台返回有下单前文案，则使用下单前的文案
+                    tip = orderListTipConvertTip(df.format(minPrepay), R.string.connect_prepay_tip_5 , preOrderCopy);
                     prepayAmount = 0.0;
                     needRecharge = false;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
@@ -561,7 +578,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             else {
                 // 余额加代金券大于等于预付金额
                 if (balance + bonusAmount >= prepay) {
-                    tip = getString(R.string.connect_prepay_tip_4, df.format(prepay));
+
+                    tip = orderListTipConvertTip(df.format(prepay), R.string.connect_prepay_tip_4 , preOrderCopy);
                     prepayAmount = prepay - bonusAmount;
                     if (prepayAmount < 0) {
                         prepayAmount = 0.0;
@@ -581,7 +599,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 // 余额加代金券小于预付金额 大于等于最小预付金额
                 else if (balance + bonusAmount >= minPrepay
                         && balance + bonusAmount < prepay) {
-                    tip = getString(R.string.connect_prepay_tip_6, df.format(prepay));
+                    tip = orderListTipConvertTip(df.format(prepay), R.string.connect_prepay_tip_6 , preOrderCopy);
                     prepayAmount = balance;
                     needRecharge = false;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
@@ -606,16 +624,21 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
         // 无代金券
         else {
-            String title;
-            String tip;
+            String title = "";
+            String tip = "";
             String buttonText;
             // 余额大于等于最小预付金额
             if (balance >= minPrepay) {
                 // 余额大于等于预付金额
                 if (balance >= prepay) {
                     prepayAmount = prepay;
-                    title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
-                    tip = getString(R.string.connect_prepay_tip_1);
+                    String[] tips ;
+                    tips = orderListTipConvertHaveNoBoundsTip(df.format(prepayAmount) ,R.string.connect_prepay_tip_1 ,
+                            R.string.need_prepay_amount ,preOrderCopy);
+                    title = tips[1];
+                    tip = tips[0];
+//                    title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
+//                    tip = getString(R.string.connect_prepay_tip_1);
                     SpannableStringBuilder builder = new SpannableStringBuilder();
                     builder.append(getString(R.string.prepay));
                     buttonText = df.format(prepayAmount) + getString(R.string.yuan);
@@ -629,8 +652,13 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     showNoBonusLayout(title, tip, builder);
                 } else {
                     prepayAmount = balance;
-                    title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
-                    tip = getString(R.string.connect_prepay_tip_2, df.format(prepay));
+//                    title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
+//                    tip = getString(R.string.connect_prepay_tip_2, df.format(prepay));
+                    String[] tips ;
+                    tips = orderListTipConvertHaveNoBoundsTip(df.format(prepayAmount) ,R.string.connect_prepay_tip_2 ,
+                            R.string.need_prepay_amount ,preOrderCopy,df.format(prepay));
+                    title = tips[0];
+                    tip = tips[1];
                     needRecharge = false;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
                     builder.append(getString(R.string.prepay));
@@ -654,6 +682,104 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             }
         }
 
+    }
+
+    /**
+     * 无红包时，从服务器获取的tip数组组装为tip文字
+     * @param format
+     * @param connect_prepay_tip_4
+     * @param orderCopy
+     * @return
+     */
+    @NonNull
+    private String orderListTipConvertTip(String format, int connect_prepay_tip_4 ,List<String> orderCopy) {
+        String tip = "";
+        if (orderCopy != null && orderCopy.size() > 0) {
+            StringBuilder mPreOrderTip = new StringBuilder();
+            for (String preOrdertip : orderCopy) {
+                mPreOrderTip.append(preOrdertip+"\n");
+            }
+            tip = mPreOrderTip.toString() ;
+            if (tip.length() > 1)
+            tip = tip.replace("\\n" ,"\n").substring(0 , tip.length() -1)
+                    .replace("x" , format).replace("X" ,format);
+        } else {
+            tip = getString(connect_prepay_tip_4, format);
+        }
+        return tip;
+    }
+
+
+    /**
+     * 无红包时，从服务器获取的tip数组组装为tip文字
+     * @param format
+     * @param
+     * @param orderCopy
+     * @return
+     */
+    @NonNull
+    private String[] orderListTipConvertHaveNoBoundsTip(String format, int tipString , int titleString ,List<String> orderCopy ,  String formatTip ) {
+        String [] tips = new String[2];
+        String title="" ;
+        String tip = "" ;
+        if (orderCopy != null && orderCopy.size() > 0) {
+            StringBuilder mPreOrderTip = new StringBuilder();
+            for (int i = 0 ; i < orderCopy.size() ; i++){
+                if (i ==0) {
+                    title = orderCopy.get(0);
+                } else{
+                    mPreOrderTip.append(orderCopy.get(i) +"\n");
+                }
+            }
+            tip = mPreOrderTip.toString() ;
+            if (tip.length() > 1)
+                tip = tip.replace("\\n", "\n").substring(0, tip.length() - 1)
+                        .replace("x", format).replace("X", format);
+        } else {
+            title = getString(titleString, format);
+            tip = getString(tipString , formatTip);
+        }
+        tips[0] = title ;
+        tips[1] = tip ;
+        return tips ;
+
+    }
+
+    /**
+     * 无红包时，从服务器获取的tip数组组装为tip文字
+     * @param format
+     * @param
+     * @param orderCopy
+     * @return
+     */
+    @NonNull
+    private String[] orderListTipConvertHaveNoBoundsTip(String format, int tipString , int titleString ,List<String> orderCopy  ) {
+        String[] tips = new String[2];
+        String title = "" ;
+        String tip ="";
+        if (orderCopy != null && orderCopy.size() > 0) {
+            StringBuilder mPreOrderTip = new StringBuilder();
+            for (int i = 0 ; i < orderCopy.size() ; i++){
+                if (i ==0) {
+                    title = orderCopy.get(0);
+                } else{
+                   mPreOrderTip.append(orderCopy.get(i)+"\n");
+                }
+            }
+            tip = mPreOrderTip.toString() ;
+            if (tip.length() > 1)
+                tip = tip.replace("\\n", "\n").substring(0, tip.length() - 1);
+            title = title.replace("x",format);
+            title = title.replace("X" ,format);
+        } else {
+            title = getString(titleString, format);
+            tip = getString(tipString);
+        }
+
+        tips[0] = tip ;
+        tips[1] = title ;
+
+        return tips;
     }
 
     public  void setDvTitleNull(){
@@ -686,7 +812,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         balance = data.getBalance();
         refreshPrepayStatus();
     }
-
+    
     private void showBonusLayout(String tip, SpannableStringBuilder buttonText, String remarks) {
         rlChooseBonus.setVisibility(View.VISIBLE);
         tvConnectTipTitle.setVisibility(View.GONE);
@@ -1071,13 +1197,38 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             slideView.setDisableStr(getString(R.string.slide_to_settlement));
             slideView.setEnableStr(getString(R.string.settlement));
         } else {
-            tvShowerPayed.setText(getString(R.string.prepaid, String.valueOf(prepayAmount)));
-            tradeTip.setText(getBalanceTradeTip());
-            btStopShower.setText(getString(R.string.settlement_and_change));
-            btStopShower.setVisibility(View.GONE);
-            slideView.setVisibility(View.VISIBLE);
-            slideView.setDisableStr(getString(R.string.slide_to_settlement));
-            slideView.setEnableStr(getString(R.string.settlement));
+            if (afterOrderCopy != null && afterOrderCopy.size() > 0){
+                String tvShower = "";
+                StringBuilder mtipBuilder = new StringBuilder();
+                for (int i = 0 ; i < afterOrderCopy.size() ; i ++){
+                    if (i ==0){
+                        tvShower  = afterOrderCopy.get(0);
+                        tvShower = tvShower.replace("x" ,String.valueOf(prepayAmount));
+                        tvShower = tvShower.replace("X" , String.valueOf(prepayAmount));
+
+                    }else{
+                        mtipBuilder.append(afterOrderCopy.get(i) + "\n");
+                    }
+                }
+                tvShowerPayed.setText(tvShower);
+                String tip = mtipBuilder.toString() ;
+                if (tip.length()  > 1)
+                    tip = tip.replace("\\n", "\n").substring(0, tip.length() - 1);
+                tradeTip.setText(tip);
+                btStopShower.setText(getString(R.string.settlement_and_change));
+                btStopShower.setVisibility(View.GONE);
+                slideView.setVisibility(View.VISIBLE);
+                slideView.setDisableStr(getString(R.string.slide_to_settlement));
+                slideView.setEnableStr(getString(R.string.settlement));
+            }else {
+                tvShowerPayed.setText(getString(R.string.prepaid, String.valueOf(prepayAmount)));
+                tradeTip.setText(getBalanceTradeTip());
+                btStopShower.setText(getString(R.string.settlement_and_change));
+                btStopShower.setVisibility(View.GONE);
+                slideView.setVisibility(View.VISIBLE);
+                slideView.setDisableStr(getString(R.string.slide_to_settlement));
+                slideView.setEnableStr(getString(R.string.settlement));
+            }
         }
 
     }

@@ -63,9 +63,24 @@ public class DeviceDTO implements Mapper<ScanDeviceGroup> {
         this.type = type;
     }
 
+    public List<String> getAfterOrderCopy() {
+        return afterOrderCopy;
+    }
+
+    public void setAfterOrderCopy(List<String> afterOrderCopy) {
+        this.afterOrderCopy = afterOrderCopy;
+    }
+
+    public List<String> getPreOrderCopy() {
+        return preOrderCopy;
+    }
+
+    public void setPreOrderCopy(List<String> preOrderCopy) {
+        this.preOrderCopy = preOrderCopy;
+    }
+
     /**
      * 1、普通饮水机 2、三合一饮水机
-
      **/
     private Integer category;
     private List<DeviceInListDTO> devices;
@@ -73,6 +88,18 @@ public class DeviceDTO implements Mapper<ScanDeviceGroup> {
     private String location;
     private Long residenceId;
     private Integer type;
+
+    /**
+     * 下单前文案
+     */
+    private List<String> afterOrderCopy ;
+
+    /**
+     * 下单后文案
+     */
+    private List<String> preOrderCopy ;
+
+
 
     @Override
     public ScanDeviceGroup transform() {
@@ -82,6 +109,8 @@ public class DeviceDTO implements Mapper<ScanDeviceGroup> {
         scanDeviceGroup.setLocation(location);
         scanDeviceGroup.setFavor(favor);
         scanDeviceGroup.setType(type);
+        scanDeviceGroup.setAfterOrderCopy(afterOrderCopy);
+        scanDeviceGroup.setPreOrderCopy(preOrderCopy);
         List<ScanDevice> waters = new ArrayList<>();
         if (!devices.isEmpty()) {
             for (DeviceInListDTO deviceInListDTO : devices) {

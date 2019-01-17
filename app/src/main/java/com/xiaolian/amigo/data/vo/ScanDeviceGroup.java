@@ -26,6 +26,32 @@ public class ScanDeviceGroup {
 
     private List<ScanDevice> water;
 
+    /**
+     * 下单前文案
+     */
+    private List<String> afterOrderCopy ;
+
+    /**
+     * 下单后文案
+     */
+    private List<String> preOrderCopy ;
+
+    public List<String> getAfterOrderCopy() {
+        return afterOrderCopy;
+    }
+
+    public void setAfterOrderCopy(List<String> afterOrderCopy) {
+        this.afterOrderCopy = afterOrderCopy;
+    }
+
+    public List<String> getPreOrderCopy() {
+        return preOrderCopy;
+    }
+
+    public void setPreOrderCopy(List<String> preOrderCopy) {
+        this.preOrderCopy = preOrderCopy;
+    }
+
     public Integer getCategory() {
         return category;
     }

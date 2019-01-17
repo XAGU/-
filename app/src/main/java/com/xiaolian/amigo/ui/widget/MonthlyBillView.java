@@ -282,7 +282,6 @@ public class MonthlyBillView extends View {
         lineStartX   =   barWidth/2   +   (radius- distance)   *  (float) Math.cos(lineAngle *   3.14   /180 );
         lineStartY   =   (barHeight-lengedHeight)/2   +   (radius- distance)  *   (float) Math.sin(lineAngle   *   3.14/180);
         if(Math.abs(sweepAngle) <= 30){
-//            float num = (datas.size() - i)%3;
             float num = 0.6f;
             lineEndX   =   barWidth/2   +   (radius+ distance*num*1f)   *  (float) Math.cos(lineAngle *   3.14   /180 );
             lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f)  *   (float) Math.sin(lineAngle   *   3.14   /180);
@@ -305,14 +304,17 @@ public class MonthlyBillView extends View {
         }
         for (RectF rectF : descRectes) {
             if (rectF.intersect(descRectF)) {
+                float diffY = ScreenUtils.dpToPx(getContext() , 5) ;
                 if (descRectF.top > rect.top) {
                     float num = 2;
                     lineEndX   =   barWidth/2   +   (radius+ distance*num*1f+descRectF.height())   *  (float) Math.cos(lineAngle *   3.14   /180 );
-                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f+descRectF.height())  *   (float) Math.sin(lineAngle   *   3.14   /180);
+                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ diffY)  *   (float) Math.sin(lineAngle   *   3.14   /180);
+//                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f+descRectF.height())  *   (float) Math.sin(lineAngle   *   3.14   /180);
                 } else {
                     float num = 0.5f;
                     lineEndX   =   barWidth/2   +   (radius+ distance*num*1f)   *  (float) Math.cos(lineAngle *   3.14   /180 );
-                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f)  *   (float) Math.sin(lineAngle   *   3.14   /180);
+//                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f)  *   (float) Math.sin(lineAngle   *   3.14   /180);
+                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ diffY)  *   (float) Math.sin(lineAngle   *   3.14   /180);
                 }
                 break;
             }
