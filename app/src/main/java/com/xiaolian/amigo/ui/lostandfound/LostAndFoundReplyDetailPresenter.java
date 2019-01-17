@@ -118,13 +118,14 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
     }
 
     @Override
-    public void publishReply(Long replyToId, Long replyToUserId, String reply) {
+    public void publishReply(Long replyToId, Long replyToUserId, String reply , Long repliesId) {
         SaveLostFoundCommentsRepliesDTO reqDTO = new SaveLostFoundCommentsRepliesDTO();
         reqDTO.setContent(reply);
 
         reqDTO.setReplyToId(replyToId);
         reqDTO.setReplyToUserId(replyToUserId);
         reqDTO.setLostFoundId(lostFoundId);
+        reqDTO.setRepliesId(repliesId);
         /**
          * 评论1 回复2
          */

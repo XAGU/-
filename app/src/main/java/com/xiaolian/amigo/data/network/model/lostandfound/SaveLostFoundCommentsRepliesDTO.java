@@ -13,4 +13,5 @@ public class SaveLostFoundCommentsRepliesDTO {
     private Long replyToId;
     private Long replyToUserId;
     private Integer type;
+    private Long repliesId ;
 }

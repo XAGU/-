@@ -812,7 +812,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         balance = data.getBalance();
         refreshPrepayStatus();
     }
-    
+
     private void showBonusLayout(String tip, SpannableStringBuilder buttonText, String remarks) {
         rlChooseBonus.setVisibility(View.VISIBLE);
         tvConnectTipTitle.setVisibility(View.GONE);

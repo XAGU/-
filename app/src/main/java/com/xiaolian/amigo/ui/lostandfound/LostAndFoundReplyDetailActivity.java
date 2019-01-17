@@ -136,6 +136,8 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
 
     private int lastVertivaloffSet = - 1 ;
 
+    private Long repliesId ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -234,7 +236,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
                             }
                             bottomDialog.setOnOtherClickListener(dialog ->
                                     publishReply(commentId, followRelays.get(position).getAuthorId(),
-                                            followRelays.get(position).getAuthor()));
+                                            followRelays.get(position).getAuthor() ,followRelays.get(position).getId()));
                             bottomDialog.setOnOkClickListener(dialog ->
                                     showDeleteReplyDialog(followRelays.get(position).getId()));
                             bottomDialog.show();
@@ -248,7 +250,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
                             }
                             bottomDialog.setOnOtherClickListener(dialog ->
                                     publishReply(commentId, followRelays.get(position).getAuthorId(),
-                                            followRelays.get(position).getAuthor()));
+                                            followRelays.get(position).getAuthor() , followRelays.get(position).getId()));
                             bottomDialog.setOnOkClickListener(dialog ->
                                     presenter.reportReply(followRelays.get(position).getId()));
                             bottomDialog.show();
@@ -393,9 +395,9 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     public void reply(){
         String commentContent = etReply.getText().toString().trim();
         if (isReplyName){
-            presenter.publishReply(replyToId ,replyToUserId ,commentContent);
+            presenter.publishReply(replyToId ,replyToUserId ,commentContent , repliesId  );
         }else{
-            presenter.publishReply(commentId, null, commentContent);
+            presenter.publishReply(commentId, null, commentContent , repliesId);
         }
 
         etReply.setText("");
@@ -408,7 +410,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
 //        publishReply(commentId, null, commentAuthor);
 //    }
 
-    private void publishReply(Long replyToId, Long replyToUserId, String replyToUserName) {
+    private void publishReply(Long replyToId, Long replyToUserId, String replyToUserName , Long repliesId) {
 //        if (replyDialog == null) {
 //            replyDialog = new LostAndFoundReplyDialog(this);
 //        }
@@ -424,6 +426,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
 
         isReplyName = true ;
         this.replyToId = replyToId ;
+        this.repliesId = repliesId ;
         if (replyToUserId != null)  this.replyToUserId = replyToUserId ;
         etReply.setText("");
         etReply.setHint("回复：" + replyToUserName);

@@ -22,6 +22,7 @@ public class LostFoundReplyDTO {
      */
     private Integer vest ;
 
+
     public String getContent() {
         if (content == null) {
             content = "";

@@ -46,6 +46,11 @@ public class LostAndFoundReplyDetailAdapter extends MultiItemTypeAdapter<LostAnd
         private Long replyToUserId;
         private String replyToUserNickName;
 
+        /**
+         * 马甲 1 普通学生 2 管理员已学生身份回复 3 管理员
+         */
+        private Integer vest ;
+
         public LostAndFoundReplyDetailWrapper(@LostAndFoundReplyDetailItemType int type,
                                               boolean owner, String commentContent,
                                               String commentAuthor, Long time, String image) {
@@ -68,6 +73,7 @@ public class LostAndFoundReplyDetailAdapter extends MultiItemTypeAdapter<LostAnd
             this.replyToUserNickName = replyDTO.getReplyToUserNickname();
             this.authorId = replyDTO.getUserId();
             this.id = replyDTO.getId();
+            this.vest = replyDTO.getVest() ;
         }
     }
 }

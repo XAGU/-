@@ -35,6 +35,8 @@ public class LostFoundCommentDTO {
      */
     private Integer vest ;
 
+
+
     public String getContent() {
         if (content == null) {
             content = "";

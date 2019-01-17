@@ -86,30 +86,11 @@ public class LostAndFoundReplyDetailFollowDelegate
         spanLength += spanPaint.measureText(authorSpan.toString());
 
         if (ObjectsCompat.equals(ownerId, replyWrapper.getAuthorId())) {
-            builder.append(" ");
-            SpannableString ownerSpan = new SpannableString("联主");
-            ImageSpan imageSpan = new ImageSpan(context,R.drawable.blog){
-                @Override
-                public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
-                    Drawable b = getDrawable();
-                    canvas.save();
-                    int extra;
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
-                        extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
-                    } else {
-                        extra = (int) textView.getLineSpacingExtra();
-                    }
-                    int transY = bottom - b.getBounds().bottom - extra;
-                    transY -= paint.getFontMetricsInt().descent / 2;
-                    canvas.translate(x, transY);
-                    b.draw(canvas);
-                    canvas.restore();
-                }
-            };
-            ownerSpan.setSpan(imageSpan, 0, ownerSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            builder.append(ownerSpan);
-            builder.append(" ");
-            spanLength += spanPaint.measureText(" " + ownerSpan.toString() + " ");
+            spanLength = setImageTextView(textView, spanLength, builder , "联主" ,R.drawable.blog);
+        }else{
+            if (replyWrapper.getVest() != null && replyWrapper.getVest() == Constant.VEST_ADMIN){
+              spanLength =   setImageTextView(textView ,spanLength ,builder ,"管理员" , R.drawable.blog_admin);
+            }
         }
         if (replyWrapper.getReplyToUserId() != null && !TextUtils.isEmpty(replyWrapper.getReplyToUserNickName())) {
             SpannableString replyConstantSpan = new SpannableString("回复");
@@ -134,32 +115,12 @@ public class LostAndFoundReplyDetailFollowDelegate
 
             spanLength += spanPaint.measureText(commentUserSpan.toString());
 
-            if (ObjectsCompat.equals(ownerId, replyWrapper.getReplyToUserId())) {
-                builder.append(" ");
-                SpannableString ownerSpan = new SpannableString("联主");
-                ImageSpan imageSpan = new ImageSpan(context, R.drawable.blog) {
-                    @Override
-                    public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
-                        Drawable b = getDrawable();
-                        canvas.save();
-                        int extra = 0;
-                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
-                            extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
-                        } else {
-                            extra = (int) textView.getLineSpacingExtra();
-                        }
-                        int transY = bottom - b.getBounds().bottom - extra;
-                        transY -= paint.getFontMetricsInt().descent / 2;
-                        canvas.translate(x, transY);
-                        b.draw(canvas);
-                        canvas.restore();
-                    }
-                };
-                ownerSpan.setSpan(imageSpan, 0, ownerSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                builder.append(ownerSpan);
-                builder.append(" ");
-
-                spanLength += spanPaint.measureText(" " + ownerSpan.toString() + " ");
+            if (ObjectsCompat.equals(ownerId, replyWrapper.getAuthorId())) {
+                spanLength = setImageTextView(textView, spanLength, builder , "联主" ,R.drawable.blog);
+            }else{
+                if (replyWrapper.getVest() != null && replyWrapper.getVest() == Constant.VEST_ADMIN){
+                    spanLength =   setImageTextView(textView ,spanLength ,builder ,"管理员" , R.drawable.blog_admin);
+                }
             }
         }
 
@@ -212,5 +173,33 @@ public class LostAndFoundReplyDetailFollowDelegate
             builder.append(timeSpan);
         }
         textView.setText(builder);
+    }
+
+    private float setImageTextView(TextView textView, float spanLength, SpannableStringBuilder builder , String text , int resource) {
+        builder.append(" ");
+        SpannableString ownerSpan = new SpannableString(text);
+        ImageSpan imageSpan = new ImageSpan(context, resource){
+            @Override
+            public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
+                Drawable b = getDrawable();
+                canvas.save();
+                int extra;
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
+                } else {
+                    extra = (int) textView.getLineSpacingExtra();
+                }
+                int transY = bottom - b.getBounds().bottom - extra;
+                transY -= paint.getFontMetricsInt().descent / 2;
+                canvas.translate(x, transY);
+                b.draw(canvas);
+                canvas.restore();
+            }
+        };
+        ownerSpan.setSpan(imageSpan, 0, ownerSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(ownerSpan);
+        builder.append(" ");
+        spanLength += spanPaint.measureText(" " + ownerSpan.toString() + " ");
+        return spanLength;
     }
 }
