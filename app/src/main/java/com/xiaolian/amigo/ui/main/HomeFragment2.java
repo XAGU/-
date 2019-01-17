@@ -176,7 +176,8 @@ public class HomeFragment2 extends BaseFragment {
         String url = BuildConfig.H5_SERVER + "/serviceCenter"
                     + "?accessToken=" + presenter.getAccessToken()
                 +"&refreshToken=" + presenter.getRefreshToken()
-                +"&unreadCount=" + unReadWorkOrderRemarkMessageCount;
+                +"&unreadCount=" + unReadWorkOrderRemarkMessageCount
+                +"&schoolId=" + presenter.getUserInfo().getSchoolId();
         Intent intent = new Intent(getContext(), WebActivity.class);
         android.util.Log.e(TAG, "startServiceH5: " + url );
         intent.putExtra(WebActivity.INTENT_KEY_URL, url);

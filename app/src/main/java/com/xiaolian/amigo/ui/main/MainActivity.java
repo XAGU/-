@@ -1385,7 +1385,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         String url = BuildConfig.H5_SERVER + "/serviceCenter"
                 + "?accessToken=" + presenter.getAccessToken()
                 +"&refreshToken=" + presenter.getRefreshToken()
-                +"&unreadCount=" + unReadCount;
+                +"&unreadCount=" + unReadCount
+                +"&schoolId=" + presenter.getUserInfo().getSchoolId();
         Intent intent = new Intent(getContext(), WebActivity.class);
         android.util.Log.e(TAG, "startServiceH5: " + url );
         intent.putExtra(WebActivity.INTENT_KEY_URL, url);
