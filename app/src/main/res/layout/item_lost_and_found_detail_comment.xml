@@ -43,17 +43,26 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    tools:visibility="visible"
                     android:id="@+id/iv_owner"
+                    android:visibility="gone"
                     android:background="@drawable/tag_radius_2_stroke"
                     tools:text="联主"
                     android:paddingStart="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingEnd="2dp"
                     android:textSize="10sp"
                     android:textColor="@color/colorDark9"
                     android:layout_marginStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/blog_admin"
+                    android:id="@+id/iv_admin"
+                    android:visibility="gone"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/tv_time"

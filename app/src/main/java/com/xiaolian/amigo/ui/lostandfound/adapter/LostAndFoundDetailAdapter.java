@@ -34,6 +34,8 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
         int TITLE = 3;
     }
 
+
+
     @Data
     public static final class LostAndFoundDetailWrapper {
         /**
@@ -89,6 +91,11 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
 
         private String topicName ;
 
+        /**
+         * 用户马甲 1 普通学生  2  管理员以学生身份回复  3 管理员
+         */
+        private Integer vest ;
+
         private LostAndFoundDetailWrapper() {
         }
 
@@ -134,6 +141,7 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
             this.likeCount = comment.getLikeCount();
             this.liked = ObjectsCompat.equals(comment.getLiked(), 1);
             this.topicName = comment.getTopicName() ;
+            this.vest = comment.getVest();
         }
     }
 }

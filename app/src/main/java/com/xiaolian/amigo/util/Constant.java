@@ -9,6 +9,8 @@ import com.xiaolian.amigo.BuildConfig;
  * @date 17/9/15
  */
 public final class Constant {
+
+
     private Constant() {
     }
 
@@ -410,4 +412,23 @@ public final class Constant {
      * 关闭论坛
      */
     public static final String SCHOOL_FORUM_CLOSE = "CLOSE" ;
+
+
+    //  ================ 评论 用户马甲===========
+
+    /**
+     * 普通学生
+     */
+    public static final Integer VEST_STUDENT = 1;
+
+    /**
+     * 管理员以用户信息回复
+     */
+    public static final Integer VEST_ADMIN_STUDENT = 2;
+
+    /**
+     * 管理员
+     */
+    public static final Integer VEST_ADMIN = 3;
+
 }

@@ -89,7 +89,8 @@ public class LostAndFoundDetailCommentDelegate
                         int position) {
 //        holder.setText(R.id.tv_comment_author, lostAndFoundDetailWrapper.getCommentAuthor());  lostAndFoundDetailWrapper.getType(),
         setCommentAuthor(holder.getView(R.id.tv_comment_author), lostAndFoundDetailWrapper.isOwner(),
-                lostAndFoundDetailWrapper.getCommentAuthor() ,holder.getView(R.id.iv_owner));
+                lostAndFoundDetailWrapper.getCommentAuthor() ,holder.getView(R.id.iv_owner) ,lostAndFoundDetailWrapper.getVest()
+                ,holder.getView(R.id.iv_admin));
         holder.setText(R.id.tv_comment_content, lostAndFoundDetailWrapper.getCommentContent());
         holder.setText(R.id.tv_time,
                 TimeUtils.lostAndFoundTimestampFormat(lostAndFoundDetailWrapper.getTime()));
@@ -247,7 +248,17 @@ public class LostAndFoundDetailCommentDelegate
         }
     }
 
-    private void setCommentAuthor(TextView textView, boolean isOwner, String author , TextView ower) {
+    /**
+     * 评论用户的标签图片
+     * @param textView
+     * @param isOwner
+     * @param author
+     * @param ower
+     * @param vest
+     * @param ivVest
+     */
+    private void setCommentAuthor(TextView textView, boolean isOwner, String author , TextView ower , Integer vest
+                        ,ImageView ivVest) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         SpannableString authorSpan = new SpannableString(author);
         authorSpan.setSpan(new AbsoluteSizeSpan(
@@ -262,6 +273,9 @@ public class LostAndFoundDetailCommentDelegate
             ower.setText("联主");
         }else{
             ower.setVisibility(View.GONE);
+            if (vest != null && vest == Constant.VEST_ADMIN){
+                ivVest.setVisibility(View.VISIBLE);
+            }
         }
 
     }

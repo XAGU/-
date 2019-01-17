@@ -17,6 +17,11 @@ public class LostFoundReplyDTO {
     private Long userId;
     private String userNickname;
 
+    /**
+     * 马甲 1 普通学生 2 管理员已学生身份回复 3 管理员
+     */
+    private Integer vest ;
+
     public String getContent() {
         if (content == null) {
             content = "";

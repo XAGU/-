@@ -30,6 +30,10 @@ public class LostFoundCommentDTO {
      * 本人是否点赞 1 本人已点赞 2 本人未点赞
      */
     private Integer liked;
+    /**
+     * 用户马甲 1 普通学生  2  管理员以学生身份回复  3 管理员
+     */
+    private Integer vest ;
 
     public String getContent() {
         if (content == null) {

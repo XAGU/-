@@ -20,6 +20,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundReplyDTO;
 import com.xiaolian.amigo.ui.widget.BorderedSpan;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -30,8 +31,10 @@ import java.util.Locale;
 import lombok.Data;
 
 /**
+ * 评论回复adapter
  * @author zcd
  * @date 18/5/15
+ *
  */
 public class LostAndFoundDetailCommentReplyAdapter
         extends CommonAdapter<LostAndFoundDetailCommentReplyAdapter.ReplyWrapper> {
@@ -76,29 +79,11 @@ public class LostAndFoundDetailCommentReplyAdapter
         builder.append(authorSpan);
 
         if (ObjectsCompat.equals(ownerId, replyWrapper.getUserId())) {
-            builder.append(" ");
-            SpannableString ownerSpan = new SpannableString("联主");
-            ImageSpan imageSpan = new ImageSpan(context, R.drawable.blog) {
-                @Override
-                public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
-                    Drawable b = getDrawable();
-                    canvas.save();
-                    int extra;
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
-                        extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
-                    } else {
-                        extra = (int) textView.getLineSpacingExtra();
-                    }
-                    int transY = bottom - b.getBounds().bottom - extra;
-                    transY -= paint.getFontMetricsInt().descent / 2;
-                    canvas.translate(x, transY);
-                    b.draw(canvas);
-                    canvas.restore();
-                }
-            };
-            ownerSpan.setSpan(imageSpan, 0, ownerSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            builder.append(ownerSpan);
-            builder.append(" ");
+            setImageText(textView, builder, "联主", R.drawable.blog );
+        }else{
+            if (replyWrapper.getVest() != null && replyWrapper.getVest() == Constant.VEST_ADMIN){
+                setImageText(textView, builder, "管理员", R.drawable.blog_admin);
+            }
         }
         if (replyWrapper.getReplyToUserId() != null &&
                 !TextUtils.isEmpty(replyWrapper.getReplyToUserNickName())) {
@@ -121,29 +106,12 @@ public class LostAndFoundDetailCommentReplyAdapter
             builder.append(commentUserSpan);
 
             if (ObjectsCompat.equals(ownerId, replyWrapper.getReplyToUserId())) {
-                builder.append(" ");
-                SpannableString ownerSpan = new SpannableString("联主");
-                ImageSpan imageSpan = new ImageSpan(context,R.drawable.blog) {
-                    @Override
-                    public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
-                        Drawable b = getDrawable();
-                        canvas.save();
-                        int extra = 0 ;
-                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
-                            extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
-                        } else {
-                            extra = (int) textView.getLineSpacingExtra();
-                        }
-                        int transY = bottom - b.getBounds().bottom - extra;
-                        transY -= paint.getFontMetricsInt().descent / 2;
-                        canvas.translate(x, transY);
-                        b.draw(canvas);
-                        canvas.restore();
-                    }
-                };
-                ownerSpan.setSpan(imageSpan, 0, ownerSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                builder.append(ownerSpan);
-                builder.append(" ");
+
+                setImageText(textView ,builder ,"联主",R.drawable.blog);
+            }else{
+                if (replyWrapper.getVest() != null && replyWrapper.getVest() == Constant.VEST_ADMIN){
+                    setImageText(textView, builder, "管理员", R.drawable.blog_admin);
+                }
             }
         }
 
@@ -166,6 +134,39 @@ public class LostAndFoundDetailCommentReplyAdapter
         textView.setText(builder);
     }
 
+    /**
+     * 绘制有图片的文字
+     * @param textView
+     * @param builder
+     * @param vestName
+     * @param blog
+     */
+    private void setImageText(TextView textView, SpannableStringBuilder builder, String vestName, int blog) {
+        builder.append(" ");
+        SpannableString ownerSpan = new SpannableString(vestName);
+        ImageSpan imageSpan = new ImageSpan(context, blog) {
+            @Override
+            public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
+                Drawable b = getDrawable();
+                canvas.save();
+                int extra;
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
+                } else {
+                    extra = (int) textView.getLineSpacingExtra();
+                }
+                int transY = bottom - b.getBounds().bottom - extra;
+                transY -= paint.getFontMetricsInt().descent / 2;
+                canvas.translate(x, transY);
+                b.draw(canvas);
+                canvas.restore();
+            }
+        };
+        ownerSpan.setSpan(imageSpan, 0, ownerSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(ownerSpan);
+        builder.append(" ");
+    }
+
     @Data
     public static final class ReplyWrapper {
         private String content;
@@ -175,6 +176,11 @@ public class LostAndFoundDetailCommentReplyAdapter
         private String userNickName;
         private boolean footer;
 
+        /**
+         * 马甲 1 普通学生 2 管理员已学生身份回复 3 管理员
+         */
+        private Integer vest ;
+
         public ReplyWrapper(LostFoundReplyDTO lostFoundReplyDTO) {
             this.content = lostFoundReplyDTO.getContent();
             this.replyToUserId = lostFoundReplyDTO.getReplyToUserId();
@@ -182,6 +188,7 @@ public class LostAndFoundDetailCommentReplyAdapter
             this.userId = lostFoundReplyDTO.getUserId();
             this.userNickName = lostFoundReplyDTO.getUserNickname();
             this.footer = false;
+            this.vest = lostFoundReplyDTO.getVest();
         }
 
         public ReplyWrapper(String content, boolean footer) {
