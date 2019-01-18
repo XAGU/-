@@ -431,4 +431,11 @@ public final class Constant {
      */
     public static final Integer VEST_ADMIN = 3;
 
+    //==================================================
+
+    /**
+     *  更新时间间隔
+     */
+    public static final int UPDATE_REMIND_INTERVAL = 6 * 1000 * 60 * 60;
+
 }

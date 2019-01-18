@@ -16,6 +16,7 @@
 package com.xiaolian.amigo.ui.login.intf;
 
 
+import com.xiaolian.amigo.data.network.model.version.VersionDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -59,4 +60,5 @@ public interface ILoginView extends IBaseView {
      */
     void showAnotherDeviceLogin();
 
+    void showUpdateDialog(VersionDTO version);
 }

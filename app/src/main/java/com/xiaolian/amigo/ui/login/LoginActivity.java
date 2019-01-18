@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.login;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
@@ -20,9 +21,12 @@ import android.widget.Toast;
 import com.tencent.android.tpush.XGPushManager;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.version.VersionDTO;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
 import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.main.update.IntentKey;
+import com.xiaolian.amigo.ui.main.update.UpdateActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AnotherDeviceLoginDialog;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -134,6 +138,8 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         getActivityComponent().inject(this);
 
         presenter.onAttach(LoginActivity.this);
+        presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+                AppUtils.getVersionName(this) ,presenter.getRemindMobile());
 
         Long schoolId = presenter.getSchoolId();
         if (!ObjectsCompat.equals(schoolId, -1)) {
@@ -446,6 +452,22 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
             anotherDeviceLoginDialog = new AnotherDeviceLoginDialog(this);
         }
         anotherDeviceLoginDialog.show();
+    }
+
+    @Override
+    public void showUpdateDialog(VersionDTO version) {
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(granted -> {
+                    if (granted) {
+                        Intent intent = new Intent(this, UpdateActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra(IntentKey.MODEL, version);
+                        intent.putExtra(IntentKey.NOTIFICATION_ICON, R.mipmap.ic_launcher);
+                        startActivity(intent);
+                    } else {
+                        showMessage("没有SD卡权限");
+                    }
+                });
     }
 
     //重写返回键逻辑

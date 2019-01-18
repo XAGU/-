@@ -13,6 +13,8 @@ import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WeChatBindPhoneReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WeChatResiterReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.data.vo.User;
 
 import retrofit2.http.Body;
@@ -111,4 +113,18 @@ public interface ILoginDataManager {
 
     void setRefreshToken(String refreshToken);
 
+    /**
+     * 检查是否需要版本更新
+     * @param reqDTO
+     * @return
+     */
+    Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(CheckVersionUpdateReqDTO reqDTO);
+
+    /**
+     * 上一次更新时间
+     * @return
+     */
+    Long getLastUpdateRemindTime();
+
+    void setLastUpdateRemindTime();
 }

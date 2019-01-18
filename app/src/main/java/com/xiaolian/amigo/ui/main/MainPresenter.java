@@ -48,6 +48,8 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static com.xiaolian.amigo.util.Constant.UPDATE_REMIND_INTERVAL;
+
 /**
  * 主页
  *
@@ -59,7 +61,6 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         implements IMainPresenter<V> {
 
     private static final String DeviceLogFileName ="DeviceLog.txt" ;
-    private static final int UPDATE_REMIND_INTERVAL = 6 * 1000 * 60 * 60;
     private static final int GUIDE_REMIND_MAX_TIME = 3;
     private static final String TAG = MainPresenter.class.getSimpleName();
     private IMainDataManager mainDataManager;

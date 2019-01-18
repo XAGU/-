@@ -40,6 +40,8 @@ import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WeChatBindPhoneReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WeChatResiterReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
@@ -54,6 +56,8 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static com.xiaolian.amigo.util.Constant.UPDATE_REMIND_INTERVAL;
 
 /**
  * 登录页presenter
@@ -603,5 +607,43 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                 button.setEnabled(true);
             }
         });
+    }
+
+    @Override
+    public String getRemindMobile() {
+        return loginDataManager.getRememberMobile();
+    }
+
+    @Override
+    public void checkUpdate(int code, String versionNo, String remindMobile) {
+        CheckVersionUpdateReqDTO reqDTO = new CheckVersionUpdateReqDTO();
+        reqDTO.setCode(code);
+        reqDTO.setVersionNo(versionNo);
+        addObserver(loginDataManager.checkUpdate(reqDTO),
+                new NetworkObserver<ApiResult<CheckVersionUpdateRespDTO>>(false) {
+
+
+                    @Override
+                    public void onStart() {
+
+                    }
+
+                    @Override
+                    public void onReady(ApiResult<CheckVersionUpdateRespDTO> result) {
+                        if (null == result.getError()) {
+                            if (result.getData().getResult()) {
+                                if (result.getData().getVersion().isMustUpdate()) {
+                                    getMvpView().showUpdateDialog(result.getData().getVersion());
+                                } else {
+                                    // 小于6小时不再提醒
+                                    if (System.currentTimeMillis() - loginDataManager.getLastUpdateRemindTime() >= UPDATE_REMIND_INTERVAL) {
+                                        getMvpView().showUpdateDialog(result.getData().getVersion());
+                                    }
+                                }
+                                loginDataManager.setLastUpdateRemindTime();
+                            }
+                        }
+                    }
+                });
     }
 }

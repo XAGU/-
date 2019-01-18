@@ -126,5 +126,20 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
     void checkWechatPhoneBind(String moblie,String code);
 
     void registerWeChat(String password, Long schoolId , Button button);
+
     //微信登录 end
+
+    /**
+     * 获取存上的手机号
+     * @return
+     */
+    String getRemindMobile();
+
+    /**
+     * 未登录检查更新
+     * @param appVersionCode
+     * @param versionName
+     * @param remindMobile
+     */
+    void checkUpdate(int appVersionCode, String versionName, String remindMobile);
 }

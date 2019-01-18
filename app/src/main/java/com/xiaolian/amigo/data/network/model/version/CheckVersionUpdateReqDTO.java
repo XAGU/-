@@ -13,4 +13,9 @@ public class CheckVersionUpdateReqDTO {
     private Integer code;
     private String versionNo;
     private Integer systemType = 2;
+
+    /**
+     * 手机号
+     */
+    private String mobile ;
 }

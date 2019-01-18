@@ -2,6 +2,7 @@ package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.ILoginApi;
+import com.xiaolian.amigo.data.network.ISystemApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayAuthInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayBindReq;
@@ -15,6 +16,8 @@ import com.xiaolian.amigo.data.network.model.login.LoginRespDTO;
 import com.xiaolian.amigo.data.network.model.login.WeChatBindPhoneReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WeChatResiterReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.di.UserServer;
@@ -38,11 +41,14 @@ public class LoginDataManager implements ILoginDataManager {
 
     private ILoginApi loginApi;
 
+    private ISystemApi systemApi ;
+
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
     public LoginDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         loginApi = retrofit.create(ILoginApi.class);
+        systemApi = retrofit.create(ISystemApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
@@ -69,6 +75,17 @@ public class LoginDataManager implements ILoginDataManager {
     @Override
     public Observable<ApiResult<LoginRespDTO>> alipayCheckPhoneBind(@Body AlipayBindReq body) {
         return loginApi.alipayCheckPhoneBind(body);
+    }
+
+
+    @Override
+    public Long getLastUpdateRemindTime() {
+        return sharedPreferencesHelp.getLastUpdateRemindTime();
+    }
+
+    @Override
+    public void setLastUpdateRemindTime() {
+        sharedPreferencesHelp.setLastUpdateRemindTime();
     }
 
     @Override
@@ -150,6 +167,11 @@ public class LoginDataManager implements ILoginDataManager {
     @Override
     public void setRefreshToken(String refreshToken) {
         sharedPreferencesHelp.setReferToken(refreshToken);
+    }
+
+    @Override
+    public Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(CheckVersionUpdateReqDTO reqDTO) {
+        return systemApi.checkUpdate(reqDTO);
     }
 
 
