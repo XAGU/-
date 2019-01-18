@@ -217,6 +217,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         showMessage("没有SD卡权限");
                     }
                 });
+            showOrHideBlogFragment(true);
     }
 
 

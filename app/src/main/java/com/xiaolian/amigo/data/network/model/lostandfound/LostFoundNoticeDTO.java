@@ -47,4 +47,10 @@ public class LostFoundNoticeDTO {
      * 失物招领类型（1-失主 2-拾主）
      */
     private Integer lostFoundType;
+
+
+    /**
+     * 马甲 1 普通学生 2 管理员已学生身份回复 3 管理员
+     */
+    private Integer vest ;
 }

@@ -53,13 +53,14 @@ public class LostAndFoundReplyDetailAdapter extends MultiItemTypeAdapter<LostAnd
 
         public LostAndFoundReplyDetailWrapper(@LostAndFoundReplyDetailItemType int type,
                                               boolean owner, String commentContent,
-                                              String commentAuthor, Long time, String image) {
+                                              String commentAuthor, Long time, String image , Integer vest) {
             this.type = type;
             this.owner = owner;
             this.content = commentContent;
             this.author = commentAuthor;
             this.time = time;
             this.image = image;
+            this.vest = vest ;
         }
 
         public LostAndFoundReplyDetailWrapper(LostFoundReplyDTO replyDTO, boolean owner) {

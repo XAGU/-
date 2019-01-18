@@ -65,6 +65,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     public static final String KEY_LOST_FOUND_ID = "LostAndFoundReplyDetailActivityLostFoundId";
     public static final String KEY_LOST_FOUND_TYPE = "LostAndFoundReplyDetailActivityType";
     public static final String KEY_COMMENT_ENABLE = "KeyCommentEnable";
+    public static final String KEY_VEST = "LostAndFoundReplyDetailActivityLostFoundVest";
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -165,7 +166,8 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
                     getIntent().getStringExtra(KEY_COMMENT_CONTENT),
                     commentAuthor,
                     getIntent().getLongExtra(KEY_TIME, 0),
-                    getIntent().getStringExtra(KEY_AVATAR));
+                    getIntent().getStringExtra(KEY_AVATAR)
+                    ,getIntent().getIntExtra(KEY_VEST , 1));
         }
 
         llFooter.setVisibility(presenter.isCommentEnable() ? View.VISIBLE : View.GONE);

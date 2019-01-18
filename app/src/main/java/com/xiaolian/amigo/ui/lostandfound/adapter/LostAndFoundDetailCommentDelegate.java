@@ -244,7 +244,8 @@ public class LostAndFoundDetailCommentDelegate
                     lostAndFoundDetailWrapper.isOwner(),
                     lostAndFoundDetailWrapper.getOwnerId(),
                     lostAndFoundDetailWrapper.getTime(),
-                    lostAndFoundDetailWrapper.getAvatar());
+                    lostAndFoundDetailWrapper.getAvatar()
+                    ,lostAndFoundDetailWrapper.getVest());
         }
     }
 
@@ -288,7 +289,7 @@ public class LostAndFoundDetailCommentDelegate
         void onMoreReplyClick(Long commentId, String commentContent,
                               Long commentAuthorId, String commentAuthor,
                               boolean owner, Long ownerId, Long time,
-                              String avatar);
+                              String avatar , Integer vest);
     }
 
     public class GlideImageLoader extends ImageLoader {

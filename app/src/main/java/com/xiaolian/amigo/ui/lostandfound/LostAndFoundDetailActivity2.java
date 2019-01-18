@@ -53,6 +53,7 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_LIKE;
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundReplyDetailActivity.KEY_VEST;
 
 /**
  * 联子详情
@@ -278,26 +279,20 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     private void initRecyclerView() {
         adapter = new LostAndFoundDetailAdapter(this, items);
         adapter.addItemViewDelegate(new LostAndFoundDetailCommentDelegate(this,
-                this::publishReply, this::moreReply, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
-            @Override
-            public void onLikeClick(int position, long id, boolean like) {
-                if (like) {
-                    presenter.unLikeComment(position, id);
-                } else {
-                    presenter.likeComment(position, id);
-                }
-            }
-        }));
-        adapter.addItemViewDelegate(new LostAndFoundDetailContentDelegate(this, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
-            @Override
-            public void onLikeClick(int position, long id, boolean like) {
-                if (like) {
-                    likeed = 2;
-                    presenter.unLikeContent(position, id);
-                } else {
-                    likeed = 1;
-                    presenter.likeContent(position, id);
-                }
+                this::publishReply, this::moreReply, (position, id, like) -> {
+                    if (like) {
+                        presenter.unLikeComment(position, id);
+                    } else {
+                        presenter.likeComment(position, id);
+                    }
+                }));
+        adapter.addItemViewDelegate(new LostAndFoundDetailContentDelegate(this, (position, id, like) -> {
+            if (like) {
+                likeed = 2;
+                presenter.unLikeContent(position, id);
+            } else {
+                likeed = 1;
+                presenter.likeContent(position, id);
             }
         }));
         adapter.addItemViewDelegate(new LostAndFoundDetailTitleDelegate());
@@ -337,7 +332,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     private void moreReply(Long commentId, String commentContent,
                            Long commentAuthorId, String commentAuthor,
                            boolean owner, Long ownerId, Long time,
-                           String avatar) {
+                           String avatar , Integer vest) {
         startActivityForResult(new Intent(this, LostAndFoundReplyDetailActivity.class)
                         .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ID, commentId)
                         .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_CONTENT, commentContent)
@@ -350,7 +345,8 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                         .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_ID, presenter.getLostAndFound().getId())
                         .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_TYPE,
                                 presenter.getLostAndFound().getType())
-                        .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ENABLE, presenter.isCommentEnable()),
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ENABLE, presenter.isCommentEnable())
+                        .putExtra(KEY_VEST ,vest),
                 REQUEST_CODE_REPLY_DETAIL);
     }
 

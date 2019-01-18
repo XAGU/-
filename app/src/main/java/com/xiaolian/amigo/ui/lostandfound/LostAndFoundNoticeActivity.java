@@ -33,6 +33,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundReplyDetailActivity.KEY_VEST;
+
 /**
  * @author zcd
  * @date 18/6/13
@@ -133,6 +135,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
                 intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
                         items.get(position).getLostFoundType());
                 intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, items.get(position).getLostFoundId());
+//                intent.putExtra(KEY_VEST ,items.get(position).)
                 startActivity(intent);
             }
 

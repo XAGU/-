@@ -42,9 +42,19 @@ public class LostAndFoundReplyDetailMainDelegate
     public void convert(ViewHolder holder, LostAndFoundReplyDetailAdapter.LostAndFoundReplyDetailWrapper lostAndFoundReplyDetailWrapper, int position) {
         holder.setText(R.id.tv_comment_author, lostAndFoundReplyDetailWrapper.getAuthor());
         holder.setText(R.id.tv_content, lostAndFoundReplyDetailWrapper.getContent());
-        holder.getView(R.id.iv_owner).setVisibility(lostAndFoundReplyDetailWrapper.isOwner() ? View.VISIBLE : View.GONE);
         holder.setText(R.id.tv_time, TimeUtils.lostAndFoundTimestampFormat(lostAndFoundReplyDetailWrapper.getTime()));
-        holder.setImageResource(R.id.iv_owner, lostAndFoundReplyDetailWrapper.isOwner() ? R.drawable.blog :0);
+        if (lostAndFoundReplyDetailWrapper.isOwner()){
+            holder.getView(R.id.iv_owner).setVisibility(View.VISIBLE);
+            holder.setImageResource(R.id.iv_owner ,R.drawable.blog);
+        }else{
+           if (lostAndFoundReplyDetailWrapper.getVest() != null &&
+                   lostAndFoundReplyDetailWrapper.getVest() == Constant.VEST_ADMIN){
+               holder.getView(R.id.iv_owner).setVisibility(View.VISIBLE);
+               holder.setImageResource(R.id.iv_owner ,R.drawable.blog_admin);
+           }else{
+               holder.getView(R.id.iv_owner).setVisibility(View.GONE);
+           }
+        }
         Glide.with(context).load(Constant.IMAGE_PREFIX + lostAndFoundReplyDetailWrapper.getImage())
                 .asBitmap()
                 .placeholder(R.drawable.ic_picture_error)
