@@ -33,6 +33,11 @@ public class LostAndFoundNoticeAdapter extends MultiItemTypeAdapter<LostAndFound
         private Integer lostFoundType;
         private Long userId;
 
+        /**
+         * 马甲 1 普通学生 2 管理员已学生身份回复 3 管理员
+         */
+        private Integer vest ;
+
         public NoticeWrapper(ItemType itemType, String content, String userName) {
             this.itemType = itemType;
             this.content = content;
@@ -50,6 +55,7 @@ public class LostAndFoundNoticeAdapter extends MultiItemTypeAdapter<LostAndFound
             this.imageUrl = notice.getPictureUrl();
             this.content = notice.getContent();
             this.userName = notice.getUserNickname();
+            this.vest = vest ;
         }
     }
     public enum ItemType {

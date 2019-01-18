@@ -45,8 +45,6 @@
             android:layout_marginStart="21dp"
             />
 
-
-
     </RelativeLayout>
 
     <!--滚动公告-->

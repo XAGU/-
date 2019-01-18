@@ -119,7 +119,7 @@ public interface ILostAndFoundDataManager {
     Observable<ApiResult<NoticeCountDTO>> noticeCount();
 
     /**
-     * 通知数量
+     * 通知列表
      */
     Observable<ApiResult<NoticeListDTO>> getNoticeList(@Body NoticeListReqDTO reqDTO);
 

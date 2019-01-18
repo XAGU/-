@@ -1214,7 +1214,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public void showRollingNotify(RollingNotifyRespDTO data) {
         if (data.getRollingNotifyList() == null || data.getRollingNotifyList().size() == 0) return ;
 
-        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ROLLING_NOTIFY ,data.getRollingNotifyList()));
+        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ROLLING_LosNOTIFY ,data.getRollingNotifyList()));
     }
 
     @Override
