@@ -127,8 +127,16 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
         if (isStop) {
             return;
         }
-
-        if (endX == 0) return ;
+        
+        if (endX == 0){
+            if (!canScrollForever){
+                this.removeCallbacks(this);
+                if (scrollFinishListener != null){
+                    scrollFinishListener.scrollFinish();
+                }
+            }
+            return ;
+        }
         if (!canScrollForever){
             currentScrollX += speed;// 滚动速度,每次滚动几点
             if (currentScrollX >= endX) {

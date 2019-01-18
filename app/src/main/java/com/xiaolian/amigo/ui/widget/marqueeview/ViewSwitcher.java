@@ -63,6 +63,7 @@ public class ViewSwitcher extends ViewAnimator {
         if (getChildCount() >= 2) {
             throw new IllegalStateException("Can't add more than 2 views to a ViewSwitcher");
         }
+
         super.addView(child, index, params);
     }
 

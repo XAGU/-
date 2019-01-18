@@ -2,11 +2,17 @@ package com.xiaolian.amigo.ui.widget.marqueeview;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.FrameLayout;
+
 import com.xiaolian.amigo.R;
 
 import java.util.ArrayList;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewFactory ,MarqueeText.ScrollFinishListener {
     private static final String TAG = TextSwitcherView.class.getSimpleName();
@@ -120,6 +126,10 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         textView.setTextColor(getContext().getResources().getColor(R.color.colorFullRed));
         textView.setSingleLine();
         textView.setScrollFinishListener(this);
+        textView.setGravity(TEXT_ALIGNMENT_CENTER);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(MATCH_PARENT ,MATCH_PARENT);
+        layoutParams.gravity = Gravity.CENTER_VERTICAL ;
+        textView.setLayoutParams(layoutParams);
         return textView;
     }
 
