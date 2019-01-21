@@ -134,7 +134,7 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
      * @param code      versionCode
      * @param versionNo versionName
      */
-    void checkUpdate(Integer code, String versionNo);
+    void checkUpdate(Integer code, String versionNo , String remindMobile);
 
     /**
      * 主页引导是否完成
@@ -230,4 +230,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
      * 获取首页学校论坛状态
      */
     void getSchoolForumStatus();
+
+    String getRemindMobile();
 }

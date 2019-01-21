@@ -47,7 +47,6 @@ public class AboutUsPresenter<V extends IAboutUsView> extends BasePresenter<V>
     @Override
     public void checkUpdate(Integer code, String versionNo, boolean click) {
         CheckVersionUpdateReqDTO reqDTO = new CheckVersionUpdateReqDTO();
-        reqDTO.setCode(code);
         reqDTO.setVersionNo(versionNo);
         addObserver(mainDataManager.checkUpdate(reqDTO),
                 new NetworkObserver<ApiResult<CheckVersionUpdateRespDTO>>(false) {

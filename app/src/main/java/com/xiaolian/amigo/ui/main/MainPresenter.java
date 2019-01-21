@@ -363,9 +363,10 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     }
 
     @Override
-    public void checkUpdate(Integer code, String versionNo) {
+    public void checkUpdate(Integer code, String versionNo , String remindMobile) {
         CheckVersionUpdateReqDTO reqDTO = new CheckVersionUpdateReqDTO();
         reqDTO.setCode(code);
+        reqDTO.setMobile(remindMobile);
         reqDTO.setVersionNo(versionNo);
         addObserver(mainDataManager.checkUpdate(reqDTO),
                 new NetworkObserver<ApiResult<CheckVersionUpdateRespDTO>>(false) {
@@ -639,6 +640,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                  }
              }
          });
+    }
+
+    @Override
+    public String getRemindMobile() {
+        return userDataManager.getRemindMobile();
     }
 
 

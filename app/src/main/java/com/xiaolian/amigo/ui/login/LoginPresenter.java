@@ -619,6 +619,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         CheckVersionUpdateReqDTO reqDTO = new CheckVersionUpdateReqDTO();
         reqDTO.setCode(code);
         reqDTO.setVersionNo(versionNo);
+        reqDTO.setMobile(remindMobile);
         addObserver(loginDataManager.checkUpdate(reqDTO),
                 new NetworkObserver<ApiResult<CheckVersionUpdateRespDTO>>(false) {
 

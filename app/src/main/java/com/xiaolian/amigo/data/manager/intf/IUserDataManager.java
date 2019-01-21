@@ -351,4 +351,6 @@ public interface IUserDataManager {
      * @return
      */
     Observable<ApiResult<SchoolForumStatusDTO>> getSchoolForumStatus();
+
+    String getRemindMobile();
 }

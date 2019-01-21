@@ -12,7 +12,17 @@ import lombok.Data;
 public class CheckVersionUpdateReqDTO {
     private Integer code;
     private String versionNo;
-    private Integer systemType = 2;
+
+    /**
+     * 平台  Android 为 2
+     */
+    private Integer platform  = 2 ;
+
+    /**
+     * 1 , 学生版  2 ,笑联云 3 , 笑联企业版
+     */
+    private Integer product =  1;
+
 
     /**
      * 手机号
