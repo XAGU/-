@@ -14,7 +14,6 @@ import android.os.Message;
 import android.support.annotation.RestrictTo;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.xiaolian.blelib.BluetoothConstants;
 import com.xiaolian.blelib.BluetoothHelp;

@@ -393,7 +393,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         //  macAddress是服务器返回的deviceNo  ,currentMacAddress是全局变量，是正确的蓝牙设备mac地址
         // 设备连接上存储mac地址供后续读写数据使用
-        // 查询是否存在该deviceNo的macAddress
+        // 查询是否存在该deviceNo的macAddress-p-
         if (deviceDataManager.getMacAddressByDeviceNo(macAddress) != null) {
 
             currentMacAddress = deviceDataManager.getMacAddressByDeviceNo(macAddress);

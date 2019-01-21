@@ -1303,6 +1303,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 showConnecting();
                 android.util.Log.e(TAG, "onActivityResult: " + residenceId + " chosenResidenceId >>>>> " + chosenResidenceId  );
                 presenter.setResidenceId(residenceId);
+                presenter.setDeviceType(deviceType);
                 presenter.clearObservers(); // 清空旧连接
                 presenter.resetSubscriptions(); // 此步骤非常重要，不加会造成重连请求掉进黑洞的现象
                 presenter.resetContext();
