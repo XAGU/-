@@ -55,7 +55,7 @@ public class LostAndFoundNoticeAdapter extends MultiItemTypeAdapter<LostAndFound
             this.imageUrl = notice.getPictureUrl();
             this.content = notice.getContent();
             this.userName = notice.getUserNickname();
-            this.vest = vest ;
+            this.vest = notice.getVest() ;
         }
     }
     public enum ItemType {
