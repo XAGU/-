@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.RestrictTo;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,6 +37,7 @@ import java.util.UUID;
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public class BluetoothConnectWorker implements IBluetoothConnectWorker {
     private static final String TAG = BluetoothConnectWorker.class.getSimpleName();
+    public static final int BLE_NOTIFY = 1 ;   //  notify  ;
     private BluetoothGatt bluetoothGatt;
     private BluetoothDevice bluetoothDevice;
     private BluetoothConnectCallback bluetoothConnectCallback;
@@ -163,11 +165,10 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
             Log.d(TAG, "BluetoothGattCallback：onCharacteristicChanged "
                     + '\n' + "currentThread: " + Thread.currentThread().getId()
                     + "name:" + Thread.currentThread().getName());
-            handler.post(() -> {
-                if (bluetoothCharacteristicNotifyCallback != null) {
-                    bluetoothCharacteristicNotifyCallback.onNotify(characteristic.getValue());
-                }
-            });
+            Message message = Message.obtain();
+            message.what = BLE_NOTIFY ;
+            message.obj = characteristic.getValue();
+            handler.sendMessage(message);
         }
 
         @Override
@@ -205,7 +206,8 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
 
 
     public BluetoothConnectWorker(String macAddress) {
-        handler = new Handler(Looper.getMainLooper());
+//        handler = new Handler(Looper.getMainLooper());
+        initHandler();
         BluetoothAdapter adapter = BluetoothHelp.getBluetoothAdapter();
         if (adapter != null) {
             bluetoothDevice = adapter.getRemoteDevice(macAddress);
@@ -237,6 +239,51 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
         return false;
     }
 
+
+    /**
+     * 使用handler来发送消息
+     */
+    private void initHandler(){
+        if (handler == null){
+
+            handler = new Handler(Looper.getMainLooper()){
+
+                @Override
+                public void handleMessage(Message msg) {
+                    switch (msg.what){
+
+                        case  BLE_NOTIFY:
+                            byte[] values = (byte[]) msg.obj;
+                            Log.e(TAG, "handleMessage: " + bytesToHexString(values) );
+                            if (bluetoothCharacteristicNotifyCallback != null) {
+                                bluetoothCharacteristicNotifyCallback.onNotify(values);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+
+
+                }
+            };
+        }
+
+    }
+
+
+    public  String bytesToHexString(byte[] paramArrayOfByte) {
+        StringBuilder localStringBuilder = new StringBuilder("");
+        if ((paramArrayOfByte == null) || (paramArrayOfByte.length <= 0))
+            return null;
+        for (int i = 0;; i++) {
+            if (i >= paramArrayOfByte.length)
+                return localStringBuilder.toString();
+            String str = Integer.toHexString(0xFF & paramArrayOfByte[i]);
+            if (str.length() < 2)
+                localStringBuilder.append(0);
+            localStringBuilder.append(str);
+        }
+    }
     @Override
     public String getMacAddress() {
         if (bluetoothDevice != null) {
@@ -302,26 +349,26 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
         } else {
             Class< ? extends BluetoothDevice> cls = BluetoothDevice.class;
             Method m = null ;
+            try {
+                m = cls.getMethod("connectGatt", Context.class, boolean.class, BluetoothGattCallback.class, int.class);
+                if (m != null){
                     try {
-                        m = cls.getMethod("connectGatt", Context.class, boolean.class, BluetoothGattCallback.class, int.class);
-                        if (m != null){
-                            try {
-                                bluetoothGatt = (BluetoothGatt) m.invoke(bluetoothDevice ,context ,false ,coreGattCallback , 2);
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                                openGatt(context);
-                            } catch (InvocationTargetException e) {
-                                e.printStackTrace();
-                                openGatt(context);
-                            }
-                        }
-                    } catch (NoSuchMethodException e) {
+                        bluetoothGatt = (BluetoothGatt) m.invoke(bluetoothDevice ,context ,false ,coreGattCallback , 2);
+                    } catch (IllegalAccessException e) {
                         e.printStackTrace();
                         openGatt(context);
-                    } catch (IllegalArgumentException e) {
+                    } catch (InvocationTargetException e) {
                         e.printStackTrace();
                         openGatt(context);
                     }
+                }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+                openGatt(context);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                openGatt(context);
+            }
         }
 
         return bluetoothGatt != null;
@@ -441,7 +488,7 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
         safeWait(60);
 
         return bluetoothGatt != null
-            && bluetoothGatt.writeCharacteristic(characteristic);
+                && bluetoothGatt.writeCharacteristic(characteristic);
     }
 
     @Override
@@ -484,7 +531,7 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
 
         safeWait(60);
         return bluetoothGatt != null
-            && bluetoothGatt.writeDescriptor(gattDescriptor);
+                && bluetoothGatt.writeDescriptor(gattDescriptor);
     }
 
     @Override
@@ -512,7 +559,7 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
 
         safeWait(60);
         return bluetoothGatt != null
-            && bluetoothGatt.writeCharacteristic(characteristic);
+                && bluetoothGatt.writeCharacteristic(characteristic);
     }
 
     private BluetoothGattCharacteristic getCharacter(UUID service, UUID character) {
