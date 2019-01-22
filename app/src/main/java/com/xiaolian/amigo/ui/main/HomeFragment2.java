@@ -278,6 +278,8 @@ public class HomeFragment2 extends BaseFragment {
         if (!isNetworkAvailable()) {
             if (presenter.isLogin()) {
                 presenter.getSchoolBusiness();
+                presenter.getSchoolForumStatus();
+//                initSchoolBiz();
                 // 设置学校
                 if (schoolName != null) {
                     if (!presenter.getUserInfo().getSchoolName().equals(schoolName.getText().toString()))
@@ -297,6 +299,7 @@ public class HomeFragment2 extends BaseFragment {
             }
             // 请求通知
             presenter.getSchoolBusiness();
+            presenter.getSchoolForumStatus();
             presenter.getNoticeAmount();
             presenter.noticeCount();
             if (schoolName != null) {
