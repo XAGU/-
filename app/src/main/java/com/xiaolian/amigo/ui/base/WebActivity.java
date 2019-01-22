@@ -127,6 +127,7 @@ public class WebActivity extends BaseActivity {
                 .applicationComponent(((MvpApp) getApplication()).getComponent())
                 .build().inject(this);
         String url = getIntent().getStringExtra(INTENT_KEY_URL);
+        android.util.Log.e(TAG, "onCreate: " + url );
         initLoadingAnim();
         if (url == null) {
             url = getIntent().getStringExtra(INTENT_KEY_WASHER_URL);
@@ -260,6 +261,7 @@ public class WebActivity extends BaseActivity {
         }
 
         //  将后面拼接的参数全部用base64加密，防止（）h5读取不了
+        android.util.Log.e(TAG, "addUrlSuffix: " + newUrl );
         if (newUrl.contains("?")){
           String[] urls =   newUrl.split("\\?");
           if (urls.length >=2 ) {

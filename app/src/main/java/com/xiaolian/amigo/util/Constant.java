@@ -118,6 +118,11 @@ public final class Constant {
      * H5投诉建议
      */
     public static final String H5_COMPLAINT = H5_SERVER + "/complaint";
+
+    /**
+     * H5投诉建议
+     */
+    public static final String H5_VERSION = H5_SERVER + "/version";
     /**
      * H5意见反馈
      */

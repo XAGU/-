@@ -109,10 +109,10 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
     @OnClick(R.id.version_update_record)
     public void versionRecord(){
         startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_VERSION
                         + "?accessToken=" + presenter.getAccessToken()
                         +"&refreshToken=" + presenter.getRefreshToken()
-                        + "&platform=2"
+                        + "&platform=2"  // 2  代表是Android端
                         + "&product=1"   //  1 是代表学生用户端
                         + "&versionNo=" + AppUtils.getVersionName(this)));
     }
