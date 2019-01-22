@@ -72,7 +72,7 @@
         android:id="@+id/rl_attention"
         android:layout_width="wrap_content"
         android:layout_height="58dp"
-        android:paddingLeft="10dp">
+        android:paddingStart="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/forward"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"/>
 
         <TextView
@@ -98,23 +98,24 @@
             android:layout_toStartOf="@id/iv_attention_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:id="@+id/line"
+            android:layout_height="1dip"
+            android:layout_alignParentBottom="true"
+            android:background="#eee" />
     </RelativeLayout>
 
-    <View
-        android:layout_below="@id/rl_attention"
-        android:layout_width="match_parent"
-        android:id="@+id/line"
-        android:layout_height="1dip"
-        android:layout_centerVertical="true"
-        android:background="#eee" />
+
 
 
     <RelativeLayout
-        android:layout_below="@id/line"
+        android:layout_below="@id/rl_attention"
         android:id="@+id/rl_upload_error"
         android:layout_width="wrap_content"
         android:layout_height="58dp"
-        android:paddingLeft="10dp">
+        android:paddingStart="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -128,17 +129,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/forward"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"/>
+
+        <View
+
+            android:layout_width="match_parent"
+            android:id="@+id/line1"
+            android:layout_height="1dip"
+            android:layout_alignParentBottom="true"
+            android:background="#eee" />
 
     </RelativeLayout>
 
-    <View
+    <RelativeLayout
         android:layout_below="@id/rl_upload_error"
-        android:layout_width="match_parent"
-        android:id="@+id/line1"
-        android:layout_height="1dip"
-        android:layout_centerVertical="true"
-        android:background="#eee" />
+        android:id="@+id/version_update_record"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:paddingStart="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ContentText_main"
+            android:text="功能介绍"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/forward"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_alignParentBottom="true"
+            android:background="#eee" />
+
+    </RelativeLayout>
+
+
+
 
 </RelativeLayout>

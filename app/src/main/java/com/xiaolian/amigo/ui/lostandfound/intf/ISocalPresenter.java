@@ -30,4 +30,10 @@ public interface ISocalPresenter <V extends ISocalView> extends IBasePresenter<V
     boolean getIsFirstAfterLogin();
 
     void setIsFirstAfterLogin(boolean b);
+
+    /**
+     * 设置count 为0
+     * @param i
+     */
+    void setNoticeCount(int i);
 }

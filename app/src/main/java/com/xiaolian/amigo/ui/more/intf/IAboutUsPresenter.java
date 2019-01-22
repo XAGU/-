@@ -23,4 +23,9 @@ public interface IAboutUsPresenter<V extends IAboutUsView> extends IBasePresente
     void uploadErrorLog();
 
     Long getUserId();
+
+    String getAccessToken();
+
+    String getRefreshToken();
+
 }

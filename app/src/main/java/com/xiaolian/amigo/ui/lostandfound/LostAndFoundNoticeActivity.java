@@ -273,6 +273,8 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     @Override
     public void showErrorView() {
         rlError.setVisibility(View.VISIBLE);
+        refreshLayout.setVisibility(View.GONE);
+        rlEmpty.setVisibility(View.GONE);
     }
 
     @Override

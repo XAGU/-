@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.network.model.version.VersionDTO;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.main.update.IntentKey;
 import com.xiaolian.amigo.ui.main.update.UpdateActivity;
 import com.xiaolian.amigo.ui.more.intf.IAboutUsPresenter;
@@ -20,6 +22,7 @@ import com.xiaolian.amigo.ui.more.intf.IAboutUsView;
 import com.xiaolian.amigo.ui.widget.dialog.ChangeHostDialog;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.FileUtils;
 
 import java.io.File;
@@ -98,6 +101,20 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
                         showMessage("没有SD卡权限");
                     }
                 });
+    }
+
+    /**
+     * 版本记录
+     */
+    @OnClick(R.id.version_update_record)
+    public void versionRecord(){
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
+                        + "?accessToken=" + presenter.getAccessToken()
+                        +"&refreshToken=" + presenter.getRefreshToken()
+                        + "&platform=2"
+                        + "&product=1"   //  1 是代表学生用户端
+                        + "&versionNo=" + AppUtils.getVersionName(this)));
     }
 
     @Override

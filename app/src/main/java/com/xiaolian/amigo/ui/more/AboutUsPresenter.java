@@ -102,6 +102,17 @@ public class AboutUsPresenter<V extends IAboutUsView> extends BasePresenter<V>
     public Long getUserId() {
         return mainDataManager.getUserInfo().getId();
     }
+
+    @Override
+    public String getAccessToken() {
+        return mainDataManager.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return mainDataManager.getRefreshToken();
+    }
+
     /**
      * 上传日志
      *

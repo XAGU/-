@@ -87,7 +87,7 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess(LostAndFound.getLostAndFound(type).getDesc() + "发布成功");
+                    getMvpView().onSuccess( "联子发布成功");
                     getMvpView().finishView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

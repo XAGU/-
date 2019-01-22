@@ -619,6 +619,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     public void hideNoticeNumRemind() {
         if (circle == null) return;
         circle.setVisibility(View.GONE);
+        presenter.setNoticeCount(0);
     }
 
     public void showNoticeNumRemind(int num) {
@@ -705,13 +706,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         loadingAnimator.setRepeatCount(ValueAnimator.INFINITE);
         loadingAnimator.setDuration(1000);
         loadingAnimator.setInterpolator(new LinearInterpolator());
-        loadingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int currentValue = (int) animation.getAnimatedValue();
-                if (ivLoading != null)
-                    ivLoading.setImageResource(loadingRes[currentValue]);
-            }
+        loadingAnimator.addUpdateListener(animation -> {
+            int currentValue = (int) animation.getAnimatedValue();
+            if (ivLoading != null)
+                ivLoading.setImageResource(loadingRes[currentValue]);
         });
     }
 
@@ -903,6 +901,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         ivRemaind.setVisibility(View.GONE);
         if (circle != null) {
             circle.setVisibility(View.GONE);
+            presenter.setNoticeCount(0);
         }
     }
 

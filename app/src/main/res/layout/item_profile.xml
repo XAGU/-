@@ -3,14 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tool="http://schemas.android.com/tools"
-    android:descendantFocusability="blocksDescendants">
+    android:descendantFocusability="blocksDescendants"
+    android:background="@drawable/custom_bg"
+    >
 
     <RelativeLayout
         android:id="@+id/rel"
         style="@style/ListItemRel"
         android:clickable="false"
         android:focusable="false"
-        android:focusableInTouchMode="false">
+        android:focusableInTouchMode="false"
+        android:paddingStart="21dp"
+        android:paddingEnd="21dp">
 
         <ImageView
             android:id="@+id/imageLeft"

@@ -6,8 +6,6 @@
     <include layout="@layout/activity_main_top" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginLeft="@dimen/mainMarginLeftRight"
-        android:layout_marginRight="@dimen/mainMarginLeftRight"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
