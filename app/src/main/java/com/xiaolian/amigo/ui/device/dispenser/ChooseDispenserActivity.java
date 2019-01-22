@@ -84,6 +84,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     private OrderPreInfoDTO orderPreInfo;
     private TextView tvRescan;
     private TextView tvEmptyTip;
+    private LinearLayout llQrCodeScan ;
     private int deviceType;
 
     @Override
@@ -107,11 +108,13 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         tvRescan.setOnClickListener(v -> onReScan());
 
         llFooter = findViewById(R.id.ll_footer);
-
+        llQrCodeScan = findViewById(R.id.ll_qr_code_scan);
         tvNearby = findViewById(R.id.tv_toolbar_title);
         tvNearby.setOnClickListener(v -> onNearbyClick());
         tvFavorite = findViewById(R.id.tv_toolbar_title2);
         tvFavorite.setOnClickListener(v -> onFavoriteClick());
+
+
 
         switch (action) {
             case DeviceConstant.ACTION_CHOOSE_DISPENSER:
@@ -125,6 +128,24 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
             default:
                 break;
         }
+    }
+
+
+
+    /**
+     * 显示二维码扫码按钮
+     */
+    private void showScanButton(){
+        llFooter.setVisibility(View.VISIBLE);
+        llQrCodeScan.setVisibility(View.GONE);
+    }
+
+    /**
+     * 显示蓝牙扫描按钮
+     */
+    private void showBleScanButton(){
+        llFooter.setVisibility(View.GONE);
+        llQrCodeScan.setVisibility(View.VISIBLE);
     }
 
     private void initRefreshLayout() {

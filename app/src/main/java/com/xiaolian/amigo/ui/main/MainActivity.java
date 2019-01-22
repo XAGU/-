@@ -187,7 +187,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        android.util.Log.e(TAG, "onCreate: " );
         setContentView(R.layout.activity_main);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
@@ -200,7 +199,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             MobclickAgent.setCatchUncaughtExceptions(true);
             if (presenter.isLogin()) {
                 presenter.getSchoolForumStatus();
-                android.util.Log.e(TAG, "onCreate: "  );
                 presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                         AppUtils.getVersionName(this) , presenter.getRemindMobile());
                 uploadDeviceInfo();
@@ -297,24 +295,19 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (bundle != null) {
             try {
                 lastFragment = bundle.getInt(KEY_LASTFRAGMENT);
-                android.util.Log.e(TAG, "initTable: " + lastFragment );
             } catch (Exception e) {
-                android.util.Log.e(TAG, "initTable: " + e.getMessage() + "   isLogin >>>>>" + presenter.isLogin());
             }
         }
             // 杀死界面重新进入
             if (presenter.isLogin()) {
                 if (lastFragment == -1) {
-                    android.util.Log.e(TAG, "initTable:>>>>>    0 "  );
                     setDefalutItem(0);
                     tableBottomImageChange(0);
                 } else {
-                    android.util.Log.e(TAG, "initTable: >>>>>  " +lastFragment );
                     setDefalutItem(lastFragment);
                     tableBottomImageChange(lastFragment);
                 }
             } else {
-                android.util.Log.e(TAG, "initTable: >>>>>>  2 "  );
                 setDefalutItem(2);
                 tableBottomImageChange(2);
             }
@@ -326,7 +319,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * @param position
      */
     private void setDefalutItem(int position) {
-        android.util.Log.e(TAG, "setDefalutItem: " + position );
         if (position == -1 || position > 2) return ;
         // 目标Fragment
         Fragment targetFragment = null ;
@@ -463,7 +455,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * @param position
      */
     private void tableBottomImageChange(int position) {
-        android.util.Log.e(TAG, "tableBottomImageChange: " + position );
         if (position == -1 || position > 2) return ;
         nowPosition = position ;
         if (position == 0) {
@@ -526,7 +517,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         super.onNewIntent(intent);
         setIntent(intent);
         if (presenter.isLogin()) {
-            android.util.Log.e(TAG, "onNewIntent: " );
             presenter.getSchoolForumStatus();
             presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                     AppUtils.getVersionName(this) , presenter.getRemindMobile());
@@ -1104,7 +1094,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * @param device 设备类型
      */
     public void checkDeviceUsage(Device device) {
-        Log.d(TAG, "checkDeviceUsage");
         presenter.checkDeviceUsage(device.getType());
     }
 
@@ -1240,7 +1229,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 点击进入饮水机页面
      */
     public void gotoDispenser() {
-        Log.d(TAG, "gotoDispenser");
         setBleCallback(() -> checkDeviceUsage(DISPENSER));
         getBlePermission();
     }
@@ -1249,7 +1237,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 点击进入吹风机页面
      */
     private void gotoDryer() {
-        Log.d(TAG, "gotoDryer");
         setBleCallback(() -> checkDeviceUsage(DRYER));
         getBlePermission();
     }
@@ -1259,12 +1246,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 点击进入失物招领
      */
     public void gotoLostAndFound() {
-        Log.d(TAG, "gotoLostAndFound");
         startActivity(this, LostAndFoundActivity2.class);
     }
 
     public void logout() {
-        Log.d(TAG, "logout");
         presenter.logout();
     }
 

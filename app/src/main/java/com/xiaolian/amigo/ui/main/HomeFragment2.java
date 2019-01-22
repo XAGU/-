@@ -227,7 +227,6 @@ public class HomeFragment2 extends BaseFragment {
                 holder.itemView.setEnabled(false);
                 try {
                     view.setEnabled(false);
-                    Log.d(TAG, "recycler view onItemClick " + position);
                     if (items.get(position).getType() != HomeAdaptor.NORMAL_TYPE
                             && items.get(position).getType() != HomeAdaptor.SMALL_TYPE) {
 //                        view.dispatchTouchEvent(e);

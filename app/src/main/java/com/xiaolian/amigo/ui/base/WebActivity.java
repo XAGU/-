@@ -222,9 +222,9 @@ public class WebActivity extends BaseActivity {
     }
 
     private void initErrorView() {
-        ImageView iv_back = (ImageView) findViewById(R.id.iv_back);
+        ImageView iv_back = findViewById(R.id.iv_back);
         iv_back.setOnClickListener(v -> super.onBackPressed());
-        ll_error_view = (LinearLayout) findViewById(R.id.ll_error_view);
+        ll_error_view =  findViewById(R.id.ll_error_view);
     }
 
     /**
