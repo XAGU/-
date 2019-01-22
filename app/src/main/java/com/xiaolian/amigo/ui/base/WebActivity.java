@@ -32,8 +32,6 @@ import com.google.zxing.client.android.Intents;
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
-import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.device.JsWasher;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.di.componet.DaggerMainActivityComponent;
@@ -46,16 +44,12 @@ import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Base64;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * web页面
@@ -67,7 +61,6 @@ public class WebActivity extends BaseActivity {
     private static final String UTF8 = "UTF-8";
     public static final String INTENT_KEY_URL = "intent_key_url";
     public static final String INTENT_KEY_WASHER_URL = "intent_key_url_washer";
-    private static final int FILECHOOSER_RESULTCODE = 0x0012;
     private static final String TAG = WebActivity.class.getSimpleName();
     private boolean isCharge = false;
 

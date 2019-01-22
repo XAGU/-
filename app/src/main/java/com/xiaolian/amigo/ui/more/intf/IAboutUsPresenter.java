@@ -16,7 +16,7 @@ public interface IAboutUsPresenter<V extends IAboutUsView> extends IBasePresente
      * @param versionNo versionName
      * @param click 是否是用户点击
      */
-    void checkUpdate(Integer code, String versionNo, boolean click);
+    void checkUpdate(Integer code, String versionNo, boolean click , String remindMobile);
 
     void changeHost(String server, String h5Server, String bathroomServer);
 
@@ -28,4 +28,5 @@ public interface IAboutUsPresenter<V extends IAboutUsView> extends IBasePresente
 
     String getRefreshToken();
 
+    String getRemindMobile();
 }
