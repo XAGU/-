@@ -3,21 +3,31 @@ package com.xiaolian.amigo.ui.wallet;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 
+import com.xiaolian.amigo.data.network.model.userbill.UserMonthlyBillRespDTO;
+import com.xiaolian.amigo.di.componet.BalanceDetailListActivityComponent;
+import com.xiaolian.amigo.di.module.BalanceDetailListActivityModule;
+import com.xiaolian.amigo.di.componet.DaggerBalanceDetailListActivityComponent;
 import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.wallet.intf.IBalanceDetailListView;
 import com.xiaolian.amigo.ui.wallet.intf.IBalanceDetailListPresenter;
 
 import javax.inject.Inject;
 
-public class BalanceDetailListActivity extends BalanceDetailListBaseActivity implements IBalanceDetailListView {
+public class BalanceDetailListActivity extends BaseActivity implements IBalanceDetailListView {
+
+
+    private BalanceDetailListActivityComponent mActivityComponent;
 
     @Inject
     IBalanceDetailListPresenter<IBalanceDetailListView> presenter;
@@ -40,6 +50,11 @@ public class BalanceDetailListActivity extends BalanceDetailListBaseActivity imp
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mActivityComponent = DaggerBalanceDetailListActivityComponent.builder()
+                .balanceDetailListActivityModule(new BalanceDetailListActivityModule(this))
+                .applicationComponent(((MvpApp) getApplication()).getComponent())
+                .build();
+
         setContentView(R.layout.activity_balance_detail_list);
         getActivityComponent().inject(this);
         presenter.onAttach(this);
@@ -52,8 +67,20 @@ public class BalanceDetailListActivity extends BalanceDetailListBaseActivity imp
         leftTitle.setOnClickListener(v -> showBalanceDetailListView());
         rightTitle.setOnClickListener(v -> showStatisticsView());
 
-        balanceListFragment = new BalanceListFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.ll_main, balanceListFragment).commit();
+//        balanceListFragment = new BalanceListFragment();
+//        getSupportFragmentManager().beginTransaction().add(R.id.ll_main, balanceListFragment).commit();
+
+        balanceStatisticsFragment = new BalanceStatisticsFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.ll_main, balanceStatisticsFragment).commit();
+    }
+
+    @Override
+    protected void setUp() {
+
+    }
+
+    public BalanceDetailListActivityComponent getActivityComponent() {
+        return mActivityComponent;
     }
 
     //返回上一个页面
@@ -63,14 +90,21 @@ public class BalanceDetailListActivity extends BalanceDetailListBaseActivity imp
 
     //点击左边的按钮展示账单
     private void showBalanceDetailListView() {
+        Log.d(TAG, "yang showBalanceDetailListView: sssss");
         leftTitle.setTextColor(Color.parseColor("#222222"));
         rightTitle.setTextColor(Color.parseColor("#bbbbbb"));
     }
 
     //点击右边的按钮展示统计
     private void showStatisticsView() {
+        Log.d(TAG, "yang showStatisticsView: ");
         rightTitle.setTextColor(Color.parseColor("#222222"));
         leftTitle.setTextColor(Color.parseColor("#bbbbbb"));
+    }
+
+    @Override
+    public void render(UserMonthlyBillRespDTO data) {
+        balanceStatisticsFragment.render(data);
     }
 
 

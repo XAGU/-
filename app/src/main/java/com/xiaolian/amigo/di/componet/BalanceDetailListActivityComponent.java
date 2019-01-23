@@ -4,8 +4,6 @@ import com.xiaolian.amigo.di.BalanceDetailListActivityContext;
 import com.xiaolian.amigo.di.module.BalanceDetailListActivityModule;
 import com.xiaolian.amigo.ui.wallet.BalanceDetailListActivity;
 
-import com.xiaolian.amigo.ui.wallet.BalanceDetailListBaseActivity;
-
 import dagger.Component;
 
 @BalanceDetailListActivityContext
@@ -13,7 +11,5 @@ import dagger.Component;
 public interface BalanceDetailListActivityComponent {
 
     void inject(BalanceDetailListActivity activity);
-
-    void inject(BalanceDetailListBaseActivity activity);
 
 }
