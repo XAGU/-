@@ -31,7 +31,7 @@
                 android:id="@+id/home_image"
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
-        
+
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="1"

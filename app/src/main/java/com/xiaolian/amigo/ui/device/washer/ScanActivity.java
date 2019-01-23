@@ -283,6 +283,13 @@ public class ScanActivity extends WasherBaseActivity
 
     }
 
+
+    @Override
+    public void onError(String message) {
+        super.onError(message);
+        resumeScan();
+    }
+
     private boolean isDoubleWasher(String url) {
 
         if (TextUtils.isEmpty(url) || !url.startsWith("https"))
@@ -326,7 +333,7 @@ public class ScanActivity extends WasherBaseActivity
             findViewById(R.id.iv_flashlight).setVisibility(View.GONE);
         }
     }
-
+    
     @SuppressWarnings("deprecation")
     private void zoomCamera() {
         if (barcodeScannerView.getBarcodeView().getCameraInstance() == null) {

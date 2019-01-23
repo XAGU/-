@@ -159,6 +159,12 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().onError(e.getMessage());
+            }
         });
     }
 }

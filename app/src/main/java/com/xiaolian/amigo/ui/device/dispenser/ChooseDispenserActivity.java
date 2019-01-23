@@ -24,7 +24,6 @@ import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.vo.ScanDevice;
 import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
-import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
@@ -94,6 +93,8 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     private LinearLayout llQrCodeScan ;
     private int deviceType;
 
+    //  是否显示蓝牙扫描按钮
+    private boolean canShowScanButton = false ;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,16 +172,18 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
      * 显示二维码扫码按钮
      */
     private void showScanButton(){
-        llFooter.setVisibility(View.VISIBLE);
-        llQrCodeScan.setVisibility(View.GONE);
+        llFooter.setVisibility(View.GONE);
+        llQrCodeScan.setVisibility(View.VISIBLE);
+        canShowScanButton = false ;
     }
 
     /**
      * 显示蓝牙扫描按钮
      */
     private void showBleScanButton(){
-        llFooter.setVisibility(View.GONE);
-        llQrCodeScan.setVisibility(View.VISIBLE);
+        llFooter.setVisibility(View.VISIBLE);
+        llQrCodeScan.setVisibility(View.GONE);
+        canShowScanButton = true ;
     }
 
     private void initRefreshLayout() {
@@ -239,7 +242,9 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     private void hideScanStopView() {
         hideEmptyView();
-        llFooter.setVisibility(View.VISIBLE);
+        if (canShowScanButton) {
+            llFooter.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -298,7 +303,9 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     private void switchListStatus() {
         if (listStatus) {
-            llFooter.setVisibility(View.VISIBLE);
+            if (canShowScanButton) {
+                llFooter.setVisibility(View.VISIBLE);
+            }
             listStatus = false;
             tvNearby.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
             tvFavorite.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
