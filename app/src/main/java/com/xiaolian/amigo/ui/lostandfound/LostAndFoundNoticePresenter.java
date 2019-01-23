@@ -57,7 +57,7 @@ public class LostAndFoundNoticePresenter<V extends ILostAndFoundNoticeView> exte
         // 通知内容类型 1 回复 2 点赞
         reqDTO.setType(1);
         addObserver(lostAndFoundDataManager.getNoticeList(reqDTO),
-                new NetworkObserver<ApiResult<NoticeListDTO>>(false) {
+                new NetworkObserver<ApiResult<NoticeListDTO>>(true) {
 
                     @Override
                     public void onReady(ApiResult<NoticeListDTO> result) {

@@ -263,6 +263,8 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     @Override
     public void showEmptyView() {
         rlEmpty.setVisibility(View.VISIBLE);
+        rlError.setVisibility(View.GONE);
+        refreshLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -300,7 +302,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
      */
     public void showContent(){
         rlEmpty.setVisibility(View.GONE);
-        rlEmpty.setVisibility(View.GONE);
+        rlError.setVisibility(View.GONE);
     }
 
     @Override
