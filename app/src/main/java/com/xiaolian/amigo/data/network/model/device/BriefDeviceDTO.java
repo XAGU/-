@@ -24,6 +24,16 @@ public class BriefDeviceDTO {
     private long supplierId; // 设备供应商
     private long residenceId ;
     private boolean favor ;
+    private String tradePage ; //  交易页面枚举 = ['BLE', 'GATEWAY_NETWORK', 'QR_CODE', 'NB'],
+
+
+    public String getTradePage() {
+        return tradePage;
+    }
+
+    public void setTradePage(String tradePage) {
+        this.tradePage = tradePage;
+    }
 
     public int getDeviceType() {
         return deviceType;

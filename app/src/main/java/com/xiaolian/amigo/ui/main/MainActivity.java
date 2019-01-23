@@ -30,6 +30,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserCategory;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
+import com.xiaolian.amigo.data.enumeration.TradePage;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
@@ -94,6 +95,7 @@ import static android.widget.RelativeLayout.CENTER_IN_PARENT;
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.DRYER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
+import static com.xiaolian.amigo.ui.base.WebActivity.INTENT_KEY_URL;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_BUILDING_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_NAME;
@@ -702,7 +704,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             } else if (deviceType == Device.DISPENSER.getType()) {
                 gotoChooseDispenser();
             } else if (deviceType == Device.DRYER.getType()) {
-                gotoChooseDryer();
+                gotoChooseDryer(data.getTradePages());
             }
         });
         availabilityDialog.show();
@@ -717,12 +719,33 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         enableView();
     }
 
-    private void gotoChooseDryer() {
-        Intent intent = new Intent(this, ChooseDispenserActivity.class);
-        intent.putExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DRYER.getType());
-        intent.putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHOOSE_DRYER);
-        intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
-        startActivity(intent);
+    private void gotoChooseDryer(List<String> tradePages) {
+
+        if (tradePages == null || tradePages.size() == 0 ) return ;
+        if (tradePages.size() == 1) {
+
+            if (TradePage.BLE.getPage().equals(tradePages.get(0))) {
+                Intent intent = new Intent(this, ChooseDispenserActivity.class);
+                intent.putExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DRYER.getType());
+                intent.putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHOOSE_DRYER);
+                intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
+                startActivity(intent);
+
+            }else if (TradePage.QR_CODE.getPage().equals(tradePages.get(0))){
+                String url =Constant.H5_DRYER  +
+                        "?accessToken=" +presenter.getAccessToken()
+                        +"&refreshToken=" + presenter.getRefreshToken() ;
+
+                startActivity(new Intent(this , WebActivity.class)
+                .putExtra(INTENT_KEY_URL , url));
+            }
+        }else{
+            Intent intent = new Intent(this, ChooseDispenserActivity.class);
+            intent.putExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DRYER.getType());
+            intent.putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHANGE_DRYER_AND_H5);
+            intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
+            startActivity(intent);
+        }
         enableView();
     }
 
@@ -876,6 +899,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         orderPreInfo.setMinPrepay(data.getMinPrepay());
         orderPreInfo.setPrepay(data.getPrepay());
         orderPreInfo.setPrice(data.getPrice());
+
         // 2小时内存在未找零订单
         if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
             // 1 表示热水澡 2 表示饮水机
@@ -916,7 +940,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         gotoChooseDispenser();
                     } else if (type == Device.DRYER.getType()) {
                         // 进入吹风机选择页面 复用饮水机选择页面
-                        gotoChooseDryer();
+                        gotoChooseDryer(data.getTradePages());
                     }
                 }
             }
@@ -1069,7 +1093,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 } else if (type == Device.DISPENSER.getType()) {
                     gotoChooseDispenser();
                 } else if (type == Device.DRYER.getType()) {
-                    gotoChooseDryer();
+                    gotoChooseDryer(data.getTradePages());
                 }
             } else {
                 showTimeValidDialog(type, data);
@@ -1376,13 +1400,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 +"&schoolId=" + presenter.getUserInfo().getSchoolId();
         Intent intent = new Intent(getContext(), WebActivity.class);
         android.util.Log.e(TAG, "startServiceH5: " + url );
-        intent.putExtra(WebActivity.INTENT_KEY_URL, url);
+        intent.putExtra(INTENT_KEY_URL, url);
         startActivity(intent);
     }
 
     private void gotoGate() {
         startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_GATE
+                .putExtra(INTENT_KEY_URL, Constant.H5_GATE
                         + "?accessToken=" + presenter.getAccessToken() +"&refreshToken" + presenter.getRefreshToken()));
     }
 

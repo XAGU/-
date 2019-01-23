@@ -14,4 +14,5 @@ public class DeviceConstant {
     public static final int ACTION_CHANGE_DISPENSER = 1;
     public static final int ACTION_CHOOSE_DRYER = 2;
     public static final int ACTION_CHANGE_DRYER = 3;
+    public static final int ACTION_CHANGE_DRYER_AND_H5  = 4 ;
 }

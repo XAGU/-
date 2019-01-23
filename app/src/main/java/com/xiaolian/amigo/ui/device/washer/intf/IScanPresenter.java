@@ -17,7 +17,6 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
      */
     void scanCheckout(String content , int type);
 
-
     /**
      * 检查设备
      * @param type
@@ -52,4 +51,10 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
     String getAccessToken();
 
     String getRefreshToken();
+
+    /**
+     * 获取设备详细信息
+     * @param unique 设备唯一标识
+     */
+    void getDeviceDetail(String unique);
 }

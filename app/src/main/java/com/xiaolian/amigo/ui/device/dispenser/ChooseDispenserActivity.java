@@ -12,6 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -21,12 +24,14 @@ import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.vo.ScanDevice;
 import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
+import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
@@ -42,6 +47,8 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
+import static com.xiaolian.amigo.ui.device.washer.ScanActivity.IS_SACN;
+import static com.xiaolian.amigo.ui.device.washer.ScanActivity.SCAN_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_AFTER_ORDER_COPY;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_PRE_ORDER_COPY;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_RESIDENCE_ID;
@@ -109,6 +116,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
         llFooter = findViewById(R.id.ll_footer);
         llQrCodeScan = findViewById(R.id.ll_qr_code_scan);
+        llQrCodeScan.setOnClickListener(v-> gotoScan());
         tvNearby = findViewById(R.id.tv_toolbar_title);
         tvNearby.setOnClickListener(v -> onNearbyClick());
         tvFavorite = findViewById(R.id.tv_toolbar_title2);
@@ -124,12 +132,39 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
             case DeviceConstant.ACTION_CHANGE_DRYER:
                 tvNearby.setText(R.string.nearby_hair_dryer);
                 tvFavorite.setText(R.string.favorite_hair_dryer);
+                showBleScanButton();
+                break;
+            case DeviceConstant.ACTION_CHANGE_DRYER_AND_H5:
+                tvNearby.setText(R.string.nearby_hair_dryer);
+                tvFavorite.setText(R.string.favorite_hair_dryer);
+                showScanButton();
                 break;
             default:
                 break;
         }
     }
 
+    /**
+     * 去扫描二维码界面
+     */
+    private void gotoScan() {
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        //底部的提示文字，设为""可以置空
+        integrator.setPrompt("");
+        //前置或者后置摄像头
+        integrator.setCameraId(0);
+        //扫描成功的「哔哔」声，默认开启
+        integrator.setBeepEnabled(false);
+        integrator.setCaptureActivity(ScanActivity.class);
+        integrator.setOrientationLocked(true);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+        integrator.addExtra(DecodeHintType.CHARACTER_SET.name(), "utf-8");
+        integrator.addExtra(DecodeHintType.TRY_HARDER.name(), Boolean.TRUE);
+        integrator.addExtra(DecodeHintType.POSSIBLE_FORMATS.name(), BarcodeFormat.QR_CODE);
+        integrator.addExtra(SCAN_TYPE, 2);
+        integrator.addExtra(IS_SACN, true);
+        integrator.initiateScan();
+    }
 
 
     /**
