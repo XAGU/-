@@ -29,7 +29,6 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserCategory;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
-import com.xiaolian.amigo.data.enumeration.TradePage;
 import com.xiaolian.amigo.data.network.model.device.BriefDeviceDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
@@ -47,7 +46,6 @@ import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.qrcode.CustomCaptureManager;
 import com.xiaolian.amigo.util.Constant;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +77,7 @@ public class ScanActivity extends WasherBaseActivity
     private static final String TAG = ScanActivity.class.getSimpleName();
     public static final String INTENT_URL_WASHER = "intent_url_washer";
     private static final int FRAMING_SIZE_DIVISOR = 4;
-    
+
     public static final String SCAN_TYPE = "SCAN_TYPE";   // 扫描类型，是为了显示不同的扫码区域的移动线
 
     public static final String IS_SACN = "IS_SCAN"; // 是否是扫描
@@ -250,12 +248,12 @@ public class ScanActivity extends WasherBaseActivity
             }
             return;
 
-        }else if (scanContent.startsWith("https://www.xiaolian365.com/apply/device/4")){  //  扫码吹风机
-
-            String[]  contents = scanContent.split("/");
-            if (contents.length > 0){
-                String unique = contents[contents.length -1];  //  最后一个/后的内容就为该设备唯一标识值
+        }else if (scanContent.startsWith("https://www.xiaolian365.com/apply/device/3")){  //  扫码吹风机
+            String[]  params = scanContent.split("/");
+            if (params.length > 0){
+                String unique = params[params.length -1];  //  最后一个/后的内容就为该设备唯一标识值
                 presenter.getDeviceDetail(unique);
+                return ;
             }
         } else if (isDoubleWasher(scanContent)) {//是否是正反扫设备
             presenter.scanCheckout(scanContent,-1);
