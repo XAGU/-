@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:background="@drawable/bg_monthly_bill"
+    android:paddingTop="80dp"
     android:paddingStart="14dp"
     android:paddingEnd="14dp"
     android:layout_height="wrap_content">
