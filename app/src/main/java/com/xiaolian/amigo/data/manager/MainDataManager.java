@@ -339,4 +339,9 @@ public class MainDataManager implements IMainDataManager {
         return connectErrorApi.uploadLog(body);
     }
 
+    @Override
+    public String getRemindMobile() {
+        return sharedPreferencesHelp.getRememberMobile();
+    }
+
 }

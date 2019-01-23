@@ -45,9 +45,11 @@ public class AboutUsPresenter<V extends IAboutUsView> extends BasePresenter<V>
     }
 
     @Override
-    public void checkUpdate(Integer code, String versionNo, boolean click) {
+    public void checkUpdate(Integer code, String versionNo, boolean click , String remindMobile) {
         CheckVersionUpdateReqDTO reqDTO = new CheckVersionUpdateReqDTO();
         reqDTO.setVersionNo(versionNo);
+        reqDTO.setCode(code);
+        reqDTO.setMobile(remindMobile);
         addObserver(mainDataManager.checkUpdate(reqDTO),
                 new NetworkObserver<ApiResult<CheckVersionUpdateRespDTO>>(false) {
 
@@ -111,6 +113,11 @@ public class AboutUsPresenter<V extends IAboutUsView> extends BasePresenter<V>
     @Override
     public String getRefreshToken() {
         return mainDataManager.getRefreshToken();
+    }
+
+    @Override
+    public String getRemindMobile() {
+        return mainDataManager.getRemindMobile();
     }
 
     /**

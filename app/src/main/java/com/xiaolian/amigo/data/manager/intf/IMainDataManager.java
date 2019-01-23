@@ -190,4 +190,6 @@ public interface IMainDataManager {
      * 上传错误日志
      */
     Observable<ApiResult<BooleanRespDTO>> uploadLog(@Body RequestBody body);
+
+    String getRemindMobile();
 }

@@ -71,7 +71,7 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
         versionName = AppUtils.getVersionName(getApplicationContext());
         versionCode = AppUtils.getAppVersionCode(getApplicationContext());
         tvVersion.setText(getString(R.string.app_name) + " " + versionName);
-        presenter.checkUpdate(versionCode, versionName, false);
+        presenter.checkUpdate(versionCode, versionName, false , presenter.getRemindMobile());
     }
 
     @Override
