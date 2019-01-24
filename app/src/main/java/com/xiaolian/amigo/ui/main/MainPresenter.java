@@ -26,10 +26,12 @@ import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
+import com.xiaolian.amigo.data.network.model.version.VersionDialogTime;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 import com.xiaolian.amigo.util.FileUtils;
@@ -383,13 +385,16 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                             if (result.getData().getResult()) {
                                 if (result.getData().getVersion().isMustUpdate()) {
                                     getMvpView().showUpdateDialog(result.getData().getVersion());
+                                    mainDataManager.setLastUpdateRemindTime(remindMobile);
                                 } else {
                                     // 小于6小时不再提醒
-                                    if (System.currentTimeMillis() - mainDataManager.getLastUpdateRemindTime() >= UPDATE_REMIND_INTERVAL) {
+                                    VersionDialogTime versionDialogTime = mainDataManager.getLastUpdateRemindTime() ;
+                                    if (CommonUtil.canShowUpdateDialog(versionDialogTime ,remindMobile)){
                                         getMvpView().showUpdateDialog(result.getData().getVersion());
+                                        mainDataManager.setLastUpdateRemindTime(remindMobile);
                                     }
                                 }
-                                mainDataManager.setLastUpdateRemindTime();
+
                             }
                         }
                     }

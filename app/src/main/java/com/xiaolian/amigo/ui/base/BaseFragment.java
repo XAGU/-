@@ -57,6 +57,7 @@ import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
 import static com.xiaolian.amigo.util.Constant.ANOTHER_DEVICE_LOGIN;
+import static com.xiaolian.amigo.util.Constant.SHOW_VERSION_UPDATE;
 
 /**
  * @author zcd
@@ -606,6 +607,16 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     public void redirectToLogin(boolean showAnotherDeviceLogin) {
         Intent intent = new Intent(getContext() , LoginActivity.class);
         intent.putExtra(ANOTHER_DEVICE_LOGIN ,showAnotherDeviceLogin);
+        intent.putExtra(SHOW_VERSION_UPDATE , true);
+        startActivity(intent);
+    }
+
+    @Override
+    public void redirectToLogin(boolean showAnotherDeviceLogin , boolean canShowVersionUpdate) {
+
+        Intent intent = new Intent(getContext() , LoginActivity.class);
+        intent.putExtra(ANOTHER_DEVICE_LOGIN ,showAnotherDeviceLogin);
+        intent.putExtra(SHOW_VERSION_UPDATE , canShowVersionUpdate);
         startActivity(intent);
     }
 

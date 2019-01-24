@@ -10,15 +10,20 @@ import com.google.gson.reflect.TypeToken;
 import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
+import com.xiaolian.amigo.data.network.model.version.VersionDialogTime;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.NormalBathroom;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.ApplicationContext;
 import com.xiaolian.blelib.BluetoothConstants;
 
+import junit.runner.Version;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -402,18 +407,40 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     }
 
     @Override
-    public Long getLastUpdateRemindTime() {
-        return mSharedPreferences.getLong(PREF_LAST_UPDATE_REMIND_TIME, 0L);
+    public VersionDialogTime getLastUpdateRemindTime() {
+        String versionDialogTimeTxt = mUnclearSharedPreferences.getString(PREF_LAST_UPDATE_REMIND_TIME,"");
+        if ("".equals(versionDialogTimeTxt)){
+            return null ;
+        }else{
+            VersionDialogTime versionDialogTime = mGson.fromJson(versionDialogTimeTxt , VersionDialogTime.class);
+            return versionDialogTime ;
+        }
     }
 
+    /**
+     * 将弹窗时间与手机号存储起来
+     * key -  mobile
+     * value - 时间 ，此刻系统时间
+     * @param mobile
+     */
     @Override
-    public void setLastUpdateRemindTime() {
-        mUnclearSharedPreferences.edit().putLong(PREF_LAST_UPDATE_REMIND_TIME, System.currentTimeMillis()).apply();
+    public void setLastUpdateRemindTime(String mobile) {
+        VersionDialogTime versionDialogTime = getLastUpdateRemindTime();
+        if (versionDialogTime == null){
+            versionDialogTime = new VersionDialogTime();
+        }
+        Map<String ,Long> versionTime  = versionDialogTime.getVersionDialogTime();
+        if (versionTime == null){
+            versionTime = new HashMap<>();
+        }
+        versionTime.put(mobile ,System.currentTimeMillis());
+        versionDialogTime.setVersionDialogTime(versionTime);
+        mUnclearSharedPreferences.edit().putString(PREF_LAST_UPDATE_REMIND_TIME ,mGson.toJson(versionDialogTime)).commit();
     }
 
     @Override
     public void setLastWithdrawId(Long id) {
-        mUnclearSharedPreferences.edit().putLong(PREF_LAST_WITHDRAW_ID, id).apply();
+        mSharedPreferences.edit().putLong(PREF_LAST_WITHDRAW_ID, id).apply();
     }
 
     @Override

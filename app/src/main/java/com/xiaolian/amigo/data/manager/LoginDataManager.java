@@ -18,6 +18,7 @@ import com.xiaolian.amigo.data.network.model.login.WeChatResiterReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
+import com.xiaolian.amigo.data.network.model.version.VersionDialogTime;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.di.UserServer;
@@ -79,13 +80,13 @@ public class LoginDataManager implements ILoginDataManager {
 
 
     @Override
-    public Long getLastUpdateRemindTime() {
+    public VersionDialogTime getLastUpdateRemindTime() {
         return sharedPreferencesHelp.getLastUpdateRemindTime();
     }
 
     @Override
-    public void setLastUpdateRemindTime() {
-        sharedPreferencesHelp.setLastUpdateRemindTime();
+    public void setLastUpdateRemindTime(String mobile) {
+        sharedPreferencesHelp.setLastUpdateRemindTime(mobile);
     }
 
     @Override

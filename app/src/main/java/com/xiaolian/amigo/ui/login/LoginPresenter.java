@@ -42,9 +42,11 @@ import com.xiaolian.amigo.data.network.model.login.WeChatResiterReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
+import com.xiaolian.amigo.data.network.model.version.VersionDialogTime;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
+import com.xiaolian.amigo.util.CommonUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -635,16 +637,23 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                             if (result.getData().getResult()) {
                                 if (result.getData().getVersion().isMustUpdate()) {
                                     getMvpView().showUpdateDialog(result.getData().getVersion());
+                                    loginDataManager.setLastUpdateRemindTime(remindMobile);
                                 } else {
                                     // 小于6小时不再提醒
-                                    if (System.currentTimeMillis() - loginDataManager.getLastUpdateRemindTime() >= UPDATE_REMIND_INTERVAL) {
+                                    VersionDialogTime versionDialogTime = loginDataManager.getLastUpdateRemindTime() ;
+                                    if (CommonUtil.canShowUpdateDialog(versionDialogTime ,remindMobile)){
                                         getMvpView().showUpdateDialog(result.getData().getVersion());
+                                        loginDataManager.setLastUpdateRemindTime(remindMobile);
                                     }
                                 }
-                                loginDataManager.setLastUpdateRemindTime();
+
                             }
+
                         }
                     }
                 });
     }
+
+
+
 }

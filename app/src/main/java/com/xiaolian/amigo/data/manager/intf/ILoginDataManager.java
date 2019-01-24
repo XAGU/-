@@ -15,6 +15,7 @@ import com.xiaolian.amigo.data.network.model.login.WeChatResiterReqDTO;
 import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
+import com.xiaolian.amigo.data.network.model.version.VersionDialogTime;
 import com.xiaolian.amigo.data.vo.User;
 
 import retrofit2.http.Body;
@@ -124,7 +125,7 @@ public interface ILoginDataManager {
      * 上一次更新时间
      * @return
      */
-    Long getLastUpdateRemindTime();
+    VersionDialogTime getLastUpdateRemindTime();
 
-    void setLastUpdateRemindTime();
+    void setLastUpdateRemindTime(String mobile);
 }

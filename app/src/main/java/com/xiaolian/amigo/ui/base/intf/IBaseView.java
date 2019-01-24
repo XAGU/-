@@ -56,6 +56,13 @@ public interface IBaseView {
     void redirectToLogin(boolean showAnotherDeviceLogin);
 
     /**
+     * 跳转登录页面
+     * @param showAnotherDeviceLogin  是否显示第三方设备登录弹窗
+     * @param canShowVersionUpdate   是否显示版本更新弹窗
+     */
+    void redirectToLogin(boolean showAnotherDeviceLogin , boolean canShowVersionUpdate);
+
+    /**
      * 子线程提交UI更新task
      */
     void post(Runnable task);

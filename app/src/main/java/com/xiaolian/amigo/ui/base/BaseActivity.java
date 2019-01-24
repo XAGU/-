@@ -75,6 +75,7 @@ import butterknife.Optional;
 import butterknife.Unbinder;
 
 import static com.xiaolian.amigo.util.Constant.ANOTHER_DEVICE_LOGIN;
+import static com.xiaolian.amigo.util.Constant.SHOW_VERSION_UPDATE;
 
 public abstract class BaseActivity extends SwipeBackActivity
         implements IBaseView {
@@ -832,6 +833,18 @@ public abstract class BaseActivity extends SwipeBackActivity
 
         Intent intent = new Intent(this , LoginActivity.class);
         intent.putExtra(ANOTHER_DEVICE_LOGIN ,showAnotherDeviceLogin);
+        intent.putExtra(SHOW_VERSION_UPDATE , true);
+        startActivity(intent);
+        finish();
+    }
+
+
+    @Override
+    public void redirectToLogin(boolean showAnotherDeviceLogin , boolean canShowVersionUpdate) {
+
+        Intent intent = new Intent(this , LoginActivity.class);
+        intent.putExtra(ANOTHER_DEVICE_LOGIN ,showAnotherDeviceLogin);
+        intent.putExtra(SHOW_VERSION_UPDATE , canShowVersionUpdate);
         startActivity(intent);
         finish();
     }
