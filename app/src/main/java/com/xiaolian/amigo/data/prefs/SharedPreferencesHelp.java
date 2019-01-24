@@ -408,12 +408,12 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public void setLastUpdateRemindTime() {
-        mSharedPreferences.edit().putLong(PREF_LAST_UPDATE_REMIND_TIME, System.currentTimeMillis()).apply();
+        mUnclearSharedPreferences.edit().putLong(PREF_LAST_UPDATE_REMIND_TIME, System.currentTimeMillis()).apply();
     }
 
     @Override
     public void setLastWithdrawId(Long id) {
-        mSharedPreferences.edit().putLong(PREF_LAST_WITHDRAW_ID, id).apply();
+        mUnclearSharedPreferences.edit().putLong(PREF_LAST_WITHDRAW_ID, id).apply();
     }
 
     @Override
