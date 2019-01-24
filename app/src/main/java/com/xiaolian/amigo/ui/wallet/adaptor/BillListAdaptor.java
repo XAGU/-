@@ -1,7 +1,10 @@
 package com.xiaolian.amigo.ui.wallet.adaptor;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.RechargeStatus;
@@ -44,26 +47,96 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
         holder.setText(R.id.tv_bill_type, getTypeName(billListAdaptorWrapper.getType(), billListAdaptorWrapper.getStatus()));
         //设置时间
         holder.setText(R.id.tv_bill_time, TimeUtils.millis2String(billListAdaptorWrapper.getCreateTime()));
-
-        holder.setText(R.id.tv_bill_money, billListAdaptorWrapper.getAmount());
-        if (billListAdaptorWrapper.getType() == WithdrawOperationType.WITHDRAW.getType()) {
-            holder.setText(R.id.tv_bill_status,
-                    WithdrawalStatus.getWithdrawalStatus(billListAdaptorWrapper.getStatus()).getDesc());
-            holder.setTextColor(R.id.tv_bill_status,
-                    ContextCompat.getColor(context,
-                            WithdrawalStatus.getWithdrawalStatus(billListAdaptorWrapper.getStatus()).getColorRes()));
-        } else {
-            holder.setText(R.id.tv_bill_status,
-                    RechargeStatus.getRechargeStatus(billListAdaptorWrapper.getStatus()).getDesc());
-            holder.setTextColor(R.id.tv_bill_status,
-                    ContextCompat.getColor(context,
-                            RechargeStatus.getRechargeStatus(billListAdaptorWrapper.getStatus()).getColorRes()));
-        }
-        holder.setText(R.id.tv_bill_type, String.valueOf(billListAdaptorWrapper.getType()));
-//        R.id.tv_bill_Status_only
+        //设置金额和状态（有关联，所以需要一起设置）
+        setMoneyAndStatus(holder, billListAdaptorWrapper.getAmount(), billListAdaptorWrapper.getType(), billListAdaptorWrapper.getStatus());
     }
 
-    private String getTypeName(Integer billType, Integer status) {
+    private void setMoneyAndStatus(ViewHolder holder, String amount, int billType, int status) {
+        TextView moneyView = holder.getView(R.id.tv_bill_money);
+        TextView statusView = holder.getView(R.id.tv_bill_status);
+        TextView statusViewOnly = holder.getView(R.id.tv_bill_Status_only);
+        moneyView.setVisibility(View.VISIBLE);
+        statusView.setVisibility(View.VISIBLE);
+        statusViewOnly.setVisibility(View.INVISIBLE);
+
+        /*1xx表示消费订单，2xx表示充值，3xx表示提现，4xx表示活动*/
+        if (status == 100) /*预付待找零*/{
+            holder.setText(R.id.tv_bill_money, "-¥"+amount);
+            holder.setText(R.id.tv_bill_status, "待找零");
+        } else if (status == 101) /*订单已完结*/{
+            holder.setText(R.id.tv_bill_money, "-¥"+amount);
+            statusView.setVisibility(View.INVISIBLE);
+            moneyView.setTextColor(Color.parseColor("#222222"));
+        } else if (status == 102) /*已退单*/{
+            moneyView.setVisibility(View.INVISIBLE);
+            statusView.setVisibility(View.INVISIBLE);
+            statusViewOnly.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_bill_Status_only, "已退款");
+        } else if (status == 103) /*异常订单，一般不会出现*/{
+            moneyView.setVisibility(View.INVISIBLE);
+            statusView.setVisibility(View.INVISIBLE);
+            statusViewOnly.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_bill_Status_only, "订单异常");
+        } else if (status == 200) /*充值成功*/{
+            holder.setText(R.id.tv_bill_money, "+¥"+amount);
+            holder.setText(R.id.tv_bill_status, "充值成功");
+        } else if (status == 201) /*充值失败*/{
+            moneyView.setVisibility(View.INVISIBLE);
+            statusView.setVisibility(View.INVISIBLE);
+            statusViewOnly.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_bill_Status_only, "充值失败");
+        } else if (status == 202) /*取消充值*/{
+            moneyView.setVisibility(View.INVISIBLE);
+            statusView.setVisibility(View.INVISIBLE);
+            statusViewOnly.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_bill_Status_only, "取消充值");
+        } else if (status == 203) /*充值异常，一般不会出现*/{
+            moneyView.setVisibility(View.INVISIBLE);
+            statusView.setVisibility(View.INVISIBLE);
+            statusViewOnly.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_bill_Status_only, "充值异常");
+        } else if (status == 300) /*提现待审核*/{
+            moneyView.setVisibility(View.INVISIBLE);
+            statusView.setVisibility(View.INVISIBLE);
+            statusViewOnly.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_bill_Status_only, "待审核");
+        } else if (status == 301) /*提现审核未通过*/{
+            moneyView.setVisibility(View.INVISIBLE);
+            statusView.setVisibility(View.INVISIBLE);
+            statusViewOnly.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_bill_Status_only, "审核未通过");
+        } else if (status == 302) /*提现失败*/{
+            moneyView.setVisibility(View.INVISIBLE);
+            statusView.setVisibility(View.INVISIBLE);
+            statusViewOnly.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_bill_Status_only, "退款失败");
+        } else if (status == 303) /*等待到账*/{
+            moneyView.setVisibility(View.INVISIBLE);
+            statusView.setVisibility(View.INVISIBLE);
+            statusViewOnly.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_bill_Status_only, "等待到账");
+        } else if (status == 304) /*提现成功*/{
+            holder.setText(R.id.tv_bill_money, "-¥"+amount);
+            holder.setText(R.id.tv_bill_status, "退款成功");
+        } else if (status == 305) /*取消提现*/{
+            moneyView.setVisibility(View.INVISIBLE);
+            statusView.setVisibility(View.INVISIBLE);
+            statusViewOnly.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_bill_Status_only, "取消退款");
+        } else if (status == 306) /*提现异常，一般不会出现*/{
+            moneyView.setVisibility(View.INVISIBLE);
+            statusView.setVisibility(View.INVISIBLE);
+            statusViewOnly.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_bill_Status_only, "退款异常");
+        } else if (status == 400) /*活动*/{
+            holder.setText(R.id.tv_bill_money, "+¥"+amount);
+            statusView.setVisibility(View.INVISIBLE);
+        }
+
+
+    }
+
+    private String getTypeName(int billType, int status) {
         if (billType == XLFilterContentViewBillTypeRecharge) {
             return "充值";
         } else if (billType == XLFilterContentViewBillTypeWithdraw) {

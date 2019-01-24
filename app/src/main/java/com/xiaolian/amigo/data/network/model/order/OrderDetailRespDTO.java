@@ -77,6 +77,10 @@ public class OrderDetailRespDTO {
      */
     private String qrCode;
 
+    private Integer category;
+
+    private Long supplierId;
+
     /**
      * 区分正反扫洗衣机
      */

@@ -7,6 +7,6 @@ package com.xiaolian.amigo.ui.order;
  * @date 18/1/19
  */
 
-class OrderConstant {
-    static final String KEY_ORDER_ID = "key_order_id";
+public class OrderConstant {
+    public static final String KEY_ORDER_ID = "key_order_id";
 }
