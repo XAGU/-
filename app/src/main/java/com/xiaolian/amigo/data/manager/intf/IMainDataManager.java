@@ -22,7 +22,10 @@ import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
+import com.xiaolian.amigo.data.network.model.version.VersionDialogTime;
 import com.xiaolian.amigo.data.vo.User;
+
+import junit.runner.Version;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,9 +82,9 @@ public interface IMainDataManager {
      */
     Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(@Body CheckVersionUpdateReqDTO reqDTO);
 
-    void setLastUpdateRemindTime();
+    void setLastUpdateRemindTime(String mobile);
 
-    Long getLastUpdateRemindTime();
+    VersionDialogTime getLastUpdateRemindTime();
 
     Integer getMainGuide();
 

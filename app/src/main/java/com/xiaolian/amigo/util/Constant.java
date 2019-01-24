@@ -409,6 +409,11 @@ public final class Constant {
     public static final String ANOTHER_DEVICE_LOGIN = "ANOTHER_DEVICE_LOGIN" ;
 
     /**
+     * 是否显示版本更新
+     */
+    public static final String SHOW_VERSION_UPDATE = "SHOW_VERSION_UPDATE" ;
+
+    /**
      * 注销EventBus
      */
     public static final int EVENTBUS_UNREGISTER  = 0X11111;

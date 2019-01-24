@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.prefs;
 import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
+import com.xiaolian.amigo.data.network.model.version.VersionDialogTime;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.NormalBathroom;
 import com.xiaolian.amigo.data.vo.User;
@@ -82,9 +83,9 @@ public interface ISharedPreferencesHelp {
     Long getLastConnectTime();
 
     // 更新提示
-    Long getLastUpdateRemindTime();
+    VersionDialogTime getLastUpdateRemindTime();
 
-    void setLastUpdateRemindTime();
+    void setLastUpdateRemindTime(String mobile);
 
     // 上次选择的充值id
     void setLastWithdrawId(Long id);

@@ -34,6 +34,7 @@ import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.version.VersionDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
+import com.xiaolian.amigo.data.network.model.version.VersionDialogTime;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
@@ -162,12 +163,12 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
-    public void setLastUpdateRemindTime() {
-        sharedPreferencesHelp.setLastUpdateRemindTime();
+    public void setLastUpdateRemindTime(String mobile) {
+        sharedPreferencesHelp.setLastUpdateRemindTime(mobile);
     }
 
     @Override
-    public Long getLastUpdateRemindTime() {
+    public VersionDialogTime getLastUpdateRemindTime() {
         return sharedPreferencesHelp.getLastUpdateRemindTime();
     }
 

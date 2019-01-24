@@ -45,6 +45,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.xiaolian.amigo.util.Constant.ANOTHER_DEVICE_LOGIN;
+import static com.xiaolian.amigo.util.Constant.SHOW_VERSION_UPDATE;
 import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
@@ -116,6 +117,11 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     private boolean isThirdLogin;
 
     /**
+     * 是否显示版本弹窗
+     */
+    private boolean canShowVersionUpdate ;
+
+    /**
      * 其他设备登录提醒
      */
     private AnotherDeviceLoginDialog anotherDeviceLoginDialog ;
@@ -125,6 +131,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     protected void setUp() {
         if (getIntent() != null){
             showAnotherDeviceLogin = getIntent().getBooleanExtra(ANOTHER_DEVICE_LOGIN ,false);
+            canShowVersionUpdate = getIntent().getBooleanExtra(SHOW_VERSION_UPDATE ,true);
         }
     }
 
@@ -138,8 +145,10 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         getActivityComponent().inject(this);
 
         presenter.onAttach(LoginActivity.this);
-        presenter.checkUpdate(AppUtils.getAppVersionCode(this),
-                AppUtils.getVersionName(this) ,presenter.getRemindMobile());
+        if (canShowVersionUpdate) {
+            presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+                    AppUtils.getVersionName(this), presenter.getRemindMobile());
+        }
 
         Long schoolId = presenter.getSchoolId();
         if (!ObjectsCompat.equals(schoolId, -1)) {

@@ -40,6 +40,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.version.VersionDialogTime;
 import com.xiaolian.amigo.ui.main.MainActivity;
 
 import java.io.IOException;
@@ -51,10 +52,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static android.content.Context.ACTIVITY_SERVICE;
+import static com.xiaolian.amigo.util.Constant.UPDATE_REMIND_INTERVAL;
 
 /**
  * @author caidong
@@ -299,6 +302,28 @@ public final class CommonUtil {
                 return null;
             }
         }
+    }
+
+
+    /**
+     * 判断是否显示版本更新弹窗
+     * @param versionDialogTime  存储的用mobile 为key  ,time 为value 的map
+     * @param mobile  手机号
+     * @return  true   显示  false  不显示
+     */
+    public static boolean canShowUpdateDialog(VersionDialogTime versionDialogTime , String mobile){
+        if (versionDialogTime == null) return true ;
+
+        Map<String ,Long> updateTime = versionDialogTime.getVersionDialogTime();
+
+        if (updateTime == null || updateTime.isEmpty()) return true ;
+
+        if (updateTime.size() == 1 && updateTime.containsKey("")) return false ;
+        if (updateTime.containsKey(mobile)){
+            if (System.currentTimeMillis() - updateTime.get(mobile) >=UPDATE_REMIND_INTERVAL) return  true;
+            else return false ;
+        }
+        return true ;
     }
 
 }
