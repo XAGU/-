@@ -41,6 +41,9 @@ public class BalanceStatisticsFragment extends Fragment implements MonthlyBillVi
     @BindView(R.id.tv_max_consume)
     TextView tvMaxConsume;
 
+    @BindView(R.id.tv_total_consume_withdraw)
+    TextView tvConsumWithdraw;//新增消费退款字段
+
     @BindView(R.id.tv_total_recharge)
     TextView tvTotalRecharge;
 
@@ -89,6 +92,7 @@ public class BalanceStatisticsFragment extends Fragment implements MonthlyBillVi
         Bundle bundle = new Bundle();
         bundle.putInt(WalletConstant.KEY_YEAR, currentYear);
         bundle.putInt(WalletConstant.KEY_MONTH, currentMonth);
+        bundle.putInt(WalletConstant.KEY_ORDER_STATUS, 2);
         bundle.putInt(WalletConstant.KEY_MAX_ORDER, WalletConstant.ACTION_MAX_ORDER);
         startActivity(new Intent(getActivity(), OrderActivity.class)
                 .putExtra(Constant.DATA_BUNDLE, bundle));
@@ -99,6 +103,17 @@ public class BalanceStatisticsFragment extends Fragment implements MonthlyBillVi
         Bundle bundle = new Bundle();
         bundle.putInt(WalletConstant.KEY_YEAR, currentYear);
         bundle.putInt(WalletConstant.KEY_MONTH, currentMonth);
+        bundle.putInt(WalletConstant.KEY_ORDER_STATUS, 2);
+        startActivity(new Intent(getActivity(), OrderActivity.class)
+                .putExtra(Constant.DATA_BUNDLE, bundle));
+    }
+
+    @OnClick(R.id.tv_total_consume_withdraw)
+    public void gotoMonthlyOrderWithdraw() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(WalletConstant.KEY_YEAR, currentYear);
+        bundle.putInt(WalletConstant.KEY_MONTH, currentMonth);
+        bundle.putInt(WalletConstant.KEY_ORDER_STATUS, 3);
         startActivity(new Intent(getActivity(), OrderActivity.class)
                 .putExtra(Constant.DATA_BUNDLE, bundle));
     }
@@ -141,7 +156,7 @@ public class BalanceStatisticsFragment extends Fragment implements MonthlyBillVi
     }
 
 
-    //TODO:应该是获取数据后的回调，暂时未用到
+    //获取数据后的回调
     public void render(UserMonthlyBillRespDTO data) {
         dataList.clear();
         for (UserMonthlyBillConsumeRespDTO consume : data.getConsumeTypes()) {
@@ -158,10 +173,11 @@ public class BalanceStatisticsFragment extends Fragment implements MonthlyBillVi
             monthlyBillView.setData(dataList);
         }
         tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
-        tvTotalConsume.setText(String.format(Locale.getDefault(), "消费总额：¥%s", df.format(data.getTotalConsume())));
+        tvTotalConsume.setText(String.format(Locale.getDefault(), "实际消费：¥%s", df.format(data.getTotalConsume())));
         tvMaxConsume.setText(String.format(Locale.getDefault(), "单笔消费最贵：¥%s", df.format(data.getMaxConsume())));
-        tvTotalRecharge.setText(String.format(Locale.getDefault(), "充值总额：¥%s", df.format(data.getTotalRecharge())));
-        tvTotalWithdraw.setText(String.format(Locale.getDefault(), "提现总额：¥%s", df.format(data.getTotalWithdraw())));
+        tvTotalRecharge.setText(String.format(Locale.getDefault(), "余额充值：¥%s", df.format(data.getTotalRecharge())));
+        tvTotalWithdraw.setText(String.format(Locale.getDefault(), "余额退款：¥%s", df.format(data.getTotalWithdraw())));
+        tvConsumWithdraw.setText(String.format(Locale.getDefault(), "消费退款：¥%s", df.format(data.getRefunds())));
     }
 
     @Override

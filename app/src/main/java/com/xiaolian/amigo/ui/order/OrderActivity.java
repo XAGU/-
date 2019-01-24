@@ -52,6 +52,7 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
     private Integer year;
     private Integer month;
     private Integer action;
+    private Integer orderStatus;
 
 
     @Override
@@ -84,20 +85,21 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
             month = bundle.getInt(WalletConstant.KEY_MONTH,  INVALID_INT);
             deviceType = bundle.getInt(WalletConstant.KEY_DEVICE_TYPE, INVALID_INT);
             action = bundle.getInt(WalletConstant.KEY_MAX_ORDER, INVALID_INT);
+            orderStatus = bundle.getInt(WalletConstant.KEY_ORDER_STATUS, 2);
         }
     }
 
     @Override
     protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
-        presenter.requestOrders(Constant.PAGE_START_NUM, deviceType, year, month, action);
+        presenter.requestOrders(Constant.PAGE_START_NUM, deviceType, year, month, action, orderStatus);
         refreshFlag = true;
 //        orders.clear();
     }
 
     @Override
     public void onLoadMore() {
-        presenter.requestOrders(page, deviceType, year, month, action);
+        presenter.requestOrders(page, deviceType, year, month, action, orderStatus);
     }
 
     @Override

@@ -19,5 +19,5 @@ public interface IOrderPresenter<V extends IOrderView> extends IBasePresenter<V>
      * @param page 页数
      */
     void requestOrders(int page, Integer deviceType,
-                       Integer year, Integer month, Integer action);
+                       Integer year, Integer month, Integer action, Integer orderStatus);
 }

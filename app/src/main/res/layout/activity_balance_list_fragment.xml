@@ -1,6 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:orientation="vertical"
+        android:background="@color/white">
+        <View
+            android:background="@color/colorDarke"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_filter_date"
+                android:text="2018年5月"
+                android:textSize="14sp"
+                android:layout_marginLeft="22dp"
+                android:gravity="center_vertical"
+                android:drawableRight="@drawable/spread"
+                android:drawablePadding="6dp"
+                android:textColor="@color/colorDark2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
 
-</android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_filter_type"
+                android:text="分类"
+                android:textSize="14sp"
+                android:layout_marginRight="22dp"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:drawableRight="@drawable/spread"
+                android:drawablePadding="6dp"
+                android:textColor="@color/colorDark2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tv_filter_status"
+                android:text="筛选"
+                android:textSize="14sp"
+                android:layout_marginRight="22dp"
+                android:layout_toLeftOf="@+id/tv_filter_type"
+                android:gravity="center_vertical"
+                android:drawableRight="@drawable/spread"
+                android:drawablePadding="6dp"
+                android:textColor="@color/colorDark2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </RelativeLayout>>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="visible"
+        android:background="@color/colorBackgroundGray"
+        android:id="@+id/ll_header"
+        android:paddingTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:srlHeaderHeight="40dp"
+        app:srlFooterHeight="160dp"
+        android:layout_marginLeft="@dimen/mainMarginLeftRight"
+        android:layout_marginRight="@dimen/mainMarginLeftRight"
+        >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include layout="@layout/layout_empty"
+                android:visibility="gone"/>
+            <RelativeLayout
+                android:id="@+id/rl_error"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:background="@color/colorBackgroundGray"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tv_error_tip"
+                    android:textSize="14sp"
+                    android:text="@string/network_available_error_tip"
+                    android:textColor="@color/colorDark2"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="14dp"
+                    android:layout_above="@id/tv_error_tip"
+                    android:src="@drawable/ic_error_ballon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginBottom="@dimen/listBottomMargin"
+                android:overScrollMode="never"
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </FrameLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/ll_footer"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="bottom|center_horizontal"
+        app:layout_behavior="com.xiaolian.amigo.ui.lostandfound.behavior.FooterBehavior">
+    </LinearLayout>
+
+</LinearLayout>

@@ -30,4 +30,7 @@ public class UserMonthlyBillRespDTO {
      * 提现总额
      */
     private Double totalWithdraw;
+
+    /*消费退款*/
+    private Double refunds;
 }

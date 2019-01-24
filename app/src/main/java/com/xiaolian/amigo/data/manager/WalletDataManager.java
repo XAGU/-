@@ -23,6 +23,8 @@ import com.xiaolian.amigo.data.network.model.funds.WechatWithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.userbill.QueryBillListReqDTO;
+import com.xiaolian.amigo.data.network.model.userbill.QueryBillListRespDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryMonthlyBillReqDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryPersonalMaxConsumeOrderListReqDTO;
 import com.xiaolian.amigo.data.network.model.userbill.UserMonthlyBillRespDTO;
@@ -193,6 +195,11 @@ public class WalletDataManager implements IWalletDataManager {
     @Override
     public Observable<ApiResult<UserMonthlyBillRespDTO>> getMonthlyBill(QueryMonthlyBillReqDTO reqDTO) {
         return userBillApi.getMonthlyBill(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<QueryBillListRespDTO>> getUserBillList(@Body QueryBillListReqDTO reqDTO) {
+        return userBillApi.getUserBillList(reqDTO);
     }
 
     @Override
