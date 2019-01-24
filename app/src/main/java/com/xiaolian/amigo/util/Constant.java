@@ -63,6 +63,7 @@ public final class Constant {
      */
     public static final String EXTRA_KEY = "detail";
 
+
     /**
      * 从哪儿充值来的
      */

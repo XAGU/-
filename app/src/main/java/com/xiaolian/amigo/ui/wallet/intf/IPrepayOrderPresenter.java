@@ -10,4 +10,10 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
  */
 
 public interface IPrepayOrderPresenter<V extends IPrepayOrderView> extends IBasePresenter<V> {
+    /**
+     * 获取账单
+     *
+     * @param orderId 账单id
+     */
+    void getOrder(Long orderId);
 }

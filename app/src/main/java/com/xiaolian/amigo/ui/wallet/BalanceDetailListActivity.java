@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,15 +16,24 @@ import butterknife.ButterKnife;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 
+import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
+import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.network.model.userbill.UserMonthlyBillRespDTO;
 import com.xiaolian.amigo.di.componet.BalanceDetailListActivityComponent;
 import com.xiaolian.amigo.di.module.BalanceDetailListActivityModule;
 import com.xiaolian.amigo.di.componet.DaggerBalanceDetailListActivityComponent;
 import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.login.RegisterStep1Fragment;
+import com.xiaolian.amigo.ui.order.NormalOrderActivity;
+import com.xiaolian.amigo.ui.order.OrderActivity;
+import com.xiaolian.amigo.ui.order.OrderConstant;
+import com.xiaolian.amigo.ui.order.OrderDetailActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
+import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IBalanceDetailListView;
 import com.xiaolian.amigo.ui.wallet.intf.IBalanceDetailListPresenter;
+import com.xiaolian.amigo.util.Constant;
 
 import java.util.List;
 
@@ -31,6 +41,7 @@ import javax.inject.Inject;
 
 public class BalanceDetailListActivity extends BaseActivity implements IBalanceDetailListView {
 
+    public static final int REQUEST_CODE_DETAIL = 0x1201;
 
     private BalanceDetailListActivityComponent mActivityComponent;
 
@@ -89,7 +100,32 @@ public class BalanceDetailListActivity extends BaseActivity implements IBalanceD
         this.finish();
     }
 
-    //点击左边的按钮展示账单
+    //跳转到充值提现
+    public void gotoBillRechargeWithdrawActivity(int type, Long id) {
+        startActivityForResult(new Intent(BalanceDetailListActivity.this,
+                        WithdrawOperationType.getOperationType(type)
+                                .getClz())
+                        .putExtra(Constant.EXTRA_KEY, id),
+                REQUEST_CODE_DETAIL);
+    }
+
+    public void gotoBillDetailActivity(int type, Long id, int status) {
+        if (status == 100) /*预付未找零*/{
+
+            startActivity(new Intent(BalanceDetailListActivity.this, PrepayOrderActivity.class)
+                    .putExtra(OrderConstant.KEY_ORDER_ID, id));
+        } else if (Device.getDevice(type) == Device.WASHER || Device.getDevice(type)==Device.DRYER2) {
+            startActivity(new Intent(BalanceDetailListActivity.this, NormalOrderActivity.class)
+                    .putExtra(OrderConstant.KEY_ORDER_ID, id));
+        } else {
+            // 跳转至订单详情
+            Intent intent = new Intent(BalanceDetailListActivity.this, OrderDetailActivity.class);
+            intent.putExtra(Constant.EXTRA_KEY, id);
+            startActivity(intent);
+        }
+    }
+
+        //点击左边的按钮展示账单
     private void showBalanceDetailListView() {
         leftTitle.setTextColor(Color.parseColor("#222222"));
         rightTitle.setTextColor(Color.parseColor("#bbbbbb"));
@@ -187,6 +223,13 @@ public class BalanceDetailListActivity extends BaseActivity implements IBalanceD
         balanceListFragment.hideErrorView();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAIL) {
+            balanceListFragment.onRefresh();
+        }
+    }
 
 
 //    @Override

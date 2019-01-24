@@ -10,12 +10,14 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserCategory;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.network.model.order.Order;
+import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.order.OrderConstant;
 import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayOrderPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayOrderView;
@@ -67,7 +69,10 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
     @BindView(R.id.tv_prepay_order_tip)
     TextView tvPrepayOrderTip;
 
-    private PrepayAdaptor.OrderWrapper orderWrapper;
+//    private PrepayAdaptor.OrderWrapper orderWrapper;
+    private OrderDetailRespDTO orderDetailRespDTO;
+
+    private Long orderId;
 
     @Override
     protected void initView() {
@@ -75,30 +80,33 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         getActivityComponent().inject(this);
         presenter.onAttach(PrepayOrderActivity.this);
 
-        if (orderWrapper != null) {
-            render(orderWrapper);
+        if (orderId > 0) /*获取订单信息*/{
+            presenter.getOrder(orderId);
         }
     }
 
-    private void render(PrepayAdaptor.OrderWrapper orderWrapper) {
-        Order order = orderWrapper.getOrder();
+    @Override
+    public void render(OrderDetailRespDTO orderDetailRespDTO) {
+        this.orderDetailRespDTO = orderDetailRespDTO;
+//        Order order = orderWrapper.getOrder();
         // 设置基础信息
-        tvTime.setText(CommonUtil.stampToDate(order.getCreateTime()));
-        Device device = Device.getDevice(order.getDeviceType());
+        tvTime.setText(CommonUtil.stampToDate(orderDetailRespDTO.getCreateTime()));
+        Device device = Device.getDevice(orderDetailRespDTO.getDeviceType());
         if (device != null) {
-            tvDeviceLocation.setText(String.format("%s %s", device.getDesc(), order.getLocation()));
+            tvDeviceLocation.setText(String.format("%s %s", device.getDesc(), orderDetailRespDTO.getLocation()));
         } else {
-            tvDeviceLocation.setText(String.format("未知设备 %s", order.getLocation()));
+            tvDeviceLocation.setText(String.format("未知设备 %s", orderDetailRespDTO.getLocation()));
         }
-        tvOrderNo.setText(order.getOrderNo());
-        tvPrepay.setText(order.getPrepay());
+        tvOrderNo.setText(orderDetailRespDTO.getOrderNo());
+        tvPrepay.setText(orderDetailRespDTO.getPrepay());
         tvOdd.setText(getString(R.string.wait_to_change));
     }
 
     @Override
     protected void setUp() {
         super.setUp();
-        orderWrapper = (PrepayAdaptor.OrderWrapper) getIntent().getSerializableExtra(Constant.EXTRA_KEY);
+//        orderWrapper = (PrepayAdaptor.OrderWrapper) getIntent().getSerializableExtra(Constant.EXTRA_KEY);
+        orderId = getIntent().getLongExtra(OrderConstant.KEY_ORDER_ID, -1);
     }
 
     @OnClick(R.id.tv_copy)
@@ -128,16 +136,16 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
      */
     @OnClick(R.id.bt_ok)
     public void settleOrder() {
-        String macAddress = orderWrapper.getMacAddress();
-        String location = orderWrapper.getLocation();
+        String macAddress = orderDetailRespDTO.getMacAddress();
+        String location = orderDetailRespDTO.getLocation();
         Intent intent = null;
-        if (Device.getDevice(orderWrapper.getType()) == Device.HEATER) {
+        if (Device.getDevice(orderDetailRespDTO.getDeviceType()) == Device.HEATER) {
             intent = new Intent(this, HeaterActivity.class);
             intent.putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.HEATER.getType());
-        } else if (Device.getDevice(orderWrapper.getType()) == Device.DISPENSER) {
+        } else if (Device.getDevice(orderDetailRespDTO.getDeviceType()) == Device.DISPENSER) {
             intent = new Intent(this, DispenserActivity.class);
             intent.putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType());
-        } else if (Device.getDevice(orderWrapper.getType()) == Device.DRYER) {
+        } else if (Device.getDevice(orderDetailRespDTO.getDeviceType()) == Device.DRYER) {
             intent = new Intent(this, DryerActivity.class);
             intent.putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DRYER.getType());
         }
@@ -148,15 +156,15 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         }
         intent.putExtra(MainActivity.INTENT_KEY_LOCATION, location);
         intent.putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, macAddress);
-        intent.putExtra(MainActivity.INTENT_KEY_SUPPLIER_ID, orderWrapper.getSupplierId());
+        intent.putExtra(MainActivity.INTENT_KEY_SUPPLIER_ID, orderDetailRespDTO.getSupplierId());
         intent.putExtra(WaterDeviceBaseActivity.INTENT_HOME_PAGE_JUMP, false);
-        intent.putExtra(DispenserActivity.INTENT_KEY_ID, orderWrapper.getResidenceId());
-        intent.putExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, orderWrapper.getResidenceId());
-        if (orderWrapper.getCategory() != null
-                && ObjectsCompat.equals(orderWrapper.getCategory(), DispenserCategory.MULTI.getType())) {
+        intent.putExtra(DispenserActivity.INTENT_KEY_ID, orderDetailRespDTO.getResidenceId());
+        intent.putExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, orderDetailRespDTO.getResidenceId());
+        if (orderDetailRespDTO.getCategory() != null
+                && ObjectsCompat.equals(orderDetailRespDTO.getCategory(), DispenserCategory.MULTI.getType())) {
             intent.putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, DispenserWater.ALL.getType());
         } else {
-            intent.putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, orderWrapper.getUsefor());
+            intent.putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, orderDetailRespDTO.getUsefor());
         }
         TimeHolder.get().setLastConnectTime(System.currentTimeMillis());
         startActivity(intent);

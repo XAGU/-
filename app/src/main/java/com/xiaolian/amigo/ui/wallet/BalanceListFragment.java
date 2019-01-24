@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 public class BalanceListFragment extends Fragment {
-
     private RecyclerView recyclerView;
     private LinearLayout llFooter;
     private LinearLayout llHeader;
@@ -118,12 +118,13 @@ public class BalanceListFragment extends Fragment {
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                //TODO:点击后跳转到账单详情
-//                startActivityForResult(new Intent(getActivity().this,
-//                                WithdrawOperationType.getOperationType(items.get(position).getType())
-//                                        .getClz())
-//                                .putExtra(Constant.EXTRA_KEY, items.get(position).getId()),
-//                        REQUEST_CODE_DETAIL);
+                BillListAdaptor.BillListAdaptorWrapper item = items.get(position);
+                //点击后跳转到账单详情
+                if (item.getType() == BillListAdaptor.XLFilterContentViewBillTypeRecharge || item.getType() == BillListAdaptor.XLFilterContentViewBillTypeWithdraw) /*余额充值、退款跳转*/{
+                    ((BalanceDetailListActivity)getActivity()).gotoBillRechargeWithdrawActivity(item.getType(), item.getId());
+                } else /*跳转到消费账单页面（包含预付待找零）*/{
+                    ((BalanceDetailListActivity)getActivity()).gotoBillDetailActivity(item.getType(), item.getId(), item.getStatus());
+                }
             }
 
             @Override
