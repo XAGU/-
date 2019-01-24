@@ -123,6 +123,11 @@ public final class Constant {
      * H5投诉建议
      */
     public static final String H5_VERSION = H5_SERVER + "/version";
+
+    /**
+     * H5扫码吹风机
+     */
+    public static final String H5_DRYER = H5_SERVER +"/blower" ;
     /**
      * H5意见反馈
      */

@@ -92,4 +92,10 @@ public interface IScanView extends IBaseView {
 
 
     void goToWasher(String deviceToken,String macAddress,int deviceType);
+
+    /**
+     * 跳转设备界面
+     * @param data
+     */
+    void gotoPage(BriefDeviceDTO data , String unique);
 }

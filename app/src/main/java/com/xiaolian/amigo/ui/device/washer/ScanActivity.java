@@ -46,7 +46,6 @@ import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.qrcode.CustomCaptureManager;
 import com.xiaolian.amigo.util.Constant;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +56,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
+import static com.xiaolian.amigo.data.enumeration.TradePage.BLE;
+import static com.xiaolian.amigo.data.enumeration.TradePage.QR_CODE;
+import static com.xiaolian.amigo.ui.base.WebActivity.INTENT_KEY_URL;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_DEVICE_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_LOCATION;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_MAC_ADDRESS;
@@ -76,7 +78,7 @@ public class ScanActivity extends WasherBaseActivity
     public static final String INTENT_URL_WASHER = "intent_url_washer";
     private static final int FRAMING_SIZE_DIVISOR = 4;
 
-    public static final String SCAN_TYPE = "SCAN_TYPE";   // 扫描类型
+    public static final String SCAN_TYPE = "SCAN_TYPE";   // 扫描类型，是为了显示不同的扫码区域的移动线
 
     public static final String IS_SACN = "IS_SCAN"; // 是否是扫描
 
@@ -205,6 +207,9 @@ public class ScanActivity extends WasherBaseActivity
 
     /**
      * 处理扫一扫进入的扫描内容 ； 内容格式为 （type , mac , siBle）
+     * https://www.xiaolian365.com/apply/device/4   洗衣机模式的url
+     * https://www.xiaolian365.com/apply/device/3   吹风机模式的url
+     *
      */
     private void handleScanContent(String scanContent) {
         if (scanContent.startsWith("https://www.xiaolian365.com/net-washing") || scanContent.startsWith("https://www.xiaolian365.com/apply/device/4")) {//在线洗衣机 supplierId=7&deviceType=4&deviceNo=CH9527
@@ -243,6 +248,13 @@ public class ScanActivity extends WasherBaseActivity
             }
             return;
 
+        }else if (scanContent.startsWith("https://www.xiaolian365.com/apply/device/3")){  //  扫码吹风机
+            String[]  params = scanContent.split("/");
+            if (params.length > 0){
+                String unique = params[params.length -1];  //  最后一个/后的内容就为该设备唯一标识值
+                presenter.getDeviceDetail(unique);
+                return ;
+            }
         } else if (isDoubleWasher(scanContent)) {//是否是正反扫设备
             presenter.scanCheckout(scanContent,-1);
             return;
@@ -255,7 +267,7 @@ public class ScanActivity extends WasherBaseActivity
         if (contents.length == 3) {
             try {
                 mac = contents[1];
-                isBle = "1".equals(contents[2]) ? true : false;
+                isBle = "1".equals(contents[2]);
                 type = Integer.parseInt(contents[0]);
                 capture.isCanPause = true;
                 presenter.checkDeviceUseage(type, mac, isBle);
@@ -269,6 +281,13 @@ public class ScanActivity extends WasherBaseActivity
             resumeScan();
         }
 
+    }
+
+
+    @Override
+    public void onError(String message) {
+        super.onError(message);
+        resumeScan();
     }
 
     private boolean isDoubleWasher(String url) {
@@ -314,7 +333,7 @@ public class ScanActivity extends WasherBaseActivity
             findViewById(R.id.iv_flashlight).setVisibility(View.GONE);
         }
     }
-
+    
     @SuppressWarnings("deprecation")
     private void zoomCamera() {
         if (barcodeScannerView.getBarcodeView().getCameraInstance() == null) {
@@ -760,6 +779,37 @@ public class ScanActivity extends WasherBaseActivity
             startActivity(intent);
             finish();
         }
+    }
+
+    /**
+     * 根据后台返回的tradePage 类型跳转不同交易界面
+     * @param data  后台返回值
+     * @param unique 设备唯一标识
+     */
+    @Override
+    public void gotoPage(BriefDeviceDTO data , String unique) {
+
+        //  如果是蓝牙设备 , 跳转蓝牙界面
+        if (BLE.getPage().equals(data.getTradePage())){
+            if (TextUtils.isEmpty(unique)){
+                onError("设备macAddress不合法");
+            }else{
+                goToBleDevice(true ,data.getDeviceType() ,unique ,data ,true);
+            }
+        }else if (QR_CODE.getPage().equals(data.getTradePage())){
+            gotoH5Dryer(data.getDeviceType() ,unique , data.getSupplierId());
+        }
+    }
+
+    private void gotoH5Dryer(int deviceType ,String unique , long supplierId ){
+        String url = Constant.H5_DRYER
+                + "?accessToken=" + presenter.getAccessToken()
+                +"&refreshToken=" + presenter.getRefreshToken()
+                + "&deviceType=" + deviceType
+                + "&macAddress=" + unique
+                + "&supplierId=" + supplierId;
+        startActivity(new Intent(this ,WebActivity.class)
+        .putExtra(INTENT_KEY_URL ,url));
     }
 
     public void gotoDevice(Device device, String macAddress, Long supplierId,

@@ -145,4 +145,26 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
     public String getRefreshToken() {
         return washerDataManager.getRefreshToken();
     }
+
+    @Override
+    public void getDeviceDetail(String unique) {
+        GetDeviceDetailReqDTO getDeviceDetailReqDTO = new GetDeviceDetailReqDTO();
+        getDeviceDetailReqDTO.setMacAddress(unique);addObserver(washerDataManager.getDeviceDetail(getDeviceDetailReqDTO) ,new NetworkObserver<ApiResult<BriefDeviceDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<BriefDeviceDTO> result) {
+                if (result.getError() == null){
+                    getMvpView().gotoPage(result.getData() , unique);
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().onError(e.getMessage());
+            }
+        });
+    }
 }

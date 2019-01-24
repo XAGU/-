@@ -85,4 +85,6 @@ public class DeviceCheckRespDTO {
         }
         return favor;
     }
+
+    private List<String> tradePages ; //  交易页面枚举 = ['BLE', 'GATEWAY_NETWORK', 'QR_CODE', 'NB'],
 }
