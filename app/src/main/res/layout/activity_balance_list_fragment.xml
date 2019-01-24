@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
+        android:id="@+id/tv_filter_content"
         android:layout_width="match_parent"
         android:layout_height="41dp"
         android:orientation="vertical"
@@ -59,15 +60,15 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:visibility="visible"
-        android:background="@color/colorBackgroundGray"
-        android:id="@+id/ll_header"
-        android:paddingTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:visibility="visible"-->
+        <!--android:background="@color/colorBackgroundGray"-->
+        <!--android:id="@+id/ll_header"-->
+        <!--android:paddingTop="8dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
+    <!--</LinearLayout>-->
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
@@ -75,7 +76,8 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:srlHeaderHeight="40dp"
-        app:srlFooterHeight="160dp"
+        app:srlFooterHeight="60dp"
+        android:layout_marginTop="21dp"
         android:layout_marginLeft="@dimen/mainMarginLeftRight"
         android:layout_marginRight="@dimen/mainMarginLeftRight"
         >
@@ -117,15 +119,15 @@
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/ll_footer"
-        android:visibility="visible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="bottom|center_horizontal"
-        app:layout_behavior="com.xiaolian.amigo.ui.lostandfound.behavior.FooterBehavior">
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:id="@+id/ll_footer"-->
+        <!--android:visibility="visible"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_gravity="bottom|center_horizontal"-->
+        <!--app:layout_behavior="com.xiaolian.amigo.ui.lostandfound.behavior.FooterBehavior">-->
+    <!--</LinearLayout>-->
 
 </LinearLayout>

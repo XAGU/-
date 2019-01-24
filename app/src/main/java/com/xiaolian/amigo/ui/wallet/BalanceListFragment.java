@@ -24,6 +24,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawalAdaptor;
+import com.xiaolian.amigo.ui.widget.dialog.YearMonthPickerDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.util.Constant;
@@ -32,16 +33,23 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class BalanceListFragment extends Fragment {
     private RecyclerView recyclerView;
-    private LinearLayout llFooter;
-    private LinearLayout llHeader;
+//    private LinearLayout llFooter;
+//    private LinearLayout llHeader;
     private RelativeLayout rlEmpty;
     private TextView tvEmptyTip;
     private RelativeLayout rlError;
+
+    private TextView tvMonthlyOrderDate;
+//    private Integer currentYear;
+//    private Integer currentMonth;
+    YearMonthPickerDialog yearMonthPickerDialog;
 //    private View v_divide;
 
 //    protected int page = Constant.PAGE_START_NUM;
@@ -74,13 +82,14 @@ public class BalanceListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        llHeader = view.findViewById(R.id.ll_header);
+//        llHeader = view.findViewById(R.id.ll_header);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         recyclerView = view.findViewById(R.id.recyclerView);
         rlEmpty = view.findViewById(R.id.rl_empty);
         tvEmptyTip = view.findViewById(R.id.tv_empty_tip);
         rlError = view.findViewById(R.id.rl_error);
-        llFooter = view.findViewById(R.id.ll_footer);
+//        llFooter = view.findViewById(R.id.ll_footer);
+        tvMonthlyOrderDate = view.findViewById(R.id.tv_filter_date);
         initRecyclerView();
         initTimeStr();
     }
@@ -90,6 +99,7 @@ public class BalanceListFragment extends Fragment {
         int currentYear = cal.get(Calendar.YEAR);
         int currentMonth = cal.get(Calendar.MONTH )+1;
         timeStr = String.valueOf(currentYear * 100 + currentMonth);
+        tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
     }
 
     private void initRecyclerView() {
@@ -112,6 +122,32 @@ public class BalanceListFragment extends Fragment {
             refreshLayout.autoRefresh(20);
 //        }
     }
+
+    @OnClick(R.id.tv_filter_date)
+    public void showDatePick() {
+        if (yearMonthPickerDialog == null) {
+             Long timestamps = ((BalanceDetailListActivity)getActivity()).presenter.getAccountCreateTime();
+            yearMonthPickerDialog = new YearMonthPickerDialog(getActivity(), timestamps);
+        }
+        yearMonthPickerDialog.setOnItemSelectedListener((picker, date) -> {
+           Calendar cal = Calendar.getInstance();
+           cal.setTime(date);
+           int currentYear = cal.get(Calendar.YEAR);
+           int currentMonth = cal.get(Calendar.MONTH) + 1;
+          String newTimeStr = String.valueOf(currentYear * 100 + currentMonth);
+           if (timeStr.equalsIgnoreCase(newTimeStr)) {
+              return;//相同不用请求新数据
+          }
+          timeStr = newTimeStr;
+          items.clear();
+          lastId = null;
+           adaptor.notifyDataSetChanged();
+          tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+          ((BalanceDetailListActivity)getActivity()).presenter.getUserBillList(timeStr, billType, billStatus, lastId, true, 20);
+         });
+         yearMonthPickerDialog.show();
+}
+
 
     protected void setRecyclerView(RecyclerView recyclerView) {
         adaptor = new BillListAdaptor(getActivity(), R.layout.item_withdrawal_record, items);
