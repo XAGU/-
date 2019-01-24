@@ -114,7 +114,7 @@ android {
 
              // qa4
 //            buildConfigField "String", "SERVER", "\"http://39.108.165.72:5081/\"" //qa4
-//            buildConfigField "String", "SERVER_BATHROOM", "\"http:/39.108.165.72:5082/\"" //qa4
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.165.72:5082/\"" //qa4
 //            buildConfigField "String", "H5_SERVER", "\"http://39.108.165.72:5097/c\"" //qa4
 
 

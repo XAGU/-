@@ -447,9 +447,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 transaction.add(R.id.fragment ,target , targetTag);
             }
         }
-
         transaction.commit() ;
-
     }
 
     /**

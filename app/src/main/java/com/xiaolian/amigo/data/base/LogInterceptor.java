@@ -110,9 +110,9 @@ public class LogInterceptor implements Interceptor {
             }
 
             if (isDev && (!TextUtils.isEmpty(bathServer) || !TextUtils.isEmpty(server))) {
-                String newUrl = request.url().toString().replace(oldBathServer, bathServer);
+                String newUrl = request.url().toString().replace(oldServer, server);
                 Log.d(TAG, newUrl);
-                newUrl = newUrl.replace(oldServer, server);
+                newUrl = newUrl.replace(oldBathServer, bathServer);
                 Log.d(TAG, newUrl);
                 newRequest = request.newBuilder()
                         // 添加token
