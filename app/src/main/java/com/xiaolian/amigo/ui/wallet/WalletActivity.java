@@ -6,7 +6,9 @@ import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
@@ -124,10 +126,10 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     /**
      * 充值
      */
-//    @OnClick({R.id.iv_recharge, R.id.rl_recharge})
-//    void recharge() {
-//        startActivity(this, RechargeActivity.class);
-//    }
+    @OnClick({ R.id.rl_recharge})
+    void recharge() {
+        startActivity(this, RechargeActivity.class);
+    }
 
     /**
      * 查看预付金额列表
@@ -142,7 +144,6 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
      */
     @OnClick(R.id.rl_withdrawal)
     void withdrawal() {
-//        presenter.queryWithdrawTimeValid();
          presenter.queryWithDraw();
     }
 
@@ -177,7 +178,13 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
 
     @Override
     public void setBalanceText(Double balance) {
-        tvBalance.setText(String.format(Locale.getDefault(), "¥%s", df.format(balance)));
+        String balanceTxt = String.format(Locale.getDefault() ,"￥%s" ,df.format(balance));
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder(balanceTxt);
+        AbsoluteSizeSpan absoluteSizeSpanSmall = new AbsoluteSizeSpan(14 ,true);
+        stringBuilder.setSpan(absoluteSizeSpanSmall ,0 , 1 , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        AbsoluteSizeSpan absoluteSizeSpanBig = new AbsoluteSizeSpan(29 ,true);
+        stringBuilder.setSpan(absoluteSizeSpanBig ,1 , balanceTxt.length() -1 , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvBalance.setText(stringBuilder);
     }
 
     @Override

@@ -13,6 +13,8 @@ import com.xiaolian.amigo.data.network.model.funds.WechatWithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.userbill.QueryBillListReqDTO;
+import com.xiaolian.amigo.data.network.model.userbill.QueryBillListRespDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryMonthlyBillReqDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryPersonalMaxConsumeOrderListReqDTO;
 import com.xiaolian.amigo.data.network.model.userbill.UserMonthlyBillRespDTO;
@@ -158,9 +160,14 @@ public interface IWalletDataManager {
     String getMobile();
 
     /**
-     * 用户个人账单查询
+     * 用户个人月账单查询
      */
     Observable<ApiResult<UserMonthlyBillRespDTO>> getMonthlyBill(@Body QueryMonthlyBillReqDTO reqDTO);
+
+    /**
+     * 用户个人账单列表查询（包含充值提现、消费账单）
+     */
+    Observable<ApiResult<QueryBillListRespDTO>> getUserBillList(@Body QueryBillListReqDTO reqDTO);
 
     /**
      * 用户个人订单(最大消费)记录列表

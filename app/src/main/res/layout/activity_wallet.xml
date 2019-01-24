@@ -14,19 +14,15 @@
     <RelativeLayout
         android:id="@+id/tips"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="21dp">
+        android:layout_height="162dp">
 
         <ImageView
             android:id="@+id/image_wallet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/qianbao"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="0dp"
+            android:scaleType="centerCrop"
             />
         <TextView
             style="@style/ContentText_main"
@@ -34,22 +30,17 @@
             android:layout_height="wrap_content"
             android:text="余额"
             android:layout_marginTop="50dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginStart="21dp"
             />
         <TextView
             android:id="@+id/tv_balance"
             style="@style/Money_Upper"
+            android:textColor="@color/colorDark2"
             android:layout_marginTop="80dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginStart="21dp"
+            tools:text="94.05"
             />
     </RelativeLayout>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:layout_marginTop="21dp"
-        android:background="#eee" />
 
     <RelativeLayout
         android:id="@+id/rl_giving_balance"
@@ -128,11 +119,6 @@
             android:text="预付金额" />
 
     </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:background="#eee" />
     <RelativeLayout
         android:id="@+id/rl_recharge"
         android:layout_width="wrap_content"
@@ -208,10 +194,5 @@
             android:text="账单" />
 
     </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:background="#eee" />
 
 </LinearLayout>

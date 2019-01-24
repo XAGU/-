@@ -59,7 +59,7 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
     @Override
     public void requestOrders(int page, Integer deviceType,
                               Integer year, Integer month,
-                              Integer action) {
+                              Integer action, Integer orderStatus) {
         if (ObjectsCompat.equals(action, WalletConstant.ACTION_MAX_ORDER)) {
             queryMaxOrder(year, month);
             return;
@@ -80,7 +80,7 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看已结束账单
-        reqDTO.setOrderStatus(2);
+        reqDTO.setOrderStatus(orderStatus);
         addObserver(orderDataManager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false, true) {
             @Override
             public void onReady(ApiResult<OrderRespDTO> result) {

@@ -16,30 +16,51 @@
         android:paddingTop="18dp">
 
         <TextView
-            android:id="@+id/tv_withdrawal"
+            android:id="@+id/tv_bill_type"
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            tools:text="提现：￥12" />
+            tools:text="提现" />
 
         <TextView
-            android:id="@+id/tv_withdrawal_time"
+            android:id="@+id/tv_bill_time"
             style="@style/ContentText_sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_withdrawal"
+            android:layout_below="@id/tv_bill_type"
             android:layout_marginTop="10dp"
             android:text="今天12:30" />
 
         <TextView
-            android:id="@+id/tv_withdrawal_status"
+            android:id="@+id/tv_bill_money"
             style="@style/ContentText_title"
-            android:textColor="@color/device_dispenser"
+            android:textColor="@color/colorFullRed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            tools:text="提现成功" />
+            tools:text="+￥12" />
+        <TextView
+            android:id="@+id/tv_bill_status"
+            style="@style/ContentText_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_bill_money"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentRight="true"
+            android:text="提现成功" />
+
+        <TextView
+            android:id="@+id/tv_bill_Status_only"
+            style="@style/ContentText_title"
+            android:textColor="@color/colorFullRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textSize="18dp"
+            android:visibility="gone"
+            tools:text="审核未通过" />
 
     </RelativeLayout>
 

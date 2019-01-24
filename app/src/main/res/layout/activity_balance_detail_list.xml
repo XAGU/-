@@ -69,8 +69,6 @@
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
-        android:paddingLeft="21dp"
-        android:paddingRight="21dp"
         android:id="@+id/sv_container"
         android:scrollbars="none"
         android:layout_weight="1"

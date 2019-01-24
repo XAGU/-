@@ -3,80 +3,95 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@drawable/bg_monthly_bill"
-    android:paddingStart="14dp"
-    android:paddingEnd="14dp"
     android:layout_height="wrap_content">
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="41dp"
+        android:orientation="vertical"
         android:background="@color/white">
+        <View
+            android:background="@color/colorDarke"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+        <TextView
+            android:id="@+id/tv_monthly_order_date"
+            tools:text="2018年5月"
+            android:textSize="14sp"
+            android:layout_marginLeft="22dp"
+            android:gravity="center_vertical"
+            android:drawableRight="@drawable/spread"
+            android:drawablePadding="6dp"
+            android:textColor="@color/colorDark2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_monthly_order_date"
-        tools:text="2018年5月"
-        android:textSize="14sp"
-        android:gravity="center_vertical"
-        android:drawableEnd="@drawable/ic_calendar"
-        android:textColor="@color/colorDark2"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp" />
-
-    <View
-        android:background="@color/colorDarke"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-
-    <!--android:layout_marginBottom="28dp"-->
-    <TextView
-        android:id="@+id/tv_total_consume"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textColor="@color/colorDark2"
-        android:textSize="14sp"
-        tools:text="消费总额：123"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:orientation="vertical"
+        android:layout_marginLeft="21dp"
+        android:layout_marginRight="21dp"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:background="@drawable/bg_monthly_bill">
+        <TextView
+            android:id="@+id/tv_total_recharge"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorDark2"
+            android:textSize="14sp"
+            tools:text="余额充值：123"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_total_withdraw"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorDark2"
+            android:textSize="14sp"
+            tools:text="余额退款：123"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:background="@color/colorDarke"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+        <TextView
+            android:id="@+id/tv_total_consume"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorDark2"
+            android:textSize="14sp"
+            tools:text="实际消费：123"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_total_consume_withdraw"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorDark2"
+            android:textSize="14sp"
+            tools:text="消费退款：123"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <com.xiaolian.amigo.ui.widget.MonthlyBillView
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/monthlyBillView"
-        android:layout_width="match_parent"
-        android:layout_height="245dp"
-        />
-    <!--android:layout_marginTop="23dp"-->
-    <TextView
-        android:id="@+id/tv_max_consume"
-        android:layout_marginBottom="20dp"
-        android:textColor="@color/colorDark2"
-        android:textSize="14sp"
-        tools:text="单笔消费最贵：123"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <com.xiaolian.amigo.ui.widget.MonthlyBillView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/monthlyBillView"
+            android:layout_width="match_parent"
+            android:layout_height="245dp"
+            />
+        <TextView
+            android:id="@+id/tv_max_consume"
+            android:layout_marginBottom="57dp"
+            android:textColor="@color/colorDark2"
+            android:textSize="14sp"
+            tools:text="单笔消费最贵：123"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <View
-        android:background="@color/colorDarke"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_total_recharge"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/colorDark2"
-        android:textSize="14sp"
-        tools:text="充值总额：123"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/tv_total_withdraw"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="57dp"
-        android:textColor="@color/colorDark2"
-        android:textSize="14sp"
-        tools:text="提现总额：123"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
 
 </LinearLayout>

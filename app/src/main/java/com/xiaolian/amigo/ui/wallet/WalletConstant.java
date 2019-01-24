@@ -16,5 +16,6 @@ public class WalletConstant {
     public static final String KEY_DEVICE_TYPE = "key_device_type";
     public static final String KEY_FUNDS_TYPE = "key_funds_type";
     public static final String KEY_MAX_ORDER = "key_max_order";
+    public static final String KEY_ORDER_STATUS = "key_order_status";
     public static final int ACTION_MAX_ORDER = 1;
 }
