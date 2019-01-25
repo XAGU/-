@@ -130,7 +130,7 @@ public class BalanceListFragment extends Fragment {
             filterStatusPopupWindow = new BillFilterStatusPopupWindow(getContext());
             filterStatusPopupWindow.setPopFilterClickListener(new BillFilterStatusPopupWindow.PopFilterClickListener() {
                 @Override
-                public void click(int status) {
+                public void click(int status, CharSequence name) {
                     if (billStatus!=null && billStatus == status) /*选择的是一样的就不加载*/{
                         return;
                     }
@@ -139,8 +139,11 @@ public class BalanceListFragment extends Fragment {
                     adaptor.notifyDataSetChanged();
                     /*选择的是新数据，需要把已有的数据清空*/
                     billStatus = status;
+                    if (billStatus == 0) {
+                        billStatus = null;
+                    }
                     refreshLayout.autoRefresh();
-                    Log.d("filterStatusPopupWindow", "click: " + status);
+                    tvFilterStatus.setText(name);
                 }
             });
         }
@@ -151,7 +154,7 @@ public class BalanceListFragment extends Fragment {
             filterTypePopupWindow.setBillItems(((BalanceDetailListActivity)getActivity()).presenter.getSchoolBizList());
             filterTypePopupWindow.setPopFilterClickListener(new BillFilterTypePopupWindow.PopFilterClickListener() {
                 @Override
-                public void click(int type) {
+                public void click(int type, String name) {
                     if (billType != null && billType == type) /*选择的是一样的就不加载*/{
                         return;
                     }
@@ -160,8 +163,11 @@ public class BalanceListFragment extends Fragment {
                     adaptor.notifyDataSetChanged();
                     /*选择的是新数据，需要把已有的数据清空*/
                     billType = type;
+                    if (billType == 0) {
+                        billType = null;
+                    }
                     refreshLayout.autoRefresh();
-                    Log.d("filterTypePopupWindow", "click: " + type);
+                    tvFilterType.setText(name);
                 }
             });
         }
@@ -202,31 +208,24 @@ public class BalanceListFragment extends Fragment {
     @OnClick(R.id.tv_filter_status)
     public void showFilterStatus() {
         filterStatusPopupWindow.showUp(rlFilterContentView);
+        filterStatusPopupWindow.setBackgroundAlpha(0.3f);
         filterStatusPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                WindowManager.LayoutParams layoutParams = getActivity().getWindow().getAttributes();
-
-                layoutParams.alpha = 1.0f;
-
-                getActivity().getWindow().setAttributes(layoutParams);
+                filterStatusPopupWindow.setBackgroundAlpha(1.0f);
             }
         });
-        Log.d("yangyong", "showFilterStatus: ");
 
     }
 
     @OnClick(R.id.tv_filter_type)
     public void showFilterType() {
         filterTypePopupWindow.showUp(rlFilterContentView);
+        filterTypePopupWindow.setBackgroundAlpha(0.3f);
         filterTypePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                WindowManager.LayoutParams layoutParams = getActivity().getWindow().getAttributes();
-
-                layoutParams.alpha = 1.0f;
-
-                getActivity().getWindow().setAttributes(layoutParams);
+                filterTypePopupWindow.setBackgroundAlpha(1.0f);
             }
         });
     }

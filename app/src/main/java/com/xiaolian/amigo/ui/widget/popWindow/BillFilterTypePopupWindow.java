@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.widget.popWindow;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -61,7 +62,8 @@ public class BillFilterTypePopupWindow extends PopupWindow {
         filterAllTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popFilterClickListener.click(0);
+                String name = String.valueOf(((TextView)v).getText());
+                popFilterClickListener.click(0, name);
                 dismiss();
             }
         });
@@ -69,7 +71,8 @@ public class BillFilterTypePopupWindow extends PopupWindow {
         filterRechargeTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popFilterClickListener.click(1);
+                String name = String.valueOf(((TextView)v).getText());
+                popFilterClickListener.click(1, name);
                 dismiss();
             }
         });
@@ -77,7 +80,8 @@ public class BillFilterTypePopupWindow extends PopupWindow {
         filterWithdrawTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popFilterClickListener.click(2);
+                String name = String.valueOf(((TextView)v).getText());
+                popFilterClickListener.click(2, name);
                 dismiss();
             }
         });
@@ -85,7 +89,8 @@ public class BillFilterTypePopupWindow extends PopupWindow {
         filterBillTotalTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popFilterClickListener.click(9);
+                String name = String.valueOf(((TextView)v).getText());
+                popFilterClickListener.click(9, name);
                 dismiss();
             }
         });
@@ -93,7 +98,8 @@ public class BillFilterTypePopupWindow extends PopupWindow {
         filterBillItem1TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popFilterClickListener.click(((Long)v.getTag()).intValue());
+                String name = String.valueOf(((TextView)v).getText());
+                popFilterClickListener.click(((Long)v.getTag()).intValue(), name);
                 dismiss();
             }
         });
@@ -101,7 +107,8 @@ public class BillFilterTypePopupWindow extends PopupWindow {
         filterBillItem2TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popFilterClickListener.click(((Long)v.getTag()).intValue());
+                String name = String.valueOf(((TextView)v).getText());
+                popFilterClickListener.click(((Long)v.getTag()).intValue(), name);
                 dismiss();
             }
         });
@@ -109,7 +116,8 @@ public class BillFilterTypePopupWindow extends PopupWindow {
         filterBillItem3TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popFilterClickListener.click(((Long)v.getTag()).intValue());
+                String name = String.valueOf(((TextView)v).getText());
+                popFilterClickListener.click(((Long)v.getTag()).intValue(), name);
                 dismiss();
             }
         });
@@ -117,7 +125,8 @@ public class BillFilterTypePopupWindow extends PopupWindow {
         filterBillItem4TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popFilterClickListener.click(((Long)v.getTag()).intValue());
+                String name = String.valueOf(((TextView)v).getText());
+                popFilterClickListener.click(((Long)v.getTag()).intValue(), name);
                 dismiss();
             }
         });
@@ -125,7 +134,8 @@ public class BillFilterTypePopupWindow extends PopupWindow {
         filterBillItem5TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popFilterClickListener.click(((Long)v.getTag()).intValue());
+                String name = String.valueOf(((TextView)v).getText());
+                popFilterClickListener.click(((Long)v.getTag()).intValue(), name);
                 dismiss();
             }
         });
@@ -133,8 +143,7 @@ public class BillFilterTypePopupWindow extends PopupWindow {
         setContentView(contentView);
         setWidth(WindowManager.LayoutParams.MATCH_PARENT);
         setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-//        setAnimationStyle(R.style.DialogDownAnimation);
-        setBackgroundDrawable(new ColorDrawable(0xf0ff0000));
+
         setFocusable(true);
         setOutsideTouchable(true);
         setTouchable(true);
@@ -189,7 +198,18 @@ public class BillFilterTypePopupWindow extends PopupWindow {
     }
 
     public interface PopFilterClickListener {
-        void click(int type);
+        void click(int type, String name);
+    }
+
+    public void setBackgroundAlpha(float alpha) {
+        WindowManager.LayoutParams lp = ((Activity) context).getWindow()
+                .getAttributes();
+        lp.alpha = alpha;
+        ((Activity) context).getWindow().setAttributes(lp);
+
+        setFocusable(true);
+        setOutsideTouchable(true);
+        setTouchable(true);
     }
 
 

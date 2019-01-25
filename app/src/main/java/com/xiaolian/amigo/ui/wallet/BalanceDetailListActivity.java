@@ -43,6 +43,10 @@ public class BalanceDetailListActivity extends BaseActivity implements IBalanceD
 
     public static final int REQUEST_CODE_DETAIL = 0x1201;
 
+    private static final String FRAGMENT_TAG_LIST_DETAIL = "listdetail";
+
+    private static final String FRAGMENT_TAG_LIST_STATISTICS = "statistics";
+
     private BalanceDetailListActivityComponent mActivityComponent;
 
     @Inject
@@ -138,7 +142,7 @@ public class BalanceDetailListActivity extends BaseActivity implements IBalanceD
         }
 
         if (!balanceListFragment.isAdded()) {
-            transaction.add(R.id.ll_main, balanceListFragment).commit();
+            transaction.add(R.id.ll_main, balanceListFragment, FRAGMENT_TAG_LIST_DETAIL).commit();
         } else {
             transaction.show(balanceListFragment).commit();
         }
@@ -157,7 +161,7 @@ public class BalanceDetailListActivity extends BaseActivity implements IBalanceD
             transaction = transaction.hide(balanceListFragment);
         }
         if (!balanceStatisticsFragment.isAdded()) {
-            transaction.add(R.id.ll_main, balanceStatisticsFragment).commit();
+            transaction.add(R.id.ll_main, balanceStatisticsFragment, FRAGMENT_TAG_LIST_STATISTICS).commit();
         } else {
             transaction.show(balanceStatisticsFragment).commit();
         }

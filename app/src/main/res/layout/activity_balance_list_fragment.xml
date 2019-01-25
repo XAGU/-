@@ -18,9 +18,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:orientation="vertical"
-            android:id="@+id/rl_title"
-            android:background="@color/white">
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/tv_filter_date"
                 android:text="2018年5月"

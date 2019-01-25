@@ -13,7 +13,7 @@
         android:layout_height="40dp"
         android:gravity="left|center"
         android:textColor="@color/colorDark2"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:text="全部"
         />
     <TextView
@@ -24,7 +24,7 @@
         android:layout_height="40dp"
         android:gravity="left|center"
         android:textColor="@color/colorDark2"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:text="余额充值"
         />
 
@@ -36,7 +36,7 @@
         android:layout_height="40dp"
         android:gravity="left|center"
         android:textColor="@color/colorDark2"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:text="余额退款"
         />
 
@@ -48,8 +48,8 @@
         android:layout_height="40dp"
         android:gravity="left|center"
         android:textColor="@color/colorDark2"
-        android:textSize="14sp"
-        android:text="余额退款"
+        android:textSize="13sp"
+        android:text="消费账单"
         />
 
     <View
@@ -74,7 +74,7 @@
             android:layout_height="40dp"
             android:gravity="center"
             android:textColor="@color/colorDark2"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:text="热水澡消费"
             />
 
@@ -88,7 +88,7 @@
             android:layout_height="40dp"
             android:gravity="center"
             android:textColor="@color/colorDark2"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:text="饮水机消费"
             />
         <TextView
@@ -101,7 +101,7 @@
             android:layout_height="40dp"
             android:gravity="center"
             android:textColor="@color/colorDark2"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:text="洗衣机消费"
             />
         <TextView
@@ -114,7 +114,7 @@
             android:layout_height="40dp"
             android:gravity="center"
             android:textColor="@color/colorDark2"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:text="吹风机消费"
             />
         <TextView
@@ -129,7 +129,7 @@
             android:layout_height="40dp"
             android:gravity="center"
             android:textColor="@color/colorDark2"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:text="烘干机消费"
             />
     </RelativeLayout>
