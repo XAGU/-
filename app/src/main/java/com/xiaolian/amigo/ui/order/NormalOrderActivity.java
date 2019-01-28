@@ -13,6 +13,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -37,6 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import butterknife.BindView;
 
 import static com.xiaolian.amigo.ui.device.washer.ScanActivity.KEY_TYPE;
 
@@ -69,6 +72,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     View vBottomLine1;
     View vBottomLine2;
     private TextView right_oper;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -168,6 +168,10 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     @BindView(R.id.tv_code)
     TextView tvCode ;
 
+    @BindView(R.id.rl_code)
+    RelativeLayout rlCode ;
+
+
     @BindView(R.id.ll_bottom)
     LinearLayout llBottom ;
 
@@ -321,19 +325,21 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
             tvActualDebit.setText(getString(R.string.minus, order.getActualDebit()));
 
 
-            if (order.getDeviceType() == Device.DRYER.getType() && order.isScanCode() && !ObjectsCompat.equals(order.getStatus(), ORDER_ERROR_STATUS)){
+            if (order.getDeviceType() == Device.DRYER.getType() && !ObjectsCompat.equals(order.getStatus(), ORDER_ERROR_STATUS)){
                 showCode(order.getQrCode());
-                finishTimeRl.setVisibility(View.GONE);
-                rlUserStyle.setVisibility(View.GONE);
-                rlPrepay.setVisibility(View.GONE);
-                rlUseBonus.setVisibility(View.GONE);
-                rlActualDebit.setVisibility(View.GONE);
-                rlOdd.setVisibility(View.GONE);
+                /**
+                 * 隐藏预付信息
+                 */
                 onlyShowBottomRight();
                 rightOper.setText("常见问题");
                 rightOper.setOnClickListener(v -> {
                     startServiceH5();
                 });
+            }
+            
+            if ( !order.getHasPrepay()){
+                rlPrepay.setVisibility(View.GONE);
+                rlOdd.setVisibility(View.GONE);
             }
         }
     }
@@ -366,7 +372,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
 
     private void showCode(String code){
         tvCode.setText(code);
-        tvCode.setVisibility(View.VISIBLE);
+        rlCode.setVisibility(View.VISIBLE);
     }
 
     private void hideCode(){

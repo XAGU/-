@@ -98,14 +98,14 @@ public class OrderDetailRespDTO {
     /**
      * 是否是扫码吹风机型号
      */
-    private boolean scanCode ;
+    private boolean hasPrepay ;
 
-    public boolean isScanCode() {
-        return scanCode;
+    public boolean getHasPrepay() {
+        return hasPrepay;
     }
 
-    public void setScanCode(boolean scanCode) {
-        this.scanCode = scanCode;
+    public void setHasPrepay(boolean hasPrepay) {
+        this.hasPrepay = hasPrepay;
     }
 
     public Long getFinishTime() {
