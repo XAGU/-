@@ -195,6 +195,7 @@ public class HomeFragment2 extends BaseFragment {
      * 设置滚动公告
      */
     private void initRollingNotice(List<String> info){
+        android.util.Log.e(TAG, "initRollingNotice: " + info.size() );
         rlScroll.setVisibility(View.VISIBLE);
         marqueeView.getResoure((ArrayList<String>) info);
     }
@@ -301,6 +302,7 @@ public class HomeFragment2 extends BaseFragment {
             presenter.getSchoolForumStatus();
             presenter.getNoticeAmount();
             presenter.noticeCount();
+            presenter.rollingNotify();
             if (schoolName != null) {
                 if (!presenter.getUserInfo().getSchoolName().equals(schoolName.getText().toString()))
                     schoolName.setText(presenter.getUserInfo().getSchoolName());
@@ -545,7 +547,11 @@ public class HomeFragment2 extends BaseFragment {
                 notifyAdaptor();
                 break;
             case ROLLING_NOTIFY:
-                initRollingNotice((List<String>)event.getObject());
+                if (event.getObject() == null){
+                    rlScroll.setVisibility(View.GONE);
+                }else {
+                    initRollingNotice((List<String>) event.getObject());
+                }
                 break;
             case UNREAD_COUNT:
                 unReadWorkOrderRemarkMessageCount = (int) event.getObject();

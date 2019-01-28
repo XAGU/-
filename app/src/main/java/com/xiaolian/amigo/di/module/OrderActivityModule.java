@@ -24,7 +24,6 @@ import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.ui.order.NormalOrderPresenter;
 import com.xiaolian.amigo.ui.order.OrderDetailPresenter;
 import com.xiaolian.amigo.ui.order.OrderPresenter;
-import com.xiaolian.amigo.ui.order.RefundOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.INormalOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.INormalOrderView;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailPresenter;
@@ -67,13 +66,6 @@ public class OrderActivityModule {
     @OrderActivityContext
     INormalOrderPresenter<INormalOrderView> provideNormalOrderPresenter(
             NormalOrderPresenter<INormalOrderView> presenter) {
-        return presenter;
-    }
-
-    @Provides
-    @OrderActivityContext
-    IRefundOrderPresenter<IRefundOrderView> provideRefundOrderPresenter(
-            RefundOrderPresenter<IRefundOrderView> presenter) {
         return presenter;
     }
 

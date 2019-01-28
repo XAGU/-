@@ -267,4 +267,14 @@ public class DeviceDataManager implements IDeviceDataManager {
     public void saveDeleteFileTime(long l) {
         sharedPreferencesHelp.saveDeleteFileTime(l);
     }
+
+    @Override
+    public String getAccessToken() {
+        return sharedPreferencesHelp.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return sharedPreferencesHelp.getReferToken();
+    }
 }

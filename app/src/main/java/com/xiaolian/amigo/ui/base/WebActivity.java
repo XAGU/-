@@ -29,6 +29,8 @@ import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.google.zxing.client.android.Intents;
+import com.tencent.android.tpush.XGPushClickedResult;
+import com.tencent.android.tpush.XGPushManager;
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
@@ -37,11 +39,15 @@ import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.di.componet.DaggerMainActivityComponent;
 import com.xiaolian.amigo.di.module.MainActivityModule;
 import com.xiaolian.amigo.ui.device.washer.ScanActivity;
+import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -72,6 +78,9 @@ public class WebActivity extends BaseActivity {
 
     ValueCallback<Uri> mUploadMessage;
     ValueCallback<Uri[]> mFilePathCallback;
+
+    @Inject
+    ISharedPreferencesHelp sharedPreferencesHelp ;
 
     ImageCallback imageCallback = new ImageCallback() {
         @Override
@@ -106,8 +115,7 @@ public class WebActivity extends BaseActivity {
             R.drawable.loading_three, R.drawable.loading_four
     };
 
-    @Inject
-    ISharedPreferencesHelp sharedPreferencesHelp ;
+    private String url ;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -119,7 +127,7 @@ public class WebActivity extends BaseActivity {
                 .mainActivityModule(new MainActivityModule(this))
                 .applicationComponent(((MvpApp) getApplication()).getComponent())
                 .build().inject(this);
-        String url = getIntent().getStringExtra(INTENT_KEY_URL);
+        url = getIntent().getStringExtra(INTENT_KEY_URL);
         android.util.Log.e(TAG, "onCreate: " + url );
         initLoadingAnim();
         if (url == null) {
@@ -209,6 +217,55 @@ public class WebActivity extends BaseActivity {
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (TextUtils.isEmpty(url)) {
+            if (TextUtils.isEmpty(sharedPreferencesHelp.getReferToken()) || TextUtils.isEmpty(sharedPreferencesHelp.getAccessToken())) {
+                startActivity(new Intent(WebActivity.this, LoginActivity.class));
+                return;
+            }
+            String pushUrl  ;
+            XGPushClickedResult clickedResult = XGPushManager.onActivityStarted(this);
+            if (clickedResult == null) return;
+            //获取消息附近参数
+            String customContent = clickedResult.getCustomContent();
+            //获取消息标题
+            String set = clickedResult.getTitle();
+            //获取消息内容
+            String s = clickedResult.getContent();
+
+            String targetId = null ;
+
+            String targetUri = null ;
+
+            if (customContent != null && customContent.length() != 0) {
+                try {
+                    JSONObject obj = new JSONObject(customContent);
+
+                    if (!obj.isNull("targetUri")) {
+                        targetUri = obj.getString("targetUri");
+                    }
+                    if (!obj.isNull("targetId")) {
+                        targetId = obj.getString("targetId");
+                    }
+                    pushUrl = Constant.H5_SERVER + targetUri
+                            + "?accessToken=" + sharedPreferencesHelp.getAccessToken()
+                            + "&refreshToken=" + sharedPreferencesHelp.getReferToken()
+                            + "&id="+ targetId;
+                    pushUrl = pushUrl.replace(BuildConfig.H5_SERVER, Constant.H5_SERVER);
+                    pushUrl = addUrlSuffix(pushUrl);
+                    webView.loadUrl(pushUrl);
+                    android.util.Log.d(TAG, pushUrl);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     private void initLoadingAnim() {
         loadingAnimator = ValueAnimator.ofInt(0, 3, 0);
         loadingAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -231,6 +288,8 @@ public class WebActivity extends BaseActivity {
      * 添加url后缀
      */
     private String addUrlSuffix(String url) {
+
+        if (url == null || TextUtils.isEmpty(url)) return  "";
         String newUrl = "";
         try {
             String model = Build.MODEL;

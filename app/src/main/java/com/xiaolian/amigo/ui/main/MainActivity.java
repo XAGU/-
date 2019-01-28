@@ -67,6 +67,7 @@ import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.H5StartUtils;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.MD5Util;
 import com.xiaolian.amigo.util.MyInterpolator;
@@ -130,6 +131,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Inject
     IMainPresenter<IMainView> presenter;
+
+    @Inject
+    H5StartUtils h5StartUtils ;
+
     @BindView(R.id.home_image)
     ImageView homeImage;
     @BindView(R.id.home_rl)
@@ -787,7 +792,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
         enableView();
     }
-
     public void gotoDispenser(String macAddress, Long supplierId, String location, Long residenceId,
                               boolean favor, int usefor,
                               boolean recovery) {
@@ -995,7 +999,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         presenter.setBonusAmount(data.getBonusAmount());
         presenter.setCredits(data.getCredits());
         EventBus.getDefault().post(data);
-        unReadCount = data.getUnReadWorkOrderRemarkMessageCount();
         postReadCount(data.getUnReadWorkOrderRemarkMessageCount());
     }
 
@@ -1222,8 +1225,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showRollingNotify(RollingNotifyRespDTO data) {
-        if (data.getRollingNotifyList() == null || data.getRollingNotifyList().size() == 0) return ;
 
+//        if (data.getRollingNotifyList() == null || data.getRollingNotifyList().size() == 0) return ;
+//        android.util.Log.e(TAG, "showRollingNotify: " + data.getRollingNotifyList().size() );
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ROLLING_NOTIFY ,data.getRollingNotifyList()));
     }
 
@@ -1391,15 +1395,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     //  跳服务中心h5页面
     public void startServiceH5(){
-        String url = BuildConfig.H5_SERVER + "/serviceCenter"
-                + "?accessToken=" + presenter.getAccessToken()
-                +"&refreshToken=" + presenter.getRefreshToken()
-                +"&unreadCount=" + unReadCount
-                +"&schoolId=" + presenter.getUserInfo().getSchoolId();
-        Intent intent = new Intent(getContext(), WebActivity.class);
-        android.util.Log.e(TAG, "startServiceH5: " + url );
-        intent.putExtra(INTENT_KEY_URL, url);
-        startActivity(intent);
+        h5StartUtils.startH5Service();
     }
 
     private void gotoGate() {

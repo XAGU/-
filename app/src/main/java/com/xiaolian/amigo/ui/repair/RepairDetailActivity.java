@@ -30,6 +30,7 @@ import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.H5StartUtils;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -62,6 +63,9 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
 
     @Inject
     IRepairDetailPresenter<IRepairDetailView> presenter;
+
+    @Inject
+    H5StartUtils h5StartUtils;
     @BindView(R.id.rv_repair_progresses)
     RecyclerView rvRepairProgresses;
     @BindView(R.id.tv_type)
@@ -327,8 +331,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                     startActivity(intent);
                     break;
                 case AUDIT_FAIL:
-                    startActivity(new Intent(RepairDetailActivity.this, WebActivity.class)
-                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                    h5StartUtils.startH5Service();
                     break;
                 case AUDIT_PENDING:
                 case REPAIR_PENDING:
@@ -368,8 +371,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                     startActivity(intent);
                     break;
                 case AUDIT_FAIL:
-                    startActivity(new Intent(RepairDetailActivity.this, WebActivity.class)
-                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                    h5StartUtils.startH5Service();
                     break;
                 case AUDIT_PENDING:
                 case REPAIR_PENDING:
@@ -386,8 +388,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                 case REPAIR_PENDING:
                 case REPAIRING:
                 case AUDIT_PENDING:
-                    startActivity(new Intent(RepairDetailActivity.this, WebActivity.class)
-                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                     h5StartUtils.startH5Service();
                     break;
                 case AUDIT_FAIL:
                     CommonUtil.call(RepairDetailActivity.this, detail.getCsMobile());

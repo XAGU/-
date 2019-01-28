@@ -11,15 +11,17 @@ import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.app.hubert.guide.NewbieGuide;
+import com.app.hubert.guide.model.GuidePage;
+import com.app.hubert.guide.model.RelativeGuide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
-import com.xiaolian.amigo.ui.order.OrderActivity;
-import com.xiaolian.amigo.ui.user.PasswordVerifyActivity;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -95,6 +97,9 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     @BindView(R.id.rl_giving_balance)
     RelativeLayout rlGivingBalance;
 
+    @BindView(R.id.rl_bill_record)
+    RelativeLayout rlBillRecord ;
+
     private DecimalFormat df = new DecimalFormat("###.##");
 
     @Override
@@ -103,8 +108,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(WalletActivity.this);
-//        setToolbarSubTitle("月账单", v ->
-//                startActivity(new Intent(WalletActivity.this, MonthlyBillActivity.class)));
+        showNewbieGuide();
     }
 
     @Override
@@ -121,6 +125,18 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     @Override
     protected int setLayout() {
         return R.layout.activity_wallet;
+    }
+
+    private void showNewbieGuide(){
+        NewbieGuide.with(this)
+                .setLabel("guide1")
+                .setShowCounts(3)
+                .addGuidePage(GuidePage.newInstance()
+                        .setBackgroundColor(getResources().getColor(R.color.colorBlank60))
+                        .addHighLight(rlBillRecord ,new RelativeGuide(R.layout.view_guide_simple,
+                                Gravity.BOTTOM ,5)))
+                .show();
+
     }
 
     /**

@@ -25,6 +25,7 @@ import com.xiaolian.amigo.ui.wallet.intf.IRechargeDetailView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.H5StartUtils;
 import com.xiaolian.amigo.util.TimeUtils;
 
 import java.util.ArrayList;
@@ -49,6 +50,9 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
 
     @Inject
     IRechargeDetailPresenter<IRechargeDetailView> presenter;
+
+    @Inject
+    H5StartUtils h5StartUtils ;
 
     private List<WithdrawRechargeDetailAdapter.Item> items = new ArrayList<>();
 
@@ -161,9 +165,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
             tvReasonTop.setText("笑联工作人员代充值");
             leftOper.setText(RechargeStatus.BEHALF_OF_RECHARGE.getNextOperations()[0]);
             rightOper.setText(RechargeStatus.BEHALF_OF_RECHARGE.getNextOperations()[1]);
-            leftOper.setOnClickListener(v ->
-                    startActivity(new Intent(this, WebActivity.class)
-                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP)));
+            leftOper.setOnClickListener(v -> h5StartUtils.startH5Service());
             rightOper.setOnClickListener(v ->
                     presenter.complaint(id, ComplaintType.RECHARGE.getType()));
             items.add(new WithdrawRechargeDetailAdapter.Item("被充值手机号：",
@@ -201,16 +203,14 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
                     presenter.remind(data.getId());
                     break;
                 default:
-                    startActivity(new Intent(this, WebActivity.class)
-                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                        h5StartUtils.startH5Service();
                     break;
             }
         });
         rightOper.setOnClickListener((v) -> {
             switch (RechargeStatus.getRechargeStatus(data.getStatus())) {
                 case AUDIT_PENDING:
-                    startActivity(new Intent(this, WebActivity.class)
-                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                     h5StartUtils.startH5Service();
                     break;
                 case AUDIT_FAIL:
                 case RECHARGE_FAIL:
@@ -251,8 +251,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
 
     @OnClick(R.id.left_oper)
     public void onLeftOper() {
-        startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+        h5StartUtils.startH5Service();
     }
 
     @OnClick(R.id.right_oper)

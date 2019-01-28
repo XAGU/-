@@ -20,6 +20,7 @@ import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.widget.swipebutton.SlideUnlockView;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.H5StartUtils;
 
 import javax.inject.Inject;
 
@@ -34,6 +35,9 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
     public static final String KEY_BATH_ORDER_ID = "KEY_BATH_ORDER_ID";
     @Inject
     IBathroomHeartPresenter<IBathroomHeartView> presenter;
+
+    @Inject
+    H5StartUtils h5StartUtils ;
 
     @BindView(R.id.tv_device_title)
     TextView tvDeviceTitle;
@@ -137,8 +141,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
 
     private void initData() {
         tvDeviceTitle.setText(bathOrderRespDTO.getLocation());
-        ivTopRightIcon.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP)));
+        ivTopRightIcon.setOnClickListener(v -> h5StartUtils.startH5Service()) ;
         if (bsvWave != null && !bsvWave.isRunning()) {
             bsvWave.startAnim();
         }

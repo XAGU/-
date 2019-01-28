@@ -434,5 +434,7 @@
         你的账号在另一台设备登录，如非本人操作请及时修改密码
     </string>
     <string name="empty">蓝胖胖这里空空的 ...</string>
+
+    <string name="code">编码：</string>
 </resources>
 

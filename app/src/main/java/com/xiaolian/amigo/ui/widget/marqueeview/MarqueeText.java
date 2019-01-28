@@ -32,6 +32,11 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
     //text一次滚动完成后，多长时间启动第二次滚动
     private int delayAgain =1000 ;
 
+    /**
+     * 滚动是否完成
+     */
+    public  boolean isEnd ;
+
     //   当前设置的文字
     private static CharSequence nowText ;
 
@@ -49,11 +54,6 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
         super(context, attrs);
     }
 
-    @Override
-    public void setScrollX(int value) {
-        super.setScrollX(value);
-    }
-
     public MarqueeText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
@@ -68,7 +68,6 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.e(TAG, "onDraw: " + getText() +"   " + isFirstDraw  );
         super.onDraw(canvas);
         if (isFirstDraw) {
             getTextWidth();
@@ -110,6 +109,7 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
     @Override
     public void setText(CharSequence text, BufferType type) {
         nowText =  text ;
+        isEnd = false ;
         super.setText(text, type);
     }
 
@@ -129,6 +129,7 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
         }
         
         if (endX == 0){
+            isEnd = true ;
             if (!canScrollForever){
                 this.removeCallbacks(this);
                 if (scrollFinishListener != null){
@@ -140,6 +141,7 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
         if (!canScrollForever){
             currentScrollX += speed;// 滚动速度,每次滚动几点
             if (currentScrollX >= endX) {
+                isEnd = true ;
                 scrollTo(currentScrollX , 0);
                     scrollTo(endX, 0);
                     isStop = true; // 停止滚动
@@ -148,6 +150,7 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
                         scrollFinishListener.scrollFinish();
                     }
             } else {
+                isEnd = false ;
                 scrollTo(currentScrollX, 0);
                 postDelayed(this, delayed);
             }
@@ -167,7 +170,6 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
         isFirstDraw = true; // 需重新设置参数
-        Log.e(TAG, "onTextChanged: "  + getText() + getScrollX());
     }
     // 开始滚动
     public void startScroll() {

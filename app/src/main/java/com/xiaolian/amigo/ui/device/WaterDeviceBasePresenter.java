@@ -115,4 +115,21 @@ public abstract class WaterDeviceBasePresenter<V extends IWaterDeviceBaseView> e
             }
         });
     }
+
+
+    @Override
+    public String getAccessToken() {
+        return deviceDataManager.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return deviceDataManager.getRefreshToken();
+    }
+
+
+    @Override
+    public Long getSchoolId() {
+        return deviceDataManager.getUser().getSchoolId();
+    }
 }

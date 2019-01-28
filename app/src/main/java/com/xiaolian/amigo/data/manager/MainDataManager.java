@@ -345,4 +345,9 @@ public class MainDataManager implements IMainDataManager {
         return sharedPreferencesHelp.getRememberMobile();
     }
 
+    @Override
+    public void saveUnReadWorkMessageCount(int unReadWorkOrderRemarkMessageCount) {
+        sharedPreferencesHelp.saveUnReadWorkMessageCount(unReadWorkOrderRemarkMessageCount);
+    }
+
 }

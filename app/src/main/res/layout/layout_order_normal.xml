@@ -7,7 +7,8 @@
     xmlns:tool="http://schemas.android.com/tools">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="60dp"
+        android:id="@+id/rl_prepay">
         <View
             android:layout_width="match_parent"
             android:layout_height="1dip"

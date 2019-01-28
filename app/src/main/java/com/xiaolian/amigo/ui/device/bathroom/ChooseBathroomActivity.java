@@ -37,6 +37,7 @@ import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 import com.xiaolian.amigo.ui.widget.popWindow.ChooseBathroomPop;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
+import com.xiaolian.amigo.util.H5StartUtils;
 import com.xiaolian.amigo.util.RxHelper;
 
 import java.util.ArrayList;
@@ -77,6 +78,12 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     public static final int KEY_BOOKING_RESULTCODE = 12;  //
     private static final String TAG = ChooseBathroomActivity.class.getSimpleName();
+
+
+    @Inject
+    H5StartUtils h5StartUtils ;
+
+
     @BindView(R.id.iv_back)
     ImageView ivBack;
     @BindView(R.id.tv_title)
@@ -244,8 +251,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
      * 获取帮助
      */
     private void help() {
-        startActivity(new Intent(getApplicationContext(), WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+        h5StartUtils.startH5Service();
     }
 
     @OnClick({R.id.iv_help, R.id.tv_title})

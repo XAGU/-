@@ -258,7 +258,7 @@ public class ProfileFragment2 extends BaseFragment {
             }
         }
 
-        if (data.getUnReadWorkOrderRemarkMessageCount() != null && data.getUnReadWorkOrderRemarkMessageCount() > 0){
+        if (data.getUnReadWorkOrderRemarkMessageCount() != null){
             service.setUnReadWorkOrderRemarkMessageCount(data.getUnReadWorkOrderRemarkMessageCount());
         }
         if (credits.getBonusAmount() != -1

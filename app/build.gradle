@@ -100,9 +100,9 @@ android {
 //            buildConfigField "String", "H5_SERVER", "\"http://39.108.97.229:5097/c\"" //
 
             // 炼炼
-//            buildConfigField "String", "SERVER", "\"http://10.0.0.37:5081/\"" //
-//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.0.0.37:5082/\"" //
-//            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.37:5097/c\"" //
+//            buildConfigField "String", "SERVER", "\"http://10.0.0.231:5081/\"" //
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.0.0.231:5082/\"" //
+//            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.231:5097/c\"" //
 
 
             // qa3
@@ -256,6 +256,7 @@ dependencies {
     // ~80KB
     implementation 'com.github.nanchen2251:CompressHelper:1.0.5'
     implementation files('libs/open_sdk_r6019_lite.jar')
+    implementation deps.newbieGuide
 }
 
 configurations.all {

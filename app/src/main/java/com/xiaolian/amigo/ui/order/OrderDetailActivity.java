@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
@@ -20,12 +21,16 @@ import com.xiaolian.amigo.ui.order.intf.IOrderDetailPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.H5StartUtils;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.xiaolian.amigo.ui.base.WebActivity.INTENT_KEY_URL;
+import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
  * 消费账单详情
@@ -34,10 +39,15 @@ import butterknife.OnClick;
  * @date 17/9/18
  */
 public class OrderDetailActivity extends OrderBaseActivity implements IOrderDetailView {
-    private static final int ORDER_ERROR_STATUS = 3;
+    /**
+     * 账单异常
+     */
+    public static final int ORDER_ERROR_STATUS = 3;
     @Inject
     IOrderDetailPresenter<IOrderDetailView> presenter;
 
+    @Inject
+    H5StartUtils h5StartUtils ;
     /**
      * 账单标题
      */
@@ -82,6 +92,8 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     TextView tvOdd;
 
 
+    @BindView(R.id.rl_odd)
+    RelativeLayout rlOdd ;
     /************** 异常账单内容 ****************/
     @BindView(R.id.tv_order_error_tip)
     TextView tvOrderErrorTip;
@@ -112,6 +124,16 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
      */
     @BindView(R.id.tv_time_end)
     TextView tvTimeEnd;
+
+    /**
+     * 使用方式
+     */
+    @BindView(R.id.rl_user_style)
+    RelativeLayout rlUserStyle ;
+
+    @BindView(R.id.rl_prepay)
+    RelativeLayout rlPrepay ;
+
     /**
      * 使用时长
      */
@@ -143,6 +165,20 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     @BindView(R.id.finish_time_rl)
     RelativeLayout finishTimeRl;
 
+    @BindView(R.id.tv_code)
+    TextView tvCode ;
+
+    @BindView(R.id.ll_bottom)
+    LinearLayout llBottom ;
+
+    @BindView(R.id.left_oper)
+    TextView leftOper ;
+
+    @BindView(R.id.right_oper)
+    TextView rightOper ;
+
+    @BindView(R.id.ll_line)
+    View llLine ;
 
     private Long orderId;
 
@@ -216,6 +252,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         }else{
             finishTimeRl.setVisibility(View.GONE);
         }
+
         tvDeviceLocation.setText(String.format("%s %s",
                 Device.getDevice(order.getDeviceType()).getDesc(), order.getLocation()));
         vBottomLine1.setBackgroundColor(Color.parseColor(getLineColorByDeviceType(order.getDeviceType())));
@@ -282,7 +319,58 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
             tvPrepay.setText(order.getPrepay());
             tvOdd.setText(order.getOdd());
             tvActualDebit.setText(getString(R.string.minus, order.getActualDebit()));
+
+
+            if (order.getDeviceType() == Device.DRYER.getType() && order.isScanCode() && !ObjectsCompat.equals(order.getStatus(), ORDER_ERROR_STATUS)){
+                showCode(order.getQrCode());
+                finishTimeRl.setVisibility(View.GONE);
+                rlUserStyle.setVisibility(View.GONE);
+                rlPrepay.setVisibility(View.GONE);
+                rlUseBonus.setVisibility(View.GONE);
+                rlActualDebit.setVisibility(View.GONE);
+                rlOdd.setVisibility(View.GONE);
+                onlyShowBottomRight();
+                rightOper.setText("常见问题");
+                rightOper.setOnClickListener(v -> {
+                    startServiceH5();
+                });
+            }
         }
+    }
+
+
+    //  跳服务中心h5页面
+    public void startServiceH5() {
+        h5StartUtils.startH5Service();
+    }
+
+    /**
+     * 账单底部按钮仅仅只显示一种的情况
+     */
+    private void onlyShowBottomRight(){
+        llBottom.setVisibility(View.VISIBLE);
+        leftOper.setVisibility(View.GONE);
+        rightOper.setVisibility(View.VISIBLE);
+        llLine.setVisibility(View.GONE);
+    }
+
+    /**
+     * 账单详情底部按钮显示两种的情况
+     */
+    private void showBottomAll(){
+        llBottom.setVisibility(View.VISIBLE);
+        leftOper.setVisibility(View.GONE);
+        rightOper.setVisibility(View.GONE);
+        llLine.setVisibility(View.VISIBLE);
+    }
+
+    private void showCode(String code){
+        tvCode.setText(code);
+        tvCode.setVisibility(View.VISIBLE);
+    }
+
+    private void hideCode(){
+        tvCode.setVisibility(View.GONE);
     }
 
     @Override

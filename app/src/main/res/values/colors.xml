@@ -34,6 +34,7 @@
     <color name="colorBlue">#45b0ff</color>
     <color name="colorHintBathroom">#FF7572</color>
 
+    <color name="colorBlank60">#8c000000</color>
     <color name="black">#000000</color>
     <color name="black50">#7f000000</color>
     <color name="black60">#99000000</color>
