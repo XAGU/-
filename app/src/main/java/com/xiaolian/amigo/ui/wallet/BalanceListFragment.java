@@ -199,8 +199,8 @@ public class BalanceListFragment extends Fragment {
                 BalanceListFragment.this.onRefresh();
             }
         });
-        refreshLayout.setRefreshHeader(new RefreshLayoutHeader(getContext()));
-        refreshLayout.setRefreshFooter(new RefreshLayoutFooter(getContext()));
+        refreshLayout.setRefreshHeader(new RefreshLayoutHeader(getActivity()));
+        refreshLayout.setRefreshFooter(new RefreshLayoutFooter(getActivity()));
         refreshLayout.setReboundDuration(200);
         refreshLayout.autoRefresh(20);
     }

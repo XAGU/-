@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -140,7 +142,6 @@ public class BalanceDetailListActivity extends BaseActivity implements IBalanceD
         if (balanceStatisticsFragment != null && balanceStatisticsFragment.isAdded()) {
             transaction = transaction.hide(balanceStatisticsFragment);
         }
-
         if (!balanceListFragment.isAdded()) {
             transaction.add(R.id.ll_main, balanceListFragment, FRAGMENT_TAG_LIST_DETAIL).commit();
         } else {
