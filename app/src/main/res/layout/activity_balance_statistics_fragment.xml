@@ -16,7 +16,7 @@
         <TextView
             android:id="@+id/tv_monthly_order_date"
             tools:text="2018年5月"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:layout_marginLeft="22dp"
             android:gravity="center_vertical"
             android:drawableRight="@drawable/spread"

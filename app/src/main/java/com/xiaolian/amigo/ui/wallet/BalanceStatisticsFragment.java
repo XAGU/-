@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -144,13 +146,24 @@ public class BalanceStatisticsFragment extends Fragment implements MonthlyBillVi
             Long timestamps = ((BalanceDetailListActivity)getActivity()).presenter.getAccountCreateTime();
             yearMonthPickerDialog = new YearMonthPickerDialog(getActivity(), timestamps);
         }
+        tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
+        tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
         yearMonthPickerDialog.setOnItemSelectedListener((picker, date) -> {
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
             currentYear = cal.get(Calendar.YEAR);
             currentMonth = cal.get(Calendar.MONTH) + 1;
-//            tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+            tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
+            tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+            tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
             ((BalanceDetailListActivity)getActivity()).presenter.getMonthlyBill(currentYear, currentMonth);
+        });
+        yearMonthPickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
+                tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+            }
         });
         yearMonthPickerDialog.show();
     }

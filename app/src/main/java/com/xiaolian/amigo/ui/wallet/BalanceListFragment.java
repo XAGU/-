@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -127,10 +128,12 @@ public class BalanceListFragment extends Fragment {
 
     public void initPop() {
         if (filterStatusPopupWindow == null) {
-            filterStatusPopupWindow = new BillFilterStatusPopupWindow(getContext());
+            filterStatusPopupWindow = new BillFilterStatusPopupWindow(getActivity());
             filterStatusPopupWindow.setPopFilterClickListener(new BillFilterStatusPopupWindow.PopFilterClickListener() {
                 @Override
                 public void click(int status, CharSequence name) {
+                    tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+                    tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
                     if (billStatus!=null && billStatus == status) /*选择的是一样的就不加载*/{
                         return;
                     }
@@ -149,12 +152,14 @@ public class BalanceListFragment extends Fragment {
         }
 
         if (filterTypePopupWindow == null) {
-            filterTypePopupWindow = new BillFilterTypePopupWindow(getContext());
+            filterTypePopupWindow = new BillFilterTypePopupWindow(getActivity());
             //设置配置的服务
             filterTypePopupWindow.setBillItems(((BalanceDetailListActivity)getActivity()).presenter.getSchoolBizList());
             filterTypePopupWindow.setPopFilterClickListener(new BillFilterTypePopupWindow.PopFilterClickListener() {
                 @Override
                 public void click(int type, String name) {
+                    tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+                    tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
                     if (billType != null && billType == type) /*选择的是一样的就不加载*/{
                         return;
                     }
@@ -209,10 +214,19 @@ public class BalanceListFragment extends Fragment {
     public void showFilterStatus() {
         filterStatusPopupWindow.showUp(rlFilterContentView);
         filterStatusPopupWindow.setBackgroundAlpha(0.3f);
+        tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
         filterStatusPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 filterStatusPopupWindow.setBackgroundAlpha(1.0f);
+                if (tvFilterStatus.getText().toString().equalsIgnoreCase("筛选")) {
+                    tvFilterStatus.setTextColor(Color.parseColor("#222222"));
+                    tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
+                } else {
+                    tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+                    tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+                }
             }
         });
 
@@ -222,10 +236,19 @@ public class BalanceListFragment extends Fragment {
     public void showFilterType() {
         filterTypePopupWindow.showUp(rlFilterContentView);
         filterTypePopupWindow.setBackgroundAlpha(0.3f);
+        tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
         filterTypePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 filterTypePopupWindow.setBackgroundAlpha(1.0f);
+                if (tvFilterType.getText().toString().equalsIgnoreCase("分类")) {
+                    tvFilterType.setTextColor(Color.parseColor("#222222"));
+                    tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
+                } else {
+                    tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+                    tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+                }
             }
         });
     }
@@ -236,11 +259,18 @@ public class BalanceListFragment extends Fragment {
              Long timestamps = ((BalanceDetailListActivity)getActivity()).presenter.getAccountCreateTime();
             yearMonthPickerDialog = new YearMonthPickerDialog(getActivity(), timestamps);
         }
+        tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
+        tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
         yearMonthPickerDialog.setOnItemSelectedListener((picker, date) -> {
            Calendar cal = Calendar.getInstance();
            cal.setTime(date);
            int currentYear = cal.get(Calendar.YEAR);
            int currentMonth = cal.get(Calendar.MONTH) + 1;
+
+            tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
+            tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+            tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+
           String newTimeStr = String.valueOf(currentYear * 100 + currentMonth);
            if (timeStr.equalsIgnoreCase(newTimeStr)) {
               return;//相同不用请求新数据
@@ -252,7 +282,14 @@ public class BalanceListFragment extends Fragment {
           tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
             refreshLayout.autoRefresh();
         });
-         yearMonthPickerDialog.show();
+        yearMonthPickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
+                tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+            }
+        });
+        yearMonthPickerDialog.show();
 }
 
 

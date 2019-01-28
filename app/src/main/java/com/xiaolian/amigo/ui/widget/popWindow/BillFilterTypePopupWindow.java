@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.widget.popWindow;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -63,6 +64,7 @@ public class BillFilterTypePopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(0);
                 popFilterClickListener.click(0, name);
                 dismiss();
             }
@@ -72,6 +74,7 @@ public class BillFilterTypePopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(1);
                 popFilterClickListener.click(1, name);
                 dismiss();
             }
@@ -81,6 +84,7 @@ public class BillFilterTypePopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(2);
                 popFilterClickListener.click(2, name);
                 dismiss();
             }
@@ -90,6 +94,7 @@ public class BillFilterTypePopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(9);
                 popFilterClickListener.click(9, name);
                 dismiss();
             }
@@ -99,6 +104,7 @@ public class BillFilterTypePopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(((Long)v.getTag()).intValue());
                 popFilterClickListener.click(((Long)v.getTag()).intValue(), name);
                 dismiss();
             }
@@ -108,6 +114,7 @@ public class BillFilterTypePopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(((Long)v.getTag()).intValue());
                 popFilterClickListener.click(((Long)v.getTag()).intValue(), name);
                 dismiss();
             }
@@ -117,6 +124,7 @@ public class BillFilterTypePopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(((Long)v.getTag()).intValue());
                 popFilterClickListener.click(((Long)v.getTag()).intValue(), name);
                 dismiss();
             }
@@ -126,6 +134,7 @@ public class BillFilterTypePopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(((Long)v.getTag()).intValue());
                 popFilterClickListener.click(((Long)v.getTag()).intValue(), name);
                 dismiss();
             }
@@ -135,6 +144,7 @@ public class BillFilterTypePopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(((Long)v.getTag()).intValue());
                 popFilterClickListener.click(((Long)v.getTag()).intValue(), name);
                 dismiss();
             }
@@ -160,6 +170,102 @@ public class BillFilterTypePopupWindow extends PopupWindow {
         contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         popupHeight = contentView.getMeasuredHeight();
         popupWidth = contentView.getMeasuredWidth();
+    }
+
+    private void showSelectedType(int type) {
+        if (type == 0) {
+            filterAllTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+
+        } else if (type == 1) {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+
+        } else if (type == 2) {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == (Long)filterBillItem1TextView.getTag()) {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == (Long)filterBillItem2TextView.getTag()) {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == (Long)filterBillItem3TextView.getTag()) {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == (Long)filterBillItem4TextView.getTag()) {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == (Long)filterBillItem5TextView.getTag()) {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#FF5555"));
+        } else if (type == 9) {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        }
     }
 
     public void setBillItems(List<BriefSchoolBusiness> businessesList) {

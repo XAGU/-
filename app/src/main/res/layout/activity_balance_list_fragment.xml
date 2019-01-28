@@ -22,7 +22,7 @@
             <TextView
                 android:id="@+id/tv_filter_date"
                 android:text="2018年5月"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:layout_marginLeft="22dp"
                 android:gravity="center_vertical"
                 android:drawableRight="@drawable/spread"
@@ -34,7 +34,7 @@
             <TextView
                 android:id="@+id/tv_filter_type"
                 android:text="分类"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:layout_marginRight="22dp"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
@@ -47,7 +47,7 @@
             <TextView
                 android:id="@+id/tv_filter_status"
                 android:text="筛选"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:layout_marginRight="22dp"
                 android:layout_toLeftOf="@+id/tv_filter_type"
                 android:gravity="center_vertical"
