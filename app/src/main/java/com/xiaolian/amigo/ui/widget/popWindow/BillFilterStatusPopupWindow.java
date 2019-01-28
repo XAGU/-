@@ -57,6 +57,7 @@ public class BillFilterStatusPopupWindow extends PopupWindow {
             public void onClick(View v) {
                 CharSequence name = ((TextView)v).getText();
                 popFilterClickListener.click(0, name);
+                showSelectedStatus(0);
                 dismiss();
             }
         });
@@ -65,6 +66,7 @@ public class BillFilterStatusPopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 CharSequence name = ((TextView)v).getText();
+                showSelectedStatus(1);
                 popFilterClickListener.click(1, name);
                 dismiss();
             }
@@ -74,6 +76,7 @@ public class BillFilterStatusPopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 CharSequence name = ((TextView)v).getText();
+                showSelectedStatus(2);
                 popFilterClickListener.click(2, name);
                 dismiss();
             }
@@ -111,6 +114,22 @@ public class BillFilterStatusPopupWindow extends PopupWindow {
 
     public void setPopFilterClickListener(PopFilterClickListener popFilterClickListener) {
         this.popFilterClickListener = popFilterClickListener;
+    }
+
+    private void showSelectedStatus(int status) {
+        if (status == 0) {
+            filterAllTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterOngoingTextView.setTextColor(Color.parseColor("#222222"));
+            filterEndTextView.setTextColor(Color.parseColor("#222222"));
+        } else if (status == 1) {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterOngoingTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterEndTextView.setTextColor(Color.parseColor("#222222"));
+        } else {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterOngoingTextView.setTextColor(Color.parseColor("#222222"));
+            filterEndTextView.setTextColor(Color.parseColor("#FF5555"));
+        }
     }
 
     public interface PopFilterClickListener {
