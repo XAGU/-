@@ -36,6 +36,7 @@ import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.util.AppUtils;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 
@@ -144,7 +145,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                 break;
         }
     }
-    
+
     /**
      * 去扫描二维码界面
      */
@@ -162,7 +163,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         integrator.addExtra(DecodeHintType.CHARACTER_SET.name(), "utf-8");
         integrator.addExtra(DecodeHintType.TRY_HARDER.name(), Boolean.TRUE);
         integrator.addExtra(DecodeHintType.POSSIBLE_FORMATS.name(), BarcodeFormat.QR_CODE);
-        integrator.addExtra(SCAN_TYPE, 2);
+        integrator.addExtra(SCAN_TYPE, Constant.SCAN_HAIR_DRYER);
         integrator.addExtra(IS_SACN, true);
         integrator.initiateScan();
     }

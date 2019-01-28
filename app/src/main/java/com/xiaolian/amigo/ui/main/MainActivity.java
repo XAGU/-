@@ -617,6 +617,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onResume() {
         super.onResume();
+        android.util.Log.e(TAG, "onResume: " );
         FragmentInit();
         presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                 AppUtils.getVersionName(this) , presenter.getRemindMobile());

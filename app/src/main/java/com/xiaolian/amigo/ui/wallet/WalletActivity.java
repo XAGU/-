@@ -108,7 +108,6 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(WalletActivity.this);
-        showNewbieGuide();
     }
 
     @Override
@@ -284,11 +283,13 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
 
     public void showWithDraw() {
         rlWithdrawal.setVisibility(View.VISIBLE);
+        showNewbieGuide();
     }
 
     @Override
     public void hideWithDraw() {
         rlWithdrawal.setVisibility(View.GONE);
+        showGivingBalance();
     }
 
     @Override

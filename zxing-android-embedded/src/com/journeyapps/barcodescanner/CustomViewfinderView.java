@@ -29,6 +29,8 @@ public class CustomViewfinderView extends ViewfinderView {
 
     public int[] colorsScan = new int[]{0x00499BFF , 0xff499BFF , 0x00499BFF} ;
 
+    public int[] colorHairDryer = new int[]{0x00F8B646 , 0xffF8B646 ,0x00F8B646};
+
 
     private int[] linearColor = colors ;
     public LinearGradient linearGradient;
@@ -41,8 +43,10 @@ public class CustomViewfinderView extends ViewfinderView {
 
 
     public void setColors(int  type){
-        if (type == 1){
-            linearColor = colors ;
+        if (type == 1) {
+            linearColor = colors;
+        }else if (type == 8 ){  // 吹风机
+            linearColor = colorHairDryer ;
         }else{
             linearColor = colorsScan ;
         }
