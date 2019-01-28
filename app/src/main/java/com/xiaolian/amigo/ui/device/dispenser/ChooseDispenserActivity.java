@@ -144,7 +144,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                 break;
         }
     }
-
+    
     /**
      * 去扫描二维码界面
      */
@@ -174,6 +174,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     private void showScanButton(){
         llFooter.setVisibility(View.GONE);
         llQrCodeScan.setVisibility(View.VISIBLE);
+
         canShowScanButton = false ;
     }
 

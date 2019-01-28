@@ -206,8 +206,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             MobclickAgent.setCatchUncaughtExceptions(true);
             if (presenter.isLogin()) {
                 presenter.getSchoolForumStatus();
-                presenter.checkUpdate(AppUtils.getAppVersionCode(this),
-                        AppUtils.getVersionName(this) , presenter.getRemindMobile());
+
                 uploadDeviceInfo();
                 presenter.rollingNotify();
             }
@@ -523,8 +522,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         setIntent(intent);
         if (presenter.isLogin()) {
             presenter.getSchoolForumStatus();
-            presenter.checkUpdate(AppUtils.getAppVersionCode(this),
-                    AppUtils.getVersionName(this) , presenter.getRemindMobile());
             uploadDeviceInfo();
             if (presenter.getIsFirstAfterLogin()) {
                 if (fm == null) fm = getSupportFragmentManager() ;
@@ -621,7 +618,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     protected void onResume() {
         super.onResume();
         FragmentInit();
-
+        presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+                AppUtils.getVersionName(this) , presenter.getRemindMobile());
     }
 
     /**
@@ -1208,15 +1206,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         RxBus.getDefault().post(personalExtraInfoDTO);
     }
 
-    @Override
-    public void startNet() {
-        RxHelper.delay(300 , TimeUnit.MILLISECONDS)
-                .subscribe(integer -> {
-                    presenter.checkUpdate(AppUtils.getAppVersionCode(this),
-                            AppUtils.getVersionName(this) ,presenter.getRemindMobile());
-                });
-
-    }
     
     @Override
     public void enableView() {

@@ -27,7 +27,6 @@
 
 
     <LinearLayout
-        android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/bt_switch"
         android:layout_toRightOf="@id/iv_avatar"
         android:id="@+id/ll_user_info"
@@ -37,7 +36,8 @@
         android:background="@color/colorBackgroundWhite"
         android:orientation="vertical"
         android:paddingRight="31dp"
-        android:paddingLeft="13dp">
+        android:paddingLeft="13dp"
+        android:layout_marginTop="42dp">
 
         <TextView
             android:id="@+id/tv_nickName"
@@ -74,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="21dp"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="42dp"
         android:layout_alignParentRight="true"
         android:id="@+id/notice"
         android:src="@drawable/notice"/>
@@ -82,7 +82,8 @@
 
     <TextView
         android:id="@+id/tv_notice_count"
-        android:visibility="gone"
+        android:visibility="visible"
+        android:text="1"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"

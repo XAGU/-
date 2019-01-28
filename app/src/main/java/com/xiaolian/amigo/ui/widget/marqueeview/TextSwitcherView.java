@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.widget.marqueeview;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +46,16 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
             nextView = (MarqueeText) getNextView();
             MarqueeText currentView = (MarqueeText) getCurrentView();
             if (nextView == null) return ;
-            if (!currentView.getText().toString().isEmpty()){
-                if (!currentView.isEnd) return ;
+            if (this.info.size() ==1){
+                currentView.setCanScrollForever(true);
+            }else{
+                currentView.setCanScrollForever(false);
+            }
+            if (!currentView.getText().toString().isEmpty()) {
+                if (!currentView.isEnd) return;
+            }
+            if (resIndex >= info.size()){
+                resIndex = 0 ;
             }
             this.setText(info.get(resIndex++));
             if (getInAnimation() != null) {
@@ -65,8 +74,10 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
 
                         if (getCurrentView() != null && getCurrentView() instanceof MarqueeText) {
                             if (info.size() ==1){
+                                Log.e(TAG, "onAnimationEnd: >>>>  forever  " );
                                  nextView.startScrollForever();
                             }else {
+                                Log.e(TAG, "onAnimationEnd: >>>>  startFor0  " );
                                 nextView.startFor0();
                             }
                         }
@@ -108,7 +119,8 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
     }
 
     public void getResoure(ArrayList<String> info){
-        this.info = info ;
+        this.info.clear();
+        this.info.addAll(info);
         isScroll = true ;
         updateText();
     }

@@ -318,7 +318,9 @@ public final class CommonUtil {
 
         if (updateTime == null || updateTime.isEmpty()) return true ;
 
-        if (updateTime.size() == 1 && updateTime.containsKey("")) return false ;
+//        if (updateTime.size() == 1 && updateTime.containsKey("")) {
+//            return false;
+//        }
         if (updateTime.containsKey(mobile)){
             if (System.currentTimeMillis() - updateTime.get(mobile) >=UPDATE_REMIND_INTERVAL) return  true;
             else return false ;

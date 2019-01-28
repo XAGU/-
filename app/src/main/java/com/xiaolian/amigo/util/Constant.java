@@ -456,8 +456,21 @@ public final class Constant {
     //==================================================
 
     /**
-     *  更新时间间隔
+     *  更新时间间隔  6小时
      */
     public static final int UPDATE_REMIND_INTERVAL = 6 * 1000 * 60 * 60;
+
+    /**
+     * 扫描为洗衣机模式
+     */
+    public static final int SCAN_WASHER = 4 ;
+    /**
+     * 扫描为烘干机
+     */
+    public static final int SCAN_DRYER = 6 ;
+    /**
+     * 扫描为吹风机
+     */
+    public static final int SCAN_HAIR_DRYER = 8 ;
 
 }

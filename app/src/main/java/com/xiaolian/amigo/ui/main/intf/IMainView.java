@@ -172,7 +172,6 @@ public interface IMainView extends IBaseView {
 
     void setCertificationStatus( PersonalExtraInfoDTO personalExtraInfoDTO);
 
-    void startNet();
 
     void enableView();
 

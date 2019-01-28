@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 
 import com.xiaolian.amigo.util.ScreenUtils;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,9 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
 
     public void setCanScrollForever(boolean canScrollForever) {
         this.canScrollForever = canScrollForever;
+
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -185,8 +188,10 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
     public void startFor0() {
         currentScrollX = 0;
         isFirstDraw = true ;
+        setCanScrollForever(false);
         startScroll();
     }
+
 
     public void startScrollForever(){
         setCanScrollForever(true);
@@ -197,8 +202,6 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
         this.setSelected(true);
         this.setEllipsize(TextUtils.TruncateAt.MARQUEE);
     }
-
-
 
     interface ScrollFinishListener{
 
