@@ -149,6 +149,20 @@ public class BalanceListFragment extends Fragment {
                     tvFilterStatus.setText(name);
                 }
             });
+
+            filterStatusPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    filterStatusPopupWindow.setBackgroundAlpha(1.0f);
+                    if (tvFilterStatus.getText().toString().equalsIgnoreCase("筛选")) {
+                        tvFilterStatus.setTextColor(Color.parseColor("#222222"));
+                        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
+                    } else {
+                        tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+                        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+                    }
+                }
+            });
         }
 
         if (filterTypePopupWindow == null) {
@@ -173,6 +187,19 @@ public class BalanceListFragment extends Fragment {
                     }
                     refreshLayout.autoRefresh();
                     tvFilterType.setText(name);
+                }
+            });
+            filterTypePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    filterTypePopupWindow.setBackgroundAlpha(1.0f);
+                    if (tvFilterType.getText().toString().equalsIgnoreCase("分类")) {
+                        tvFilterType.setTextColor(Color.parseColor("#222222"));
+                        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
+                    } else {
+                        tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+                        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+                    }
                 }
             });
         }
@@ -213,44 +240,18 @@ public class BalanceListFragment extends Fragment {
     @OnClick(R.id.tv_filter_status)
     public void showFilterStatus() {
         filterStatusPopupWindow.showUp(rlFilterContentView);
-        filterStatusPopupWindow.setBackgroundAlpha(0.3f);
+        filterStatusPopupWindow.setBackgroundAlpha(0.45f);
         tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
         tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
-        filterStatusPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                filterStatusPopupWindow.setBackgroundAlpha(1.0f);
-                if (tvFilterStatus.getText().toString().equalsIgnoreCase("筛选")) {
-                    tvFilterStatus.setTextColor(Color.parseColor("#222222"));
-                    tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
-                } else {
-                    tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
-                    tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-                }
-            }
-        });
 
     }
 
     @OnClick(R.id.tv_filter_type)
     public void showFilterType() {
         filterTypePopupWindow.showUp(rlFilterContentView);
-        filterTypePopupWindow.setBackgroundAlpha(0.3f);
+        filterTypePopupWindow.setBackgroundAlpha(0.45f);
         tvFilterType.setTextColor(Color.parseColor("#FF5555"));
         tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
-        filterTypePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                filterTypePopupWindow.setBackgroundAlpha(1.0f);
-                if (tvFilterType.getText().toString().equalsIgnoreCase("分类")) {
-                    tvFilterType.setTextColor(Color.parseColor("#222222"));
-                    tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
-                } else {
-                    tvFilterType.setTextColor(Color.parseColor("#FF5555"));
-                    tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-                }
-            }
-        });
     }
 
     @OnClick(R.id.tv_filter_date)
