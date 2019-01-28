@@ -76,10 +76,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- 退款账单 -->
-        <activity
-            android:name=".ui.order.RefundOrderActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- 订单详情 -->
         <activity

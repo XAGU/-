@@ -95,6 +95,19 @@ public class OrderDetailRespDTO {
      */
     private String zeroConsumeCopy;
 
+    /**
+     * 是否是扫码吹风机型号
+     */
+    private boolean scanCode ;
+
+    public boolean isScanCode() {
+        return scanCode;
+    }
+
+    public void setScanCode(boolean scanCode) {
+        this.scanCode = scanCode;
+    }
+
     public Long getFinishTime() {
         return finishTime;
     }

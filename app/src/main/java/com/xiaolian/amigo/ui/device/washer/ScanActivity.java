@@ -747,7 +747,6 @@ public class ScanActivity extends WasherBaseActivity
                     data.getResidenceId(), false);
         } else if (type == Device.DISPENSER.getType()) {
             // 进入饮水机
-
             gotoDispenser(macAddress, data.getSupplierId(), data.getLocation(),
                     data.getResidenceId(), data.isFavor(), 0, false);
 //
@@ -758,6 +757,8 @@ public class ScanActivity extends WasherBaseActivity
                     data.getResidenceId(), data.isFavor(), false);
 
         }
+
+
 
 
     }
@@ -810,6 +811,7 @@ public class ScanActivity extends WasherBaseActivity
                 + "&supplierId=" + supplierId;
         startActivity(new Intent(this ,WebActivity.class)
         .putExtra(INTENT_KEY_URL ,url));
+        this.finish();
     }
 
     public void gotoDevice(Device device, String macAddress, Long supplierId,

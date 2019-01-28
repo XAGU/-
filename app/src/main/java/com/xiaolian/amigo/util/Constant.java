@@ -99,10 +99,16 @@ public final class Constant {
      * H5地址
      */
     public static String H5_SERVER = BuildConfig.H5_SERVER;
+
     /**
-     * H5帮助中心
+     * 服务中心
      */
-    public static final String H5_HELP = H5_SERVER + "/help/list";
+    public static final String H5_SERVICE_CENTER = H5_SERVER + "/serviceCenter";
+
+    /**
+     * H5报修
+     */
+    public static final String H5_REPAIR = H5_SERVER + "/repair/apply";
     /**
      * H5门禁
      */

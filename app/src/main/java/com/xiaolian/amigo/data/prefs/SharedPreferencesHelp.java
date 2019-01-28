@@ -162,6 +162,8 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
      */
     private static final String PREF_CERTIFICATION_STATUS = "PREF_CERTIFICATION_STATUS";
 
+    private static final String PREF_UNREAD_WORK_MESSAGE_COUNT = "PREF_UNREAD_WORK_MESSAGE_COUNT";
+
     private User userHolder;
 
     private boolean showUrgencyNotify = true;
@@ -175,8 +177,6 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     private boolean transfer;
     // 推送token
     private String pushToken;
-
-
 
     @Inject
     public SharedPreferencesHelp(@ApplicationContext Context context, Gson gson) {
@@ -810,6 +810,16 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public long getDeleteFileTime() {
         return mSharedPreferences.getLong(PREF_KEY_DELETE_TIME  , System.currentTimeMillis());
+    }
+
+    @Override
+    public void saveUnReadWorkMessageCount(int unReadWorkOrderRemarkMessageCount) {
+        mSharedPreferences.edit().putInt(PREF_UNREAD_WORK_MESSAGE_COUNT ,unReadWorkOrderRemarkMessageCount).commit();
+    }
+
+    @Override
+    public int getUnReadWorkMessageCount() {
+        return mSharedPreferences.getInt(PREF_UNREAD_WORK_MESSAGE_COUNT ,0);
     }
 
 

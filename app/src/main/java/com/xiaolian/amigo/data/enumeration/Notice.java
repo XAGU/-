@@ -35,6 +35,11 @@ public enum Notice {
         public int getDrawableRes() {
             return R.drawable.ic_system_notice;
         }
+    },ROLLING_NOTICE(5,"滚动公告"){
+        @Override
+        public int getDrawableRes() {
+            return R.drawable.ic_rolling_notice;
+        }
     };
     private int type;
     private String desc;

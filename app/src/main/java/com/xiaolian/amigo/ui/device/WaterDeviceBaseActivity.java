@@ -24,12 +24,14 @@ import android.widget.TextView;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.base.TimeHolder;
+import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.ErrorTag;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckRespDTO;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
@@ -1120,46 +1122,59 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      */
     @OnClick(R.id.bt_error_handler)
     void handleError(Button button) {
+
         btErrorHandler.setEnabled(false);
-        switch (ErrorTag.getErrorTag((int) (button.getTag()))) {
-            case CONNECT_ERROR:
-                // 点击重连按钮时蓝牙必须为开启状态
-                setBleCallback(() -> {
-                    // 显示正在连接画面
-                    showConnecting();
-                    // 重连切换扫描方式
-                    presenter.onReconnect(macAddress);
-                });
-                getBlePermission();
-                break;
-            case DEVICE_BUSY:
-                //朕知道了，结束当前页，然后返回首页
-                back2Main();
-//                startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
-                break;
-            case REPAIR:
-                Intent intent = new Intent(this, RepairApplyActivity.class);
-                intent.putExtra(Constant.DEVICE_TYPE, deviceType);
-                intent.putExtra(Constant.LOCATION_ID, residenceId);
-                intent.putExtra(Constant.LOCATION, Device.getDevice(deviceType).getDesc() + "：" + location);
-                startActivity(intent);
-                finish();
-                break;
-            case CALL:
-                // 取消掉联系客服状态
-                break;
-            case CHANGE_DORMITORY:
-                changeDormitory();
-                break;
-            case CHANGE_DISPENSER:
-                changeDispenser();
-                break;
-            case CHANGE_DRYER:
-                changeDryer();
-                break;
-            default:
-                break;
-        }
+
+        // test
+
+        startH5Repair();
+//        switch (ErrorTag.getErrorTag((int) (button.getTag()))) {
+//            case CONNECT_ERROR:
+//                // 点击重连按钮时蓝牙必须为开启状态
+//                setBleCallback(() -> {
+//                    // 显示正在连接画面
+//                    showConnecting();
+//                    // 重连切换扫描方式
+//                    presenter.onReconnect(macAddress);
+//                });
+//                getBlePermission();
+//                break;
+//            case DEVICE_BUSY:
+//                //朕知道了，结束当前页，然后返回首页
+//                back2Main();
+////                startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
+//                break;
+//            case REPAIR:
+//                startH5Repair();
+//                break;
+//            case CALL:
+//                // 取消掉联系客服状态
+//                break;
+//            case CHANGE_DORMITORY:
+//                changeDormitory();
+//                break;
+//            case CHANGE_DISPENSER:
+//                changeDispenser();
+//                break;
+//            case CHANGE_DRYER:
+//                changeDryer();
+//                break;
+//            default:
+//                break;
+//        }
+    }
+
+    /**
+     * 前往h5 报修界面
+     */
+    private void startH5Repair() {
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_REPAIR
+                        + "?accessToken=" + presenter.getAccessToken()
+                        +"&refreshToken=" +presenter.getRefreshToken()
+                        + "&schoolId=" + presenter.getSchoolId()
+                        + "&residenceId=" + residenceId
+                        + "&deviceType=" + deviceType));
     }
 
     @Override

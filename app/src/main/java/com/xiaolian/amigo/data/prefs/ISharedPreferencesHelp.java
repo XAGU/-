@@ -233,4 +233,17 @@ public interface ISharedPreferencesHelp {
 
     long getDeleteFileTime();
 
+    /**
+     * 存储未读工单数量
+     * @param unReadWorkOrderRemarkMessageCount
+     */
+    void saveUnReadWorkMessageCount(int unReadWorkOrderRemarkMessageCount);
+
+    /**
+     * 取出未读工单数量
+     * @return
+     */
+    int getUnReadWorkMessageCount();
+
+
 }

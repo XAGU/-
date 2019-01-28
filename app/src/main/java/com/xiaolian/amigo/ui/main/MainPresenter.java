@@ -175,6 +175,12 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     PersonalExtraInfoDTO dto = result.getData();
 
                     /**
+                     * 记录h5服务中心的未读工单消息数量
+                     */
+                    int unReadWorkOrderRemarkMessageCount = result.getData().getUnReadWorkOrderRemarkMessageCount();
+                    mainDataManager.saveUnReadWorkMessageCount(unReadWorkOrderRemarkMessageCount);
+
+                    /**
                      * 新版本将报修记录转移为h5 用户端不需要显示小红点
                      */
 //                    if (dto.getLastRepairTime() != null && mainDataManager.getLastRepairTime() < dto.getLastRepairTime()) {

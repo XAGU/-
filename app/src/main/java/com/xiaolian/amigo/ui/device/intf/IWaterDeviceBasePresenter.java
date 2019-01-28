@@ -52,4 +52,10 @@ public interface IWaterDeviceBasePresenter<V extends IWaterDeviceBaseView> exten
      * 显示温馨提示
      */
     void showGuide();
+
+    String getAccessToken();
+
+    String getRefreshToken();
+
+    Long getSchoolId();
 }

@@ -31,6 +31,7 @@ import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.main.intf.ISplashPresenter;
 import com.xiaolian.amigo.ui.main.intf.ISplashView;
+import com.xiaolian.amigo.util.H5StartUtils;
 
 import dagger.Module;
 import dagger.Provides;
@@ -85,9 +86,5 @@ public class MainActivityModule {
     IDeviceConnectErrorApi provideDeviceConnectErrorApi(@UserServer Retrofit retrofit){
         return retrofit.create(IDeviceConnectErrorApi.class);
     }
-
-
-
-
 
 }

@@ -25,6 +25,7 @@ import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.H5StartUtils;
 import com.xiaolian.amigo.util.TimeUtils;
 
 import java.util.ArrayList;
@@ -47,6 +48,9 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
 
     @Inject
     IWithdrawalDetailPresenter<IWithdrawalDetailView> presenter;
+
+    @Inject
+    H5StartUtils h5StartUtils ;
 
     private List<WithdrawRechargeDetailAdapter.Item> items = new ArrayList<>();
 
@@ -166,16 +170,14 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
                         presenter.remind(data.getId());
                         break;
                     default:
-                        startActivity(new Intent(this, WebActivity.class)
-                                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                        h5StartUtils.startH5Service();
                         break;
                 }
             });
             rightOper.setOnClickListener((v) -> {
                 switch (WithdrawalStatus.getWithdrawalStatus(data.getStatus())) {
                     case AUDIT_PENDING:
-                        startActivity(new Intent(this, WebActivity.class)
-                                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                        h5StartUtils.startH5Service();
                         break;
                     case AUDIT_FAIL:
                     case WITHDRAWAL_FAIL:

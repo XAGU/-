@@ -120,6 +120,8 @@ public class CreditsAdapter extends CommonAdapter<CreditsAdapter.CreditsItem> {
                     return R.drawable.bg_credit_washer;
                 case DISPENSER:
                     return R.drawable.bg_credit_dispenser;
+                case DRYER2:
+                    return R.drawable.bg_credit_hairdryer ;
             }
             return 0;
         }

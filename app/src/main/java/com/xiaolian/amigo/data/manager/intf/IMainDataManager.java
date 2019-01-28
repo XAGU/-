@@ -195,4 +195,10 @@ public interface IMainDataManager {
     Observable<ApiResult<BooleanRespDTO>> uploadLog(@Body RequestBody body);
 
     String getRemindMobile();
+
+    /**
+     * 存储未读工单数量
+     * @param unReadWorkOrderRemarkMessageCount
+     */
+    void saveUnReadWorkMessageCount(int unReadWorkOrderRemarkMessageCount);
 }

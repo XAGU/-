@@ -11,6 +11,7 @@ import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.H5StartUtils;
 
 import javax.inject.Inject;
 
@@ -18,6 +19,9 @@ public class BathIngActivity extends WaterDeviceBaseActivity<IHeaterPresenter> i
 
     @Inject
     IHeaterPresenter<IHeaterView> presenter;
+
+    @Inject
+    H5StartUtils h5StartUtils ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +56,7 @@ public class BathIngActivity extends WaterDeviceBaseActivity<IHeaterPresenter> i
 
     @Override
     protected View.OnClickListener setTopRightIconClickListener() {
-        return v -> startActivity(new Intent(getApplicationContext(), WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+        return v -> h5StartUtils.startH5Service();
     }
 
     @Override

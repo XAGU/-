@@ -9,6 +9,7 @@ import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -29,6 +30,7 @@ import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawRechargeDetailAdapter;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.H5StartUtils;
 import com.xiaolian.amigo.util.TimeUtils;
 
 import java.util.ArrayList;
@@ -49,6 +51,9 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     private static final int ORDER_ERROR_STATUS = 3;
     @Inject
     INormalOrderPresenter<INormalOrderView> presenter;
+
+    @Inject
+    H5StartUtils h5StartUtils ;
 
     private List<WithdrawRechargeDetailAdapter.Item> items = new ArrayList<>();
 
@@ -123,8 +128,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     }
 
     public void onLeftOper() {
-        startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+        h5StartUtils.startH5Service();
     }
 
     public void onRightOper() {
@@ -191,7 +195,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     }
 
     private void setBottomLayout(OrderDetailRespDTO data) {
-
+        Log.e(TAG, "setBottomLayout: " + data.isNetWashing()  );
         vBottomLine1.setBackgroundColor(Color.parseColor(OrderDetailActivity.getLineColorByDeviceType(data.getDeviceType())));
         vBottomLine1.setVisibility(View.VISIBLE);
         vBottomLine2.setBackgroundColor(Color.parseColor(OrderDetailActivity.getLineColorByDeviceType(data.getDeviceType())));

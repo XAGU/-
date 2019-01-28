@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.order;
 
+import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.R;
@@ -16,6 +17,8 @@ import com.xiaolian.amigo.ui.order.intf.IOrderDetailPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailView;
 
 import javax.inject.Inject;
+
+import static com.xiaolian.amigo.ui.order.OrderDetailActivity.ORDER_ERROR_STATUS;
 
 /**
  * 订单详情
@@ -68,7 +71,8 @@ public class OrderDetailPresenter<V extends IOrderDetailView> extends BasePresen
                 if (null == result.getError()) {
                     if (result.getData().getLowest() != null
                             && result.getData().getLowest()
-                            && TextUtils.isEmpty(result.getData().getBonus())) {
+                            && TextUtils.isEmpty(result.getData().getBonus())
+                            && ObjectsCompat.equals(result.getData().getStatus(), ORDER_ERROR_STATUS)) {
                         getMvpView().showNoUseTip();
                     }
                     order = result.getData();
