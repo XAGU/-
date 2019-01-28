@@ -2,6 +2,11 @@ package com.xiaolian.amigo.ui.wallet;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -18,7 +23,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.hubert.guide.NewbieGuide;
+import com.app.hubert.guide.listener.OnHighlightDrewListener;
 import com.app.hubert.guide.model.GuidePage;
+import com.app.hubert.guide.model.HighLight;
+import com.app.hubert.guide.model.HighlightOptions;
 import com.app.hubert.guide.model.RelativeGuide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
@@ -129,10 +137,11 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     private void showNewbieGuide(){
         NewbieGuide.with(this)
                 .setLabel("guide1")
-                .setShowCounts(3)
+//                .setShowCounts(3)
+                .alwaysShow(true)
                 .addGuidePage(GuidePage.newInstance()
                         .setBackgroundColor(getResources().getColor(R.color.colorBlank60))
-                        .addHighLight(rlBillRecord ,new RelativeGuide(R.layout.view_guide_simple,
+                        .addHighLight(rlBillRecord  ,HighLight.Shape.RECTANGLE, new RelativeGuide(R.layout.view_guide_simple,
                                 Gravity.BOTTOM ,5)))
                 .show();
 

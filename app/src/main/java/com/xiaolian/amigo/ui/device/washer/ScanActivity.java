@@ -548,7 +548,7 @@ public class ScanActivity extends WasherBaseActivity
             ScanType2 = getIntent().getIntExtra(KEY_TYPE, 4);
             h5Washer = getIntent().getBooleanExtra(INTENT_URL_WASHER, false);
             if (h5Washer) {
-                scanType = 2;
+                scanType = 3;
             }
 
         }

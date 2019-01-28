@@ -1,1 +1,1 @@
-include ':app', ':zxing-android-embedded', ':blelib', ':loglib'
+include ':app', ':zxing-android-embedded', ':blelib', ':loglib',':guide'

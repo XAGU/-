@@ -256,7 +256,8 @@ dependencies {
     // ~80KB
     implementation 'com.github.nanchen2251:CompressHelper:1.0.5'
     implementation files('libs/open_sdk_r6019_lite.jar')
-    implementation deps.newbieGuide
+    //    implementation deps.newbieGuide
+    implementation project(':guide')
 }
 
 configurations.all {
