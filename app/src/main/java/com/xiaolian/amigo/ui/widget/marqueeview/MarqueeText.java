@@ -65,7 +65,6 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
 
     public void setCanScrollForever(boolean canScrollForever) {
         this.canScrollForever = canScrollForever;
-
     }
 
 

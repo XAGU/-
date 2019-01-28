@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -85,6 +86,10 @@ public class BillFilterStatusPopupWindow extends PopupWindow {
         setContentView(contentView);
         setWidth(WindowManager.LayoutParams.MATCH_PARENT);
         setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        setBackgroundDrawable(new ColorDrawable(0xffffffff));
+        setFocusable(true);
+        setOutsideTouchable(true);
+        setTouchable(true);
         setTouchInterceptor(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

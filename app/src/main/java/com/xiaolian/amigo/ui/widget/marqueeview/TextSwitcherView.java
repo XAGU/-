@@ -46,11 +46,6 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
             nextView = (MarqueeText) getNextView();
             MarqueeText currentView = (MarqueeText) getCurrentView();
             if (nextView == null) return ;
-            if (this.info.size() ==1){
-                currentView.setCanScrollForever(true);
-            }else{
-                currentView.setCanScrollForever(false);
-            }
             if (!currentView.getText().toString().isEmpty()) {
                 if (!currentView.isEnd) return;
             }

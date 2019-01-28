@@ -153,6 +153,7 @@ public class BillFilterTypePopupWindow extends PopupWindow {
         setContentView(contentView);
         setWidth(WindowManager.LayoutParams.MATCH_PARENT);
         setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        setBackgroundDrawable(new ColorDrawable(0xffffffff));
 
         setFocusable(true);
         setOutsideTouchable(true);
