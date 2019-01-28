@@ -116,12 +116,12 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(WalletActivity.this);
+        presenter.requestNetWork();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.requestNetWork();
     }
 
     @Override
@@ -137,8 +137,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     private void showNewbieGuide(){
         NewbieGuide.with(this)
                 .setLabel("guide1")
-//                .setShowCounts(3)
-                .alwaysShow(true)
+                .setShowCounts(3)
                 .addGuidePage(GuidePage.newInstance()
                         .setBackgroundColor(getResources().getColor(R.color.colorBlank60))
                         .addHighLight(rlBillRecord  ,HighLight.Shape.RECTANGLE, new RelativeGuide(R.layout.view_guide_simple,

@@ -47,7 +47,10 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
             MarqueeText currentView = (MarqueeText) getCurrentView();
             if (nextView == null) return ;
             if (!currentView.getText().toString().isEmpty()) {
-                if (!currentView.isEnd) return;
+                /**
+                 * 更新滚动条时，如果是一条消息，此时TextView是走马灯效果，不会调用onFinish接口，所以需要自己更新
+                 */
+                if ( !currentView.isCanScrollForever()&&!currentView.isEnd) return;
             }
             if (resIndex >= info.size()){
                 resIndex = 0 ;
