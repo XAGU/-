@@ -68,7 +68,6 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.e(TAG, "onDraw: " + getText() +"   " + isFirstDraw  );
         super.onDraw(canvas);
         if (isFirstDraw) {
             getTextWidth();
@@ -171,7 +170,6 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
         isFirstDraw = true; // 需重新设置参数
-        Log.e(TAG, "onTextChanged: "  + getText() + getScrollX());
     }
     // 开始滚动
     public void startScroll() {

@@ -180,6 +180,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     int unReadWorkOrderRemarkMessageCount = result.getData().getUnReadWorkOrderRemarkMessageCount();
                     mainDataManager.saveUnReadWorkMessageCount(unReadWorkOrderRemarkMessageCount);
 
+
                     /**
                      * 新版本将报修记录转移为h5 用户端不需要显示小红点
                      */

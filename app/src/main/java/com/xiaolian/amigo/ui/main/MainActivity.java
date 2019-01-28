@@ -1226,8 +1226,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void showRollingNotify(RollingNotifyRespDTO data) {
 
-        if (data.getRollingNotifyList() == null || data.getRollingNotifyList().size() == 0) return ;
-        android.util.Log.e(TAG, "showRollingNotify: " + data.getRollingNotifyList().size() );
+//        if (data.getRollingNotifyList() == null || data.getRollingNotifyList().size() == 0) return ;
+//        android.util.Log.e(TAG, "showRollingNotify: " + data.getRollingNotifyList().size() );
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ROLLING_NOTIFY ,data.getRollingNotifyList()));
     }
 

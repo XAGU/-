@@ -22,8 +22,6 @@ import com.app.hubert.guide.model.GuidePage;
 import com.app.hubert.guide.model.RelativeGuide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
-import com.xiaolian.amigo.ui.order.OrderActivity;
-import com.xiaolian.amigo.ui.user.PasswordVerifyActivity;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -111,8 +109,6 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         getActivityComponent().inject(this);
         presenter.onAttach(WalletActivity.this);
         showNewbieGuide();
-//        setToolbarSubTitle("月账单", v ->
-//                startActivity(new Intent(WalletActivity.this, MonthlyBillActivity.class)));
     }
 
     @Override

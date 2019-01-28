@@ -547,7 +547,11 @@ public class HomeFragment2 extends BaseFragment {
                 notifyAdaptor();
                 break;
             case ROLLING_NOTIFY:
-                initRollingNotice((List<String>)event.getObject());
+                if (event.getObject() == null){
+                    rlScroll.setVisibility(View.GONE);
+                }else {
+                    initRollingNotice((List<String>) event.getObject());
+                }
                 break;
             case UNREAD_COUNT:
                 unReadWorkOrderRemarkMessageCount = (int) event.getObject();
