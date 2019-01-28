@@ -3,9 +3,11 @@ package com.xiaolian.amigo.ui.wallet;
 import android.util.Log;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.funds.FundsInListDTO;
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.userbill.QueryBillListReqDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryBillListRespDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryMonthlyBillReqDTO;
@@ -22,13 +24,19 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.OnClick;
+
 public class BalanceDetailListPresenter<V extends IBalanceDetailListView> extends BasePresenter<V> implements IBalanceDetailListPresenter<V> {
     private IWalletDataManager walletDataManager;
+    private IMainDataManager mainDataManager;
 
     @Inject
-    BalanceDetailListPresenter(IWalletDataManager walletDataManager) {
+    BalanceDetailListPresenter(IWalletDataManager walletDataManager, IMainDataManager mainDataManager) {
         this.walletDataManager = walletDataManager;
+        this.mainDataManager = mainDataManager;
     }
+
+
 
     @Override
     public void getMonthlyBill(int year, int month) {
@@ -110,4 +118,9 @@ public class BalanceDetailListPresenter<V extends IBalanceDetailListView> extend
         return walletDataManager.getUser().getCreateTime();
     }
 
+    @Override
+    public List<BriefSchoolBusiness>getSchoolBizList() {
+        List<BriefSchoolBusiness> list = mainDataManager.getSchoolBiz();
+        return mainDataManager.getSchoolBiz();
+    }
 }

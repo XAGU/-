@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -42,6 +44,10 @@ import javax.inject.Inject;
 public class BalanceDetailListActivity extends BaseActivity implements IBalanceDetailListView {
 
     public static final int REQUEST_CODE_DETAIL = 0x1201;
+
+    private static final String FRAGMENT_TAG_LIST_DETAIL = "listdetail";
+
+    private static final String FRAGMENT_TAG_LIST_STATISTICS = "statistics";
 
     private BalanceDetailListActivityComponent mActivityComponent;
 
@@ -136,9 +142,8 @@ public class BalanceDetailListActivity extends BaseActivity implements IBalanceD
         if (balanceStatisticsFragment != null && balanceStatisticsFragment.isAdded()) {
             transaction = transaction.hide(balanceStatisticsFragment);
         }
-
         if (!balanceListFragment.isAdded()) {
-            transaction.add(R.id.ll_main, balanceListFragment).commit();
+            transaction.add(R.id.ll_main, balanceListFragment, FRAGMENT_TAG_LIST_DETAIL).commit();
         } else {
             transaction.show(balanceListFragment).commit();
         }
@@ -157,7 +162,7 @@ public class BalanceDetailListActivity extends BaseActivity implements IBalanceD
             transaction = transaction.hide(balanceListFragment);
         }
         if (!balanceStatisticsFragment.isAdded()) {
-            transaction.add(R.id.ll_main, balanceStatisticsFragment).commit();
+            transaction.add(R.id.ll_main, balanceStatisticsFragment, FRAGMENT_TAG_LIST_STATISTICS).commit();
         } else {
             transaction.show(balanceStatisticsFragment).commit();
         }

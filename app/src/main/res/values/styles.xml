@@ -435,6 +435,10 @@
         <item name="android:windowExitAnimation">@anim/dialog_slide_down</item>
     </style>
 
+    <style name="DialogDownAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_out</item>
+    </style>
     <!--完善资料radiobtn样式-->
     <style name="info_radio_style">
     <item name="android:layout_gravity"> center_vertical</item>

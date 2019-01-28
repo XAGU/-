@@ -103,7 +103,7 @@ public class BalanceStatisticsFragment extends Fragment implements MonthlyBillVi
         Bundle bundle = new Bundle();
         bundle.putInt(WalletConstant.KEY_YEAR, currentYear);
         bundle.putInt(WalletConstant.KEY_MONTH, currentMonth);
-        bundle.putInt(WalletConstant.KEY_ORDER_STATUS, 2);
+        bundle.putInt(WalletConstant.KEY_ORDER_STATUS, 3);
         startActivity(new Intent(getActivity(), OrderActivity.class)
                 .putExtra(Constant.DATA_BUNDLE, bundle));
     }
@@ -113,7 +113,7 @@ public class BalanceStatisticsFragment extends Fragment implements MonthlyBillVi
         Bundle bundle = new Bundle();
         bundle.putInt(WalletConstant.KEY_YEAR, currentYear);
         bundle.putInt(WalletConstant.KEY_MONTH, currentMonth);
-        bundle.putInt(WalletConstant.KEY_ORDER_STATUS, 3);
+        bundle.putInt(WalletConstant.KEY_ORDER_STATUS, 4);
         startActivity(new Intent(getActivity(), OrderActivity.class)
                 .putExtra(Constant.DATA_BUNDLE, bundle));
     }

@@ -63,6 +63,7 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
         if (status == 100) /*预付待找零*/{
             holder.setText(R.id.tv_bill_money, "-¥"+amount);
             holder.setText(R.id.tv_bill_status, "待找零");
+            moneyView.setTextColor(Color.parseColor("#ff5555"));
         } else if (status == 101) /*订单已完结*/{
             holder.setText(R.id.tv_bill_money, "-¥"+amount);
             statusView.setVisibility(View.INVISIBLE);

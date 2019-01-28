@@ -7,14 +7,19 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
+
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,33 +29,54 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawalAdaptor;
+import com.xiaolian.amigo.ui.widget.dialog.YearMonthPickerDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
+import com.xiaolian.amigo.ui.widget.popWindow.BillFilterStatusPopupWindow;
+import com.xiaolian.amigo.ui.widget.popWindow.BillFilterTypePopupWindow;
 import com.xiaolian.amigo.util.Constant;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static com.xiaolian.amigo.util.Constant.FROM_LOCATION;
 
 public class BalanceListFragment extends Fragment {
+
     private RecyclerView recyclerView;
-    private LinearLayout llFooter;
-    private LinearLayout llHeader;
     private RelativeLayout rlEmpty;
     private TextView tvEmptyTip;
     private RelativeLayout rlError;
-//    private View v_divide;
 
-//    protected int page = Constant.PAGE_START_NUM;
+    private TextView tvMonthlyOrderDate;
+
+    private TextView tvFilterStatus;
+
+    private TextView tvFilterType;
+
+    YearMonthPickerDialog yearMonthPickerDialog;
+
     private SmartRefreshLayout refreshLayout;
-//    private boolean autoRefresh = true;
-//    private boolean refreshFlag = false;
 
     private List<BillListAdaptor.BillListAdaptorWrapper> items = new ArrayList<>();
     private BillListAdaptor adaptor;
+
+    /**
+     * 显示选择状态的popwindow
+     */
+    private BillFilterStatusPopupWindow filterStatusPopupWindow;
+
+    /**
+     * 显示选择类型的popwindow
+     */
+    private BillFilterTypePopupWindow filterTypePopupWindow;
 
 
     private String timeStr;
@@ -61,6 +87,7 @@ public class BalanceListFragment extends Fragment {
 
     private Integer billStatus;
 
+    private LinearLayout rlFilterContentView ;
 
     @Nullable
     @Override
@@ -74,15 +101,19 @@ public class BalanceListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        llHeader = view.findViewById(R.id.ll_header);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         recyclerView = view.findViewById(R.id.recyclerView);
         rlEmpty = view.findViewById(R.id.rl_empty);
         tvEmptyTip = view.findViewById(R.id.tv_empty_tip);
         rlError = view.findViewById(R.id.rl_error);
-        llFooter = view.findViewById(R.id.ll_footer);
+        tvMonthlyOrderDate = view.findViewById(R.id.tv_filter_date);
+        tvFilterType = view.findViewById(R.id.tv_filter_type);
+        tvFilterStatus = view.findViewById(R.id.tv_filter_status);
+        rlFilterContentView = view.findViewById(R.id.tv_filter_content);
+
         initRecyclerView();
         initTimeStr();
+        initPop();
     }
 
     private void initTimeStr() {
@@ -90,6 +121,69 @@ public class BalanceListFragment extends Fragment {
         int currentYear = cal.get(Calendar.YEAR);
         int currentMonth = cal.get(Calendar.MONTH )+1;
         timeStr = String.valueOf(currentYear * 100 + currentMonth);
+        tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+    }
+
+
+    public void initPop() {
+        if (filterStatusPopupWindow == null) {
+            filterStatusPopupWindow = new BillFilterStatusPopupWindow(getContext());
+            filterStatusPopupWindow.setPopFilterClickListener(new BillFilterStatusPopupWindow.PopFilterClickListener() {
+                @Override
+                public void click(int status, CharSequence name) {
+                    if (billStatus!=null && billStatus == status) /*选择的是一样的就不加载*/{
+                        return;
+                    }
+                    items.clear();
+                    lastId = null;
+                    adaptor.notifyDataSetChanged();
+                    /*选择的是新数据，需要把已有的数据清空*/
+                    billStatus = status;
+                    if (billStatus == 0) {
+                        billStatus = null;
+                    }
+                    refreshLayout.autoRefresh();
+                    tvFilterStatus.setText(name);
+                }
+            });
+        }
+
+        if (filterTypePopupWindow == null) {
+            filterTypePopupWindow = new BillFilterTypePopupWindow(getContext());
+            //设置配置的服务
+            filterTypePopupWindow.setBillItems(((BalanceDetailListActivity)getActivity()).presenter.getSchoolBizList());
+            filterTypePopupWindow.setPopFilterClickListener(new BillFilterTypePopupWindow.PopFilterClickListener() {
+                @Override
+                public void click(int type, String name) {
+                    if (billType != null && billType == type) /*选择的是一样的就不加载*/{
+                        return;
+                    }
+                    items.clear();
+                    lastId = null;
+                    adaptor.notifyDataSetChanged();
+                    /*选择的是新数据，需要把已有的数据清空*/
+                    billType = type;
+                    if (billType == 0) {
+                        billType = null;
+                    }
+                    refreshLayout.autoRefresh();
+                    tvFilterType.setText(name);
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (filterStatusPopupWindow != null && filterStatusPopupWindow.isShowing()){
+            filterStatusPopupWindow.dismiss();
+        }
+
+        if (filterTypePopupWindow != null && filterTypePopupWindow.isShowing()){
+            filterTypePopupWindow.dismiss();
+        }
     }
 
     private void initRecyclerView() {
@@ -105,13 +199,62 @@ public class BalanceListFragment extends Fragment {
                 BalanceListFragment.this.onRefresh();
             }
         });
-        refreshLayout.setRefreshHeader(new RefreshLayoutHeader(getContext()));
-        refreshLayout.setRefreshFooter(new RefreshLayoutFooter(getContext()));
+        refreshLayout.setRefreshHeader(new RefreshLayoutHeader(getActivity()));
+        refreshLayout.setRefreshFooter(new RefreshLayoutFooter(getActivity()));
         refreshLayout.setReboundDuration(200);
-//        if (autoRefresh) {
-            refreshLayout.autoRefresh(20);
-//        }
+        refreshLayout.autoRefresh(20);
     }
+
+    @OnClick(R.id.tv_filter_status)
+    public void showFilterStatus() {
+        filterStatusPopupWindow.showUp(rlFilterContentView);
+        filterStatusPopupWindow.setBackgroundAlpha(0.3f);
+        filterStatusPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                filterStatusPopupWindow.setBackgroundAlpha(1.0f);
+            }
+        });
+
+    }
+
+    @OnClick(R.id.tv_filter_type)
+    public void showFilterType() {
+        filterTypePopupWindow.showUp(rlFilterContentView);
+        filterTypePopupWindow.setBackgroundAlpha(0.3f);
+        filterTypePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                filterTypePopupWindow.setBackgroundAlpha(1.0f);
+            }
+        });
+    }
+
+    @OnClick(R.id.tv_filter_date)
+    public void showDatePick() {
+        if (yearMonthPickerDialog == null) {
+             Long timestamps = ((BalanceDetailListActivity)getActivity()).presenter.getAccountCreateTime();
+            yearMonthPickerDialog = new YearMonthPickerDialog(getActivity(), timestamps);
+        }
+        yearMonthPickerDialog.setOnItemSelectedListener((picker, date) -> {
+           Calendar cal = Calendar.getInstance();
+           cal.setTime(date);
+           int currentYear = cal.get(Calendar.YEAR);
+           int currentMonth = cal.get(Calendar.MONTH) + 1;
+          String newTimeStr = String.valueOf(currentYear * 100 + currentMonth);
+           if (timeStr.equalsIgnoreCase(newTimeStr)) {
+              return;//相同不用请求新数据
+          }
+          timeStr = newTimeStr;
+          items.clear();
+          lastId = null;
+           adaptor.notifyDataSetChanged();
+          tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+            refreshLayout.autoRefresh();
+        });
+         yearMonthPickerDialog.show();
+}
+
 
     protected void setRecyclerView(RecyclerView recyclerView) {
         adaptor = new BillListAdaptor(getActivity(), R.layout.item_withdrawal_record, items);
@@ -143,7 +286,7 @@ public class BalanceListFragment extends Fragment {
             lastId = item.getDetailId();
         }
 
-        ((BalanceDetailListActivity)getActivity()).presenter.getUserBillList("201901", billType, billStatus, lastId, true, 20);
+        ((BalanceDetailListActivity)getActivity()).presenter.getUserBillList(timeStr, billType, billStatus, lastId, true, 20);
 
     }
 
@@ -152,7 +295,7 @@ public class BalanceListFragment extends Fragment {
             BillListAdaptor.BillListAdaptorWrapper item = items.get(items.size()-1);
             lastId = item.getDetailId();
         }
-        ((BalanceDetailListActivity)getActivity()).presenter.getUserBillList("201901", billType, billStatus, lastId, false, 20);
+        ((BalanceDetailListActivity)getActivity()).presenter.getUserBillList(timeStr, billType, billStatus, lastId, false, 20);
     }
 
 //    private void initFooter() {

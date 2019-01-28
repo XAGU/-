@@ -134,7 +134,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     private void showNewbieGuide(){
         NewbieGuide.with(this)
                 .setLabel("guide1")
-//                .alwaysShow(true)
+                .setShowCounts(3)
                 .addGuidePage(GuidePage.newInstance()
                         .setBackgroundColor(getResources().getColor(R.color.colorBlank60))
                         .addHighLight(rlBillRecord ,new RelativeGuide(R.layout.view_guide_simple,

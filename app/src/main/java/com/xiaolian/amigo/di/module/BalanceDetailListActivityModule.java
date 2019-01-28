@@ -4,7 +4,9 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 
+import com.xiaolian.amigo.data.manager.MainDataManager;
 import com.xiaolian.amigo.data.manager.WalletDataManager;
+import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.di.BalanceDetailListActivityContext;
 import com.xiaolian.amigo.ui.wallet.BalanceDetailListPresenter;
@@ -41,6 +43,11 @@ public class BalanceDetailListActivityModule {
 
     @Provides
     IWalletDataManager provideWalletDataManager(WalletDataManager manager) {
+        return manager;
+    }
+
+    @Provides
+    IMainDataManager provideMainDataManager(MainDataManager manager) {
         return manager;
     }
 }
