@@ -36,10 +36,13 @@ import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.ui.widget.popWindow.BillFilterStatusPopupWindow;
 import com.xiaolian.amigo.ui.widget.popWindow.BillFilterTypePopupWindow;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -67,6 +70,10 @@ public class BalanceListFragment extends Fragment {
     private SmartRefreshLayout refreshLayout;
 
     private List<BillListAdaptor.BillListAdaptorWrapper> items = new ArrayList<>();
+
+    //临时存放最新加载的数据，不是当月的数据不加载到items中，而是临时存放在这里
+    private List<BillListAdaptor.BillListAdaptorWrapper> tempItems = new ArrayList<>();
+
     private BillListAdaptor adaptor;
 
     /**
@@ -268,9 +275,9 @@ public class BalanceListFragment extends Fragment {
            int currentYear = cal.get(Calendar.YEAR);
            int currentMonth = cal.get(Calendar.MONTH) + 1;
 
-            tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
-            tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-            tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+           tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
+           tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+           tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
 
           String newTimeStr = String.valueOf(currentYear * 100 + currentMonth);
            if (timeStr.equalsIgnoreCase(newTimeStr)) {
@@ -315,12 +322,44 @@ public class BalanceListFragment extends Fragment {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adaptor);
+
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                //判断是当前layoutManager是否为LinearLayoutManager
+                // 只有LinearLayoutManager才有查找第一个和最后一个可见view位置的方法
+                if (layoutManager instanceof LinearLayoutManager) {
+                    LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
+                    //获取第一个可见view的位置
+                    int firstItemPosition = linearManager.findFirstVisibleItemPosition();
+                    BillListAdaptor.BillListAdaptorWrapper item = items.get(firstItemPosition);
+                    Calendar cal = Calendar.getInstance();
+                    Date date = TimeUtils.millis2Date(item.getCreateTime());
+                    cal.setTime(date);
+                    int currentYear = cal.get(Calendar.YEAR);
+                    int currentMonth = cal.get(Calendar.MONTH) + 1;
+                    tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+                }
+            }
+        });
+
     }
 
     void onRefresh() {
-//        refreshFlag = true;
         if (items.size() > 0) {
             BillListAdaptor.BillListAdaptorWrapper item = items.get(0);
+            lastId = item.getDetailId();
+        }
+
+        if (tempItems.size() > 0) {
+            BillListAdaptor.BillListAdaptorWrapper item = tempItems.get(0);
             lastId = item.getDetailId();
         }
 
@@ -333,25 +372,14 @@ public class BalanceListFragment extends Fragment {
             BillListAdaptor.BillListAdaptorWrapper item = items.get(items.size()-1);
             lastId = item.getDetailId();
         }
+
+        if (tempItems.size() > 0) {
+            BillListAdaptor.BillListAdaptorWrapper item = tempItems.get(tempItems.size()-1);
+            lastId = item.getDetailId();
+        }
+
         ((BalanceDetailListActivity)getActivity()).presenter.getUserBillList(timeStr, billType, billStatus, lastId, false, 20);
     }
-
-//    private void initFooter() {
-//        if (setFooterLayout() > 0) {
-//            View layout = LayoutInflater.from(getActivity()).inflate(setFooterLayout(), null, true);
-//            llFooter.addView(refreshLayout);
-//            llFooter.setVisibility(View.VISIBLE);
-//        }
-//    }
-//
-//    protected void setHeaderBackground(@ColorRes int color) {
-//        llHeader.setBackgroundResource(color);
-//    }
-//
-//    protected @LayoutRes
-//    int setFooterLayout() {
-//        return 0;
-//    }
 
     public void setLoadMoreComplete() {
         refreshLayout.finishLoadMore();
@@ -363,19 +391,36 @@ public class BalanceListFragment extends Fragment {
 
     public void addMore(List<BillListAdaptor.BillListAdaptorWrapper> wrappers) {
 
-        if (wrappers.size() <= 0)  /*没有新的数据*/ {
+        if (wrappers.size() <= 0 && tempItems.size() <= 0)  /*没有新的数据，并且没有临时存储的数据*/ {
             return;
         }
 
         if (items.size() <= 0)  /*第一次请求数据*/{
-            items.addAll(wrappers);
-            adaptor.notifyDataSetChanged();
+            //1、如果最新的一条不是当前选择的月份，则不展示出来，留到下次上拉或者下拉的时候再展示
+            String newTimeStr = TimeUtils.millis2String(wrappers.get(0).getCreateTime(), TimeUtils.MY_DATE_YEARMON_FORMAT);
+            if (timeStr.equalsIgnoreCase(newTimeStr) || tempItems.size() > 0)/*最新的为当前月份的数据，获取是加载数据进来*/ {
+                items.addAll(wrappers);
+                //把老数据加进去，下拉加载最新的，上拉加载旧的
+                BillListAdaptor.BillListAdaptorWrapper newItem = wrappers.size() > 0 ? wrappers.get(0) : null;
+                BillListAdaptor.BillListAdaptorWrapper oldItem = tempItems.size() > 0 ? tempItems.get(tempItems.size()-1): null;
+                if (newItem !=null && oldItem !=null && newItem.getCreateTime() > oldItem.getCreateTime()) /*加载的是新数据， 放在底部*/{
+                    items.addAll(tempItems);
+                } else {
+                    items.addAll(0, tempItems);
+                }
+                tempItems.clear();
+                adaptor.notifyDataSetChanged();
+            } else /*最新的不是当前月份的数据*/{
+                //把数据放到临时存储的一个地方
+                tempItems.addAll(wrappers);
+                showEmptyView(R.string.empty_tip_1);
+            }
             return;
         }
         //取新加载的数据的第一条和已有的数据的最后一条做比较，新加载的时间戳大则表示拉取的最新的，否则拉取的是历史数据
         BillListAdaptor.BillListAdaptorWrapper newItem = wrappers.get(0);
-        BillListAdaptor.BillListAdaptorWrapper oldItem = items.get(wrappers.size()-1);
-        if (newItem.getCreateTime() > oldItem.getCreateTime()) /*加载的是新数据*/{
+        BillListAdaptor.BillListAdaptorWrapper oldItem = items.get(items.size()-1);
+        if (newItem.getCreateTime() > oldItem.getCreateTime()) /*加载的是新数据， 放在底部*/{
             items.addAll(0,wrappers);
         } else {
             items.addAll(wrappers);

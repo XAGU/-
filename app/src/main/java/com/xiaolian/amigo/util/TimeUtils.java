@@ -29,6 +29,7 @@ public class TimeUtils {
     public static final DateFormat MY_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.getDefault());
     public static final DateFormat MY_DATE_MONTH = new SimpleDateFormat("MM/dd", Locale.getDefault());
     public static final DateFormat MY_DATA_MINUTE = new SimpleDateFormat("mm" ,Locale.getDefault());
+    public static final DateFormat MY_DATE_YEARMON_FORMAT = new SimpleDateFormat("yyyyMM", Locale.getDefault());
     public static final int SIXTY = 60;
 
     /**
