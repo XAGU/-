@@ -81,7 +81,7 @@ public class LostAndFoundDetailCommentReplyAdapter
         if (ObjectsCompat.equals(ownerId, replyWrapper.getUserId())) {
             setImageText(textView, builder, "联主", R.drawable.blog );
         }else{
-            if (replyWrapper.getVest() != null && replyWrapper.getVest() == Constant.VEST_ADMIN){
+            if (replyWrapper.getVest() != null && replyWrapper.getVest().equals( Constant.VEST_ADMIN)){
                 setImageText(textView, builder, "管理员", R.drawable.blog_admin);
             }
         }
@@ -109,7 +109,7 @@ public class LostAndFoundDetailCommentReplyAdapter
 
                 setImageText(textView ,builder ,"联主",R.drawable.blog);
             }else{
-                if (replyWrapper.getVest() != null && replyWrapper.getVest() == Constant.VEST_ADMIN){
+                if (replyWrapper.getVest() != null && replyWrapper.getVest().equals(Constant.VEST_ADMIN)){
                     setImageText(textView, builder, "管理员", R.drawable.blog_admin);
                 }
             }

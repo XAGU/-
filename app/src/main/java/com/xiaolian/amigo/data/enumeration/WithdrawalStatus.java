@@ -54,7 +54,7 @@ public enum WithdrawalStatus {
             return new String[]{COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
-    WITHDRAWAL_SUCCESS(4, "提现成功") {
+    WITHDRAWAL_SUCCESS(4, "退款成功") {
         @Override
         public int getColorRes() {
             return R.color.colorBlue;
@@ -65,7 +65,7 @@ public enum WithdrawalStatus {
             return new String[]{COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
-    WITHDRAWAL_FAIL(5, "提现失败") {
+    WITHDRAWAL_FAIL(5, "退款失败") {
         @Override
         public int getColorRes() {
             return R.color.colorFullRed;

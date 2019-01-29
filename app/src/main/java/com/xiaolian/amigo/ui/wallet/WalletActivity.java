@@ -2,11 +2,8 @@ package com.xiaolian.amigo.ui.wallet;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.Paint;
-import android.graphics.RectF;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -20,15 +17,14 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.hubert.guide.NewbieGuide;
-import com.app.hubert.guide.listener.OnHighlightDrewListener;
 import com.app.hubert.guide.model.GuidePage;
 import com.app.hubert.guide.model.HighLight;
-import com.app.hubert.guide.model.HighlightOptions;
 import com.app.hubert.guide.model.RelativeGuide;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
@@ -64,6 +60,7 @@ import static com.xiaolian.amigo.ui.wallet.WithDrawActivity.KEY_WITHDRAW_DATA;
  */
 public class WalletActivity extends BaseActivity implements IWalletView {
 
+
     @Inject
     IWalletPresenter<IWalletView> presenter;
 
@@ -89,6 +86,12 @@ public class WalletActivity extends BaseActivity implements IWalletView {
 
     @BindView(R.id.recharge_line)
     View rechargeLine ;
+
+    @BindView(R.id.line_withdrawal)
+    View lineWithdrawal ;
+
+    @BindView(R.id.image_wallet)
+    ImageView imageWallet ;
     private TextView tvToolbarTitle,tvTitle;
 
     private RelativeLayout rlToolBar;
@@ -100,12 +103,18 @@ public class WalletActivity extends BaseActivity implements IWalletView {
 
     private boolean showTile = false;
 
+    /**
+     * 在界面未销毁前引导层显示了几次，用来防止进入界面后又一次显示
+     */
+    private int showNewbieGuideCount  ;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet);
         initView();
     }
+
 
     protected void initView() {
         DaggerWalletActivityComponent.builder()
@@ -137,7 +146,7 @@ public class WalletActivity extends BaseActivity implements IWalletView {
                 setTitleVisiable(View.GONE);
             }
         });
-        presenter.requestNetWork();
+        showNewbieGuideCount = 0 ;
     }
 
     protected void initToolBar() {
@@ -156,6 +165,7 @@ public class WalletActivity extends BaseActivity implements IWalletView {
     @Override
     protected void onResume() {
         super.onResume();
+        presenter.requestNetWork();
     }
 
 
@@ -168,6 +178,7 @@ public class WalletActivity extends BaseActivity implements IWalletView {
                         .addHighLight(rlBillRecord  ,HighLight.Shape.RECTANGLE, new RelativeGuide(R.layout.view_guide_simple,
                                 Gravity.BOTTOM ,5)))
                 .show();
+        showNewbieGuideCount++ ;
 
     }
 
@@ -176,7 +187,7 @@ public class WalletActivity extends BaseActivity implements IWalletView {
      */
     @OnClick({ R.id.rl_recharge})
     void recharge() {
-        startActivity(this, RechargeActivity.class);
+        startActivity(new Intent(this, RechargeActivity.class));
     }
 
     /**
@@ -223,7 +234,7 @@ public class WalletActivity extends BaseActivity implements IWalletView {
     @Override
     public void gotoWithDraw() {
         startActivity(new Intent(this, WithdrawalActivity.class)
-                .putExtra(Constant.EXTRA_KEY, df.format(presenter.getChargeBalance())));
+                .putExtra(Constant.EXTRA_KEY, df.format(presenter.getChargeBalance()) ));
     }
 
     @Override
@@ -271,6 +282,8 @@ public class WalletActivity extends BaseActivity implements IWalletView {
 //        tvBalancePresent.setText(builder);
     }
 
+
+
     /**
      * 可提现余额
      */
@@ -288,13 +301,19 @@ public class WalletActivity extends BaseActivity implements IWalletView {
     public void showWithDraw() {
         rlWithdrawal.setVisibility(View.VISIBLE);
         rechargeLine.setVisibility(View.GONE);
-        showNewbieGuide();
+        lineWithdrawal.setVisibility(View.VISIBLE);
+
+        // 只能显示一次
+        if (showNewbieGuideCount == 0) {
+            showNewbieGuide();
+        }
     }
 
     @Override
     public void hideWithDraw() {
         rlWithdrawal.setVisibility(View.GONE);
         rechargeLine.setVisibility(View.VISIBLE);
+        lineWithdrawal.setVisibility(View.GONE);
     }
 
 
@@ -318,6 +337,7 @@ public class WalletActivity extends BaseActivity implements IWalletView {
     protected void setUp() {
 
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

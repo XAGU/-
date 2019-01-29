@@ -472,6 +472,7 @@
             android:textColor="@color/white"
             android:gravity="center"
             android:layout_alignParentBottom="true"
+            android:stateListAnimator="@null"
             />
     </RelativeLayout>
     <RelativeLayout
