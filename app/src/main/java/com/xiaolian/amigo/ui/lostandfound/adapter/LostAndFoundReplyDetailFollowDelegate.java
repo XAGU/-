@@ -43,7 +43,7 @@ public class LostAndFoundReplyDetailFollowDelegate
     private Paint spanPaint;
 
     public LostAndFoundReplyDetailFollowDelegate(Context context, int lostFoundType,
-                                                 Long ownerId) {
+                                                 Long ownerId  ) {
         this.context = context;
         this.lostFoundType = lostFoundType;
         this.ownerId = ownerId;
@@ -88,8 +88,8 @@ public class LostAndFoundReplyDetailFollowDelegate
         if (ObjectsCompat.equals(ownerId, replyWrapper.getAuthorId())) {
             spanLength = setImageTextView(textView, spanLength, builder , "联主" ,R.drawable.blog);
         }else{
-            if (replyWrapper.getVest() != null && replyWrapper.getVest() == Constant.VEST_ADMIN){
-              spanLength =   setImageTextView(textView ,spanLength ,builder ,"管理员" , R.drawable.blog_admin);
+            if (replyWrapper.getVest() != null && replyWrapper.getVest().equals(Constant.VEST_ADMIN)){
+              spanLength = setImageTextView(textView ,spanLength ,builder ,"管理员" , R.drawable.blog_admin);
             }
         }
         if (replyWrapper.getReplyToUserId() != null && !TextUtils.isEmpty(replyWrapper.getReplyToUserNickName())) {
@@ -118,7 +118,7 @@ public class LostAndFoundReplyDetailFollowDelegate
             if (ObjectsCompat.equals(ownerId, replyWrapper.getAuthorId())) {
                 spanLength = setImageTextView(textView, spanLength, builder , "联主" ,R.drawable.blog);
             }else{
-                if (replyWrapper.getVest() != null && replyWrapper.getVest() == Constant.VEST_ADMIN){
+                if (replyWrapper.getVest() != null && replyWrapper.getReplyVest().equals( Constant.VEST_ADMIN)){
                     spanLength =   setImageTextView(textView ,spanLength ,builder ,"管理员" , R.drawable.blog_admin);
                 }
             }

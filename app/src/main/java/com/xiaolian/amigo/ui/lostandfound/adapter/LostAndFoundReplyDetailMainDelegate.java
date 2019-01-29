@@ -48,7 +48,7 @@ public class LostAndFoundReplyDetailMainDelegate
             holder.setImageResource(R.id.iv_owner ,R.drawable.blog);
         }else{
            if (lostAndFoundReplyDetailWrapper.getVest() != null &&
-                   lostAndFoundReplyDetailWrapper.getVest() == Constant.VEST_ADMIN){
+                   lostAndFoundReplyDetailWrapper.getVest().equals(Constant.VEST_ADMIN)){
                holder.getView(R.id.iv_owner).setVisibility(View.VISIBLE);
                holder.setImageResource(R.id.iv_owner ,R.drawable.blog_admin);
            }else{

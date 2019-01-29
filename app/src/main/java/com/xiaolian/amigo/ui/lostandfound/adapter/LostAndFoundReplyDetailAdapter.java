@@ -51,6 +51,8 @@ public class LostAndFoundReplyDetailAdapter extends MultiItemTypeAdapter<LostAnd
          */
         private Integer vest ;
 
+        private Integer replyVest ;
+
         public LostAndFoundReplyDetailWrapper(@LostAndFoundReplyDetailItemType int type,
                                               boolean owner, String commentContent,
                                               String commentAuthor, Long time, String image , Integer vest) {
@@ -61,6 +63,7 @@ public class LostAndFoundReplyDetailAdapter extends MultiItemTypeAdapter<LostAnd
             this.time = time;
             this.image = image;
             this.vest = vest ;
+
         }
 
         public LostAndFoundReplyDetailWrapper(LostFoundReplyDTO replyDTO, boolean owner) {
@@ -75,6 +78,7 @@ public class LostAndFoundReplyDetailAdapter extends MultiItemTypeAdapter<LostAnd
             this.authorId = replyDTO.getUserId();
             this.id = replyDTO.getId();
             this.vest = replyDTO.getVest() ;
+            this.replyVest = replyDTO.getReplyVest();
         }
     }
 }

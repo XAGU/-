@@ -274,7 +274,7 @@ public class LostAndFoundDetailCommentDelegate
             ower.setText("联主");
         }else{
             ower.setVisibility(View.GONE);
-            if (vest != null && vest == Constant.VEST_ADMIN){
+            if (vest != null && vest.equals(Constant.VEST_ADMIN)){
                 ivVest.setVisibility(View.VISIBLE);
             }
         }

@@ -88,7 +88,7 @@ public class LostAndFoundNoticeReplyDelegate implements ItemViewDelegate<LostAnd
         spanLength += spanPaint.measureText(userName.toString());
 
 
-        if (vest != null && vest == Constant.VEST_ADMIN){
+        if (vest != null && vest.equals( Constant.VEST_ADMIN)){
             spanLength = setImageTextView(textView, spanLength, builder , "管理员" ,R.drawable.blog_admin);
         }
 

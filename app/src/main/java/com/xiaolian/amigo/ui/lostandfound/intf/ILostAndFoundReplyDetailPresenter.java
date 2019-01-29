@@ -40,4 +40,5 @@ public interface ILostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyD
     void setCommentEnable(boolean commentEnable);
 
     boolean isCommentEnable();
+
 }
