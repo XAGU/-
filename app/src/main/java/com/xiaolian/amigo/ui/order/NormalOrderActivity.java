@@ -67,6 +67,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     private RecyclerView recyclerView;
     private LinearLayout llBottom;
     private TextView tvBottomTip;
+    private TextView tv_order_title;
 
     /******************** 底部线条 **********************/
     View vBottomLine1;
@@ -96,6 +97,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         llBottom = findViewById(R.id.ll_bottom);
         tvBottomTip = findViewById(R.id.tv_bottom_tip);
         right_oper = findViewById(R.id.right_oper);
+        tv_order_title = findViewById(R.id.tv_order_title);
     }
 
     private void complaint() {
@@ -121,6 +123,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     @Override
     protected void setUp() {
         if (getIntent() != null) {
+            tv_order_title.setText(getIntent().getStringExtra(OrderConstant.KEY_ORDER_TITLE));
             presenter.setOrderId(getIntent().getLongExtra(OrderConstant.KEY_ORDER_ID, Constant.INVALID_ID));
         }
     }

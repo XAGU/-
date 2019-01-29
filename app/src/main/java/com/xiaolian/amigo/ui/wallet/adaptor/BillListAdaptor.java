@@ -44,7 +44,7 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
     @Override
     protected void convert(ViewHolder holder, BillListAdaptor.BillListAdaptorWrapper billListAdaptorWrapper, int position) {
         //设置type类型
-        holder.setText(R.id.tv_bill_type, getTypeName(billListAdaptorWrapper.getType(), billListAdaptorWrapper.getStatus()));
+        holder.setText(R.id.tv_bill_type, BillListAdaptor.getTypeName(billListAdaptorWrapper.getType(), billListAdaptorWrapper.getStatus()));
         //设置时间
         holder.setText(R.id.tv_bill_time, TimeUtils.millis2String(billListAdaptorWrapper.getCreateTime()));
         //设置金额和状态（有关联，所以需要一起设置）
@@ -142,13 +142,10 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
 
     }
 
-    private String getTypeName(int billType, int status) {
+    public static String getTypeName(int billType, int status) {
         if (billType == XLFilterContentViewBillTypeRecharge) {
-            return "充值";
+            return "余额充值";
         } else if (billType == XLFilterContentViewBillTypeWithdraw) {
-            if (status == 304) {
-                return "退款申请";
-            }
             return "余额退款";
         } else if (billType == XLFilterContentViewBillTypePayHeater) {
             return "热水澡消费";
@@ -183,5 +180,7 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
             this.status = ((Double)billDetail.get("status")).intValue();
             this.createTime = ((Double) billDetail.get("createTime")).longValue();
         }
+
+
     }
 }

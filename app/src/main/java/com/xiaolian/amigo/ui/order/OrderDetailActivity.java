@@ -201,6 +201,9 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     @Override
     protected void setUp() {
         Intent intent = getIntent();
+        if (getIntent().getStringExtra(OrderConstant.KEY_ORDER_TITLE) != null) {
+            tvOrderTitle.setText(getIntent().getStringExtra(OrderConstant.KEY_ORDER_TITLE));
+        }
         this.orderId = intent.getLongExtra(Constant.EXTRA_KEY, -1);
     }
 

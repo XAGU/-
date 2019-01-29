@@ -9,4 +9,6 @@ package com.xiaolian.amigo.ui.order;
 
 public class OrderConstant {
     public static final String KEY_ORDER_ID = "key_order_id";
+    public static final String KEY_ORDER_TITLE = "key_order_title";
+
 }

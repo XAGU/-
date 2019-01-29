@@ -74,12 +74,15 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
 
     private Long orderId;
 
+    private String orderTitle;
+
     @Override
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(PrepayOrderActivity.this);
 
+        setToolBarTitle(orderTitle);
         if (orderId > 0) /*获取订单信息*/{
             presenter.getOrder(orderId);
         }
@@ -107,6 +110,7 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         super.setUp();
 //        orderWrapper = (PrepayAdaptor.OrderWrapper) getIntent().getSerializableExtra(Constant.EXTRA_KEY);
         orderId = getIntent().getLongExtra(OrderConstant.KEY_ORDER_ID, -1);
+        orderTitle = getIntent().getStringExtra(OrderConstant.KEY_ORDER_TITLE);
     }
 
     @OnClick(R.id.tv_copy)
@@ -117,7 +121,7 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
 
     @Override
     protected int setTitle() {
-        return R.string.prepay_order;
+        return 0;//R.string.prepay_order;
     }
 
     @Override
