@@ -48,21 +48,10 @@ public interface IWalletView extends IBaseView {
      */
     void setWithdrawAvailableText(Double chargeBalance);
 
-    /**
-     * 隐藏赠送金额
-     */
-    void hideGivingBalance();
-
-    /**
-     * 显示赠送金额
-     */
-    void showGivingBalance();
-
     void showWithDraw();
 
     void hideWithDraw();
 
-    void startFunds();
 
     void startWithDraw(WithdrawExplanationRespDTO data , int status);
 }

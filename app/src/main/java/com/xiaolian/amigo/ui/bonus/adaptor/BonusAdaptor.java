@@ -210,8 +210,10 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
                     return R.drawable.bg_bonus_washer;
                 case DISPENSER:
                     return R.drawable.bg_bonus_dispenser;
+                case DRYER2:
+                    return R.drawable.bg_bonus_dryer2 ;
             }
-            return 0;
+            return R.drawable.bg_bonus_heater;
         }
 
         static int getLeftImageByDeviceType(Integer type) {
@@ -227,8 +229,10 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
                     return R.drawable.bg_bonus_left_washer;
                 case DISPENSER:
                     return R.drawable.bg_bonus_left_dispenser;
+                case DRYER2:
+                    return R.drawable.bg_bonus_left_dryer2;
             }
-            return 0;
+            return R.drawable.bg_bonus_left_heater;
         }
     }
 }

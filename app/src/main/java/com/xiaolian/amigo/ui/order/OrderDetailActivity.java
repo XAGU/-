@@ -336,14 +336,13 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
                     startServiceH5();
                 });
             }
-            
+
             if ( !order.getHasPrepay()){
                 rlPrepay.setVisibility(View.GONE);
                 rlOdd.setVisibility(View.GONE);
             }
         }
     }
-
 
     //  跳服务中心h5页面
     public void startServiceH5() {

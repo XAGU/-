@@ -196,6 +196,10 @@ public class HomeFragment2 extends BaseFragment {
      */
     private void initRollingNotice(List<String> info){
         android.util.Log.e(TAG, "initRollingNotice: " + info.size() );
+        if (info.size() == 0) {
+            rlScroll.setVisibility(View.GONE);
+            return ;
+        }
         rlScroll.setVisibility(View.VISIBLE);
         marqueeView.getResoure((ArrayList<String>) info);
     }
