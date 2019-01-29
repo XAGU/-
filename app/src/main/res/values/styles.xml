@@ -181,6 +181,7 @@
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/button_shape</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 
     <style name="ContentText_main">
@@ -330,6 +331,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 
     <style name="DeviceButton">
@@ -356,6 +358,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 
     <style name="Search_Dialog" parent="@android:style/Theme.Dialog">

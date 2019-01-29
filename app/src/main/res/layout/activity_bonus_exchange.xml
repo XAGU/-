@@ -23,7 +23,8 @@
         style="@style/Button"
         android:layout_marginTop="34dp"
         android:enabled="false"
-        android:text="兑换" />
+        android:text="兑换"
+        android:stateListAnimator="@null"/>
 
 
 </com.xiaolian.amigo.ui.widget.Formlayout>
