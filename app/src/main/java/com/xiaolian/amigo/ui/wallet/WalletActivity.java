@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -28,8 +30,13 @@ import com.app.hubert.guide.model.GuidePage;
 import com.app.hubert.guide.model.HighLight;
 import com.app.hubert.guide.model.HighlightOptions;
 import com.app.hubert.guide.model.RelativeGuide;
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
+import com.xiaolian.amigo.di.componet.DaggerWalletActivityComponent;
+import com.xiaolian.amigo.di.module.WalletActivityModule;
+import com.xiaolian.amigo.ui.XLScrollView;
+import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -43,6 +50,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.everything.android.ui.overscroll.IOverScrollDecor;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import static com.xiaolian.amigo.ui.wallet.WithDrawActivity.KEY_CERTIFICATION_STATUS;
 import static com.xiaolian.amigo.ui.wallet.WithDrawActivity.KEY_WITHDRAW_DATA;
@@ -53,7 +62,7 @@ import static com.xiaolian.amigo.ui.wallet.WithDrawActivity.KEY_WITHDRAW_DATA;
  * @author zcd
  * @date 17/9/18
  */
-public class WalletActivity extends WalletBaseActivity implements IWalletView {
+public class WalletActivity extends BaseActivity implements IWalletView {
 
     @Inject
     IWalletPresenter<IWalletView> presenter;
@@ -65,58 +74,83 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     TextView tvBalance;
 
     /**
-     * 预付金额
-     */
-    @BindView(R.id.tv_prepay)
-    TextView tvPrepay;
-
-    /**
-     * 增送的余额
-     */
-    @BindView(R.id.tv_balance_present)
-    TextView tvBalancePresent;
-
-    /**
-     * 可提现余额
-     */
-    @BindView(R.id.tv_withdraw_available)
-    TextView tvWithdrawAvailable;
-
-    /**
-     * 问号
-     */
-    @BindView(R.id.iv_question)
-    ImageView ivQuestion;
-
-    /**
-     * 问号点击区域
-     */
-    @BindView(R.id.v_question)
-    View vQuestion;
-    /**
      * 提现入口
      */
     @BindView(R.id.rl_withdrawal)
     RelativeLayout rlWithdrawal;
 
-    /**
-     * 增送金额趋势
-     */
-    @BindView(R.id.rl_giving_balance)
-    RelativeLayout rlGivingBalance;
 
     @BindView(R.id.rl_bill_record)
     RelativeLayout rlBillRecord ;
 
+    @BindView(R.id.sv_main_container)
+    XLScrollView svMainContainer ;
+
+
+    @BindView(R.id.recharge_line)
+    View rechargeLine ;
+    private TextView tvToolbarTitle,tvTitle;
+
+    private RelativeLayout rlToolBar;
+    private View viewLine;
+
+
+
     private DecimalFormat df = new DecimalFormat("###.##");
 
+    private boolean showTile = false;
+
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_wallet);
+        initView();
+    }
+
     protected void initView() {
-        setMainBackground(R.color.white);
+        DaggerWalletActivityComponent.builder()
+                .walletActivityModule(new WalletActivityModule(this))
+                .applicationComponent(((MvpApp) getApplication()).getComponent())
+                .build().inject(this);
+
         setUnBinder(ButterKnife.bind(this));
-        getActivityComponent().inject(this);
         presenter.onAttach(WalletActivity.this);
+        IOverScrollDecor iOverScrollDecor = OverScrollDecoratorHelper.setUpOverScroll(svMainContainer);
+        initToolBar();
+        svMainContainer.setOnScrollListener((scrollY -> {
+            if (scrollY > (tvToolbarTitle.getHeight()) + tvToolbarTitle.getPaddingTop()) {
+                setTitleVisiable(View.VISIBLE);
+                showTile = true;
+            } else {
+                setTitleVisiable(View.GONE);
+                showTile = false;
+            }
+
+        }));
+
+        iOverScrollDecor.setOverScrollUpdateListener((decor, state, offset) -> {
+            if (showTile)
+                return;
+            if (offset < -(tvToolbarTitle.getHeight()) + tvToolbarTitle.getPaddingTop()) {
+                setTitleVisiable(View.VISIBLE);
+            } else {
+                setTitleVisiable(View.GONE);
+            }
+        });
         presenter.requestNetWork();
+    }
+
+    protected void initToolBar() {
+        tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
+        tvTitle = findViewById(R.id.tv_title);
+        rlToolBar = findViewById(R.id.rl_toolbar);
+        viewLine = findViewById(R.id.view_line);
+        setTitleVisiable(View.GONE);
+    }
+
+    private void setTitleVisiable(int visiable) {
+        tvTitle.setVisibility(visiable);
+        viewLine.setVisibility(visiable);
     }
 
     @Override
@@ -124,15 +158,6 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         super.onResume();
     }
 
-    @Override
-    protected int setTitle() {
-        return R.string.my_wallet;
-    }
-
-    @Override
-    protected int setLayout() {
-        return R.layout.activity_wallet;
-    }
 
     private void showNewbieGuide(){
         NewbieGuide.with(this)
@@ -170,26 +195,6 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
          presenter.queryWithDraw();
     }
 
-    /**
-     * 余额说明
-     */
-    @OnClick(R.id.v_question)
-    void gotoBalanceExplain() {
-        startActivity(new Intent(this, BalanceExplainActivity.class)
-            .putExtra(WalletConstant.KEY_GIVE_RULE, presenter.getGivingRule())
-            .putExtra(WalletConstant.KEY_USE_LIMIT, presenter.getUseLimit())
-            .putExtra(WalletConstant.KEY_ALL_BALANCE, presenter.getAllBalance())
-            .putExtra(WalletConstant.KEY_CHARGE_BALANCE, presenter.getChargeBalance())
-            .putExtra(WalletConstant.KEY_GIVING_BALANCE, presenter.getGivingBalance()));
-    }
-
-    /**
-     * 消费记录
-     */
-//    @OnClick(R.id.rl_order)
-//    void orderRecord() {
-//        startActivity(new Intent(this, OrderActivity.class));
-//    }
 
     /**
      * 账单页面
@@ -212,7 +217,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
 
     @Override
     public void setPrepayText(Double prepay) {
-        tvPrepay.setText(String.format(Locale.getDefault(), "¥%s", df.format(prepay)));
+//        tvPrepay.setText(String.format(Locale.getDefault(), "¥%s", df.format(prepay)));
     }
 
     @Override
@@ -250,16 +255,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         setWithdrawAvailable(String.format(Locale.getDefault(), "¥%s", df.format(chargeBalance)));
     }
 
-    @Override
-    public void hideGivingBalance() {
-        rlGivingBalance.setVisibility(View.GONE);
-    }
 
-    @Override
-    public void showGivingBalance() {
-        /*永远不显示*/
-        rlGivingBalance.setVisibility(View.GONE);
-    }
 
     /**
      * 设置增送的余额
@@ -272,38 +268,35 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
                 0, value.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.append(tip);
         builder.append(valueSpan);
-        tvBalancePresent.setText(builder);
+//        tvBalancePresent.setText(builder);
     }
 
     /**
      * 可提现余额
      */
     private void setWithdrawAvailable(String value) {
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        String tip = getString(R.string.withdraw_available_colon);
-        SpannableString valueSpan = new SpannableString(value);
-        valueSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorFullRed)),
-                0, value.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.append(tip);
-        builder.append(valueSpan);
-        tvWithdrawAvailable.setText(builder);
+//        SpannableStringBuilder builder = new SpannableStringBuilder();
+//        String tip = getString(R.string.withdraw_available_colon);
+//        SpannableString valueSpan = new SpannableString(value);
+//        valueSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorFullRed)),
+//                0, value.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        builder.append(tip);
+//        builder.append(valueSpan);
+//        tvWithdrawAvailable.setText(builder);
     }
 
     public void showWithDraw() {
         rlWithdrawal.setVisibility(View.VISIBLE);
+        rechargeLine.setVisibility(View.GONE);
         showNewbieGuide();
     }
 
     @Override
     public void hideWithDraw() {
         rlWithdrawal.setVisibility(View.GONE);
-        showGivingBalance();
+        rechargeLine.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void startFunds() {
-
-    }
 
     @Override
     public void startWithDraw(WithdrawExplanationRespDTO data , int status) {
@@ -319,6 +312,11 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
+    }
+
+    @Override
+    protected void setUp() {
+
     }
 
     @Override

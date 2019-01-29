@@ -458,7 +458,9 @@ public final class Constant {
     /**
      *  更新时间间隔  6小时
      */
-    public static final int UPDATE_REMIND_INTERVAL = 6 * 1000 * 60 * 60;
+//    public static final int UPDATE_REMIND_INTERVAL = 6 * 1000 * 60 * 60;
+
+    public static final int UPDATE_REMIND_INTERVAL = 5 * 1000 * 60 ;
 
     /**
      * 扫描为洗衣机模式

@@ -30,8 +30,6 @@ public class MarqueeText extends AppCompatTextView implements Runnable{
     private int delayed = 16;
     private int endX; // 滚动到哪个位置
     private boolean isFirstDraw = true; // 当首次或文本改变时重置
-    //text一次滚动完成后，多长时间启动第二次滚动
-    private int delayAgain =1000 ;
 
     /**
      * 滚动是否完成

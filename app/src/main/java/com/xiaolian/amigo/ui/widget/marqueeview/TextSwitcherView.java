@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.widget.FrameLayout;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
 
@@ -139,7 +140,8 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         textView.setScrollFinishListener(this);
         textView.setGravity(TEXT_ALIGNMENT_CENTER);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(MATCH_PARENT ,MATCH_PARENT);
-        layoutParams.gravity = Gravity.CENTER_VERTICAL ;
+//        layoutParams.gravity = Gravity.CENTER_VERTICAL ;
+        layoutParams.setMargins(0 , ScreenUtils.dpToPxInt(getContext() ,2) ,0 ,0);
         textView.setLayoutParams(layoutParams);
         return textView;
     }

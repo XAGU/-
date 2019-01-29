@@ -1174,6 +1174,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                         +"&refreshToken=" +presenter.getRefreshToken()
                         + "&schoolId=" + presenter.getSchoolId()
                         + "&residenceId=" + residenceId
+                        +"&residenceName=" + location
                         + "&deviceType=" + deviceType));
     }
 

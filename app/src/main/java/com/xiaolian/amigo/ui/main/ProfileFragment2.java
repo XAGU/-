@@ -14,12 +14,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.umeng.analytics.MobclickAgent;
-import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BaseFragment;
-import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.credits.CreditsActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
@@ -28,10 +26,7 @@ import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.more.MoreActivity;
 import com.xiaolian.amigo.ui.notice.NoticeListActivity;
-import com.xiaolian.amigo.ui.repair.RepairNavActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
-import com.xiaolian.amigo.ui.user.UserCertificationActivity;
-import com.xiaolian.amigo.ui.user.UserCertificationStatusActivity;
 import com.xiaolian.amigo.ui.wallet.WalletActivity;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
@@ -51,11 +46,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.Data;
-
-import static com.xiaolian.amigo.util.Constant.CERTIFICATION_FAILURE;
-import static com.xiaolian.amigo.util.Constant.CERTIFICATION_NONE;
-import static com.xiaolian.amigo.util.Constant.CERTIFICATION_PASS;
-import static com.xiaolian.amigo.util.Constant.CERTIFICATION_REVIEWING;
 
 /**
  * 个人中心

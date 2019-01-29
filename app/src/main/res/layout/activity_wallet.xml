@@ -1,101 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorBackgroundWhite"
-    android:orientation="vertical">
+    xmlns:tool="http://schemas.android.com/tools"
+    android:background="@color/white">
 
-    <View
+    <com.xiaolian.amigo.ui.XLScrollView xmlns:tool="http://schemas.android.com/tools"
+        android:id="@+id/sv_main_container"
         android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:background="#eee" />
+        android:layout_height="match_parent"
+        android:paddingTop="42dp"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
-    <RelativeLayout
-        android:id="@+id/tips"
-        android:layout_width="match_parent"
-        android:layout_height="162dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:paddingTop="8dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_toolbar_title"
+                    style="@style/ToolBarTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/toolBarMarginLeft"
+                    android:layout_marginRight="@dimen/toolBarMarginLeft"
+                    android:text="@string/my_wallet" />
+            </LinearLayout>
 
-        <ImageView
-            android:id="@+id/image_wallet"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/qianbao"
-            android:layout_centerVertical="true"
-            android:scaleType="centerCrop"
-            />
-        <TextView
-            style="@style/ContentText_main"
+            android:background="@color/colorBackgroundWhite"
+            android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/tips"
+                    android:layout_width="match_parent"
+                    android:layout_height="162dp"
+                    >
+
+                <ImageView
+                    android:id="@+id/image_wallet"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/qianbao"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerCrop"
+                    android:layout_marginStart="21dp"
+                    android:layout_marginEnd="17dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="42dp">
+                    <TextView
+                        style="@style/ContentText_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="余额" />
+                <TextView
+                    android:id="@+id/tv_balance"
+                    style="@style/Money_Upper"
+                    android:textColor="@color/colorDark2"
+                    tool:text="94.05" />
+            </LinearLayout>
+            </RelativeLayout>
+
+                <RelativeLayout
+            android:id="@+id/rl_prepay"
+            android:visibility="gone"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="余额"
-            android:layout_marginTop="50dp"
-            android:layout_marginStart="21dp"
-            />
-        <TextView
-            android:id="@+id/tv_balance"
-            style="@style/Money_Upper"
-            android:textColor="@color/colorDark2"
-            android:layout_marginTop="80dp"
-            android:layout_marginStart="21dp"
-            tools:text="94.05"
-            />
-    </RelativeLayout>
+            android:layout_height="58dp">
 
-    <RelativeLayout
-        android:id="@+id/rl_giving_balance"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="85dp">
-        <LinearLayout
-            android:layout_centerVertical="true"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tv_balance_present"
-                android:textSize="14sp"
-                android:textColor="@color/colorDarkB"
-                tools:text="赠送的余额: ¥111"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_marginTop="14dp"
-                android:textSize="14sp"
-                android:textColor="@color/colorDarkB"
-                android:id="@+id/tv_withdraw_available"
-                tools:text="可提现的余额: ¥111"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <View
-            android:id="@+id/v_question"
-            android:layout_alignParentEnd="true"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"/>
-        <ImageView
-            android:id="@+id/iv_question"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_question_gray"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <View
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="#eee" />
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/rl_prepay"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="58dp">
-
-        <ImageView
+            <ImageView
             android:id="@+id/iv_prepay_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -103,7 +88,7 @@
             android:layout_centerVertical="true"
             android:src="@drawable/forward" />
 
-        <TextView
+            <TextView
             android:id="@+id/tv_prepay"
             style="@style/Money_Normal"
             android:layout_centerVertical="true"
@@ -112,19 +97,21 @@
             />
 
 
-        <TextView
+            <TextView
             style="@style/ContentText_main"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="预付金额" />
 
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/rl_recharge"
-        android:layout_width="wrap_content"
-        android:layout_height="58dp">
+            </RelativeLayout>
+                <RelativeLayout
+                android:id="@+id/rl_recharge"
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_marginStart="21dp"
+                android:layout_marginEnd="21dp">
 
-        <ImageView
+            <ImageView
             android:id="@+id/iv_order_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -132,26 +119,31 @@
             android:layout_centerVertical="true"
             android:src="@drawable/forward" />
 
-        <TextView
+            <TextView
             style="@style/ContentText_main"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="充值" />
+            android:text="余额充值" />
 
-    </RelativeLayout>
-    
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:background="#eee" />
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:visibility="gone"
-        android:id="@+id/rl_withdrawal"
-        android:layout_width="wrap_content"
-        android:layout_height="59dp">
+                <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="#eee"
+                android:id="@+id/recharge_line"
+                android:layout_marginStart="21dp"
+                android:layout_marginEnd="21dp"/>
 
-        <ImageView
+                <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/rl_withdrawal"
+            android:layout_width="wrap_content"
+            android:layout_height="59dp"
+                android:layout_marginStart="21dp"
+                android:layout_marginEnd="21dp">
+
+            <ImageView
             android:id="@+id/iv_withdrawal_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -159,29 +151,29 @@
             android:layout_centerVertical="true"
             android:src="@drawable/forward" />
 
-        <TextView
+            <TextView
             style="@style/ContentText_main"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="退款" />
+            android:text="余额退款" />
 
-        <View
+            <View
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="1dip"
             android:background="#eee" />
 
-    </RelativeLayout>
+            </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/rl_bill_record"
-        android:layout_width="wrap_content"
-        android:layout_height="58dp"
-        android:layout_marginStart="-11dp"
-        android:layout_marginEnd="-11dp">
+                <RelativeLayout
+            android:id="@+id/rl_bill_record"
+            android:layout_width="wrap_content"
+            android:layout_height="58dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
 
-        <ImageView
+            <ImageView
             android:id="@+id/iv_bill_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -190,13 +182,57 @@
             android:src="@drawable/forward"
             android:paddingEnd="11dp"/>
 
-        <TextView
+            <TextView
             style="@style/ContentText_main"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="账单"
             android:paddingStart="11dp"/>
 
-    </RelativeLayout>
+            </RelativeLayout>
 
-</LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.xiaolian.amigo.ui.XLScrollView>
+
+    <RelativeLayout
+        android:id="@+id/rl_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@color/white"
+        >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/sp15"
+            android:textStyle="bold"
+            android:textColor="#222"
+            android:text="@string/my_wallet" />
+
+
+        <View
+            android:id="@+id/view_line"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="#d6d6d6"/>
+    </RelativeLayout>
+</FrameLayout>
+
