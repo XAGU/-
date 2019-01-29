@@ -141,7 +141,7 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         textView.setGravity(TEXT_ALIGNMENT_CENTER);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(MATCH_PARENT ,MATCH_PARENT);
 //        layoutParams.gravity = Gravity.CENTER_VERTICAL ;
-        layoutParams.setMargins(0 , ScreenUtils.dpToPxInt(getContext() ,2) ,0 ,0);
+        layoutParams.setMargins(0 , ScreenUtils.dpToPxInt(getContext() ,1.5f) ,0 ,0);
         textView.setLayoutParams(layoutParams);
         return textView;
     }

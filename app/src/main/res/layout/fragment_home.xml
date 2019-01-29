@@ -13,21 +13,25 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:textSize="12sp"
             android:textColor="@color/colorDark2"
+            android:gravity="center_vertical"
             android:text="扫码"
             android:id="@+id/tv_scan"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="21dp"/>
         <ImageView
-            android:layout_width="21dp"
-            android:layout_height="21dp"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:paddingTop="11dp"
+            android:paddingBottom="11dp"
             android:id="@+id/scan"
             android:layout_centerVertical="true"
             android:src="@drawable/icon_scan_home"
-            android:layout_marginEnd="4dp"
+            android:paddingEnd="4dp"
+            android:paddingStart="5dp"
             android:layout_toStartOf="@id/tv_scan"
             />
 
@@ -55,14 +59,14 @@
         android:layout_marginEnd="21dp"
         android:layout_below="@id/title"
         android:id="@+id/rl_scroll"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@drawable/rolling_notice_bg">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/rolling_notice"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="8dp"
             android:id="@+id/rolling_notice"/>
 
         <ImageView
@@ -70,7 +74,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/rolling_off"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="7dp"
+            android:layout_marginEnd="1dp"
             android:id="@+id/rolling_off"/>
 
         <com.xiaolian.amigo.ui.widget.marqueeview.TextSwitcherView
@@ -79,8 +83,7 @@
         android:layout_centerVertical="true"
         android:layout_toEndOf="@id/rolling_notice"
         android:layout_toStartOf="@id/rolling_off"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="21dp"
+        android:layout_marginStart="4dp"
         android:id="@+id/marqueeview" />
     </RelativeLayout>
     <android.support.v7.widget.RecyclerView
