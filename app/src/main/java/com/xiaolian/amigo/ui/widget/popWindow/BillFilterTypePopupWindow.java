@@ -289,10 +289,10 @@ public class BillFilterTypePopupWindow extends PopupWindow {
                 itemView.setText("热水澡消费");
             } else if ((Long)itemView.getTag() == 4) /*饮水机*/{
                 itemView.setText("饮水机消费");
-            } else if ((Long)itemView.getTag() == 5) /*洗衣机*/{
-                itemView.setText("洗衣机消费");
-            } else if ((Long)itemView.getTag() == 6) /*吹风机*/{
+            } else if ((Long)itemView.getTag() == 5) /*吹风机*/{
                 itemView.setText("吹风机消费");
+            } else if ((Long)itemView.getTag() == 6) /*洗衣机*/{
+                itemView.setText("洗衣机消费");
             } else if ((Long)itemView.getTag() == 7) /*烘干机*/{
                 itemView.setTag(briefSchoolBusiness.getBusinessId()+3); //手动把烘干机设为8，和服务器同步
                 itemView.setText("烘干机消费");

@@ -96,6 +96,11 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
             statusView.setVisibility(View.INVISIBLE);
             statusViewOnly.setVisibility(View.VISIBLE);
             holder.setText(R.id.tv_bill_Status_only, "充值异常");
+        } else if (status == 204) /*等待到账*/{
+            moneyView.setVisibility(View.INVISIBLE);
+            statusView.setVisibility(View.INVISIBLE);
+            statusViewOnly.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_bill_Status_only, "等待到账");
         } else if (status == 300) /*提现待审核*/{
             moneyView.setVisibility(View.INVISIBLE);
             statusView.setVisibility(View.INVISIBLE);
