@@ -524,4 +524,5 @@
         <item name="android:textColor">@color/colorDark6</item>
         <item name="android:layout_marginTop">10dp</item>
     </style>
+
 </resources>

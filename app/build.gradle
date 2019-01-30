@@ -258,6 +258,7 @@ dependencies {
     implementation files('libs/open_sdk_r6019_lite.jar')
     //    implementation deps.newbieGuide
     implementation project(':guide')
+    implementation project(':library')
 }
 
 configurations.all {

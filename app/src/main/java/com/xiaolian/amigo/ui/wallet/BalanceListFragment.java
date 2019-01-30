@@ -11,6 +11,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import com.hmy.popwindow.PopWindow;
+import com.hmy.popwindow.viewinterface.PopWindowListener;
 import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
 
 import android.text.TextUtils;
@@ -45,6 +48,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.Inflater;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -246,19 +250,48 @@ public class BalanceListFragment extends Fragment {
 
     @OnClick(R.id.tv_filter_status)
     public void showFilterStatus() {
-        filterStatusPopupWindow.showUp(rlFilterContentView);
-        filterStatusPopupWindow.setBackgroundAlpha(0.45f);
-        tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
-        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
 
+        View customView = View.inflate(getContext() ,R.layout.pop_bill_filter_status ,null);
+        new PopWindow.Builder(getActivity())
+                .setStyle(PopWindow.PopWindowStyle.PopDown)
+                .setView(customView)
+                .setPopWindowListener(new PopWindowListener() {
+                    @Override
+                    public void show() {
+                        tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+                        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
+                    }
+
+                    @Override
+                    public void dismiss() {
+                        tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+                        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+                    }
+                })
+                .show(rlFilterContentView);
     }
 
     @OnClick(R.id.tv_filter_type)
     public void showFilterType() {
-        filterTypePopupWindow.showUp(rlFilterContentView);
-        filterTypePopupWindow.setBackgroundAlpha(0.45f);
-        tvFilterType.setTextColor(Color.parseColor("#FF5555"));
-        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
+        View customView = View.inflate(getContext() ,R.layout.pop_bill_filter_type ,null);
+        new PopWindow.Builder(getActivity())
+                .setStyle(PopWindow.PopWindowStyle.PopDown)
+                .setView(customView)
+                .setPopWindowListener(new PopWindowListener() {
+                    @Override
+                    public void show() {
+                        tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+                        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
+                    }
+
+                    @Override
+                    public void dismiss() {
+                        tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+                        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+                    }
+                })
+                .show(rlFilterContentView);
+
     }
 
     @OnClick(R.id.tv_filter_date)

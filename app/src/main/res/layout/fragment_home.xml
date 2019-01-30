@@ -59,7 +59,7 @@
         android:layout_marginEnd="21dp"
         android:layout_below="@id/title"
         android:id="@+id/rl_scroll"
-        android:visibility="visible"
+        android:visibility="gone"
         android:background="@drawable/rolling_notice_bg">
 
         <ImageView
