@@ -6,6 +6,7 @@ import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -17,6 +18,7 @@ import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.data.enumeration.RechargeStatus;
 import com.xiaolian.amigo.data.network.model.funds.FundsDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
+import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.TitleContentCopyDelegate;
 import com.xiaolian.amigo.ui.wallet.adaptor.TitleContentDelegate;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawRechargeDetailAdapter;
@@ -27,6 +29,8 @@ import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.H5StartUtils;
 import com.xiaolian.amigo.util.TimeUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +101,11 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
      */
     private String fromLocation ;
 
+    /**
+     * 充值金额
+     */
+    private Double balance ;
+
     @Override
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
@@ -140,6 +149,9 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
 
     @OnClick(R.id.back_to_from)
     public void backToFrom(){
+        if (balance != null) {
+            EventBus.getDefault().post(new WaterDeviceBaseActivity.Event(true, balance));
+        }
         this.finish();
     }
 
@@ -156,6 +168,11 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
     @Override
     public void render(FundsDTO data) {
         orderNo = data.getOrderNo();
+        try{
+            balance = Double.parseDouble(data.getAmount());
+        }catch (NumberFormatException e){
+            Log.e(TAG, "render: " + e.getMessage() );
+        }
         tvAmount.setText(getString(R.string.money_format, data.getAmount()));
         if (data.getInstead() != null && data.getInstead()) {
             tvStatus.setText(RechargeStatus.BEHALF_OF_RECHARGE.getDesc());

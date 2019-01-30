@@ -1,56 +1,45 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
-
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hmy.popwindow.PopWindow;
+import com.hmy.popwindow.viewinterface.PopWindowListener;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
-import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawalAdaptor;
 import com.xiaolian.amigo.ui.widget.dialog.YearMonthPickerDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.ui.widget.popWindow.BillFilterStatusPopupWindow;
 import com.xiaolian.amigo.ui.widget.popWindow.BillFilterTypePopupWindow;
-import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.xiaolian.amigo.util.Constant.FROM_LOCATION;
 
 public class BalanceListFragment extends Fragment {
 
@@ -79,13 +68,17 @@ public class BalanceListFragment extends Fragment {
     /**
      * 显示选择状态的popwindow
      */
-    private BillFilterStatusPopupWindow filterStatusPopupWindow;
+//    private BillFilterStatusPopupWindow filterStatusPopupWindow;
 
     /**
      * 显示选择类型的popwindow
      */
-    private BillFilterTypePopupWindow filterTypePopupWindow;
+//    private BillFilterTypePopupWindow filterTypePopupWindow;
 
+
+    private PopWindow mBillFilterStatusPopwindow ;
+
+    private PopWindow mBillFilterTypesPopWindow ;
 
     private String timeStr;
 
@@ -95,6 +88,29 @@ public class BalanceListFragment extends Fragment {
 
     private Integer billStatus;
 
+    /**
+     * 筛选弹窗控件
+     */
+    private  TextView filterAllTextView  ;
+    private  TextView filterOngoingTextView  ;
+    private  TextView filterEndTextView ;
+
+
+    /**
+     * 分类弹窗控件
+     */
+    private TextView typeFilterAllTextView;
+    private TextView filterRechargeTextView;
+
+    private TextView filterWithdrawTextView;
+
+    private TextView filterBillTotalTextView;
+
+    private TextView filterBillItem1TextView;
+    private TextView filterBillItem2TextView;
+    private TextView filterBillItem3TextView;
+    private TextView filterBillItem4TextView;
+    private TextView filterBillItem5TextView;
     private LinearLayout rlFilterContentView ;
 
     @Nullable
@@ -121,7 +137,6 @@ public class BalanceListFragment extends Fragment {
 
         initRecyclerView();
         initTimeStr();
-        initPop();
     }
 
     private void initTimeStr() {
@@ -133,100 +148,441 @@ public class BalanceListFragment extends Fragment {
     }
 
 
-    public void initPop() {
-        if (filterStatusPopupWindow == null) {
-            filterStatusPopupWindow = new BillFilterStatusPopupWindow(getActivity());
-            filterStatusPopupWindow.setPopFilterClickListener(new BillFilterStatusPopupWindow.PopFilterClickListener() {
-                @Override
-                public void click(int status, CharSequence name) {
-                    tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
-                    tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-                    if (billStatus!=null && billStatus == status) /*选择的是一样的就不加载*/{
-                        return;
-                    }
-                    tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
-                    items.clear();
-                    tempItems.clear();
-                    lastId = null;
-                    adaptor.notifyDataSetChanged();
-                    /*选择的是新数据，需要把已有的数据清空*/
-                    billStatus = status;
-                    if (billStatus == 0) {
-                        billStatus = null;
-                    }
-                    refreshLayout.autoRefresh();
-                    tvFilterStatus.setText(name);
-                }
-            });
+//
+//    public void initPop() {
+//        if (filterStatusPopupWindow == null) {
+//            filterStatusPopupWindow = new BillFilterStatusPopupWindow(getActivity());
+//            filterStatusPopupWindow.setPopFilterClickListener(new BillFilterStatusPopupWindow.PopFilterClickListener() {
+//                @Override
+//                public void click(int status, CharSequence name) {
+//                    tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+//                    tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+//                    if (billStatus!=null && billStatus == status) /*选择的是一样的就不加载*/{
+//                        return;
+//                    }
+//                    tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
+//                    items.clear();
+//                    tempItems.clear();
+//                    lastId = null;
+//                    adaptor.notifyDataSetChanged();
+//                    /*选择的是新数据，需要把已有的数据清空*/
+//                    billStatus = status;
+//                    if (billStatus == 0) {
+//                        billStatus = null;
+//                    }
+//                    refreshLayout.autoRefresh();
+//                    tvFilterStatus.setText(name);
+//                }
+//            });
+//
+//            filterStatusPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//                @Override
+//                public void onDismiss() {
+//                    filterStatusPopupWindow.setBackgroundAlpha(1.0f);
+//                    if (tvFilterStatus.getText().toString().equalsIgnoreCase("筛选")) {
+//                        tvFilterStatus.setTextColor(Color.parseColor("#222222"));
+//                        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
+//                    } else {
+//                        tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+//                        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+//                    }
+//                }
+//            });
 
-            filterStatusPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    filterStatusPopupWindow.setBackgroundAlpha(1.0f);
-                    if (tvFilterStatus.getText().toString().equalsIgnoreCase("筛选")) {
-                        tvFilterStatus.setTextColor(Color.parseColor("#222222"));
-                        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
-                    } else {
-                        tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
-                        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-                    }
-                }
-            });
-        }
 
-        if (filterTypePopupWindow == null) {
-            filterTypePopupWindow = new BillFilterTypePopupWindow(getActivity());
-            //设置配置的服务
-            filterTypePopupWindow.setBillItems(((BalanceDetailListActivity)getActivity()).presenter.getSchoolBizList());
-            filterTypePopupWindow.setPopFilterClickListener(new BillFilterTypePopupWindow.PopFilterClickListener() {
-                @Override
-                public void click(int type, String name) {
-                    tvFilterType.setTextColor(Color.parseColor("#FF5555"));
-                    tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-                    if (billType != null && billType == type) /*选择的是一样的就不加载*/{
-                        return;
-                    }
-                    tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
-                    items.clear();
-                    tempItems.clear();
-                    lastId = null;
-                    adaptor.notifyDataSetChanged();
-                    /*选择的是新数据，需要把已有的数据清空*/
-                    billType = type;
-                    if (billType == 0) {
-                        billType = null;
-                    }
-                    refreshLayout.autoRefresh();
-                    tvFilterType.setText(name);
-                }
-            });
-            filterTypePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    filterTypePopupWindow.setBackgroundAlpha(1.0f);
-                    if (tvFilterType.getText().toString().equalsIgnoreCase("分类")) {
-                        tvFilterType.setTextColor(Color.parseColor("#222222"));
-                        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
-                    } else {
-                        tvFilterType.setTextColor(Color.parseColor("#FF5555"));
-                        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-                    }
-                }
-            });
-        }
+    //============= 弹窗  ================
+    private void initBillFilterStatusPopView(View contentView){
+         filterAllTextView = contentView.findViewById(R.id.filter_status_all);
+         filterOngoingTextView = contentView.findViewById(R.id.filter_status_ongoing);
+         filterEndTextView = contentView.findViewById(R.id.filter_status_end);
 
+        filterAllTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence name = ((TextView)v).getText();
+                showSelectedStatus(0);
+                popFilterStatusClick(0  , name);
+                mBillFilterStatusPopwindow.dismiss();
+            }
+        });
+
+        filterOngoingTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence name = ((TextView)v).getText();
+                showSelectedStatus(1);
+                popFilterStatusClick(1 , name);
+                mBillFilterStatusPopwindow.dismiss();
+            }
+        });
+
+        filterEndTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence name = ((TextView)v).getText();
+                showSelectedStatus(2);
+                popFilterStatusClick(2 , name);
+                mBillFilterStatusPopwindow.dismiss();
+            }
+        });
     }
+
+    private void showSelectedStatus(int status) {
+        if (status == 0) {
+            filterAllTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterOngoingTextView.setTextColor(Color.parseColor("#222222"));
+            filterEndTextView.setTextColor(Color.parseColor("#222222"));
+        } else if (status == 1) {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterOngoingTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterEndTextView.setTextColor(Color.parseColor("#222222"));
+        } else {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterOngoingTextView.setTextColor(Color.parseColor("#222222"));
+            filterEndTextView.setTextColor(Color.parseColor("#FF5555"));
+        }
+    }
+
+//<<<<<<< HEAD
+//        if (filterTypePopupWindow == null) {
+//            filterTypePopupWindow = new BillFilterTypePopupWindow(getActivity());
+//            //设置配置的服务
+//            filterTypePopupWindow.setBillItems(((BalanceDetailListActivity)getActivity()).presenter.getSchoolBizList());
+//            filterTypePopupWindow.setPopFilterClickListener(new BillFilterTypePopupWindow.PopFilterClickListener() {
+//                @Override
+//                public void click(int type, String name) {
+//                    tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+//                    tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+//                    if (billType != null && billType == type) /*选择的是一样的就不加载*/{
+//                        return;
+//                    }
+//                        tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
+//                    items.clear();
+//                    tempItems.clear();
+//                    lastId = null;
+//                    adaptor.notifyDataSetChanged();
+//                    /*选择的是新数据，需要把已有的数据清空*/
+//                    billType = type;
+//                    if (billType == 0) {
+//                        billType = null;
+//                    }
+//                    refreshLayout.autoRefresh();
+//                    tvFilterType.setText(name);
+//                }
+//            });
+//            filterTypePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//                @Override
+//                public void onDismiss() {
+//                    filterTypePopupWindow.setBackgroundAlpha(1.0f);
+//                    if (tvFilterType.getText().toString().equalsIgnoreCase("分类")) {
+//                        tvFilterType.setTextColor(Color.parseColor("#222222"));
+//                        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
+//                    } else {
+//                        tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+//                        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+//                    }
+//                }
+//            });
+//=======
+
+    private void popFilterStatusClick(int status, CharSequence name){
+        tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+        if (billStatus!=null && billStatus == status) /*选择的是一样的就不加载*/{
+            return;
+        }
+        tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
+        tempItems.clear();
+        items.clear();
+        lastId = null;
+        adaptor.notifyDataSetChanged();
+        /*选择的是新数据，需要把已有的数据清空*/
+        billStatus = status;
+        if (billStatus == 0) {
+            billStatus = null;
+        }
+        refreshLayout.autoRefresh();
+        tvFilterStatus.setText(name);
+    }
+
+    // ==========================================
+
+
+    // =========== 分类选项弹窗 ===========
+
+    private void initBillFilterTypesPopView(View contentView){
+        typeFilterAllTextView = contentView.findViewById(R.id.filter_type_all);
+        filterRechargeTextView = contentView.findViewById(R.id.filter_type_recharge);
+        filterWithdrawTextView = contentView.findViewById(R.id.filter_type_withdraw);
+        filterBillTotalTextView = contentView.findViewById(R.id.filter_type_bill);
+
+        filterBillItem1TextView = contentView.findViewById(R.id.filter_type_bill_item1);
+        filterBillItem2TextView = contentView.findViewById(R.id.filter_type_bill_item2);
+        filterBillItem3TextView = contentView.findViewById(R.id.filter_type_bill_item3);
+        filterBillItem4TextView = contentView.findViewById(R.id.filter_type_bill_item4);
+        filterBillItem5TextView = contentView.findViewById(R.id.filter_type_bill_item5);
+
+        typeFilterAllTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(0);
+                popFilterTypeClick(0, name);
+                mBillFilterTypesPopWindow.dismiss();
+            }
+        });
+
+        filterRechargeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(1);
+                popFilterTypeClick(1, name);
+                mBillFilterTypesPopWindow.dismiss();
+            }
+        });
+
+        filterWithdrawTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(2);
+                popFilterTypeClick(2, name);
+                mBillFilterTypesPopWindow.dismiss();
+            }
+        });
+
+        filterBillTotalTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(9);
+                popFilterTypeClick(9, name);
+                mBillFilterTypesPopWindow.dismiss();
+            }
+        });
+
+        filterBillItem1TextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(((Long)v.getTag()).intValue());
+                popFilterTypeClick(((Long)v.getTag()).intValue(), name);
+                mBillFilterTypesPopWindow.dismiss();
+            }
+        });
+
+        filterBillItem2TextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(((Long)v.getTag()).intValue());
+                popFilterTypeClick(((Long)v.getTag()).intValue(), name);
+                mBillFilterTypesPopWindow.dismiss();
+            }
+        });
+
+        filterBillItem3TextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(((Long)v.getTag()).intValue());
+                popFilterTypeClick(((Long)v.getTag()).intValue(), name);
+                mBillFilterTypesPopWindow.dismiss();
+            }
+        });
+
+        filterBillItem4TextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(((Long)v.getTag()).intValue());
+                popFilterTypeClick(((Long)v.getTag()).intValue(), name);
+                mBillFilterTypesPopWindow.dismiss();
+            }
+        });
+
+        filterBillItem5TextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = String.valueOf(((TextView)v).getText());
+                showSelectedType(((Long)v.getTag()).intValue());
+                popFilterTypeClick(((Long)v.getTag()).intValue(), name);
+                mBillFilterTypesPopWindow.dismiss();
+            }
+        });
+    }
+
+    private void showSelectedType(int type) {
+        if (type == 0) {
+            typeFilterAllTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+
+        } else if (type == 1) {
+            typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+
+        } else if (type == 2) {
+            typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == 9) {
+            typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == (Long)filterBillItem1TextView.getTag()) {
+            typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == (Long)filterBillItem2TextView.getTag()) {
+            typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == (Long)filterBillItem3TextView.getTag()) {
+            typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == (Long)filterBillItem4TextView.getTag()) {
+            typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == (Long)filterBillItem5TextView.getTag()) {
+            typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#FF5555"));
+        }
+    }
+
+    public void popFilterTypeClick(int type, String name) {
+        tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+        if (billType != null && billType == type) /*选择的是一样的就不加载*/{
+            return;
+        }
+        tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
+        tempItems.clear();
+        items.clear();
+        lastId = null;
+        adaptor.notifyDataSetChanged();
+        /*选择的是新数据，需要把已有的数据清空*/
+        billType = type;
+        if (billType == 0) {
+            billType = null;
+        }
+        refreshLayout.autoRefresh();
+        tvFilterType.setText(name);
+    }
+
+    public void setBillItems(List<BriefSchoolBusiness> businessesList) {
+        for (BriefSchoolBusiness briefSchoolBusiness: businessesList) {
+            TextView itemView = new TextView(getContext());
+            if (filterBillItem1TextView.getVisibility() != View.VISIBLE) /*加载第一个*/{
+                itemView = filterBillItem1TextView;
+            } else if (filterBillItem2TextView.getVisibility() != View.VISIBLE) /*加载第二个*/{
+                itemView = filterBillItem2TextView;
+            } else if (filterBillItem3TextView.getVisibility() != View.VISIBLE) /*加载第三个*/{
+                itemView = filterBillItem3TextView;
+            } else if (filterBillItem4TextView.getVisibility() != View.VISIBLE) /*加载第四个*/{
+                itemView = filterBillItem4TextView;
+            } else if (filterBillItem5TextView.getVisibility() != View.VISIBLE) /*加载第五个*/{
+                itemView = filterBillItem5TextView;
+            }
+            itemView.setVisibility(View.VISIBLE);
+            itemView.setTag(briefSchoolBusiness.getBusinessId()+2);
+            if ((Long)itemView.getTag() == 3) /*热水澡*/{
+                itemView.setText("热水澡消费");
+            } else if ((Long)itemView.getTag() == 4) /*饮水机*/{
+                itemView.setText("饮水机消费");
+            } else if ((Long)itemView.getTag() == 5) /*吹风机*/{
+                itemView.setText("吹风机消费");
+            } else if ((Long)itemView.getTag() == 6) /*洗衣机*/{
+                itemView.setText("洗衣机消费");
+            } else if ((Long)itemView.getTag() == 7) /*烘干机*/{
+                itemView.setTag(briefSchoolBusiness.getBusinessId()+3); //手动把烘干机设为8，和服务器同步
+                itemView.setText("烘干机消费");
+            }
+        }
+    }
+
+    // =============================
+
+
+
 
     @Override
     public void onPause() {
         super.onPause();
-        if (filterStatusPopupWindow != null && filterStatusPopupWindow.isShowing()){
-            filterStatusPopupWindow.dismiss();
+        if (mBillFilterStatusPopwindow != null) {
+            mBillFilterStatusPopwindow.dismiss();
         }
 
-        if (filterTypePopupWindow != null && filterTypePopupWindow.isShowing()){
-            filterTypePopupWindow.dismiss();
+        if (mBillFilterTypesPopWindow != null) {
+            mBillFilterTypesPopWindow.dismiss();
         }
+
+//        if (filterStatusPopupWindow != null && filterStatusPopupWindow.isShowing()){
+//            filterStatusPopupWindow.dismiss();
+//        }
+//
+//        if (filterTypePopupWindow != null && filterTypePopupWindow.isShowing()){
+//            filterTypePopupWindow.dismiss();
+//        }
     }
 
     private void initRecyclerView() {
@@ -250,19 +606,64 @@ public class BalanceListFragment extends Fragment {
 
     @OnClick(R.id.tv_filter_status)
     public void showFilterStatus() {
-        filterStatusPopupWindow.showUp(rlFilterContentView);
-        filterStatusPopupWindow.setBackgroundAlpha(0.45f);
-        tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
-        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
+        if (mBillFilterStatusPopwindow == null) {
+            View customView = View.inflate(getContext(), R.layout.pop_bill_filter_status, null);
+            initBillFilterStatusPopView(customView);
+            mBillFilterStatusPopwindow =  new PopWindow.Builder(getActivity())
+                    .setStyle(PopWindow.PopWindowStyle.PopDown)
+                    .setView(customView)
+                    .setPopWindowListener(new PopWindowListener() {
+                        @Override
+                        public void show() {
+                            tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+                            tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
+                        }
 
+                        @Override
+                        public void dismiss() {
+                            if (tvFilterStatus.getText().toString().equalsIgnoreCase("筛选")) {
+                                tvFilterStatus.setTextColor(Color.parseColor("#222222"));
+                                tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
+                            } else {
+                                tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+                                tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+                            }
+                        }
+                    }).create();
+        }
+        mBillFilterStatusPopwindow.show(rlFilterContentView);
     }
-
+    
     @OnClick(R.id.tv_filter_type)
     public void showFilterType() {
-        filterTypePopupWindow.showUp(rlFilterContentView);
-        filterTypePopupWindow.setBackgroundAlpha(0.45f);
-        tvFilterType.setTextColor(Color.parseColor("#FF5555"));
-        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
+        if (mBillFilterTypesPopWindow == null){
+            View filterTypeView = View.inflate(getContext(), R.layout.pop_bill_filter_type, null);
+            initBillFilterTypesPopView(filterTypeView);
+            setBillItems(((BalanceDetailListActivity)getActivity()).presenter.getSchoolBizList());
+            mBillFilterTypesPopWindow = new PopWindow.Builder(getActivity())
+                    .setStyle(PopWindow.PopWindowStyle.PopDown)
+                    .setView(filterTypeView)
+                    .setPopWindowListener(new PopWindowListener() {
+                        @Override
+                        public void show() {
+                            tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+                            tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
+                        }
+
+                        @Override
+                        public void dismiss() {
+                            if (tvFilterType.getText().toString().equalsIgnoreCase("分类")) {
+                                tvFilterType.setTextColor(Color.parseColor("#222222"));
+                                tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
+                             } else {
+                                tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+                                tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+                             }
+                        }
+                    }).create();
+
+        }
+        mBillFilterTypesPopWindow.show(rlFilterContentView);
     }
 
     @OnClick(R.id.tv_filter_date)

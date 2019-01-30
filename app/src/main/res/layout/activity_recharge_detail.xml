@@ -134,10 +134,15 @@
         android:background="@drawable/red_cursor"
         tool:text="返回热水澡"
         android:textSize="17sp"
+        android:layout_marginTop="15dp"
         android:id="@+id/back_to_from"
         android:textColor="@color/colorWhite"
         android:visibility="gone"
         style="?android:attr/borderlessButtonStyle"
         />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="21dp" />
 
 </LinearLayout>

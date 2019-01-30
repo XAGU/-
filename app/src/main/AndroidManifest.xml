@@ -29,8 +29,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup, android:label, android:icon">
+        tools:replace="android:allowBackup, android:label, android:icon"
+        android:resizeableActivity="true">
 
+        <!--全面屏-->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1"/>
         <!-- Glide配置 -->
         <meta-data
             android:name="com.xiaolian.amigo.ui.base.GlideConfiguration"

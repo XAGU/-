@@ -3,8 +3,10 @@ package com.xiaolian.amigo.ui.widget.popWindow;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -41,7 +43,6 @@ public class BillFilterStatusPopupWindow extends PopupWindow {
 
     public BillFilterStatusPopupWindow(Context context) {
         super(context);
-
         this.context = context ;
         init();
     }
@@ -150,8 +151,16 @@ public class BillFilterStatusPopupWindow extends PopupWindow {
         //获取需要在其上方显示的控件的位置信息
         int[] location = new int[2];
         v.getLocationOnScreen(location);
-
-        showAsDropDown(v);
+        if (Build.VERSION.SDK_INT < 24) {
+            showAsDropDown(v);
+        } else {
+            Rect visibleFrame = new Rect();
+            v.getGlobalVisibleRect(visibleFrame);
+            int height = v.getResources().getDisplayMetrics().heightPixels - visibleFrame.bottom;
+            setHeight(height);
+            showAsDropDown(v, 0, 0);
+        }
+//        showAsDropDown(v);
 //        showAtLocation(v ,Gravity.TOP ,0 ,location[1] + v.getHeight() );
         //在控件上方显示
 //        showAtLocation(v, Gravity.TOP, 0 , ScreenUtils.dpToPxInt(context ,20 ) );
