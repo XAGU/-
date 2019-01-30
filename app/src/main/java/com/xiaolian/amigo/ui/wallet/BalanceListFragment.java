@@ -711,7 +711,7 @@ public class BalanceListFragment extends Fragment {
 
 
     protected void setRecyclerView(RecyclerView recyclerView) {
-        adaptor = new BillListAdaptor(getActivity(), R.layout.item_withdrawal_record, items);
+        adaptor = new BillListAdaptor(getActivity(), R.layout.item_balance_detail_record, items);
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {

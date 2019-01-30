@@ -33,28 +33,28 @@ public class WithdrawalAdaptor extends CommonAdapter<WithdrawalAdaptor.Withdrawa
 
     @Override
     protected void convert(ViewHolder holder, WithdrawalWrapper withdrawalWrapper, int position) {
-//        holder.setText(R.id.tv_withdrawal, withdrawalWrapper.getTitle());
-//        if (withdrawalWrapper.getType() == WithdrawOperationType.WITHDRAW.getType()) {
-//            holder.setText(R.id.tv_withdrawal_status,
-//                    WithdrawalStatus.getWithdrawalStatus(withdrawalWrapper.getStatus()).getDesc());
-//            holder.setTextColor(R.id.tv_withdrawal_status,
-//                    ContextCompat.getColor(context,
-//                            WithdrawalStatus.getWithdrawalStatus(withdrawalWrapper.getStatus()).getColorRes()));
-//        } else {
-//            if (withdrawalWrapper.getInstead() != null && withdrawalWrapper.getInstead()) {
-//                holder.setText(R.id.tv_withdrawal_status, RechargeStatus.BEHALF_OF_RECHARGE.getDesc());
-//                holder.setTextColor(R.id.tv_withdrawal_status,
-//                        ContextCompat.getColor(context,
-//                                RechargeStatus.BEHALF_OF_RECHARGE.getColorRes()));
-//            } else {
-//                holder.setText(R.id.tv_withdrawal_status,
-//                        RechargeStatus.getRechargeStatus(withdrawalWrapper.getStatus()).getDesc());
-//                holder.setTextColor(R.id.tv_withdrawal_status,
-//                        ContextCompat.getColor(context,
-//                                RechargeStatus.getRechargeStatus(withdrawalWrapper.getStatus()).getColorRes()));
-//            }
-//        }
-//        holder.setText(R.id.tv_withdrawal_time, TimeUtils.millis2String(withdrawalWrapper.getTime()));
+        holder.setText(R.id.tv_withdrawal, withdrawalWrapper.getTitle());
+        if (withdrawalWrapper.getType() == WithdrawOperationType.WITHDRAW.getType()) {
+            holder.setText(R.id.tv_withdrawal_status,
+                    WithdrawalStatus.getWithdrawalStatus(withdrawalWrapper.getStatus()).getDesc());
+            holder.setTextColor(R.id.tv_withdrawal_status,
+                    ContextCompat.getColor(context,
+                            WithdrawalStatus.getWithdrawalStatus(withdrawalWrapper.getStatus()).getColorRes()));
+        } else {
+            if (withdrawalWrapper.getInstead() != null && withdrawalWrapper.getInstead()) {
+                holder.setText(R.id.tv_withdrawal_status, RechargeStatus.BEHALF_OF_RECHARGE.getDesc());
+                holder.setTextColor(R.id.tv_withdrawal_status,
+                        ContextCompat.getColor(context,
+                                RechargeStatus.BEHALF_OF_RECHARGE.getColorRes()));
+            } else {
+                holder.setText(R.id.tv_withdrawal_status,
+                        RechargeStatus.getRechargeStatus(withdrawalWrapper.getStatus()).getDesc());
+                holder.setTextColor(R.id.tv_withdrawal_status,
+                        ContextCompat.getColor(context,
+                                RechargeStatus.getRechargeStatus(withdrawalWrapper.getStatus()).getColorRes()));
+            }
+        }
+        holder.setText(R.id.tv_withdrawal_time, TimeUtils.millis2String(withdrawalWrapper.getTime()));
     }
 
     @Data
