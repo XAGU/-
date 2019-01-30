@@ -116,20 +116,24 @@ public class BalanceDetailListActivity extends BaseActivity implements IBalanceD
     }
 
     public void gotoBillDetailActivity(int type, Long id, int status) {
-        if (status == 100) /*预付未找零*/{
 
+        if (status == 100) /*预付未找零*/{
             startActivity(new Intent(BalanceDetailListActivity.this, PrepayOrderActivity.class)
-                    .putExtra(OrderConstant.KEY_ORDER_ID, id));
+                    .putExtra(OrderConstant.KEY_ORDER_ID, id)
+                    .putExtra(OrderConstant.KEY_ORDER_TITLE, BillListAdaptor.getTypeName(type, status)));
         } else if (Device.getDevice(type) == Device.WASHER || Device.getDevice(type)==Device.DRYER2) {
             startActivity(new Intent(BalanceDetailListActivity.this, NormalOrderActivity.class)
-                    .putExtra(OrderConstant.KEY_ORDER_ID, id));
+                    .putExtra(OrderConstant.KEY_ORDER_ID, id)
+                    .putExtra(OrderConstant.KEY_ORDER_TITLE, BillListAdaptor.getTypeName(type, status)));
         } else {
             // 跳转至订单详情
             Intent intent = new Intent(BalanceDetailListActivity.this, OrderDetailActivity.class);
             intent.putExtra(Constant.EXTRA_KEY, id);
+            intent.putExtra(OrderConstant.KEY_ORDER_TITLE, BillListAdaptor.getTypeName(type, status));
             startActivity(intent);
         }
     }
+
 
         //点击左边的按钮展示账单
     private void showBalanceDetailListView() {
@@ -235,43 +239,6 @@ public class BalanceDetailListActivity extends BaseActivity implements IBalanceD
             balanceListFragment.onRefresh();
         }
     }
-
-
-//    @Override
-//    protected void initView() {
-//        setUnBinder(ButterKnife.bind(this));
-//        getActivityComponent().inject(this);
-//        presenter.onAttach(BalanceDetailListActivity.this);
-//    }
-//
-//
-//    @Override
-//    protected int setTitle() {
-//        return 0;
-//    }
-//
-//    @Override
-//    protected int setLayout() {
-//        return R.layout.activity_balance_detail_list;
-//    }
-
-//    public enum XLFilterContentViewBillStatus {
-//        All, Ongoing,End
-//    }
-//
-//    public enum XLFilterContentViewBillType {
-//        All,//默认从0开始
-//        Recharge /*余额充值*/,
-//        Withdraw /*余额退款*/,
-//        /*下面这些类型需要根据是否开通才显示*/
-//        Heater /*热水澡*/,
-//        Drinking /*饮水机*/,
-//        Washing /*洗衣机*/,
-//        Blower /*吹风机*/,
-//        PublicBath /*公共浴室，已合并到热水澡中*/,
-//        Dry ,/*烘干机*/
-//        Bill/*消费账单*/,
-//    }
 }
 
 

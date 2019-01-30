@@ -105,18 +105,35 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adaptor = new OrderAdaptor(orders);
         adaptor.setOrderDetailClickListener((order) -> {
+            String orderName = getDeviceNameWithType(order.getDeviceType());
             if (Device.getDevice(order.getDeviceType()) == Device.WASHER || Device.getDevice(order.getDeviceType())==Device.DRYER2) {
                 startActivity(new Intent(OrderActivity.this, NormalOrderActivity.class)
-                        .putExtra(OrderConstant.KEY_ORDER_ID, order.getId()));
+                        .putExtra(OrderConstant.KEY_ORDER_ID, order.getId())
+                        .putExtra(OrderConstant.KEY_ORDER_TITLE, orderName));
             } else {
                 // 跳转至订单详情
                 Intent intent = new Intent(OrderActivity.this, OrderDetailActivity.class);
                 intent.putExtra(Constant.EXTRA_KEY, order.getId());
+                intent.putExtra(OrderConstant.KEY_ORDER_TITLE, orderName);
                 startActivity(intent);
             }
         });
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setAdapter(adaptor);
+    }
+
+    private String getDeviceNameWithType(int type) {
+//        1 - 热水澡， 2 - 饮水机，3 - 吹风机，4 - 洗衣机，
+        if (type == 1) {
+            return "热水澡消费";
+        } else if (type == 2) {
+            return "饮水机消费";
+        } else if (type == 3) {
+            return "吹风机消费";
+        } else if (type == 4) {
+            return "洗衣机消费";
+        }
+        return "烘干机消费";
     }
 
     @Override
@@ -143,12 +160,18 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
         if (deviceType != null
                 && deviceType != INVALID_INT) {
             title = title.concat(Device.getDevice(deviceType).getDesc());
+            title = title.concat("消费");
+        }
+        if (orderStatus == 3) {
+            title = title.concat("实际消费");
+        } else if (orderStatus == 4) {
+            title = title.concat("消费退款");
         }
         if (ObjectsCompat.equals(action, WalletConstant.ACTION_MAX_ORDER)) {
-            title = title.concat("单笔最贵");
+            title = title.concat("单笔最贵消费");
             enableLoadMore(false);
         }
-        setToolBarTitle(title.concat("消费记录"));
+        setToolBarTitle(title);
     }
 
     @Override
