@@ -185,7 +185,12 @@ public class PopDownWindow extends PopupWindow implements PopWindowInterface, Vi
                     // 获取控件在屏幕的位置
                     anchor.getLocationOnScreen(location);
                     // 算出popwindow最大高度
-                    int maxHeight = screenHeight- anchor.getHeight();
+                    int maxHeight ;
+                    if (!ScreenUtils.isAllScreenDevice(activity)) {
+                         maxHeight = screenHeight - anchor.getHeight() - location[1];
+                    }else{
+                        maxHeight = screenHeight - anchor.getHeight();
+                    }
                     // popupwindow  有具体的高度值，但是小于anchor下边缘与屏幕底部的距离， 正常显示
                     setHeight(maxHeight);
                     if(getHeight() > 0 && getHeight() < maxHeight){
