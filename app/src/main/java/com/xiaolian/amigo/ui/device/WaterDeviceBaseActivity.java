@@ -51,15 +51,22 @@ import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.TimeUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
+import rx.functions.Action1;
 
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_AFTER_ORDER_COPY;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_PRE_ORDER_COPY;
@@ -340,6 +347,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             }
         });
         getBlePermission();
+
+        // 如果未注册，开始注册
+        if (!EventBus.getDefault().isRegistered(this))
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -1122,46 +1133,41 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      */
     @OnClick(R.id.bt_error_handler)
     void handleError(Button button) {
-
         btErrorHandler.setEnabled(false);
-
-        // test
-
-        startH5Repair();
-//        switch (ErrorTag.getErrorTag((int) (button.getTag()))) {
-//            case CONNECT_ERROR:
-//                // 点击重连按钮时蓝牙必须为开启状态
-//                setBleCallback(() -> {
-//                    // 显示正在连接画面
-//                    showConnecting();
-//                    // 重连切换扫描方式
-//                    presenter.onReconnect(macAddress);
-//                });
-//                getBlePermission();
-//                break;
-//            case DEVICE_BUSY:
-//                //朕知道了，结束当前页，然后返回首页
-//                back2Main();
-////                startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
-//                break;
-//            case REPAIR:
-//                startH5Repair();
-//                break;
-//            case CALL:
-//                // 取消掉联系客服状态
-//                break;
-//            case CHANGE_DORMITORY:
-//                changeDormitory();
-//                break;
-//            case CHANGE_DISPENSER:
-//                changeDispenser();
-//                break;
-//            case CHANGE_DRYER:
-//                changeDryer();
-//                break;
-//            default:
-//                break;
-//        }
+        switch (ErrorTag.getErrorTag((int) (button.getTag()))) {
+            case CONNECT_ERROR:
+                // 点击重连按钮时蓝牙必须为开启状态
+                setBleCallback(() -> {
+                    // 显示正在连接画面
+                    showConnecting();
+                    // 重连切换扫描方式
+                    presenter.onReconnect(macAddress);
+                });
+                getBlePermission();
+                break;
+            case DEVICE_BUSY:
+                //朕知道了，结束当前页，然后返回首页
+                back2Main();
+//                startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
+                break;
+            case REPAIR:
+                startH5Repair();
+                break;
+            case CALL:
+                // 取消掉联系客服状态
+                break;
+            case CHANGE_DORMITORY:
+                changeDormitory();
+                break;
+            case CHANGE_DISPENSER:
+                changeDispenser();
+                break;
+            case CHANGE_DRYER:
+                changeDryer();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -1190,6 +1196,21 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         intent.putExtra(Constant.BUNDLE_ID, orderId);
         startActivity(intent);
         finish();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event){
+        if (event == null) return ;
+        if (event.refreshUi){
+            presenter.closeBleConnection();
+            // 加上充值金额
+            balance += event.rechargeBalance;
+            // 显示正在连接画面
+            showConnecting();
+            // 重连切换扫描方式
+            presenter.onReconnect(macAddress);
+
+        }
     }
 
     private void startShower(UnsettledOrderStatusCheckRespDTO orderStatus) {
@@ -1340,6 +1361,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
 
+
+
     @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy");
@@ -1350,6 +1373,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             timer.cancel();
         }
         TimeHolder.get().setLastConnectTime(System.currentTimeMillis());
+
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
     }
 
 
@@ -1391,6 +1417,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      * @return presenter
      */
     public abstract P setPresenter();
+
 
     @Override
     public void onError(TradeError tradeError) {
@@ -1535,5 +1562,25 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Override
     public boolean isBleError() {
         return bleError;
+    }
+
+
+    /**
+     * 蓝牙热水澡刷新ui
+     */
+    public static class Event{
+        private boolean refreshUi ;
+
+        /**
+         * 充值金额
+         */
+        private double rechargeBalance ;
+
+        public Event(boolean refreshUi  , double rechargeBalance){
+            this.refreshUi = refreshUi ;
+            this.rechargeBalance = rechargeBalance ;
+        }
+
+
     }
 }
