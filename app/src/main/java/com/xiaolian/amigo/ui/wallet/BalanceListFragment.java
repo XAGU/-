@@ -21,6 +21,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
 import com.xiaolian.amigo.ui.widget.dialog.YearMonthPickerDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
@@ -442,6 +443,37 @@ public class BalanceListFragment extends Fragment {
         tvFilterType.setText(name);
     }
 
+    public void setBillItems(List<BriefSchoolBusiness> businessesList) {
+        for (BriefSchoolBusiness briefSchoolBusiness: businessesList) {
+            TextView itemView = new TextView(getContext());
+            if (filterBillItem1TextView.getVisibility() != View.VISIBLE) /*加载第一个*/{
+                itemView = filterBillItem1TextView;
+            } else if (filterBillItem2TextView.getVisibility() != View.VISIBLE) /*加载第二个*/{
+                itemView = filterBillItem2TextView;
+            } else if (filterBillItem3TextView.getVisibility() != View.VISIBLE) /*加载第三个*/{
+                itemView = filterBillItem3TextView;
+            } else if (filterBillItem4TextView.getVisibility() != View.VISIBLE) /*加载第四个*/{
+                itemView = filterBillItem4TextView;
+            } else if (filterBillItem5TextView.getVisibility() != View.VISIBLE) /*加载第五个*/{
+                itemView = filterBillItem5TextView;
+            }
+            itemView.setVisibility(View.VISIBLE);
+            itemView.setTag(briefSchoolBusiness.getBusinessId()+2);
+            if ((Long)itemView.getTag() == 3) /*热水澡*/{
+                itemView.setText("热水澡消费");
+            } else if ((Long)itemView.getTag() == 4) /*饮水机*/{
+                itemView.setText("饮水机消费");
+            } else if ((Long)itemView.getTag() == 5) /*吹风机*/{
+                itemView.setText("吹风机消费");
+            } else if ((Long)itemView.getTag() == 6) /*洗衣机*/{
+                itemView.setText("洗衣机消费");
+            } else if ((Long)itemView.getTag() == 7) /*烘干机*/{
+                itemView.setTag(briefSchoolBusiness.getBusinessId()+3); //手动把烘干机设为8，和服务器同步
+                itemView.setText("烘干机消费");
+            }
+        }
+    }
+
     // =============================
 
 
@@ -502,12 +534,13 @@ public class BalanceListFragment extends Fragment {
         }
         mBillFilterStatusPopwindow.show(rlFilterContentView);
     }
-
+    
     @OnClick(R.id.tv_filter_type)
     public void showFilterType() {
         if (mBillFilterTypesPopWindow == null){
             View filterTypeView = View.inflate(getContext(), R.layout.pop_bill_filter_type, null);
             initBillFilterTypesPopView(filterTypeView);
+            setBillItems(((BalanceDetailListActivity)getActivity()).presenter.getSchoolBizList());
             mBillFilterTypesPopWindow = new PopWindow.Builder(getActivity())
                     .setStyle(PopWindow.PopWindowStyle.PopDown)
                     .setView(filterTypeView)
