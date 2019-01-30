@@ -534,7 +534,7 @@ public class BalanceListFragment extends Fragment {
         }
         mBillFilterStatusPopwindow.show(rlFilterContentView);
     }
-    
+
     @OnClick(R.id.tv_filter_type)
     public void showFilterType() {
         if (mBillFilterTypesPopWindow == null){
