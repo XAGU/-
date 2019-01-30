@@ -144,7 +144,9 @@ public class BalanceListFragment extends Fragment {
                     if (billStatus!=null && billStatus == status) /*选择的是一样的就不加载*/{
                         return;
                     }
+                    tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
                     items.clear();
+                    tempItems.clear();
                     lastId = null;
                     adaptor.notifyDataSetChanged();
                     /*选择的是新数据，需要把已有的数据清空*/
@@ -184,7 +186,9 @@ public class BalanceListFragment extends Fragment {
                     if (billType != null && billType == type) /*选择的是一样的就不加载*/{
                         return;
                     }
+                    tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
                     items.clear();
+                    tempItems.clear();
                     lastId = null;
                     adaptor.notifyDataSetChanged();
                     /*选择的是新数据，需要把已有的数据清空*/
@@ -285,8 +289,9 @@ public class BalanceListFragment extends Fragment {
           }
           timeStr = newTimeStr;
           items.clear();
+          tempItems.clear();
           lastId = null;
-           adaptor.notifyDataSetChanged();
+          adaptor.notifyDataSetChanged();
           tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
             refreshLayout.autoRefresh();
         });
@@ -339,6 +344,9 @@ public class BalanceListFragment extends Fragment {
                     LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
                     //获取第一个可见view的位置
                     int firstItemPosition = linearManager.findFirstVisibleItemPosition();
+                    if (items.size() <= 0) {
+                        return;
+                    }
                     BillListAdaptor.BillListAdaptorWrapper item = items.get(firstItemPosition);
                     Calendar cal = Calendar.getInstance();
                     Date date = TimeUtils.millis2Date(item.getCreateTime());
@@ -392,12 +400,15 @@ public class BalanceListFragment extends Fragment {
     public void addMore(List<BillListAdaptor.BillListAdaptorWrapper> wrappers) {
 
         if (wrappers.size() <= 0 && tempItems.size() <= 0)  /*没有新的数据，并且没有临时存储的数据*/ {
+            if (items.size() <= 0) {
+                showEmptyView(R.string.empty_tip_1);
+            }
             return;
         }
 
         if (items.size() <= 0)  /*第一次请求数据*/{
             //1、如果最新的一条不是当前选择的月份，则不展示出来，留到下次上拉或者下拉的时候再展示
-            String newTimeStr = TimeUtils.millis2String(wrappers.get(0).getCreateTime(), TimeUtils.MY_DATE_YEARMON_FORMAT);
+            String newTimeStr = wrappers.size() > 0 ? TimeUtils.millis2String(wrappers.get(0).getCreateTime(), TimeUtils.MY_DATE_YEARMON_FORMAT) : timeStr;
             if (timeStr.equalsIgnoreCase(newTimeStr) || tempItems.size() > 0)/*最新的为当前月份的数据，获取是加载数据进来*/ {
                 items.addAll(wrappers);
                 //把老数据加进去，下拉加载最新的，上拉加载旧的
@@ -443,7 +454,7 @@ public class BalanceListFragment extends Fragment {
     public void showEmptyView(String tip, int colorRes) {
         if (items.size() <= 0) {
             rlEmpty.setVisibility(View.VISIBLE);
-            rlEmpty.setBackgroundResource(colorRes);
+//            rlEmpty.setBackgroundResource(colorRes);
             tvEmptyTip.setText(tip);
         }
     }

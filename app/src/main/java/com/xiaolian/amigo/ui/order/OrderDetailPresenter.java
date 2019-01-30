@@ -71,8 +71,8 @@ public class OrderDetailPresenter<V extends IOrderDetailView> extends BasePresen
                 if (null == result.getError()) {
                     if (result.getData().getLowest() != null
                             && result.getData().getLowest()
-                            && TextUtils.isEmpty(result.getData().getBonus())
-                            && ObjectsCompat.equals(result.getData().getStatus(), ORDER_ERROR_STATUS)) {
+                            && TextUtils.isEmpty(result.getData().getBonus())/*不仅仅异常账单会出现这种情况
+                            && ObjectsCompat.equals(result.getData().getStatus(), ORDER_ERROR_STATUS)*/) {
                         getMvpView().showNoUseTip();
                     }
                     order = result.getData();

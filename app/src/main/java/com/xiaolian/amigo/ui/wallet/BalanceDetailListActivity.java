@@ -121,7 +121,7 @@ public class BalanceDetailListActivity extends BaseActivity implements IBalanceD
             startActivity(new Intent(BalanceDetailListActivity.this, PrepayOrderActivity.class)
                     .putExtra(OrderConstant.KEY_ORDER_ID, id)
                     .putExtra(OrderConstant.KEY_ORDER_TITLE, BillListAdaptor.getTypeName(type, status)));
-        } else if (Device.getDevice(type) == Device.WASHER || Device.getDevice(type)==Device.DRYER2) {
+        } else if (type == BillListAdaptor.XLFilterContentViewBillTypePayWashing || type == BillListAdaptor.XLFilterContentViewBillTypePayDry) {
             startActivity(new Intent(BalanceDetailListActivity.this, NormalOrderActivity.class)
                     .putExtra(OrderConstant.KEY_ORDER_ID, id)
                     .putExtra(OrderConstant.KEY_ORDER_TITLE, BillListAdaptor.getTypeName(type, status)));

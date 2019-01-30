@@ -81,6 +81,8 @@ public class OrderDetailRespDTO {
 
     private Long supplierId;
 
+    private Boolean scanCode;
+
     /**
      * 区分正反扫洗衣机
      */

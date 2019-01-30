@@ -84,7 +84,7 @@ public class BalanceDetailListPresenter<V extends IBalanceDetailListView> extend
                             getMvpView().hideEmptyView();
                             getMvpView().hideErrorView();
                             if (null == result.getError()) {
-                                if (result.getData() != null && result.getData().getDetailList().size() > 0) {
+                                if (result.getData() != null) {
                                     List<BillListAdaptor.BillListAdaptorWrapper> wrappers = new ArrayList<>();
                                     for (HashMap<String, Object> billDic : result.getData().getDetailList()) {
                                         wrappers.add(new BillListAdaptor.BillListAdaptorWrapper(billDic));

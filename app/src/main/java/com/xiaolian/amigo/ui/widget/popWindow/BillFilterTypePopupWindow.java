@@ -206,6 +206,16 @@ public class BillFilterTypePopupWindow extends PopupWindow {
             filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == 9) {
+            filterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
         } else if (type == (Long)filterBillItem1TextView.getTag()) {
             filterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
@@ -256,16 +266,6 @@ public class BillFilterTypePopupWindow extends PopupWindow {
             filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem5TextView.setTextColor(Color.parseColor("#FF5555"));
-        } else if (type == 9) {
-            filterAllTextView.setTextColor(Color.parseColor("#222222"));
-            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
-            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
-            filterBillTotalTextView.setTextColor(Color.parseColor("#FF5555"));
-            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
         }
     }
 
