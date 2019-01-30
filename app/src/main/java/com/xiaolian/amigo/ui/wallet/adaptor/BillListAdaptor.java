@@ -10,6 +10,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.RechargeStatus;
 import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
 import com.xiaolian.amigo.data.enumeration.WithdrawalStatus;
+import com.xiaolian.amigo.data.network.model.funds.FundsInListDTO;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -58,7 +59,11 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
         moneyView.setVisibility(View.VISIBLE);
         statusView.setVisibility(View.VISIBLE);
         statusViewOnly.setVisibility(View.INVISIBLE);
-
+        if (status < 100 ) /*status的状态不同，此处两边的值状态不一致！！！*/{
+            holder.setText(R.id.tv_bill_status, WithdrawalStatus.getWithdrawalStatus(status).getDesc());
+            holder.setText(R.id.tv_bill_money, "-¥"+amount);
+            return;
+        }
         /*1xx表示消费订单，2xx表示充值，3xx表示提现，4xx表示活动*/
         if (status == 100) /*预付待找零*/{
             holder.setText(R.id.tv_bill_money, "-¥"+amount);
@@ -179,6 +184,15 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
             this.id = ((Double) billDetail.get("id")).longValue();
             this.status = ((Double)billDetail.get("status")).intValue();
             this.createTime = ((Double) billDetail.get("createTime")).longValue();
+        }
+
+        public BillListAdaptorWrapper(FundsInListDTO dto) {
+            this.type = dto.getOperationType().intValue();
+            this.amount = dto.getAmount();
+//            this.detailId = dto.getOrderNo();
+            this.id = dto.getId();
+            this.status = dto.getStatus();
+            this.createTime = dto.getCreateTime();
         }
 
 

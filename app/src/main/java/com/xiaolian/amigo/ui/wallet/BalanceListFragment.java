@@ -530,6 +530,9 @@ public class BalanceListFragment extends Fragment {
     }
 
     public void setBillItems(List<BriefSchoolBusiness> businessesList) {
+        if (businessesList == null) {
+            return;
+        }
         for (BriefSchoolBusiness briefSchoolBusiness: businessesList) {
             TextView itemView = new TextView(getContext());
             if (filterBillItem1TextView.getVisibility() != View.VISIBLE) /*加载第一个*/{
@@ -870,7 +873,7 @@ public class BalanceListFragment extends Fragment {
 
     public void showErrorView(int colorRes) {
         rlError.setVisibility(View.VISIBLE);
-        rlError.setBackgroundResource(colorRes);
+//        rlError.setBackgroundResource(colorRes);
     }
 
     public void hideErrorView() {
