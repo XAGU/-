@@ -328,16 +328,18 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
             tvActualDebit.setText(getString(R.string.minus, order.getActualDebit()));
 
 
-            if (order.getDeviceType() == Device.DRYER.getType() && !ObjectsCompat.equals(order.getStatus(), ORDER_ERROR_STATUS)){
+            if (order.getDeviceType() == Device.DRYER.getType() && !ObjectsCompat.equals(order.getStatus(), ORDER_ERROR_STATUS) && order.getScanCode() != null && order.getScanCode()){
                 showCode(order.getQrCode());
                 /**
                  * 隐藏预付信息
                  */
-                onlyShowBottomRight();
-                rightOper.setText("常见问题");
-                rightOper.setOnClickListener(v -> {
-                    startServiceH5();
-                });
+//                onlyShowBottomRight();
+//                rightOper.setText("常见问题");
+//                rightOper.setOnClickListener(v -> {
+//                    startServiceH5();
+//                });
+            } else {
+                hideCode();
             }
 
             if ( !order.getHasPrepay()){

@@ -68,12 +68,12 @@ public class BalanceListFragment extends Fragment {
     /**
      * 显示选择状态的popwindow
      */
-    private BillFilterStatusPopupWindow filterStatusPopupWindow;
+//    private BillFilterStatusPopupWindow filterStatusPopupWindow;
 
     /**
      * 显示选择类型的popwindow
      */
-    private BillFilterTypePopupWindow filterTypePopupWindow;
+//    private BillFilterTypePopupWindow filterTypePopupWindow;
 
 
     private PopWindow mBillFilterStatusPopwindow ;
@@ -148,6 +148,47 @@ public class BalanceListFragment extends Fragment {
     }
 
 
+//
+//    public void initPop() {
+//        if (filterStatusPopupWindow == null) {
+//            filterStatusPopupWindow = new BillFilterStatusPopupWindow(getActivity());
+//            filterStatusPopupWindow.setPopFilterClickListener(new BillFilterStatusPopupWindow.PopFilterClickListener() {
+//                @Override
+//                public void click(int status, CharSequence name) {
+//                    tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+//                    tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+//                    if (billStatus!=null && billStatus == status) /*选择的是一样的就不加载*/{
+//                        return;
+//                    }
+//                    tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
+//                    items.clear();
+//                    tempItems.clear();
+//                    lastId = null;
+//                    adaptor.notifyDataSetChanged();
+//                    /*选择的是新数据，需要把已有的数据清空*/
+//                    billStatus = status;
+//                    if (billStatus == 0) {
+//                        billStatus = null;
+//                    }
+//                    refreshLayout.autoRefresh();
+//                    tvFilterStatus.setText(name);
+//                }
+//            });
+//
+//            filterStatusPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//                @Override
+//                public void onDismiss() {
+//                    filterStatusPopupWindow.setBackgroundAlpha(1.0f);
+//                    if (tvFilterStatus.getText().toString().equalsIgnoreCase("筛选")) {
+//                        tvFilterStatus.setTextColor(Color.parseColor("#222222"));
+//                        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
+//                    } else {
+//                        tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+//                        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+//                    }
+//                }
+//            });
+
 
     //============= 弹窗  ================
     private void initBillFilterStatusPopView(View contentView){
@@ -202,6 +243,47 @@ public class BalanceListFragment extends Fragment {
         }
     }
 
+//<<<<<<< HEAD
+//        if (filterTypePopupWindow == null) {
+//            filterTypePopupWindow = new BillFilterTypePopupWindow(getActivity());
+//            //设置配置的服务
+//            filterTypePopupWindow.setBillItems(((BalanceDetailListActivity)getActivity()).presenter.getSchoolBizList());
+//            filterTypePopupWindow.setPopFilterClickListener(new BillFilterTypePopupWindow.PopFilterClickListener() {
+//                @Override
+//                public void click(int type, String name) {
+//                    tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+//                    tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+//                    if (billType != null && billType == type) /*选择的是一样的就不加载*/{
+//                        return;
+//                    }
+//                        tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
+//                    items.clear();
+//                    tempItems.clear();
+//                    lastId = null;
+//                    adaptor.notifyDataSetChanged();
+//                    /*选择的是新数据，需要把已有的数据清空*/
+//                    billType = type;
+//                    if (billType == 0) {
+//                        billType = null;
+//                    }
+//                    refreshLayout.autoRefresh();
+//                    tvFilterType.setText(name);
+//                }
+//            });
+//            filterTypePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+//                @Override
+//                public void onDismiss() {
+//                    filterTypePopupWindow.setBackgroundAlpha(1.0f);
+//                    if (tvFilterType.getText().toString().equalsIgnoreCase("分类")) {
+//                        tvFilterType.setTextColor(Color.parseColor("#222222"));
+//                        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
+//                    } else {
+//                        tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+//                        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+//                    }
+//                }
+//            });
+//=======
 
     private void popFilterStatusClick(int status, CharSequence name){
         tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
@@ -209,6 +291,8 @@ public class BalanceListFragment extends Fragment {
         if (billStatus!=null && billStatus == status) /*选择的是一样的就不加载*/{
             return;
         }
+        tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
+        tempItems.clear();
         items.clear();
         lastId = null;
         adaptor.notifyDataSetChanged();
@@ -362,6 +446,16 @@ public class BalanceListFragment extends Fragment {
             filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+        } else if (type == 9) {
+            typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
+            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
+            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
+            filterBillTotalTextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
         } else if (type == (Long)filterBillItem1TextView.getTag()) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
@@ -412,16 +506,6 @@ public class BalanceListFragment extends Fragment {
             filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem5TextView.setTextColor(Color.parseColor("#FF5555"));
-        } else if (type == 9) {
-            typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
-            filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
-            filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
-            filterBillTotalTextView.setTextColor(Color.parseColor("#FF5555"));
-            filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
         }
     }
 
@@ -431,6 +515,8 @@ public class BalanceListFragment extends Fragment {
         if (billType != null && billType == type) /*选择的是一样的就不加载*/{
             return;
         }
+        tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
+        tempItems.clear();
         items.clear();
         lastId = null;
         adaptor.notifyDataSetChanged();
@@ -444,6 +530,9 @@ public class BalanceListFragment extends Fragment {
     }
 
     public void setBillItems(List<BriefSchoolBusiness> businessesList) {
+        if (businessesList == null) {
+            return;
+        }
         for (BriefSchoolBusiness briefSchoolBusiness: businessesList) {
             TextView itemView = new TextView(getContext());
             if (filterBillItem1TextView.getVisibility() != View.VISIBLE) /*加载第一个*/{
@@ -482,13 +571,21 @@ public class BalanceListFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (filterStatusPopupWindow != null && filterStatusPopupWindow.isShowing()){
-            filterStatusPopupWindow.dismiss();
+        if (mBillFilterStatusPopwindow != null) {
+            mBillFilterStatusPopwindow.dismiss();
         }
 
-        if (filterTypePopupWindow != null && filterTypePopupWindow.isShowing()){
-            filterTypePopupWindow.dismiss();
+        if (mBillFilterTypesPopWindow != null) {
+            mBillFilterTypesPopWindow.dismiss();
         }
+
+//        if (filterStatusPopupWindow != null && filterStatusPopupWindow.isShowing()){
+//            filterStatusPopupWindow.dismiss();
+//        }
+//
+//        if (filterTypePopupWindow != null && filterTypePopupWindow.isShowing()){
+//            filterTypePopupWindow.dismiss();
+//        }
     }
 
     private void initRecyclerView() {
@@ -527,8 +624,13 @@ public class BalanceListFragment extends Fragment {
 
                         @Override
                         public void dismiss() {
-                            tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
-                            tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+                            if (tvFilterStatus.getText().toString().equalsIgnoreCase("筛选")) {
+                                tvFilterStatus.setTextColor(Color.parseColor("#222222"));
+                                tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
+                            } else {
+                                tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
+                                tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+                            }
                         }
                     }).create();
         }
@@ -553,8 +655,13 @@ public class BalanceListFragment extends Fragment {
 
                         @Override
                         public void dismiss() {
-                            tvFilterType.setTextColor(Color.parseColor("#FF5555"));
-                            tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+                            if (tvFilterType.getText().toString().equalsIgnoreCase("分类")) {
+                                tvFilterType.setTextColor(Color.parseColor("#222222"));
+                                tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
+                             } else {
+                                tvFilterType.setTextColor(Color.parseColor("#FF5555"));
+                                tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+                             }
                         }
                     }).create();
 
@@ -586,8 +693,9 @@ public class BalanceListFragment extends Fragment {
           }
           timeStr = newTimeStr;
           items.clear();
+          tempItems.clear();
           lastId = null;
-           adaptor.notifyDataSetChanged();
+          adaptor.notifyDataSetChanged();
           tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
             refreshLayout.autoRefresh();
         });
@@ -603,7 +711,7 @@ public class BalanceListFragment extends Fragment {
 
 
     protected void setRecyclerView(RecyclerView recyclerView) {
-        adaptor = new BillListAdaptor(getActivity(), R.layout.item_withdrawal_record, items);
+        adaptor = new BillListAdaptor(getActivity(), R.layout.item_balance_detail_record, items);
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -640,6 +748,9 @@ public class BalanceListFragment extends Fragment {
                     LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
                     //获取第一个可见view的位置
                     int firstItemPosition = linearManager.findFirstVisibleItemPosition();
+                    if (items.size() <= 0) {
+                        return;
+                    }
                     BillListAdaptor.BillListAdaptorWrapper item = items.get(firstItemPosition);
                     Calendar cal = Calendar.getInstance();
                     Date date = TimeUtils.millis2Date(item.getCreateTime());
@@ -693,12 +804,15 @@ public class BalanceListFragment extends Fragment {
     public void addMore(List<BillListAdaptor.BillListAdaptorWrapper> wrappers) {
 
         if (wrappers.size() <= 0 && tempItems.size() <= 0)  /*没有新的数据，并且没有临时存储的数据*/ {
+            if (items.size() <= 0) {
+                showEmptyView(R.string.empty_tip_1);
+            }
             return;
         }
 
         if (items.size() <= 0)  /*第一次请求数据*/{
             //1、如果最新的一条不是当前选择的月份，则不展示出来，留到下次上拉或者下拉的时候再展示
-            String newTimeStr = TimeUtils.millis2String(wrappers.get(0).getCreateTime(), TimeUtils.MY_DATE_YEARMON_FORMAT);
+            String newTimeStr = wrappers.size() > 0 ? TimeUtils.millis2String(wrappers.get(0).getCreateTime(), TimeUtils.MY_DATE_YEARMON_FORMAT) : timeStr;
             if (timeStr.equalsIgnoreCase(newTimeStr) || tempItems.size() > 0)/*最新的为当前月份的数据，获取是加载数据进来*/ {
                 items.addAll(wrappers);
                 //把老数据加进去，下拉加载最新的，上拉加载旧的
@@ -744,7 +858,7 @@ public class BalanceListFragment extends Fragment {
     public void showEmptyView(String tip, int colorRes) {
         if (items.size() <= 0) {
             rlEmpty.setVisibility(View.VISIBLE);
-            rlEmpty.setBackgroundResource(colorRes);
+//            rlEmpty.setBackgroundResource(colorRes);
             tvEmptyTip.setText(tip);
         }
     }
@@ -759,7 +873,7 @@ public class BalanceListFragment extends Fragment {
 
     public void showErrorView(int colorRes) {
         rlError.setVisibility(View.VISIBLE);
-        rlError.setBackgroundResource(colorRes);
+//        rlError.setBackgroundResource(colorRes);
     }
 
     public void hideErrorView() {
