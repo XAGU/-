@@ -46,6 +46,12 @@ public class UpdateActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    @Override
+    public void finish() {
+        setResult(RESULT_OK);
+        super.finish();
+    }
+
     protected Fragment getUpdateDialogFragment() {
         return UpdateDialog.newInstance(mModel);
     }

@@ -624,7 +624,8 @@
         <activity
             android:name=".ui.main.update.UpdateActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/UpdateDialog" />
+            android:theme="@style/UpdateDialog"
+            android:launchMode="singleInstance"/>
 
         <!-- 支付宝 -->
         <activity

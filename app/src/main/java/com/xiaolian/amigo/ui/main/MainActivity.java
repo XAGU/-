@@ -127,6 +127,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     // 保存上一个点击的fragment
     private static final String KEY_LASTFRAGMENT ="KEY_LAST_FRAGMENT" ;
 
+    /**
+     * 版本更新接口
+     */
+    private static final int UPDATA = 0X111 ;
+
     @Inject
     IMainPresenter<IMainView> presenter;
 
@@ -189,9 +194,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     private int unReadCount ;
 
+    /**
+     *  是否是更新弹窗的后返回的onResume ,  如果是，则不进行版本更新检查 ， 否则，进行版本更新检查
+     */
+    private boolean isUpdateResume = false ;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isUpdateResume = false ;
         setContentView(R.layout.activity_main);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
@@ -222,8 +233,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -232,6 +241,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 if (socalFragment != null) {
                     socalFragment.setReferTop(true);
                 }
+            }else if(requestCode == UPDATA){
+                isUpdateResume = true ;
             }
         }
     }
@@ -616,9 +627,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     protected void onResume() {
         super.onResume();
         android.util.Log.e(TAG, "onResume: " );
-        FragmentInit();
-        presenter.checkUpdate(AppUtils.getAppVersionCode(this),
-                AppUtils.getVersionName(this) , presenter.getRemindMobile());
+        if (!isUpdateResume) {
+            FragmentInit();
+            presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+                    AppUtils.getVersionName(this), presenter.getRemindMobile());
+        }
+        isUpdateResume = false ;
+
     }
 
     /**
@@ -1017,7 +1032,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra(IntentKey.MODEL, model);
                         intent.putExtra(IntentKey.NOTIFICATION_ICON, R.mipmap.ic_launcher);
-                        startActivity(intent);
+                        startActivityForResult(intent , UPDATA);
                     } else {
                         showMessage("没有SD卡权限");
                     }
