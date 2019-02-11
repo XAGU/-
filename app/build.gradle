@@ -11,7 +11,7 @@ static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
-//当前版本1.2.22 code 为37
+//当前版本1.2.30 code 为37
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -19,7 +19,7 @@ android {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode 38
-        versionName "1.2.23"
+        versionName "1.2.30"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true

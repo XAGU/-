@@ -109,7 +109,7 @@ public class LostAndFoundDetailCommentReplyAdapter
 
                 setImageText(textView ,builder ,"联主",R.drawable.blog);
             }else{
-                if (replyWrapper.getVest() != null && replyWrapper.getVest().equals(Constant.VEST_ADMIN)){
+                if (replyWrapper.getReplyVest() != null && replyWrapper.getReplyVest().equals(Constant.VEST_ADMIN)){
                     setImageText(textView, builder, "管理员", R.drawable.blog_admin);
                 }
             }
@@ -181,6 +181,9 @@ public class LostAndFoundDetailCommentReplyAdapter
          */
         private Integer vest ;
 
+        private Integer replyVest ;
+
+
         public ReplyWrapper(LostFoundReplyDTO lostFoundReplyDTO) {
             this.content = lostFoundReplyDTO.getContent();
             this.replyToUserId = lostFoundReplyDTO.getReplyToUserId();
@@ -189,6 +192,7 @@ public class LostAndFoundDetailCommentReplyAdapter
             this.userNickName = lostFoundReplyDTO.getUserNickname();
             this.footer = false;
             this.vest = lostFoundReplyDTO.getVest();
+            this.replyVest = lostFoundReplyDTO.getReplyVest();
         }
 
         public ReplyWrapper(String content, boolean footer) {
