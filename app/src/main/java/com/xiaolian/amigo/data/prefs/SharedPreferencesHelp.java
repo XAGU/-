@@ -408,7 +408,7 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public VersionDialogTime getLastUpdateRemindTime() {
-        String versionDialogTimeTxt = mSharedPreferences.getString(PREF_LAST_UPDATE_REMIND_TIME,"");
+        String versionDialogTimeTxt = mUnclearSharedPreferences.getString(PREF_LAST_UPDATE_REMIND_TIME,"");
         if ("".equals(versionDialogTimeTxt)){
             return null ;
         }else{
@@ -435,7 +435,7 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
         }
         versionTime.put(mobile ,System.currentTimeMillis());
         versionDialogTime.setVersionDialogTime(versionTime);
-        mSharedPreferences.edit().putString(PREF_LAST_UPDATE_REMIND_TIME ,mGson.toJson(versionDialogTime)).commit();
+        mUnclearSharedPreferences.edit().putString(PREF_LAST_UPDATE_REMIND_TIME ,mGson.toJson(versionDialogTime)).commit();
     }
 
     @Override

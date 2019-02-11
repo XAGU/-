@@ -115,10 +115,10 @@ public class LostAndFoundReplyDetailFollowDelegate
 
             spanLength += spanPaint.measureText(commentUserSpan.toString());
 
-            if (ObjectsCompat.equals(ownerId, replyWrapper.getAuthorId())) {
+            if (ObjectsCompat.equals(ownerId, replyWrapper.getReplyToUserId())) {
                 spanLength = setImageTextView(textView, spanLength, builder , "联主" ,R.drawable.blog);
             }else{
-                if (replyWrapper.getVest() != null && replyWrapper.getReplyVest().equals( Constant.VEST_ADMIN)){
+                if (replyWrapper.getReplyVest() != null && replyWrapper.getReplyVest().equals( Constant.VEST_ADMIN)){
                     spanLength =   setImageTextView(textView ,spanLength ,builder ,"管理员" , R.drawable.blog_admin);
                 }
             }

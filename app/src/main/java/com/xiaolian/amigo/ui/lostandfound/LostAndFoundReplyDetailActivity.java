@@ -219,8 +219,6 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
                 lastVertivaloffSet = verticalOffset ;
             }
         });
-
-
     }
 
     private void initRecyclerView() {
@@ -482,7 +480,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
         if (refreshFlag) {
             refreshFlag = false;
             followRelays.clear();
-            followRelays.add(mainReply);
+//            followRelays.add(mainReply);
         }
         adapter.notifyDataSetChanged();
 //        rlEmpty.setVisibility(View.VISIBLE);
@@ -493,7 +491,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
         if (refreshFlag) {
             refreshFlag = false;
             followRelays.clear();
-            followRelays.add(mainReply);
+//            followRelays.add(mainReply);
         }
         followRelays.addAll(wrappers);
         adapter.notifyDataSetChanged();

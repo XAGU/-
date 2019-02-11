@@ -232,6 +232,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isUpdateResume = true ;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1314,6 +1320,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         Log.d(TAG, "onStop");
         super.onStop();
         EventBus.getDefault().unregister(this);
+        isUpdateResume = false ;
     }
 
     @Override

@@ -276,6 +276,8 @@ public class LostAndFoundDetailCommentDelegate
             ower.setVisibility(View.GONE);
             if (vest != null && vest.equals(Constant.VEST_ADMIN)){
                 ivVest.setVisibility(View.VISIBLE);
+            }else{
+                ivVest.setVisibility(View.GONE);
             }
         }
 

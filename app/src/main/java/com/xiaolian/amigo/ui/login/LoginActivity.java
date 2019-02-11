@@ -163,6 +163,8 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         }
 
         presenter.deletePushToken();
+
+        //  一到登录界面就先注销前面所有的
         presenter.logout();
 
         if (savedInstanceState == null) {

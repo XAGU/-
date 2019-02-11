@@ -63,7 +63,6 @@ public class LostAndFoundReplyDetailAdapter extends MultiItemTypeAdapter<LostAnd
             this.time = time;
             this.image = image;
             this.vest = vest ;
-
         }
 
         public LostAndFoundReplyDetailWrapper(LostFoundReplyDTO replyDTO, boolean owner) {

@@ -96,6 +96,8 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
          */
         private Integer vest ;
 
+        private Integer replyVest ;
+
         private LostAndFoundDetailWrapper() {
         }
 
