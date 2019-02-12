@@ -271,6 +271,7 @@ public class LostAndFoundDetailCommentDelegate
         textView.setText(builder);
         if (isOwner) {
             ower.setVisibility(View.VISIBLE);
+            ivVest.setVisibility(View.GONE);
             ower.setText("联主");
         }else{
             ower.setVisibility(View.GONE);
