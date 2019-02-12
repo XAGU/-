@@ -49,7 +49,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import lombok.Data;
 
 import static com.xiaolian.amigo.ui.device.washer.ScanActivity.IS_SACN;
@@ -147,16 +146,16 @@ public class HomeFragment2 extends BaseFragment {
     private HomeAdaptor.ItemWrapper banner;
     private GridLayoutManager gridLayoutManager;
 
-    private Unbinder unbinder ;
-
     private int unReadWorkOrderRemarkMessageCount ;
+
+    private boolean rollingOff = false ;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
-        unbinder = ButterKnife.bind(this, homeView);
+        ButterKnife.bind(this, homeView);
         initRequestView();
         return homeView;
     }
@@ -189,6 +188,7 @@ public class HomeFragment2 extends BaseFragment {
         if (marqueeView != null) {
             marqueeView.destory();
         }
+        rollingOff = true ;
         rlScroll.setVisibility(View.GONE);
     }
     /**
@@ -200,8 +200,10 @@ public class HomeFragment2 extends BaseFragment {
             rlScroll.setVisibility(View.GONE);
             return ;
         }
-        rlScroll.setVisibility(View.VISIBLE);
-        marqueeView.getResoure((ArrayList<String>) info);
+        if (!rollingOff) {
+            rlScroll.setVisibility(View.VISIBLE);
+            marqueeView.getResoure((ArrayList<String>) info);
+        }
     }
 
     /**
@@ -628,7 +630,6 @@ public class HomeFragment2 extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
 

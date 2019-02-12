@@ -23,11 +23,6 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
      */
     void checkDeviceUseage(int type , String mac ,boolean isBle);
 
-
-
-
-
-
     /**
      * 跳转到热水澡
      *

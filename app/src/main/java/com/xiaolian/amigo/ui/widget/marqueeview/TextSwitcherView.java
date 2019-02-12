@@ -117,12 +117,30 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         }
     }
 
-    public void getResoure(ArrayList<String> info){
+    public void getResoure(ArrayList<String> mData){
+
+        if (this.info.size() != 0){
+            if (this.info.size() == mData.size()){
+                if (isEqual(this.info ,mData)) return ;
+            }
+        }
         this.info.clear();
-        this.info.addAll(info);
+        this.info.addAll(mData);
         isScroll = true ;
         updateText();
     }
+
+    private boolean isEqual(ArrayList<String> resource ,ArrayList<String> resource1) {
+        if (resource == null || resource1 == null) return false;
+
+        for (int i = 0; i < resource.size(); i++) {
+            if (!resource.get(i).equals(resource1.get(i))) {
+                return false;
+            }
+        }
+        return true ;
+    }
+
 
     public void setString(String info){
         MarqueeText marqueeText = (MarqueeText) makeView();
