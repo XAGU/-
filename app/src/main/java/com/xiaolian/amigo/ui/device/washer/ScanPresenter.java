@@ -58,9 +58,16 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
                                         result.getData().getBalance(),
                                         result.getData().getMacAddress(), type);
                             }else{
-                                getMvpView().goToWasher(result.getData().getDeviceToken()
-                                ,result.getData().getMacAddress()
-                                ,result.getData().getDeviceType());
+                                //  烘干机 ，应该跳转原生界面
+                                if (result.getData().getDeviceType() == 6){
+                                    getMvpView().gotoChooseModeView(result.getData().getBonus(),
+                                            result.getData().getBalance(),
+                                            result.getData().getMacAddress(), result.getData().getDeviceType());
+                                }else {
+                                    getMvpView().goToWasher(result.getData().getDeviceToken()
+                                            , result.getData().getMacAddress()
+                                            , result.getData().getDeviceType());
+                                }
 
                             }
                         } else {
