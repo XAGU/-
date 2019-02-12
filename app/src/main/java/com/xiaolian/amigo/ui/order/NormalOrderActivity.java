@@ -40,6 +40,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static com.xiaolian.amigo.ui.device.washer.ScanActivity.KEY_TYPE;
 
@@ -69,16 +71,33 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     private TextView tvBottomTip;
     private TextView tv_order_title;
 
+    /************** 异常账单内容 ****************/
+    @BindView(R.id.ll_order_error)
+    LinearLayout llOrderError;
+    @BindView(R.id.rl_back_bonus)
+    RelativeLayout rlBackBonus;
+    /**
+     * 退还代金券
+     */
+    @BindView(R.id.tv_back_bonus)
+    TextView tvBackBonus;
+    /**
+     * 退还金额
+     */
+    @BindView(R.id.tv_back_amount)
+    TextView tvBackAmount;
+
     /******************** 底部线条 **********************/
     View vBottomLine1;
     View vBottomLine2;
     private TextView right_oper;
 
-
+    Unbinder unbinder ;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal_order);
+        unbinder = ButterKnife.bind(this);
         getActivityComponent().inject(this);
         presenter.onAttach(this);
         bindView();
@@ -150,6 +169,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     @Override
     protected void onDestroy() {
         presenter.onDetach();
+        unbinder.unbind();
         super.onDestroy();
     }
 
@@ -174,19 +194,29 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         }
         List<TitleContentListDelegate.ListItem> listItems = new ArrayList<>();
         if (ObjectsCompat.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
+            llOrderError.setVisibility(View.VISIBLE);
             // 异常账单
             // 是否有代金券
             if (TextUtils.isEmpty(data.getBonus())) {
                 // 没有代金券
-                listItems.add(new TitleContentListDelegate.ListItem("退还金额：", data.getActualDebit(), "#ff5555"));
+                rlBackBonus.setVisibility(View.GONE);
             } else {
                 // 有代金券
-                listItems.add(new TitleContentListDelegate.ListItem("退还代金券：", data.getBonus(), "#ff5555"));
-                listItems.add(new TitleContentListDelegate.ListItem("退还金额：", data.getActualDebit(), "#ff5555"));
+                rlBackBonus.setVisibility(View.VISIBLE);
+                tvBackBonus.setText(data.getBonus());
             }
+            if ( data.getHasPrepay()){
+                tvBackAmount.setText(data.getPrepay());
+            }else{
+                tvBackAmount.setText(data.getActualDebit());
+            }
+            adapter.notifyDataSetChanged();
+            setBottomLayout(data);
+
         } else {
             // 正常账单
             // 是否有代金券
+            llOrderError.setVerticalGravity(View.GONE);
             if (TextUtils.isEmpty(data.getBonus())) {
                 // 没有代金券
                 listItems.add(new TitleContentListDelegate.ListItem("实际消费：", data.getConsume(), "#ff5555"));
@@ -195,10 +225,11 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
                 listItems.add(new TitleContentListDelegate.ListItem("代金券抵扣：", "-" + data.getBonus(), "#222222"));
                 listItems.add(new TitleContentListDelegate.ListItem("实际扣款：", data.getActualDebit(), "#ff5555"));
             }
+            items.add(new TitleContentListDelegate.TitleContentListItem(listItems, WithdrawRechargeDetailAdapter.TITLE_CONTENT_LIST_TYPE));
+            adapter.notifyDataSetChanged();
+            setBottomLayout(data);
         }
-        items.add(new TitleContentListDelegate.TitleContentListItem(listItems, WithdrawRechargeDetailAdapter.TITLE_CONTENT_LIST_TYPE));
-        adapter.notifyDataSetChanged();
-        setBottomLayout(data);
+
     }
 
     private void setBottomLayout(OrderDetailRespDTO data) {
