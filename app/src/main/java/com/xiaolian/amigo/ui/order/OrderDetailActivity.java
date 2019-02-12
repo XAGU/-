@@ -294,7 +294,12 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
                 tvConsume.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
                 tvActualDebit.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
             }
-            tvBackAmount.setText(order.getPrepay());
+            if ( order.getHasPrepay()){
+                tvBackAmount.setText(order.getPrepay());
+            }else{
+                tvBackAmount.setText(order.getActualDebit());
+            }
+
         } else {
             // 正常账单
             tvOrderErrorTip.setVisibility(View.GONE);
