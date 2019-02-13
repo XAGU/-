@@ -750,7 +750,7 @@ public class BalanceListFragment extends Fragment {
                     LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
                     //获取第一个可见view的位置
                     int firstItemPosition = linearManager.findFirstVisibleItemPosition();
-                    if (items.size() <= firstItemPosition) /*越界容错处理*/{
+                    if (items.size() <= firstItemPosition || firstItemPosition<0) /*越界容错处理*/{
                         return;
                     }
                     BillListAdaptor.BillListAdaptorWrapper item = items.get(firstItemPosition);
