@@ -46,51 +46,61 @@ public class TextSwitcherView extends TextSwitcher implements ViewSwitcher.ViewF
         if (this.info != null && this.info.size() > 0 && isScroll) {
             nextView = (MarqueeText) getNextView();
             MarqueeText currentView = (MarqueeText) getCurrentView();
-            if (nextView == null) return ;
-            if (!currentView.getText().toString().isEmpty()) {
+            if (nextView == null) return;
+            if (resIndex >= info.size()) {
+                resIndex = 0;
+            }
+            if (currentView.getText().toString().isEmpty()) {
+                currentView.setText(info.get(resIndex));
+                if (info.size() == 1) {
+                    Log.e(TAG, "onAnimationEnd: >>>>  forever  ");
+                    currentView.startScrollForever();
+                } else {
+                    Log.e(TAG, "onAnimationEnd: >>>>  startFor0  ");
+                    currentView.startFor0();
+                }
+            } else {
                 /**
                  * 更新滚动条时，如果是一条消息，此时TextView是走马灯效果，不会调用onFinish接口，所以需要自己更新
                  */
-                if ( !currentView.isCanScrollForever()&&!currentView.isEnd) return;
-            }
-            if (resIndex >= info.size()){
-                resIndex = 0 ;
-            }
-            this.setText(info.get(resIndex++));
-            if (getInAnimation() != null) {
-                getInAnimation().setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
+                if (!currentView.isCanScrollForever() && !currentView.isEnd) return;
 
-                        if (isAnimation) {
-                            animation.cancel();
-                        }
-                        isAnimation = true;
-                    }
+                this.setText(info.get(resIndex++));
+                if (getInAnimation() != null) {
+                    getInAnimation().setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
 
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-
-                        if (getCurrentView() != null && getCurrentView() instanceof MarqueeText) {
-                            if (info.size() ==1){
-                                Log.e(TAG, "onAnimationEnd: >>>>  forever  " );
-                                 nextView.startScrollForever();
-                            }else {
-                                Log.e(TAG, "onAnimationEnd: >>>>  startFor0  " );
-                                nextView.startFor0();
+                            if (isAnimation) {
+                                animation.cancel();
                             }
+                            isAnimation = true;
                         }
-                        isAnimation = false;
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+
+                            if (getCurrentView() != null && getCurrentView() instanceof MarqueeText) {
+                                if (info.size() == 1) {
+                                    Log.e(TAG, "onAnimationEnd: >>>>  forever  ");
+                                    nextView.startScrollForever();
+                                } else {
+                                    Log.e(TAG, "onAnimationEnd: >>>>  startFor0  ");
+                                    nextView.startFor0();
+                                }
+                            }
+                            isAnimation = false;
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+
+                    if (resIndex > this.info.size() - 1) {
+                        resIndex = 0;
                     }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
-
-                if (resIndex > this.info.size() - 1) {
-                    resIndex = 0;
                 }
             }
         }
