@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.xiaolian.amigo.ui.bonus.BonusActivity.INTENT_IS_USE_BONUS;
 import static com.xiaolian.amigo.ui.device.washer.WasherContent.KEY_TYPE;
 import static com.xiaolian.amigo.util.Constant.FROM_LOCATION;
 import static com.xiaolian.amigo.util.Constant.WASH_DRYER;
@@ -186,7 +187,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
     private void chooseBonus() {
         Intent intent = new Intent(this, BonusActivity.class);
         intent.putExtra(BonusActivity.INTENT_KEY_BONUS_ACTION, BonusActivity.ACTION_CHOOSE);
-        intent.putExtra(BonusActivity.INTENT_KEY_BONUS_DEVICE_TYPE, Device.WASHER.getType());
+        intent.putExtra(BonusActivity.INTENT_KEY_BONUS_DEVICE_TYPE, type);
         startActivityForResult(intent, CHOOSE_BONUS_CODE);
     }
 
@@ -261,7 +262,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
             defaultBonusAmount = getIntent().getDoubleExtra(WasherContent.KEY_BONUS_AMOUNT, 0.0);
             defaultBonusDescription = getIntent().getStringExtra(WasherContent.KEY_BONUS_DESC);
             balance = getIntent().getDoubleExtra(WasherContent.KEY_BALANCE, -1.0);
-            type = getIntent().getIntExtra(KEY_TYPE ,1);
+            type = getIntent().getIntExtra(KEY_TYPE ,4);
         }
         if (balance == null || balance < 0) {
             balance = presenter.getLocalBalance();
@@ -281,17 +282,23 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHOOSE_BONUS_CODE) {
             if (resultCode == RESULT_CANCELED) {
-                chosenBonusId = Constant.INVALID_ID;
-                chosenBonusAmount = 0.0;
-                chosenBonusDescription = getString(R.string.not_use_bonus);
-                refreshBonusDialog();
+                if (data != null) {
+                    if (!data.getBooleanExtra(INTENT_IS_USE_BONUS , true)) {
+                        chosenBonusId = Constant.INVALID_ID;
+                        chosenBonusAmount = 0.0;
+                        chosenBonusDescription = getString(R.string.not_use_bonus);
+                        refreshBonusDialog();
+                    }
+                }
             } else if (resultCode == RESULT_OK) {
-                BonusAdaptor.BonusWrapper choosedBonus = (BonusAdaptor.BonusWrapper) data.getSerializableExtra(BonusActivity.INTENT_KEY_BONUS_RESULT);
-                if (choosedBonus != null) {
-                    chosenBonusId = choosedBonus.getId();
-                    chosenBonusAmount = choosedBonus.getAmount();
-                    chosenBonusDescription = choosedBonus.getDescription();
-                    refreshBonusDialog();
+                if (data != null) {
+                    BonusAdaptor.BonusWrapper choosedBonus = (BonusAdaptor.BonusWrapper) data.getSerializableExtra(BonusActivity.INTENT_KEY_BONUS_RESULT);
+                    if (choosedBonus != null) {
+                        chosenBonusId = choosedBonus.getId();
+                        chosenBonusAmount = choosedBonus.getAmount();
+                        chosenBonusDescription = choosedBonus.getDescription();
+                        refreshBonusDialog();
+                    }
                 }
             }
         } else if (requestCode == REQUEST_CODE_RECHARGE) {

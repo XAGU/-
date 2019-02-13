@@ -34,6 +34,7 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     public static final String INTENT_KEY_BONUS_DEVICE_TYPE = "intent_key_bonus_device_type";
     public static final int ACTION_NORMAL = -1;
     public static final int ACTION_CHOOSE = 1;
+    public static final String INTENT_IS_USE_BONUS = "intent_key_is_use_bonus";
     @Inject
     IBonusPresenter<IBonusView> presenter;
 
@@ -95,15 +96,18 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
             case ACTION_CHOOSE:
                 getSubTitle().setTextColor(ContextCompat.getColor(this, R.color.colorBlue));
                 getSubTitle().setOnClickListener(v -> {
-                    Intent intent = new Intent(BonusActivity.this, HeaterActivity.class);
-                    setResult(RESULT_OK);
+                    Intent intent = new Intent();
+                    intent.putExtra(INTENT_IS_USE_BONUS , false);
+                    setResult(RESULT_CANCELED ,intent);
                     finish();
                 });
 
                 //toolbar
                 tvTitleThird.setTextColor(ContextCompat.getColor(this, R.color.colorBlue));
                 tvTitleThird.setOnClickListener(v -> {
-                    setResult(RESULT_CANCELED);
+                    Intent intent = new Intent();
+                    intent.putExtra(INTENT_IS_USE_BONUS , false);
+                    setResult(RESULT_CANCELED ,intent);
                     finish();
                 });
 
