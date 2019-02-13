@@ -63,6 +63,8 @@ public class BalanceListFragment extends Fragment {
     //临时存放最新加载的数据，不是当月的数据不加载到items中，而是临时存放在这里
     private List<BillListAdaptor.BillListAdaptorWrapper> tempItems = new ArrayList<>();
 
+    private Boolean isFirstLoadData = true;
+
     private BillListAdaptor adaptor;
 
     /**
@@ -748,7 +750,7 @@ public class BalanceListFragment extends Fragment {
                     LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
                     //获取第一个可见view的位置
                     int firstItemPosition = linearManager.findFirstVisibleItemPosition();
-                    if (items.size() <= 0) {
+                    if (items.size() <= firstItemPosition) /*越界容错处理*/{
                         return;
                     }
                     BillListAdaptor.BillListAdaptorWrapper item = items.get(firstItemPosition);
@@ -813,7 +815,8 @@ public class BalanceListFragment extends Fragment {
         if (items.size() <= 0)  /*第一次请求数据*/{
             //1、如果最新的一条不是当前选择的月份，则不展示出来，留到下次上拉或者下拉的时候再展示
             String newTimeStr = wrappers.size() > 0 ? TimeUtils.millis2String(wrappers.get(0).getCreateTime(), TimeUtils.MY_DATE_YEARMON_FORMAT) : timeStr;
-            if (timeStr.equalsIgnoreCase(newTimeStr) || tempItems.size() > 0)/*最新的为当前月份的数据，获取是加载数据进来*/ {
+            if (isFirstLoadData || timeStr.equalsIgnoreCase(newTimeStr) || tempItems.size() > 0)/*最新的为当前月份的数据，获取是加载数据进来*/ {
+                isFirstLoadData = false;
                 items.addAll(wrappers);
                 //把老数据加进去，下拉加载最新的，上拉加载旧的
                 BillListAdaptor.BillListAdaptorWrapper newItem = wrappers.size() > 0 ? wrappers.get(0) : null;
@@ -825,6 +828,9 @@ public class BalanceListFragment extends Fragment {
                 }
                 tempItems.clear();
                 adaptor.notifyDataSetChanged();
+
+                refreshFilterDate();
+
             } else /*最新的不是当前月份的数据*/{
                 //把数据放到临时存储的一个地方
                 tempItems.addAll(wrappers);
@@ -841,6 +847,19 @@ public class BalanceListFragment extends Fragment {
             items.addAll(wrappers);
         }
         adaptor.notifyDataSetChanged();
+
+        refreshFilterDate();
+    }
+
+    private void refreshFilterDate() {
+        if ( items.size() > 0 ) {
+            Calendar cal = Calendar.getInstance();
+            Date date = TimeUtils.millis2Date(items.get(0).getCreateTime());
+            cal.setTime(date);
+            int currentYear = cal.get(Calendar.YEAR);
+            int currentMonth = cal.get(Calendar.MONTH) + 1;
+            tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+        }
     }
 
     public void showEmptyView() {
