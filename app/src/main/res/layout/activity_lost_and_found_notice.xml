@@ -176,7 +176,8 @@
             <!--</RelativeLayout>-->
 
             <include layout="@layout/layout_empty"
-                android:visibility="gone" />
+                android:visibility="gone"
+                 />
             <RelativeLayout
                 android:id="@+id/rl_error"
                 android:layout_width="match_parent"

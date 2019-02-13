@@ -61,10 +61,6 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
 
-//    private LostAndFoundAdaptor2 adaptor;
-
-//    List<LostAndFoundAdaptor2.LostAndFoundWrapper> lostAndFounds = new ArrayList<>();
-
     List<LostAndFoundDTO> lostAndFounds = new ArrayList<>();
 
     private volatile boolean refreshFlag;
