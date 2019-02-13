@@ -27,4 +27,9 @@ public interface IOrderDetailView extends IBaseView {
      * 显示未使用提示
      */
     void showNoUseTip();
+
+    /**
+     * 异常账单提示
+     */
+    void showOnErrorTip(OrderDetailRespDTO dto);
 }
