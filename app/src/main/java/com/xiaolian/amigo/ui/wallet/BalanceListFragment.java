@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -97,16 +98,23 @@ public class BalanceListFragment extends Fragment {
     private  TextView filterOngoingTextView  ;
     private  TextView filterEndTextView ;
 
+    private  ImageView filterAllTextViewSelect  ;
+    private  ImageView filterOngoingTextViewSelect  ;
+    private  ImageView filterEndTextViewSelect ;
+
 
     /**
      * 分类弹窗控件
      */
     private TextView typeFilterAllTextView;
     private TextView filterRechargeTextView;
-
     private TextView filterWithdrawTextView;
-
     private TextView filterBillTotalTextView;
+
+    private ImageView typeFilterAllTextViewSelect;
+    private ImageView filterRechargeTextViewSelect;
+    private ImageView filterWithdrawTextViewSelect;
+    private ImageView filterBillTotalTextViewSelect;
 
     private TextView filterBillItem1TextView;
     private TextView filterBillItem2TextView;
@@ -146,7 +154,7 @@ public class BalanceListFragment extends Fragment {
         int currentYear = cal.get(Calendar.YEAR);
         int currentMonth = cal.get(Calendar.MONTH )+1;
         timeStr = String.valueOf(currentYear * 100 + currentMonth);
-        tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+        tvMonthlyOrderDate.setText(formatDate(currentYear, currentMonth));
     }
 
 
@@ -198,6 +206,10 @@ public class BalanceListFragment extends Fragment {
          filterOngoingTextView = contentView.findViewById(R.id.filter_status_ongoing);
          filterEndTextView = contentView.findViewById(R.id.filter_status_end);
 
+        filterAllTextViewSelect = contentView.findViewById(R.id.filter_status_all_select);
+        filterOngoingTextViewSelect = contentView.findViewById(R.id.filter_status_ongoing_select);
+        filterEndTextViewSelect = contentView.findViewById(R.id.filter_status_end_select);
+
         filterAllTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,18 +242,30 @@ public class BalanceListFragment extends Fragment {
     }
 
     private void showSelectedStatus(int status) {
+
         if (status == 0) {
             filterAllTextView.setTextColor(Color.parseColor("#FF5555"));
             filterOngoingTextView.setTextColor(Color.parseColor("#222222"));
             filterEndTextView.setTextColor(Color.parseColor("#222222"));
+
+            filterAllTextViewSelect.setVisibility(View.VISIBLE);
+            filterOngoingTextViewSelect.setVisibility(View.GONE);
+            filterEndTextViewSelect.setVisibility(View.GONE);
         } else if (status == 1) {
             filterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterOngoingTextView.setTextColor(Color.parseColor("#FF5555"));
             filterEndTextView.setTextColor(Color.parseColor("#222222"));
+            filterAllTextViewSelect.setVisibility(View.GONE);
+            filterOngoingTextViewSelect.setVisibility(View.VISIBLE);
+            filterEndTextViewSelect.setVisibility(View.GONE);
         } else {
             filterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterOngoingTextView.setTextColor(Color.parseColor("#222222"));
             filterEndTextView.setTextColor(Color.parseColor("#FF5555"));
+
+            filterAllTextViewSelect.setVisibility(View.GONE);
+            filterOngoingTextViewSelect.setVisibility(View.GONE);
+            filterEndTextViewSelect.setVisibility(View.VISIBLE);
         }
     }
 
@@ -293,7 +317,9 @@ public class BalanceListFragment extends Fragment {
         if (billStatus!=null && billStatus == status) /*选择的是一样的就不加载*/{
             return;
         }
-        tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
+
+        String dateStr = timeStr.substring(0, 4) + "-" + timeStr.substring(4);
+        tvMonthlyOrderDate.setText(dateStr); //每次重新选择后都需要把日期还原
         tempItems.clear();
         items.clear();
         lastId = null;
@@ -317,6 +343,11 @@ public class BalanceListFragment extends Fragment {
         filterRechargeTextView = contentView.findViewById(R.id.filter_type_recharge);
         filterWithdrawTextView = contentView.findViewById(R.id.filter_type_withdraw);
         filterBillTotalTextView = contentView.findViewById(R.id.filter_type_bill);
+
+        typeFilterAllTextViewSelect = contentView.findViewById(R.id.filter_type_all_select);
+        filterRechargeTextViewSelect = contentView.findViewById(R.id.filter_type_recharge_select);
+        filterWithdrawTextViewSelect = contentView.findViewById(R.id.filter_type_withdraw_select);
+        filterBillTotalTextViewSelect = contentView.findViewById(R.id.filter_type_bill_select);
 
         filterBillItem1TextView = contentView.findViewById(R.id.filter_type_bill_item1);
         filterBillItem2TextView = contentView.findViewById(R.id.filter_type_bill_item2);
@@ -416,6 +447,11 @@ public class BalanceListFragment extends Fragment {
     }
 
     private void showSelectedType(int type) {
+        typeFilterAllTextViewSelect.setVisibility(View.GONE);
+        filterRechargeTextViewSelect.setVisibility(View.GONE);
+        filterWithdrawTextViewSelect.setVisibility(View.GONE);
+        filterBillTotalTextViewSelect.setVisibility(View.GONE);
+
         if (type == 0) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#FF5555"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
@@ -427,6 +463,15 @@ public class BalanceListFragment extends Fragment {
             filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
 
+            typeFilterAllTextViewSelect.setVisibility(View.VISIBLE);
+            filterRechargeTextViewSelect.setVisibility(View.GONE);
+            filterWithdrawTextViewSelect.setVisibility(View.GONE);
+            filterBillTotalTextViewSelect.setVisibility(View.GONE);
+            filterBillItem1TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem2TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem3TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
         } else if (type == 1) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#FF5555"));
@@ -438,6 +483,15 @@ public class BalanceListFragment extends Fragment {
             filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
 
+            typeFilterAllTextViewSelect.setVisibility(View.GONE);
+            filterRechargeTextViewSelect.setVisibility(View.VISIBLE);
+            filterWithdrawTextViewSelect.setVisibility(View.GONE);
+            filterBillTotalTextViewSelect.setVisibility(View.GONE);
+            filterBillItem1TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem2TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem3TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
         } else if (type == 2) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
@@ -448,6 +502,16 @@ public class BalanceListFragment extends Fragment {
             filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+
+            typeFilterAllTextViewSelect.setVisibility(View.GONE);
+            filterRechargeTextViewSelect.setVisibility(View.GONE);
+            filterWithdrawTextViewSelect.setVisibility(View.VISIBLE);
+            filterBillTotalTextViewSelect.setVisibility(View.GONE);
+            filterBillItem1TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem2TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem3TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
         } else if (type == 9) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
@@ -458,26 +522,48 @@ public class BalanceListFragment extends Fragment {
             filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+
+            typeFilterAllTextViewSelect.setVisibility(View.GONE);
+            filterRechargeTextViewSelect.setVisibility(View.GONE);
+            filterWithdrawTextViewSelect.setVisibility(View.GONE);
+            filterBillTotalTextViewSelect.setVisibility(View.VISIBLE);
+            filterBillItem1TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem2TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem3TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
         } else if (type == (Long)filterBillItem1TextView.getTag()) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
             filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
             filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem1TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem1TextView.setTextColor(Color.WHITE);
             filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+
+            filterBillItem1TextView.setBackground(getResources().getDrawable(R.drawable.bg_selected_red_txt));
+            filterBillItem2TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem3TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+
         } else if (type == (Long)filterBillItem2TextView.getTag()) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
             filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
             filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem2TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem2TextView.setTextColor(Color.WHITE);
             filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem2TextView.setBackground(getResources().getDrawable(R.drawable.bg_selected_red_txt));
+            filterBillItem1TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem3TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
         } else if (type == (Long)filterBillItem3TextView.getTag()) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
@@ -485,9 +571,14 @@ public class BalanceListFragment extends Fragment {
             filterBillTotalTextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem3TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem3TextView.setTextColor(Color.WHITE);
             filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem3TextView.setBackground(getResources().getDrawable(R.drawable.bg_selected_red_txt));
+            filterBillItem2TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem1TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
         } else if (type == (Long)filterBillItem4TextView.getTag()) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
@@ -496,8 +587,13 @@ public class BalanceListFragment extends Fragment {
             filterBillItem1TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem4TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem4TextView.setTextColor(Color.WHITE);
             filterBillItem5TextView.setTextColor(Color.parseColor("#222222"));
+            filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_selected_red_txt));
+            filterBillItem2TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem3TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem1TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
         } else if (type == (Long)filterBillItem5TextView.getTag()) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
@@ -507,7 +603,12 @@ public class BalanceListFragment extends Fragment {
             filterBillItem2TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem3TextView.setTextColor(Color.parseColor("#222222"));
             filterBillItem4TextView.setTextColor(Color.parseColor("#222222"));
-            filterBillItem5TextView.setTextColor(Color.parseColor("#FF5555"));
+            filterBillItem5TextView.setTextColor(Color.WHITE);
+            filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_selected_red_txt));
+            filterBillItem2TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem3TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
+            filterBillItem1TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
         }
     }
 
@@ -517,7 +618,8 @@ public class BalanceListFragment extends Fragment {
         if (billType != null && billType == type) /*选择的是一样的就不加载*/{
             return;
         }
-        tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
+        String dateStr = timeStr.substring(0, 4) + "-" + timeStr.substring(4);
+        tvMonthlyOrderDate.setText(dateStr); //每次重新选择后都需要把日期还原
         tempItems.clear();
         items.clear();
         lastId = null;
@@ -687,7 +789,7 @@ public class BalanceListFragment extends Fragment {
 
            tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
            tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-           tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+           tvMonthlyOrderDate.setText(formatDate(currentYear, currentMonth));
 
           String newTimeStr = String.valueOf(currentYear * 100 + currentMonth);
            if (timeStr.equalsIgnoreCase(newTimeStr)) {
@@ -698,8 +800,8 @@ public class BalanceListFragment extends Fragment {
           tempItems.clear();
           lastId = null;
           adaptor.notifyDataSetChanged();
-          tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
-            refreshLayout.autoRefresh();
+          tvMonthlyOrderDate.setText(formatDate(currentYear, currentMonth));
+          refreshLayout.autoRefresh();
         });
         yearMonthPickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -759,12 +861,21 @@ public class BalanceListFragment extends Fragment {
                     cal.setTime(date);
                     int currentYear = cal.get(Calendar.YEAR);
                     int currentMonth = cal.get(Calendar.MONTH) + 1;
-                    tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+                    tvMonthlyOrderDate.setText(formatDate(currentYear, currentMonth));
                 }
             }
         });
 
     }
+
+    private String formatDate(int year, int month) {
+        if (month < 10) {
+            return String.format(Locale.getDefault(), "%d-0%d", year, month);
+        } else  {
+            return String.format(Locale.getDefault(), "%d-%d", year, month);
+        }
+    }
+
 
     void onRefresh() {
         if (items.size() > 0) {
@@ -858,7 +969,7 @@ public class BalanceListFragment extends Fragment {
             cal.setTime(date);
             int currentYear = cal.get(Calendar.YEAR);
             int currentMonth = cal.get(Calendar.MONTH) + 1;
-            tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+            tvMonthlyOrderDate.setText(formatDate(currentYear, currentMonth));
         }
     }
 

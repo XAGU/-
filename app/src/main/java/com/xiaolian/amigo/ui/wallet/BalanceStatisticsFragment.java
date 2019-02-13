@@ -155,7 +155,7 @@ public class BalanceStatisticsFragment extends Fragment implements MonthlyBillVi
             currentMonth = cal.get(Calendar.MONTH) + 1;
             tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
             tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-            tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+            tvMonthlyOrderDate.setText(formatDate(currentYear, currentMonth));
             ((BalanceDetailListActivity)getActivity()).presenter.getMonthlyBill(currentYear, currentMonth);
         });
         yearMonthPickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -168,6 +168,13 @@ public class BalanceStatisticsFragment extends Fragment implements MonthlyBillVi
         yearMonthPickerDialog.show();
     }
 
+    private String formatDate(int year, int month) {
+        if (month < 10) {
+            return String.format(Locale.getDefault(), "%d-0%d", year, month);
+        } else  {
+            return String.format(Locale.getDefault(), "%d-%d", year, month);
+        }
+    }
 
     //获取数据后的回调
     public void render(UserMonthlyBillRespDTO data) {
@@ -185,7 +192,7 @@ public class BalanceStatisticsFragment extends Fragment implements MonthlyBillVi
             monthlyBillView.setHasData(true);
             monthlyBillView.setData(dataList);
         }
-        tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+        tvMonthlyOrderDate.setText(formatDate(currentYear, currentMonth));
         tvTotalConsume.setText(String.format(Locale.getDefault(), "实际消费：¥%s", df.format(data.getTotalConsume())));
         tvMaxConsume.setText(String.format(Locale.getDefault(), "单笔消费最贵：¥%s", df.format(data.getMaxConsume())));
         tvTotalRecharge.setText(String.format(Locale.getDefault(), "余额充值：¥%s", df.format(data.getTotalRecharge())));
