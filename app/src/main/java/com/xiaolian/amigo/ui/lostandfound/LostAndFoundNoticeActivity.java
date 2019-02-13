@@ -62,27 +62,10 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     private LostAndFoundNoticeAdapter adapter;
     private List<LostAndFoundNoticeAdapter.NoticeWrapper> replies = new ArrayList<LostAndFoundNoticeAdapter.NoticeWrapper>(){
         {
-//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.REPLY, "reply1",
-//                    "userName1"));
-//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.REPLY, "reply2",
-//                    "userName2"));
-//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.REPLY, "reply3",
-//                    "userName3"));
-//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.REPLY, "reply4",
-//                    "userName4"));
         }
     };
     private List<LostAndFoundNoticeAdapter.NoticeWrapper> likes = new ArrayList<LostAndFoundNoticeAdapter.NoticeWrapper>(){
         {
-//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.LIKE,
-//                    "like1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-//                    "userName1"));
-//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.LIKE, "like2",
-//                    "userName2"));
-//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.LIKE, "like3",
-//                    "userName3"));
-//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.LIKE, "like4",
-//                    "userName4"));
         }
     };
     private List<LostAndFoundNoticeAdapter.NoticeWrapper> items = new ArrayList<>();
@@ -135,7 +118,6 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
                 intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
                         items.get(position).getLostFoundType());
                 intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, items.get(position).getLostFoundId());
-//                intent.putExtra(KEY_VEST ,items.get(position).)
                 startActivity(intent);
             }
 
@@ -205,7 +187,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
 
     private void changeItemToLike() {
         hideEmptyView();
-        hideEmptyView();
+        hideErrorView();
         tvToolbarTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
         tvToolbarTitle2.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
         tvTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
@@ -264,7 +246,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     public void showEmptyView() {
         rlEmpty.setVisibility(View.VISIBLE);
         rlError.setVisibility(View.GONE);
-        refreshLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
     }
 
     @Override
@@ -275,7 +257,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     @Override
     public void showErrorView() {
         rlError.setVisibility(View.VISIBLE);
-        refreshLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
         rlEmpty.setVisibility(View.GONE);
     }
 
@@ -303,6 +285,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     public void showContent(){
         rlEmpty.setVisibility(View.GONE);
         rlError.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
