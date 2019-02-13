@@ -223,10 +223,20 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         CommonUtil.copy(tvOrderNo.getText().toString(), getApplicationContext());
         onSuccess(R.string.copy_success);
     }
-
+    
     @Override
     public void showNoUseTip() {
         tvOrderNoUseTip.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showOnErrorTip(OrderDetailRespDTO order) {
+        tvOrderErrorTip.setVisibility(View.VISIBLE);
+        // 异常账单
+        // 设置服务器返回的文案
+        if (!TextUtils.isEmpty(order.getZeroConsumeCopy())) {
+            tvOrderErrorTip.setText(order.getZeroConsumeCopy());
+        }
     }
 
     @OnClick(R.id.tv_order_no_use_tip)
@@ -272,12 +282,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         }
         tvOrderNo.setText(order.getOrderNo());
         if (ObjectsCompat.equals(order.getStatus(), ORDER_ERROR_STATUS)) {
-            // 异常账单
-            tvOrderErrorTip.setVisibility(View.VISIBLE);
-            // 设置服务器返回的文案
-            if (!TextUtils.isEmpty(order.getZeroConsumeCopy())) {
-                tvOrderErrorTip.setText(order.getZeroConsumeCopy());
-            }
+
             llOrderNormal.setVisibility(View.GONE);
             llOrderError.setVisibility(View.VISIBLE);
             // 是否有代金券

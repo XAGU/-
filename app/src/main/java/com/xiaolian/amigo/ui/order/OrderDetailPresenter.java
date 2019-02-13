@@ -74,6 +74,11 @@ public class OrderDetailPresenter<V extends IOrderDetailView> extends BasePresen
                             && TextUtils.isEmpty(result.getData().getBonus())/*不仅仅异常账单会出现这种情况
                             && ObjectsCompat.equals(result.getData().getStatus(), ORDER_ERROR_STATUS)*/) {
                         getMvpView().showNoUseTip();
+                    }else{
+                        // 判断是否是异常账单
+                        if (ObjectsCompat.equals(result.getData().getStatus(), ORDER_ERROR_STATUS)){
+                            getMvpView().showOnErrorTip(result.getData());
+                        }
                     }
                     order = result.getData();
                     getMvpView().renderView(result.getData());
