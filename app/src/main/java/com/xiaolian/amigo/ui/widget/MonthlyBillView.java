@@ -302,19 +302,21 @@ public class MonthlyBillView extends View {
             descRectF.left = 0;
             descRectF.right = textPaint.measureText(desc);
         }
+
+
         for (RectF rectF : descRectes) {
             if (rectF.intersect(descRectF)) {
                 float diffY = ScreenUtils.dpToPx(getContext() , 5) ;
                 if (descRectF.top > rect.top) {
                     float num = 2;
                     lineEndX   =   barWidth/2   +   (radius+ distance*num*1f+descRectF.height())   *  (float) Math.cos(lineAngle *   3.14   /180 );
-                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ diffY)  *   (float) Math.sin(lineAngle   *   3.14   /180);
-//                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f+descRectF.height())  *   (float) Math.sin(lineAngle   *   3.14   /180);
+//                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ diffY)  *   (float) Math.sin(lineAngle   *   3.14   /180);
+                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f+descRectF.height())  *   (float) Math.sin(lineAngle   *   3.14   /180);
                 } else {
                     float num = 0.5f;
                     lineEndX   =   barWidth/2   +   (radius+ distance*num*1f)   *  (float) Math.cos(lineAngle *   3.14   /180 );
 //                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f)  *   (float) Math.sin(lineAngle   *   3.14   /180);
-                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ diffY)  *   (float) Math.sin(lineAngle   *   3.14   /180);
+                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ diffY + descRectF.height())  *   (float) Math.sin(lineAngle   *   3.14   /180);
                 }
                 break;
             }

@@ -313,6 +313,12 @@ public class OrderInListDTO implements Mapper<Order> {
      */
     private String zeroConsumeCopy;
 
+    /**
+     * 账单状态
+     */
+    private Integer billStatus ;
+
+
     @Override
     public Order transform() {
         Order order = new Order();
@@ -342,6 +348,7 @@ public class OrderInListDTO implements Mapper<Order> {
         order.setCategory(category);
         order.setZeroConsumeCopy(zeroConsumeCopy);
         order.setExceptionOrderCopy(exceptionOrderCopy);
+        order.setBillStatus(billStatus);
         return order;
     }
 }

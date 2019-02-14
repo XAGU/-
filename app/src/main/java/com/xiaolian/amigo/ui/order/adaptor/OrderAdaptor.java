@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.order.Order;
+import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.TimeUtils;
 
@@ -58,7 +59,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_balance_detail_record, parent, false);
         return new ViewHolder(view);
     }
 
@@ -103,7 +104,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.v_type)
+        @BindView(R.id.tv_bill_type)
         View vType;
         @BindView(R.id.tv_device)
         TextView tvDevice;

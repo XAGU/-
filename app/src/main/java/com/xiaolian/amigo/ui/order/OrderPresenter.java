@@ -30,6 +30,7 @@ import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
 import com.xiaolian.amigo.ui.wallet.WalletConstant;
+import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
@@ -90,9 +91,9 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
                 getMvpView().hideErrorView();
                 if (null == result.getError()) {
                     if (null != result.getData().getOrders() && result.getData().getOrders().size() > 0) {
-                        List<OrderAdaptor.OrderWrapper> wrappers = new ArrayList<>();
+                        List<BillListAdaptor.BillListAdaptorWrapper> wrappers = new ArrayList<>();
                         for (OrderInListDTO order : result.getData().getOrders()) {
-                            wrappers.add(new OrderAdaptor.OrderWrapper(order.transform()));
+                            wrappers.add(new BillListAdaptor.BillListAdaptorWrapper(order.transform()));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
@@ -128,9 +129,9 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
                 getMvpView().hideErrorView();
                 if (null == result.getError()) {
                     if (null != result.getData().getOrders() && result.getData().getOrders().size() > 0) {
-                        List<OrderAdaptor.OrderWrapper> wrappers = new ArrayList<>();
+                        List<BillListAdaptor.BillListAdaptorWrapper> wrappers = new ArrayList<>();
                         for (OrderInListDTO order : result.getData().getOrders()) {
-                            wrappers.add(new OrderAdaptor.OrderWrapper(order.transform()));
+                            wrappers.add(new BillListAdaptor.BillListAdaptorWrapper(order.transform()));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,8 +26,6 @@ import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
 import com.xiaolian.amigo.ui.widget.dialog.YearMonthPickerDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
-import com.xiaolian.amigo.ui.widget.popWindow.BillFilterStatusPopupWindow;
-import com.xiaolian.amigo.ui.widget.popWindow.BillFilterTypePopupWindow;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
@@ -79,9 +76,9 @@ public class BalanceListFragment extends Fragment {
 //    private BillFilterTypePopupWindow filterTypePopupWindow;
 
 
-    private PopWindow mBillFilterStatusPopwindow ;
+    private PopWindow mBillFilterStatusPopwindow;
 
-    private PopWindow mBillFilterTypesPopWindow ;
+    private PopWindow mBillFilterTypesPopWindow;
 
     private String timeStr;
 
@@ -94,13 +91,13 @@ public class BalanceListFragment extends Fragment {
     /**
      * 筛选弹窗控件
      */
-    private  TextView filterAllTextView  ;
-    private  TextView filterOngoingTextView  ;
-    private  TextView filterEndTextView ;
+    private TextView filterAllTextView;
+    private TextView filterOngoingTextView;
+    private TextView filterEndTextView;
 
-    private  ImageView filterAllTextViewSelect  ;
-    private  ImageView filterOngoingTextViewSelect  ;
-    private  ImageView filterEndTextViewSelect ;
+    private ImageView filterAllTextViewSelect;
+    private ImageView filterOngoingTextViewSelect;
+    private ImageView filterEndTextViewSelect;
 
 
     /**
@@ -121,7 +118,7 @@ public class BalanceListFragment extends Fragment {
     private TextView filterBillItem3TextView;
     private TextView filterBillItem4TextView;
     private TextView filterBillItem5TextView;
-    private LinearLayout rlFilterContentView ;
+    private LinearLayout rlFilterContentView;
 
     @Nullable
     @Override
@@ -152,59 +149,15 @@ public class BalanceListFragment extends Fragment {
     private void initTimeStr() {
         Calendar cal = Calendar.getInstance();
         int currentYear = cal.get(Calendar.YEAR);
-        int currentMonth = cal.get(Calendar.MONTH )+1;
+        int currentMonth = cal.get(Calendar.MONTH) + 1;
         timeStr = String.valueOf(currentYear * 100 + currentMonth);
         tvMonthlyOrderDate.setText(formatDate(currentYear, currentMonth));
     }
 
-
-//
-//    public void initPop() {
-//        if (filterStatusPopupWindow == null) {
-//            filterStatusPopupWindow = new BillFilterStatusPopupWindow(getActivity());
-//            filterStatusPopupWindow.setPopFilterClickListener(new BillFilterStatusPopupWindow.PopFilterClickListener() {
-//                @Override
-//                public void click(int status, CharSequence name) {
-//                    tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
-//                    tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-//                    if (billStatus!=null && billStatus == status) /*选择的是一样的就不加载*/{
-//                        return;
-//                    }
-//                    tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
-//                    items.clear();
-//                    tempItems.clear();
-//                    lastId = null;
-//                    adaptor.notifyDataSetChanged();
-//                    /*选择的是新数据，需要把已有的数据清空*/
-//                    billStatus = status;
-//                    if (billStatus == 0) {
-//                        billStatus = null;
-//                    }
-//                    refreshLayout.autoRefresh();
-//                    tvFilterStatus.setText(name);
-//                }
-//            });
-//
-//            filterStatusPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-//                @Override
-//                public void onDismiss() {
-//                    filterStatusPopupWindow.setBackgroundAlpha(1.0f);
-//                    if (tvFilterStatus.getText().toString().equalsIgnoreCase("筛选")) {
-//                        tvFilterStatus.setTextColor(Color.parseColor("#222222"));
-//                        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
-//                    } else {
-//                        tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
-//                        tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-//                    }
-//                }
-//            });
-
-
-    //============= 弹窗  ================
-    private void initBillFilterStatusPopView(View contentView){
-         filterAllTextView = contentView.findViewById(R.id.filter_status_all);
-         filterOngoingTextView = contentView.findViewById(R.id.filter_status_ongoing);
-         filterEndTextView = contentView.findViewById(R.id.filter_status_end);
+    private void initBillFilterStatusPopView(View contentView) {
+        filterAllTextView = contentView.findViewById(R.id.filter_status_all);
+        filterOngoingTextView = contentView.findViewById(R.id.filter_status_ongoing);
+        filterEndTextView = contentView.findViewById(R.id.filter_status_end);
 
         filterAllTextViewSelect = contentView.findViewById(R.id.filter_status_all_select);
         filterOngoingTextViewSelect = contentView.findViewById(R.id.filter_status_ongoing_select);
@@ -213,9 +166,9 @@ public class BalanceListFragment extends Fragment {
         filterAllTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CharSequence name = ((TextView)v).getText();
+                CharSequence name = ((TextView) v).getText();
                 showSelectedStatus(0);
-                popFilterStatusClick(0  , name);
+                popFilterStatusClick(0, name);
                 mBillFilterStatusPopwindow.dismiss();
             }
         });
@@ -223,9 +176,9 @@ public class BalanceListFragment extends Fragment {
         filterOngoingTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CharSequence name = ((TextView)v).getText();
+                CharSequence name = ((TextView) v).getText();
                 showSelectedStatus(1);
-                popFilterStatusClick(1 , name);
+                popFilterStatusClick(1, name);
                 mBillFilterStatusPopwindow.dismiss();
             }
         });
@@ -233,9 +186,9 @@ public class BalanceListFragment extends Fragment {
         filterEndTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CharSequence name = ((TextView)v).getText();
+                CharSequence name = ((TextView) v).getText();
                 showSelectedStatus(2);
-                popFilterStatusClick(2 , name);
+                popFilterStatusClick(2, name);
                 mBillFilterStatusPopwindow.dismiss();
             }
         });
@@ -269,52 +222,10 @@ public class BalanceListFragment extends Fragment {
         }
     }
 
-//<<<<<<< HEAD
-//        if (filterTypePopupWindow == null) {
-//            filterTypePopupWindow = new BillFilterTypePopupWindow(getActivity());
-//            //设置配置的服务
-//            filterTypePopupWindow.setBillItems(((BalanceDetailListActivity)getActivity()).presenter.getSchoolBizList());
-//            filterTypePopupWindow.setPopFilterClickListener(new BillFilterTypePopupWindow.PopFilterClickListener() {
-//                @Override
-//                public void click(int type, String name) {
-//                    tvFilterType.setTextColor(Color.parseColor("#FF5555"));
-//                    tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-//                    if (billType != null && billType == type) /*选择的是一样的就不加载*/{
-//                        return;
-//                    }
-//                        tvMonthlyOrderDate.setText(timeStr); //每次重新选择后都需要把日期还原
-//                    items.clear();
-//                    tempItems.clear();
-//                    lastId = null;
-//                    adaptor.notifyDataSetChanged();
-//                    /*选择的是新数据，需要把已有的数据清空*/
-//                    billType = type;
-//                    if (billType == 0) {
-//                        billType = null;
-//                    }
-//                    refreshLayout.autoRefresh();
-//                    tvFilterType.setText(name);
-//                }
-//            });
-//            filterTypePopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-//                @Override
-//                public void onDismiss() {
-//                    filterTypePopupWindow.setBackgroundAlpha(1.0f);
-//                    if (tvFilterType.getText().toString().equalsIgnoreCase("分类")) {
-//                        tvFilterType.setTextColor(Color.parseColor("#222222"));
-//                        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
-//                    } else {
-//                        tvFilterType.setTextColor(Color.parseColor("#FF5555"));
-//                        tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-//                    }
-//                }
-//            });
-//=======
-
-    private void popFilterStatusClick(int status, CharSequence name){
+    private void popFilterStatusClick(int status, CharSequence name) {
         tvFilterStatus.setTextColor(Color.parseColor("#FF5555"));
         tvFilterStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-        if (billStatus!=null && billStatus == status) /*选择的是一样的就不加载*/{
+        if (billStatus != null && billStatus == status) /*选择的是一样的就不加载*/ {
             return;
         }
 
@@ -329,16 +240,13 @@ public class BalanceListFragment extends Fragment {
         if (billStatus == 0) {
             billStatus = null;
         }
+        isInitData = false ;
         refreshLayout.autoRefresh();
         tvFilterStatus.setText(name);
     }
 
-    // ==========================================
 
-
-    // =========== 分类选项弹窗 ===========
-
-    private void initBillFilterTypesPopView(View contentView){
+    private void initBillFilterTypesPopView(View contentView) {
         typeFilterAllTextView = contentView.findViewById(R.id.filter_type_all);
         filterRechargeTextView = contentView.findViewById(R.id.filter_type_recharge);
         filterWithdrawTextView = contentView.findViewById(R.id.filter_type_withdraw);
@@ -358,7 +266,7 @@ public class BalanceListFragment extends Fragment {
         typeFilterAllTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = String.valueOf(((TextView)v).getText());
+                String name = String.valueOf(((TextView) v).getText());
                 showSelectedType(0);
                 popFilterTypeClick(0, name);
                 mBillFilterTypesPopWindow.dismiss();
@@ -368,7 +276,7 @@ public class BalanceListFragment extends Fragment {
         filterRechargeTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = String.valueOf(((TextView)v).getText());
+                String name = String.valueOf(((TextView) v).getText());
                 showSelectedType(1);
                 popFilterTypeClick(1, name);
                 mBillFilterTypesPopWindow.dismiss();
@@ -378,7 +286,7 @@ public class BalanceListFragment extends Fragment {
         filterWithdrawTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = String.valueOf(((TextView)v).getText());
+                String name = String.valueOf(((TextView) v).getText());
                 showSelectedType(2);
                 popFilterTypeClick(2, name);
                 mBillFilterTypesPopWindow.dismiss();
@@ -388,7 +296,7 @@ public class BalanceListFragment extends Fragment {
         filterBillTotalTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = String.valueOf(((TextView)v).getText());
+                String name = String.valueOf(((TextView) v).getText());
                 showSelectedType(9);
                 popFilterTypeClick(9, name);
                 mBillFilterTypesPopWindow.dismiss();
@@ -398,9 +306,9 @@ public class BalanceListFragment extends Fragment {
         filterBillItem1TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = String.valueOf(((TextView)v).getText());
-                showSelectedType(((Long)v.getTag()).intValue());
-                popFilterTypeClick(((Long)v.getTag()).intValue(), name);
+                String name = String.valueOf(((TextView) v).getText());
+                showSelectedType(((Long) v.getTag()).intValue());
+                popFilterTypeClick(((Long) v.getTag()).intValue(), name);
                 mBillFilterTypesPopWindow.dismiss();
             }
         });
@@ -408,9 +316,9 @@ public class BalanceListFragment extends Fragment {
         filterBillItem2TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = String.valueOf(((TextView)v).getText());
-                showSelectedType(((Long)v.getTag()).intValue());
-                popFilterTypeClick(((Long)v.getTag()).intValue(), name);
+                String name = String.valueOf(((TextView) v).getText());
+                showSelectedType(((Long) v.getTag()).intValue());
+                popFilterTypeClick(((Long) v.getTag()).intValue(), name);
                 mBillFilterTypesPopWindow.dismiss();
             }
         });
@@ -418,9 +326,9 @@ public class BalanceListFragment extends Fragment {
         filterBillItem3TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = String.valueOf(((TextView)v).getText());
-                showSelectedType(((Long)v.getTag()).intValue());
-                popFilterTypeClick(((Long)v.getTag()).intValue(), name);
+                String name = String.valueOf(((TextView) v).getText());
+                showSelectedType(((Long) v.getTag()).intValue());
+                popFilterTypeClick(((Long) v.getTag()).intValue(), name);
                 mBillFilterTypesPopWindow.dismiss();
             }
         });
@@ -428,9 +336,9 @@ public class BalanceListFragment extends Fragment {
         filterBillItem4TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = String.valueOf(((TextView)v).getText());
-                showSelectedType(((Long)v.getTag()).intValue());
-                popFilterTypeClick(((Long)v.getTag()).intValue(), name);
+                String name = String.valueOf(((TextView) v).getText());
+                showSelectedType(((Long) v.getTag()).intValue());
+                popFilterTypeClick(((Long) v.getTag()).intValue(), name);
                 mBillFilterTypesPopWindow.dismiss();
             }
         });
@@ -438,9 +346,9 @@ public class BalanceListFragment extends Fragment {
         filterBillItem5TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = String.valueOf(((TextView)v).getText());
-                showSelectedType(((Long)v.getTag()).intValue());
-                popFilterTypeClick(((Long)v.getTag()).intValue(), name);
+                String name = String.valueOf(((TextView) v).getText());
+                showSelectedType(((Long) v.getTag()).intValue());
+                popFilterTypeClick(((Long) v.getTag()).intValue(), name);
                 mBillFilterTypesPopWindow.dismiss();
             }
         });
@@ -532,7 +440,7 @@ public class BalanceListFragment extends Fragment {
             filterBillItem3TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
             filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
             filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
-        } else if (type == (Long)filterBillItem1TextView.getTag()) {
+        } else if (type == (Long) filterBillItem1TextView.getTag()) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
             filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
@@ -549,7 +457,7 @@ public class BalanceListFragment extends Fragment {
             filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
             filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
 
-        } else if (type == (Long)filterBillItem2TextView.getTag()) {
+        } else if (type == (Long) filterBillItem2TextView.getTag()) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
             filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
@@ -564,7 +472,7 @@ public class BalanceListFragment extends Fragment {
             filterBillItem3TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
             filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
             filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
-        } else if (type == (Long)filterBillItem3TextView.getTag()) {
+        } else if (type == (Long) filterBillItem3TextView.getTag()) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
             filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
@@ -579,7 +487,7 @@ public class BalanceListFragment extends Fragment {
             filterBillItem1TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
             filterBillItem4TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
             filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
-        } else if (type == (Long)filterBillItem4TextView.getTag()) {
+        } else if (type == (Long) filterBillItem4TextView.getTag()) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
             filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
@@ -594,7 +502,7 @@ public class BalanceListFragment extends Fragment {
             filterBillItem3TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
             filterBillItem1TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
             filterBillItem5TextView.setBackground(getResources().getDrawable(R.drawable.bg_normal_gray_txt));
-        } else if (type == (Long)filterBillItem5TextView.getTag()) {
+        } else if (type == (Long) filterBillItem5TextView.getTag()) {
             typeFilterAllTextView.setTextColor(Color.parseColor("#222222"));
             filterRechargeTextView.setTextColor(Color.parseColor("#222222"));
             filterWithdrawTextView.setTextColor(Color.parseColor("#222222"));
@@ -615,7 +523,7 @@ public class BalanceListFragment extends Fragment {
     public void popFilterTypeClick(int type, String name) {
         tvFilterType.setTextColor(Color.parseColor("#FF5555"));
         tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-        if (billType != null && billType == type) /*选择的是一样的就不加载*/{
+        if (billType != null && billType == type) /*选择的是一样的就不加载*/ {
             return;
         }
         String dateStr = timeStr.substring(0, 4) + "-" + timeStr.substring(4);
@@ -629,6 +537,7 @@ public class BalanceListFragment extends Fragment {
         if (billType == 0) {
             billType = null;
         }
+        isInitData = false ;
         refreshLayout.autoRefresh();
         tvFilterType.setText(name);
     }
@@ -637,38 +546,35 @@ public class BalanceListFragment extends Fragment {
         if (businessesList == null) {
             return;
         }
-        for (BriefSchoolBusiness briefSchoolBusiness: businessesList) {
+        for (BriefSchoolBusiness briefSchoolBusiness : businessesList) {
             TextView itemView = new TextView(getContext());
-            if (filterBillItem1TextView.getVisibility() != View.VISIBLE) /*加载第一个*/{
+            if (filterBillItem1TextView.getVisibility() != View.VISIBLE) /*加载第一个*/ {
                 itemView = filterBillItem1TextView;
-            } else if (filterBillItem2TextView.getVisibility() != View.VISIBLE) /*加载第二个*/{
+            } else if (filterBillItem2TextView.getVisibility() != View.VISIBLE) /*加载第二个*/ {
                 itemView = filterBillItem2TextView;
-            } else if (filterBillItem3TextView.getVisibility() != View.VISIBLE) /*加载第三个*/{
+            } else if (filterBillItem3TextView.getVisibility() != View.VISIBLE) /*加载第三个*/ {
                 itemView = filterBillItem3TextView;
-            } else if (filterBillItem4TextView.getVisibility() != View.VISIBLE) /*加载第四个*/{
+            } else if (filterBillItem4TextView.getVisibility() != View.VISIBLE) /*加载第四个*/ {
                 itemView = filterBillItem4TextView;
-            } else if (filterBillItem5TextView.getVisibility() != View.VISIBLE) /*加载第五个*/{
+            } else if (filterBillItem5TextView.getVisibility() != View.VISIBLE) /*加载第五个*/ {
                 itemView = filterBillItem5TextView;
             }
             itemView.setVisibility(View.VISIBLE);
-            itemView.setTag(briefSchoolBusiness.getBusinessId()+2);
-            if ((Long)itemView.getTag() == 3) /*热水澡*/{
+            itemView.setTag(briefSchoolBusiness.getBusinessId() + 2);
+            if ((Long) itemView.getTag() == 3) /*热水澡*/ {
                 itemView.setText("热水澡消费");
-            } else if ((Long)itemView.getTag() == 4) /*饮水机*/{
+            } else if ((Long) itemView.getTag() == 4) /*饮水机*/ {
                 itemView.setText("饮水机消费");
-            } else if ((Long)itemView.getTag() == 5) /*吹风机*/{
+            } else if ((Long) itemView.getTag() == 5) /*吹风机*/ {
                 itemView.setText("吹风机消费");
-            } else if ((Long)itemView.getTag() == 6) /*洗衣机*/{
+            } else if ((Long) itemView.getTag() == 6) /*洗衣机*/ {
                 itemView.setText("洗衣机消费");
-            } else if ((Long)itemView.getTag() == 7) /*烘干机*/{
-                itemView.setTag(briefSchoolBusiness.getBusinessId()+3); //手动把烘干机设为8，和服务器同步
+            } else if ((Long) itemView.getTag() == 7) /*烘干机*/ {
+                itemView.setTag(briefSchoolBusiness.getBusinessId() + 3); //手动把烘干机设为8，和服务器同步
                 itemView.setText("烘干机消费");
             }
         }
     }
-
-    // =============================
-
 
 
 
@@ -682,14 +588,6 @@ public class BalanceListFragment extends Fragment {
         if (mBillFilterTypesPopWindow != null) {
             mBillFilterTypesPopWindow.dismiss();
         }
-
-//        if (filterStatusPopupWindow != null && filterStatusPopupWindow.isShowing()){
-//            filterStatusPopupWindow.dismiss();
-//        }
-//
-//        if (filterTypePopupWindow != null && filterTypePopupWindow.isShowing()){
-//            filterTypePopupWindow.dismiss();
-//        }
     }
 
     private void initRecyclerView() {
@@ -716,7 +614,7 @@ public class BalanceListFragment extends Fragment {
         if (mBillFilterStatusPopwindow == null) {
             View customView = View.inflate(getContext(), R.layout.pop_bill_filter_status, null);
             initBillFilterStatusPopView(customView);
-            mBillFilterStatusPopwindow =  new PopWindow.Builder(getActivity())
+            mBillFilterStatusPopwindow = new PopWindow.Builder(getActivity())
                     .setStyle(PopWindow.PopWindowStyle.PopDown)
                     .setView(customView)
                     .setPopWindowListener(new PopWindowListener() {
@@ -743,10 +641,10 @@ public class BalanceListFragment extends Fragment {
 
     @OnClick(R.id.tv_filter_type)
     public void showFilterType() {
-        if (mBillFilterTypesPopWindow == null){
+        if (mBillFilterTypesPopWindow == null) {
             View filterTypeView = View.inflate(getContext(), R.layout.pop_bill_filter_type, null);
             initBillFilterTypesPopView(filterTypeView);
-            setBillItems(((BalanceDetailListActivity)getActivity()).presenter.getSchoolBizList());
+            setBillItems(((BalanceDetailListActivity) getActivity()).presenter.getSchoolBizList());
             mBillFilterTypesPopWindow = new PopWindow.Builder(getActivity())
                     .setStyle(PopWindow.PopWindowStyle.PopDown)
                     .setView(filterTypeView)
@@ -762,10 +660,10 @@ public class BalanceListFragment extends Fragment {
                             if (tvFilterType.getText().toString().equalsIgnoreCase("分类")) {
                                 tvFilterType.setTextColor(Color.parseColor("#222222"));
                                 tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.spread, 0);
-                             } else {
+                            } else {
                                 tvFilterType.setTextColor(Color.parseColor("#FF5555"));
                                 tvFilterType.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-                             }
+                            }
                         }
                     }).create();
 
@@ -773,35 +671,38 @@ public class BalanceListFragment extends Fragment {
         mBillFilterTypesPopWindow.show(rlFilterContentView);
     }
 
+    boolean isInitData = true ;
     @OnClick(R.id.tv_filter_date)
     public void showDatePick() {
         if (yearMonthPickerDialog == null) {
-             Long timestamps = ((BalanceDetailListActivity)getActivity()).presenter.getAccountCreateTime();
+            Long timestamps = ((BalanceDetailListActivity) getActivity()).presenter.getAccountCreateTime();
             yearMonthPickerDialog = new YearMonthPickerDialog(getActivity(), timestamps);
         }
         tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
         tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.income, 0);
         yearMonthPickerDialog.setOnItemSelectedListener((picker, date) -> {
-           Calendar cal = Calendar.getInstance();
-           cal.setTime(date);
-           int currentYear = cal.get(Calendar.YEAR);
-           int currentMonth = cal.get(Calendar.MONTH) + 1;
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int currentYear = cal.get(Calendar.YEAR);
+            int currentMonth = cal.get(Calendar.MONTH) + 1;
 
-           tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
-           tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
-           tvMonthlyOrderDate.setText(formatDate(currentYear, currentMonth));
+            tvMonthlyOrderDate.setTextColor(Color.parseColor("#FF5555"));
+            tvMonthlyOrderDate.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.incomedown, 0);
+            tvMonthlyOrderDate.setText(formatDate(currentYear, currentMonth));
 
-          String newTimeStr = String.valueOf(currentYear * 100 + currentMonth);
-           if (timeStr.equalsIgnoreCase(newTimeStr)) {
-              return;//相同不用请求新数据
-          }
-          timeStr = newTimeStr;
-          items.clear();
-          tempItems.clear();
-          lastId = null;
-          adaptor.notifyDataSetChanged();
-          tvMonthlyOrderDate.setText(formatDate(currentYear, currentMonth));
-          refreshLayout.autoRefresh();
+            String newTimeStr = String.valueOf(currentYear * 100 + currentMonth);
+            if (timeStr.equalsIgnoreCase(newTimeStr)) {
+                return;//相同不用请求新数据
+            }
+            timeStr = newTimeStr;
+            items.clear();
+            tempItems.clear();
+            lastId = null;
+            adaptor.notifyDataSetChanged();
+            tvMonthlyOrderDate.setText(formatDate(currentYear, currentMonth));
+            isInitData = false ;
+            refreshLayout.autoRefresh();
+
         });
         yearMonthPickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -811,7 +712,7 @@ public class BalanceListFragment extends Fragment {
             }
         });
         yearMonthPickerDialog.show();
-}
+    }
 
 
     protected void setRecyclerView(RecyclerView recyclerView) {
@@ -821,10 +722,10 @@ public class BalanceListFragment extends Fragment {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 BillListAdaptor.BillListAdaptorWrapper item = items.get(position);
                 //点击后跳转到账单详情
-                if (item.getType() == BillListAdaptor.XLFilterContentViewBillTypeRecharge || item.getType() == BillListAdaptor.XLFilterContentViewBillTypeWithdraw) /*余额充值、退款跳转*/{
-                    ((BalanceDetailListActivity)getActivity()).gotoBillRechargeWithdrawActivity(item.getType(), item.getId());
-                } else /*跳转到消费账单页面（包含预付待找零）*/{
-                    ((BalanceDetailListActivity)getActivity()).gotoBillDetailActivity(item.getType(), item.getId(), item.getStatus());
+                if (item.getType() == BillListAdaptor.XLFilterContentViewBillTypeRecharge || item.getType() == BillListAdaptor.XLFilterContentViewBillTypeWithdraw) /*余额充值、退款跳转*/ {
+                    ((BalanceDetailListActivity) getActivity()).gotoBillRechargeWithdrawActivity(item.getType(), item.getId());
+                } else /*跳转到消费账单页面（包含预付待找零）*/ {
+                    ((BalanceDetailListActivity) getActivity()).gotoBillDetailActivity(item.getType(), item.getId(), item.getStatus());
                 }
             }
 
@@ -836,7 +737,7 @@ public class BalanceListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adaptor);
 
-        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -852,7 +753,7 @@ public class BalanceListFragment extends Fragment {
                     LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
                     //获取第一个可见view的位置
                     int firstItemPosition = linearManager.findFirstVisibleItemPosition();
-                    if (items.size() <= firstItemPosition || firstItemPosition<0) /*越界容错处理*/{
+                    if (items.size() <= firstItemPosition || firstItemPosition < 0) /*越界容错处理*/ {
                         return;
                     }
                     BillListAdaptor.BillListAdaptorWrapper item = items.get(firstItemPosition);
@@ -871,39 +772,59 @@ public class BalanceListFragment extends Fragment {
     private String formatDate(int year, int month) {
         if (month < 10) {
             return String.format(Locale.getDefault(), "%d-0%d", year, month);
-        } else  {
+        } else {
             return String.format(Locale.getDefault(), "%d-%d", year, month);
         }
     }
 
 
     void onRefresh() {
-        if (items.size() > 0) {
-            BillListAdaptor.BillListAdaptorWrapper item = items.get(0);
-            lastId = item.getDetailId();
+//        if (items.size() > 0) {
+//            BillListAdaptor.BillListAdaptorWrapper item = items.get(0);
+//            lastId = item.getDetailId();
+//        }
+//
+//        if (tempItems.size() > 0) {
+//            BillListAdaptor.BillListAdaptorWrapper item = tempItems.get(0);
+//            lastId = item.getDetailId();
+//        }
+
+        //  初始化年月日
+        if (isInitData) {
+            initTimeStr();
         }
 
-        if (tempItems.size() > 0) {
-            BillListAdaptor.BillListAdaptorWrapper item = tempItems.get(0);
-            lastId = item.getDetailId();
+        ((BalanceDetailListActivity) getActivity()).presenter.resetPage(true);
+        ((BalanceDetailListActivity) getActivity()).presenter.getUserBillList(timeStr, billType, billStatus, null, true, 20);
+        isInitData = true ;
+
+    }
+
+    void onRefresh(List<BillListAdaptor.BillListAdaptorWrapper> wrappers) {
+        hideEmptyView();
+        hideErrorView();
+        items.clear();
+        if (wrappers.size() <= 0 )  /*没有新的数据，并且没有临时存储的数据*/ {
+                showEmptyView(R.string.empty_tip_1);
+            return;
         }
-
-        ((BalanceDetailListActivity)getActivity()).presenter.getUserBillList(timeStr, billType, billStatus, lastId, true, 20);
-
+        items.addAll(wrappers);
+        adaptor.notifyDataSetChanged();
+        refreshFilterDate();
     }
 
     void onLoadMore() {
         if (items.size() > 0) {
-            BillListAdaptor.BillListAdaptorWrapper item = items.get(items.size()-1);
+            BillListAdaptor.BillListAdaptorWrapper item = items.get(items.size() - 1);
             lastId = item.getDetailId();
         }
 
         if (tempItems.size() > 0) {
-            BillListAdaptor.BillListAdaptorWrapper item = tempItems.get(tempItems.size()-1);
+            BillListAdaptor.BillListAdaptorWrapper item = tempItems.get(tempItems.size() - 1);
             lastId = item.getDetailId();
         }
 
-        ((BalanceDetailListActivity)getActivity()).presenter.getUserBillList(timeStr, billType, billStatus, lastId, false, 20);
+        ((BalanceDetailListActivity) getActivity()).presenter.getUserBillList(timeStr, billType, billStatus, lastId, false, 20);
     }
 
     public void setLoadMoreComplete() {
@@ -915,7 +836,8 @@ public class BalanceListFragment extends Fragment {
     }
 
     public void addMore(List<BillListAdaptor.BillListAdaptorWrapper> wrappers) {
-
+        hideEmptyView();
+        hideErrorView();
         if (wrappers.size() <= 0 && tempItems.size() <= 0)  /*没有新的数据，并且没有临时存储的数据*/ {
             if (items.size() <= 0) {
                 showEmptyView(R.string.empty_tip_1);
@@ -923,7 +845,7 @@ public class BalanceListFragment extends Fragment {
             return;
         }
 
-        if (items.size() <= 0)  /*第一次请求数据*/{
+        if (items.size() <= 0)  /*第一次请求数据*/ {
             //1、如果最新的一条不是当前选择的月份，则不展示出来，留到下次上拉或者下拉的时候再展示
             String newTimeStr = wrappers.size() > 0 ? TimeUtils.millis2String(wrappers.get(0).getCreateTime(), TimeUtils.MY_DATE_YEARMON_FORMAT) : timeStr;
             if (isFirstLoadData || timeStr.equalsIgnoreCase(newTimeStr) || tempItems.size() > 0)/*最新的为当前月份的数据，获取是加载数据进来*/ {
@@ -931,8 +853,8 @@ public class BalanceListFragment extends Fragment {
                 items.addAll(wrappers);
                 //把老数据加进去，下拉加载最新的，上拉加载旧的
                 BillListAdaptor.BillListAdaptorWrapper newItem = wrappers.size() > 0 ? wrappers.get(0) : null;
-                BillListAdaptor.BillListAdaptorWrapper oldItem = tempItems.size() > 0 ? tempItems.get(tempItems.size()-1): null;
-                if (newItem !=null && oldItem !=null && newItem.getCreateTime() > oldItem.getCreateTime()) /*加载的是新数据， 放在底部*/{
+                BillListAdaptor.BillListAdaptorWrapper oldItem = tempItems.size() > 0 ? tempItems.get(tempItems.size() - 1) : null;
+                if (newItem != null && oldItem != null && newItem.getCreateTime() > oldItem.getCreateTime()) /*加载的是新数据， 放在底部*/ {
                     items.addAll(tempItems);
                 } else {
                     items.addAll(0, tempItems);
@@ -942,7 +864,7 @@ public class BalanceListFragment extends Fragment {
 
                 refreshFilterDate();
 
-            } else /*最新的不是当前月份的数据*/{
+            } else /*最新的不是当前月份的数据*/ {
                 //把数据放到临时存储的一个地方
                 tempItems.addAll(wrappers);
                 showEmptyView(R.string.empty_tip_1);
@@ -951,9 +873,9 @@ public class BalanceListFragment extends Fragment {
         }
         //取新加载的数据的第一条和已有的数据的最后一条做比较，新加载的时间戳大则表示拉取的最新的，否则拉取的是历史数据
         BillListAdaptor.BillListAdaptorWrapper newItem = wrappers.get(0);
-        BillListAdaptor.BillListAdaptorWrapper oldItem = items.get(items.size()-1);
-        if (newItem.getCreateTime() > oldItem.getCreateTime()) /*加载的是新数据， 放在底部*/{
-            items.addAll(0,wrappers);
+        BillListAdaptor.BillListAdaptorWrapper oldItem = items.get(items.size() - 1);
+        if (newItem.getCreateTime() > oldItem.getCreateTime()) /*加载的是新数据， 放在底部*/ {
+            items.addAll(0, wrappers);
         } else {
             items.addAll(wrappers);
         }
@@ -963,7 +885,7 @@ public class BalanceListFragment extends Fragment {
     }
 
     private void refreshFilterDate() {
-        if ( items.size() > 0 ) {
+        if (items.size() > 0) {
             Calendar cal = Calendar.getInstance();
             Date date = TimeUtils.millis2Date(items.get(0).getCreateTime());
             cal.setTime(date);
@@ -999,6 +921,8 @@ public class BalanceListFragment extends Fragment {
 
     public void showErrorView() {
         showErrorView(R.color.colorBackgroundGray);
+        hideEmptyView();
+        recyclerView.setVisibility(View.GONE);
     }
 
     public void showErrorView(int colorRes) {

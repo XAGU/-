@@ -9,6 +9,7 @@ import android.view.View;
 import com.alipay.mobile.framework.service.annotation.OperationType;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
+import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawalAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawRecordPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalRecordView;
@@ -35,8 +36,8 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
     @Inject
     IWithdrawRecordPresenter<IWithdrawalRecordView> presenter;
 
-    private List<WithdrawalAdaptor.WithdrawalWrapper> items = new ArrayList<>();
-    private WithdrawalAdaptor adaptor;
+    private List<BillListAdaptor.BillListAdaptorWrapper> items = new ArrayList<>();
+    BillListAdaptor adaptor;
 
     private boolean refreshFlag = false;
 
@@ -61,7 +62,7 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
 
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
-        adaptor = new WithdrawalAdaptor(this, R.layout.item_withdrawal_record, items);
+        adaptor = new BillListAdaptor(this, R.layout.item_balance_detail_record, items);
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -136,7 +137,7 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
     }
 
     @Override
-    public void addMore(List<WithdrawalAdaptor.WithdrawalWrapper> wrappers) {
+    public void addMore(List<BillListAdaptor.BillListAdaptorWrapper> wrappers) {
         if (refreshFlag) {
             refreshFlag = false;
             items.clear();

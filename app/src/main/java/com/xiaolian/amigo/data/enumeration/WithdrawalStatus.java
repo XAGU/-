@@ -76,7 +76,7 @@ public enum WithdrawalStatus {
             return new String[]{COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
         }
     },
-    WITHDRAWAL_CANCEL(6, "取消提现") {
+    WITHDRAWAL_CANCEL(6, "取消退款") {
         @Override
         public int getColorRes() {
             return R.color.colorTextGray;

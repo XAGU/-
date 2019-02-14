@@ -18,4 +18,8 @@ public class FundsInListDTO {
     private Integer status;
     private Long userId;
     private Boolean instead;
+    private Integer billStatus;
+
+
+
 }

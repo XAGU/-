@@ -1,12 +1,9 @@
 package com.xiaolian.amigo.ui.wallet;
 
-import android.util.Log;
-
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.funds.FundsInListDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.userbill.QueryBillListReqDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryBillListRespDTO;
@@ -14,9 +11,8 @@ import com.xiaolian.amigo.data.network.model.userbill.QueryMonthlyBillReqDTO;
 import com.xiaolian.amigo.data.network.model.userbill.UserMonthlyBillRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
-import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawalAdaptor;
-import com.xiaolian.amigo.ui.wallet.intf.IBalanceDetailListView;
 import com.xiaolian.amigo.ui.wallet.intf.IBalanceDetailListPresenter;
+import com.xiaolian.amigo.ui.wallet.intf.IBalanceDetailListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,19 +20,17 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.OnClick;
-
 public class BalanceDetailListPresenter<V extends IBalanceDetailListView> extends BasePresenter<V> implements IBalanceDetailListPresenter<V> {
     private IWalletDataManager walletDataManager;
     private IMainDataManager mainDataManager;
+
+    private boolean isRefreshPage = true  ;
 
     @Inject
     BalanceDetailListPresenter(IWalletDataManager walletDataManager, IMainDataManager mainDataManager) {
         this.walletDataManager = walletDataManager;
         this.mainDataManager = mainDataManager;
     }
-
-
 
     @Override
     public void getMonthlyBill(int year, int month) {
@@ -89,9 +83,15 @@ public class BalanceDetailListPresenter<V extends IBalanceDetailListView> extend
                                     for (HashMap<String, Object> billDic : result.getData().getDetailList()) {
                                         wrappers.add(new BillListAdaptor.BillListAdaptorWrapper(billDic));
                                     }
-                                    getMvpView().addMore(wrappers);
+                                    if (isRefreshPage){
+                                        getMvpView().onRefresh(wrappers);
+                                    }else {
+                                        getMvpView().addMore(wrappers);
+                                    }
                                 } else {
-                                    getMvpView().showEmptyView(R.string.empty_tip_1);
+                                    if (isRefreshPage) {
+                                        getMvpView().showEmptyView(R.string.empty_tip_1);
+                                    }
                                 }
                             } else {
                                 getMvpView().showErrorView();
@@ -114,12 +114,17 @@ public class BalanceDetailListPresenter<V extends IBalanceDetailListView> extend
     }
 
     @Override
+    public void resetPage(boolean isRefreshPage) {
+        this.isRefreshPage = isRefreshPage ;
+    }
+
+    @Override
     public Long getAccountCreateTime() {
         return walletDataManager.getUser().getCreateTime();
     }
 
     @Override
-    public List<BriefSchoolBusiness>getSchoolBizList() {
+    public List<BriefSchoolBusiness> getSchoolBizList() {
         List<BriefSchoolBusiness> list = mainDataManager.getSchoolBiz();
         return mainDataManager.getSchoolBiz();
     }

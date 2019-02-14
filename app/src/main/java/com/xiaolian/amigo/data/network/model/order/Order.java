@@ -119,6 +119,11 @@ public class Order implements Serializable {
      */
     private String zeroConsumeCopy;
 
+    /**
+     * 账单状态
+     */
+    private Integer billStatus ;
+
     public Long getId() {
         return id;
     }

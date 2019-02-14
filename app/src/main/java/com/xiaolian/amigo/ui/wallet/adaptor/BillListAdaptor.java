@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.wallet.adaptor;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,6 +12,8 @@ import com.xiaolian.amigo.data.enumeration.RechargeStatus;
 import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
 import com.xiaolian.amigo.data.enumeration.WithdrawalStatus;
 import com.xiaolian.amigo.data.network.model.funds.FundsInListDTO;
+import com.xiaolian.amigo.data.network.model.order.Order;
+import com.xiaolian.amigo.data.network.model.order.OrderInListDTO;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -35,12 +38,23 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
     public static final int XLFilterContentViewBillTypePayDry = 8/*烘干机*/;
     public static final int XLFilterContentViewBillTypePayBill = 9/*消费账单*/;
 
+    /**
+     * #222
+     */
+    public static final int COLOR_222 = 1 ;
+
+    /**
+     * #ff5555
+     */
+    public static final int COLOR_ff5555 = 2  ;
+
     private Context context;
 
     public BillListAdaptor(Context context, int layoutId, List<BillListAdaptor.BillListAdaptorWrapper> datas) {
         super(context, layoutId, datas);
         this.context = context;
     }
+
 
     @Override
     protected void convert(ViewHolder holder, BillListAdaptor.BillListAdaptorWrapper billListAdaptorWrapper, int position) {
@@ -53,6 +67,7 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
     }
 
     private void setMoneyAndStatus(ViewHolder holder, String amount, int billType, int status) {
+        Log.e("COLOR", "setMoneyAndStatus: " + status +"\t" + amount  );
         TextView moneyView = holder.getView(R.id.tv_bill_money);
         TextView statusView = holder.getView(R.id.tv_bill_status);
         TextView statusViewOnly = holder.getView(R.id.tv_bill_Status_only);
@@ -61,18 +76,18 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
         statusViewOnly.setVisibility(View.INVISIBLE);
         if (status < 100 ) /*status的状态不同，此处两边的值状态不一致！！！*/{
             holder.setText(R.id.tv_bill_status, WithdrawalStatus.getWithdrawalStatus(status).getDesc());
-            holder.setText(R.id.tv_bill_money, "-¥"+amount);
+            setAmount(holder ,amount ,"-￥" , "-");
             return;
         }
         /*1xx表示消费订单，2xx表示充值，3xx表示提现，4xx表示活动*/
         if (status == 100) /*预付待找零*/{
-            holder.setText(R.id.tv_bill_money, "-¥"+amount);
+            setAmount(holder ,amount ,"-￥" ,"-");
             holder.setText(R.id.tv_bill_status, "待找零");
-            moneyView.setTextColor(Color.parseColor("#ff5555"));
+            setColor( moneyView ,COLOR_222);
         } else if (status == 101) /*订单已完结*/{
-            holder.setText(R.id.tv_bill_money, "-¥"+amount);
+            setAmount(holder ,amount ,"-￥" , "-");
             statusView.setVisibility(View.INVISIBLE);
-            moneyView.setTextColor(Color.parseColor("#222222"));
+            setColor(moneyView , COLOR_222);
         } else if (status == 102) /*已退单*/{
             moneyView.setVisibility(View.INVISIBLE);
             statusView.setVisibility(View.INVISIBLE);
@@ -84,8 +99,9 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
             statusViewOnly.setVisibility(View.VISIBLE);
             holder.setText(R.id.tv_bill_Status_only, "订单异常");
         } else if (status == 200) /*充值成功*/{
-            holder.setText(R.id.tv_bill_money, "+¥"+amount);
+            setAmount(holder ,amount ,"+￥","+");
             holder.setText(R.id.tv_bill_status, "充值成功");
+            setColor(moneyView , COLOR_ff5555);
         } else if (status == 201) /*充值失败*/{
             moneyView.setVisibility(View.INVISIBLE);
             statusView.setVisibility(View.INVISIBLE);
@@ -127,8 +143,9 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
             statusViewOnly.setVisibility(View.VISIBLE);
             holder.setText(R.id.tv_bill_Status_only, "等待到账");
         } else if (status == 304) /*提现成功*/{
-            holder.setText(R.id.tv_bill_money, "-¥"+amount);
+            setAmount(holder ,amount ,"-￥" , "-");
             holder.setText(R.id.tv_bill_status, "退款成功");
+            setColor(moneyView , COLOR_222);
         } else if (status == 305) /*取消提现*/{
             moneyView.setVisibility(View.INVISIBLE);
             statusView.setVisibility(View.INVISIBLE);
@@ -140,11 +157,35 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
             statusViewOnly.setVisibility(View.VISIBLE);
             holder.setText(R.id.tv_bill_Status_only, "退款异常");
         } else if (status == 400) /*活动*/{
-            holder.setText(R.id.tv_bill_money, "+¥"+amount);
+            setAmount(holder ,amount ,"+￥" , "+");
             statusView.setVisibility(View.INVISIBLE);
+            setColor(moneyView , COLOR_ff5555);
         }
+    }
 
 
+    private void setColor(TextView view,int colorType){
+        switch (colorType){
+            case COLOR_222:
+                view.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                break;
+            case COLOR_ff5555:
+                view.setTextColor(context.getResources().getColor(R.color.colorFullRed));
+                break;
+        }
+    }
+
+    /**
+     * 设置金钱金额
+     * @param amount
+     * @param preSymbol
+     */
+    private void setAmount(ViewHolder holder,String amount , String preSymbol , String pre){
+        if (amount.contains("¥")) {
+            holder.setText(R.id.tv_bill_money,  amount);
+        }else {
+            holder.setText(R.id.tv_bill_money, preSymbol+amount);
+        }
     }
 
     public static String getTypeName(int billType, int status) {
@@ -186,12 +227,23 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
             this.createTime = ((Double) billDetail.get("createTime")).longValue();
         }
 
+        //  兼容orderList 数据
+        public BillListAdaptorWrapper(Order order){
+            // 新type中多添加了充值和退款，  所以需要在原有的基础上+2
+            this.type = order.getDeviceType() + 2 ;
+            this.amount = order.getActualDebit();
+//            this.detailId = orderInListDTO.get();
+            this.status = order.getBillStatus();
+            this.id = order.getId();
+            this.createTime = order.getCreateTime();
+        }
+
         public BillListAdaptorWrapper(FundsInListDTO dto) {
             this.type = dto.getOperationType().intValue();
             this.amount = dto.getAmount();
 //            this.detailId = dto.getOrderNo();
             this.id = dto.getId();
-            this.status = dto.getStatus();
+            this.status = dto.getBillStatus();
             this.createTime = dto.getCreateTime();
         }
 

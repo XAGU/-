@@ -37,4 +37,9 @@ public interface IBalanceDetailListView extends IBaseView {
      */
     void addMore(List<BillListAdaptor.BillListAdaptorWrapper> wrappers);
 
+    /**
+     * 刷新账单列表
+     * @param wrappers
+     */
+    void onRefresh(List<BillListAdaptor.BillListAdaptorWrapper> wrappers);
 }

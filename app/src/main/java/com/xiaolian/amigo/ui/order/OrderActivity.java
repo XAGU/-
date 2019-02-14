@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
@@ -12,9 +13,11 @@ import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
 import com.xiaolian.amigo.ui.wallet.WalletConstant;
+import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ScreenUtils;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +44,9 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
     /**
      * 订单列表recycleView适配器
      */
-    OrderAdaptor adaptor;
+    BillListAdaptor adaptor;
+
+    private List<BillListAdaptor.BillListAdaptorWrapper> items = new ArrayList<>();
 
 
     private boolean refreshFlag = false;
@@ -54,12 +59,12 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
 
 
     @Override
-    public void addMore(List<OrderAdaptor.OrderWrapper> orders) {
+    public void addMore(List<BillListAdaptor.BillListAdaptorWrapper> wrappers) {
         if (refreshFlag) {
             refreshFlag = false;
-            this.orders.clear();
+            this.items.clear();
         }
-        this.orders.addAll(orders);
+        this.items.addAll(wrappers);
         adaptor.notifyDataSetChanged();
     }
 
@@ -67,7 +72,7 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
     protected void onDestroy() {
         presenter.onDetach();
         presenter.clearObservers();
-        orders.clear();
+        items.clear();
         super.onDestroy();
     }
 
@@ -103,19 +108,28 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adaptor = new OrderAdaptor(orders);
-        adaptor.setOrderDetailClickListener((order) -> {
-            String orderName = getDeviceNameWithType(order.getDeviceType());
-            if (Device.getDevice(order.getDeviceType()) == Device.WASHER || Device.getDevice(order.getDeviceType())==Device.DRYER2) {
-                startActivity(new Intent(OrderActivity.this, NormalOrderActivity.class)
-                        .putExtra(OrderConstant.KEY_ORDER_ID, order.getId())
-                        .putExtra(OrderConstant.KEY_ORDER_TITLE, orderName));
-            } else {
-                // 跳转至订单详情
-                Intent intent = new Intent(OrderActivity.this, OrderDetailActivity.class);
-                intent.putExtra(Constant.EXTRA_KEY, order.getId());
-                intent.putExtra(OrderConstant.KEY_ORDER_TITLE, orderName);
-                startActivity(intent);
+        adaptor = new BillListAdaptor(this, R.layout.item_balance_detail_record, items);
+        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                BillListAdaptor.BillListAdaptorWrapper item = items.get(position);
+                String orderName = getDeviceNameWithType(item.getType());
+                if (Device.getDevice(item.getType()) == Device.WASHER || Device.getDevice(item.getType())==Device.DRYER2) {
+                    startActivity(new Intent(OrderActivity.this, NormalOrderActivity.class)
+                            .putExtra(OrderConstant.KEY_ORDER_ID, item.getId())
+                            .putExtra(OrderConstant.KEY_ORDER_TITLE, orderName));
+                } else {
+                    // 跳转至订单详情
+                    Intent intent = new Intent(OrderActivity.this, OrderDetailActivity.class);
+                    intent.putExtra(Constant.EXTRA_KEY, item.getId());
+                    intent.putExtra(OrderConstant.KEY_ORDER_TITLE, orderName);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
             }
         });
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));

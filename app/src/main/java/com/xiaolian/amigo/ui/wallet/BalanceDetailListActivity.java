@@ -5,34 +5,22 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 
-import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
-import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.network.model.userbill.UserMonthlyBillRespDTO;
 import com.xiaolian.amigo.di.componet.BalanceDetailListActivityComponent;
 import com.xiaolian.amigo.di.module.BalanceDetailListActivityModule;
 import com.xiaolian.amigo.di.componet.DaggerBalanceDetailListActivityComponent;
 import com.xiaolian.amigo.ui.base.BaseActivity;
-import com.xiaolian.amigo.ui.login.RegisterStep1Fragment;
 import com.xiaolian.amigo.ui.order.NormalOrderActivity;
-import com.xiaolian.amigo.ui.order.OrderActivity;
 import com.xiaolian.amigo.ui.order.OrderConstant;
 import com.xiaolian.amigo.ui.order.OrderDetailActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
-import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IBalanceDetailListView;
 import com.xiaolian.amigo.ui.wallet.intf.IBalanceDetailListPresenter;
 import com.xiaolian.amigo.util.Constant;
@@ -175,6 +163,11 @@ public class BalanceDetailListActivity extends BaseActivity implements IBalanceD
     @Override
     public void addMore(List<BillListAdaptor.BillListAdaptorWrapper> wrappers) {
         balanceListFragment.addMore(wrappers);
+    }
+
+    @Override
+    public void onRefresh(List<BillListAdaptor.BillListAdaptorWrapper> wrappers) {
+        balanceListFragment.onRefresh(wrappers);
     }
 
     @Override

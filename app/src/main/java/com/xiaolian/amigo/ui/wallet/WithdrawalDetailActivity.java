@@ -208,7 +208,7 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
     @OnClick(R.id.tv_cancel_withdraw)
     void onCancelWithdrawClick() {
         new IOSAlertDialog(this).builder()
-                .setMsg("确认取消提现？")
+                .setMsg("确认取消退款？")
                 .setPositiveButton("确认", v -> presenter.cancelWithdraw(id))
                 .setNegativeClickListener("取消", IOSAlertDialog::dismiss).show();
     }

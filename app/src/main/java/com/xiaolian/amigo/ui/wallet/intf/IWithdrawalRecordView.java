@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.wallet.intf;
 
 import com.xiaolian.amigo.ui.base.intf.IBaseListView;
+import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawalAdaptor;
 
 import java.util.List;
@@ -18,5 +19,5 @@ public interface IWithdrawalRecordView extends IBaseListView {
      *
      * @param wrappers 提现记录
      */
-    void addMore(List<WithdrawalAdaptor.WithdrawalWrapper> wrappers);
+    void addMore(List<BillListAdaptor.BillListAdaptorWrapper> wrappers);
 }

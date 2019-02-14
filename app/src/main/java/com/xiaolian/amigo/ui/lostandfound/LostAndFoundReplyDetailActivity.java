@@ -166,14 +166,14 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
             presenter.setOwnerId(getIntent().getLongExtra(KEY_OWNER_ID, -1));
             presenter.setCommentEnable(getIntent().getBooleanExtra(KEY_COMMENT_ENABLE, false));
             vest = getIntent().getIntExtra(KEY_VEST ,1);
-//            mainReply = new LostAndFoundReplyDetailAdapter
-//                    .LostAndFoundReplyDetailWrapper(LostAndFoundReplyDetailAdapter.LostAndFoundReplyDetailItemType.MAIN,
-//                    getIntent().getBooleanExtra(KEY_OWNER, false),
-//                    getIntent().getStringExtra(KEY_COMMENT_CONTENT),
-//                    commentAuthor,
-//                    getIntent().getLongExtra(KEY_TIME, 0),
-//                    getIntent().getStringExtra(KEY_AVATAR)
-//                    ,vest);
+            mainReply = new LostAndFoundReplyDetailAdapter
+                    .LostAndFoundReplyDetailWrapper(LostAndFoundReplyDetailAdapter.LostAndFoundReplyDetailItemType.MAIN,
+                    getIntent().getBooleanExtra(KEY_OWNER, false),
+                    getIntent().getStringExtra(KEY_COMMENT_CONTENT),
+                    commentAuthor,
+                    getIntent().getLongExtra(KEY_TIME, 0),
+                    getIntent().getStringExtra(KEY_AVATAR)
+                    ,vest);
         }
 
         llFooter.setVisibility(presenter.isCommentEnable() ? View.VISIBLE : View.GONE);
@@ -222,7 +222,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     }
 
     private void initRecyclerView() {
-//        followRelays.add(0, mainReply);
+        followRelays.add(0, mainReply);
         adapter = new LostAndFoundReplyDetailAdapter(this, followRelays);
         adapter.addItemViewDelegate(new LostAndFoundReplyDetailMainDelegate(this, lostFoundType));
         adapter.addItemViewDelegate(new LostAndFoundReplyDetailFollowDelegate(this, lostFoundType, presenter.getOwnerId() ));
@@ -480,7 +480,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
         if (refreshFlag) {
             refreshFlag = false;
             followRelays.clear();
-//            followRelays.add(mainReply);
+            followRelays.add(mainReply);
         }
         adapter.notifyDataSetChanged();
 //        rlEmpty.setVisibility(View.VISIBLE);
@@ -491,7 +491,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
         if (refreshFlag) {
             refreshFlag = false;
             followRelays.clear();
-//            followRelays.add(mainReply);
+            followRelays.add(mainReply);
         }
         followRelays.addAll(wrappers);
         adapter.notifyDataSetChanged();

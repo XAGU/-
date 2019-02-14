@@ -87,7 +87,7 @@ public class LostAndFoundDetailCommentDelegate
     public void convert(ViewHolder holder,
                         LostAndFoundDetailAdapter.LostAndFoundDetailWrapper lostAndFoundDetailWrapper,
                         int position) {
-//        holder.setText(R.id.tv_comment_author, lostAndFoundDetailWrapper.getCommentAuthor());  lostAndFoundDetailWrapper.getType(),
+
         setCommentAuthor(holder.getView(R.id.tv_comment_author), lostAndFoundDetailWrapper.isOwner(),
                 lostAndFoundDetailWrapper.getCommentAuthor() ,holder.getView(R.id.iv_owner) ,lostAndFoundDetailWrapper.getVest()
                 ,holder.getView(R.id.iv_admin));

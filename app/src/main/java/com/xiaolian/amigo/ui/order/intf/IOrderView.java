@@ -18,6 +18,7 @@ package com.xiaolian.amigo.ui.order.intf;
 
 import com.xiaolian.amigo.ui.base.intf.IBaseListView;
 import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
+import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public interface IOrderView extends IBaseListView {
     /**
      * 刷新消费记录列表
      *
-     * @param orders 待添加的订单列表
+     * @param wrappers 待添加的订单列表
      */
-    void addMore(List<OrderAdaptor.OrderWrapper> orders);
+    void addMore(List<BillListAdaptor.BillListAdaptorWrapper> wrappers);
 }

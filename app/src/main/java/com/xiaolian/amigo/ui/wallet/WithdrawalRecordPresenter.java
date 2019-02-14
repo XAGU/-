@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.funds.QueryPersonalFundsListReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.FundsInListDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryFundsListRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.wallet.adaptor.BillListAdaptor;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawalAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawRecordPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalRecordView;
@@ -65,9 +66,9 @@ public class WithdrawalRecordPresenter<V extends IWithdrawalRecordView> extends 
                 if (null == result.getError()) {
                     if (result.getData() != null && result.getData().getFunds() != null
                             && result.getData().getFunds().size() > 0) {
-                        List<WithdrawalAdaptor.WithdrawalWrapper> wrappers = new ArrayList<>();
+                        List<BillListAdaptor.BillListAdaptorWrapper> wrappers = new ArrayList<>();
                         for (FundsInListDTO dto : result.getData().getFunds()) {
-                            wrappers.add(new WithdrawalAdaptor.WithdrawalWrapper(dto));
+                            wrappers.add(new BillListAdaptor.BillListAdaptorWrapper(dto));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
