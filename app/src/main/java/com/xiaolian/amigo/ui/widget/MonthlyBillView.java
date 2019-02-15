@@ -36,6 +36,8 @@ public class MonthlyBillView extends View {
 
     private float distance;
     private float radius;
+
+    // 饼图的宽高
     private int barWidth,barHeight;
     private List<ViewData> datas;
     private List<AngleSE> angleSEs;
@@ -251,7 +253,7 @@ public class MonthlyBillView extends View {
                 lineAngle = startAngle + sweepAngle/2;//绘制描述文字的指示线，从扇形中间开始
                 desc = datas.get(i).getDesc();
                 if (hasData) {
-                    RectF rectF = drwaLineAndText(sweepAngle,lineAngle, "¥" + datas.get(i).getNumber(),
+                    RectF rectF = drawLineAndText(sweepAngle,lineAngle, "¥" + datas.get(i).getNumber(),
                             desc, rect,i);
                     descRectes.add(rectF);
                 }
@@ -275,12 +277,14 @@ public class MonthlyBillView extends View {
 
     }
 
-    private RectF drwaLineAndText(float sweepAngle,float lineAngle,String amount, String desc,Rect rect,int i){
+    private RectF drawLineAndText(float sweepAngle,float lineAngle,String amount, String desc,Rect rect,int i){
         RectF descRectF = new RectF();
         float lineStartX,lineStartY ,lineEndX,lineEndY ;
         linePaint.setColor(ContextCompat.getColor(mContext, datas.get(i).getColorRes()));
-        lineStartX   =   barWidth/2   +   (radius- distance)   *  (float) Math.cos(lineAngle *   3.14   /180 );
-        lineStartY   =   (barHeight-lengedHeight)/2   +   (radius- distance)  *   (float) Math.sin(lineAngle   *   3.14/180);
+        lineStartX   =   barWidth/2   +   (radius)   *  (float) Math.cos(lineAngle *   3.14   /180 );
+        lineStartY   =   (barHeight-lengedHeight)/2   +   (radius)  *   (float) Math.sin(lineAngle   *   3.14/180);
+
+        // 如果弧形小于30度
         if(Math.abs(sweepAngle) <= 30){
             float num = 0.6f;
             lineEndX   =   barWidth/2   +   (radius+ distance*num*1f)   *  (float) Math.cos(lineAngle *   3.14   /180 );
@@ -303,20 +307,23 @@ public class MonthlyBillView extends View {
             descRectF.right = textPaint.measureText(desc);
         }
 
-
         for (RectF rectF : descRectes) {
             if (rectF.intersect(descRectF)) {
-                float diffY = ScreenUtils.dpToPx(getContext() , 5) ;
-                if (descRectF.top > rect.top) {
-                    float num = 2;
-                    lineEndX   =   barWidth/2   +   (radius+ distance*num*1f+descRectF.height())   *  (float) Math.cos(lineAngle *   3.14   /180 );
-//                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ diffY)  *   (float) Math.sin(lineAngle   *   3.14   /180);
-                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f+descRectF.height())  *   (float) Math.sin(lineAngle   *   3.14   /180);
+                // 两个描述的间距
+                float  rectSpace = ScreenUtils.dpToPx(getContext() ,15);
+                //  descRectF  目标矩形 ，  rectF  原有矩形
+                if (descRectF.top > rectF.top) {
+                    //  > 表明在下方
+                    float num = 0.6f ;
+                    lineEndX   =   barWidth/2   +   (radius+ distance*num*1f+descRectF.width())   *  (float) Math.cos(lineAngle *   3.14   /180 );
+//                    lineEndY   =   (barHeight-lengedHeight)/2   + Math.abs  (radius+ distance*num*1f+descRectF.height())  *   (float) Math.sin(lineAngle   *   3.14   /180);
+                    lineEndY = rectF.top + rect.height() + rectSpace  ;
                 } else {
-                    float num = 0.5f;
+                    // <  表明在上方
+                    float num = 1f ;
                     lineEndX   =   barWidth/2   +   (radius+ distance*num*1f)   *  (float) Math.cos(lineAngle *   3.14   /180 );
-//                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f)  *   (float) Math.sin(lineAngle   *   3.14   /180);
-                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ diffY + descRectF.height())  *   (float) Math.sin(lineAngle   *   3.14   /180);
+//                    lineEndY   =   (barHeight-lengedHeight)/2   + (radius+ distance*num*1f)  *   (float) Math.sin(lineAngle   *   3.14   /180);
+                    lineEndY = rectF.top - rect.height() - rectSpace ;
                 }
                 break;
             }
@@ -332,10 +339,12 @@ public class MonthlyBillView extends View {
 //            bitmapCanvas.drawText(desc,lineEndX+distance/2+4,lineEndY+rect.height()/2,textPaint);
             textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,10));
             textPaint.getTextBounds("消", 0, 1, rect);
-            bitmapCanvas.drawText(desc,barWidth-textPaint.measureText(desc),lineEndY+rect.height()+ScreenUtils.dpToPxInt(mContext, 2),textPaint);
+//            bitmapCanvas.drawText(desc,barWidth-textPaint.measureText(desc),lineEndY+rect.height()+ScreenUtils.dpToPxInt(mContext, 2),textPaint);
+            bitmapCanvas.drawText(desc , barWidth - textPaint.measureText(desc) , getBaseLineY(lineEndY + (rect.height() /2)) + ScreenUtils.dpToPxInt(mContext ,2),textPaint );
             textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,12));
             textPaint.getTextBounds("消", 0, 1, rect);
-            bitmapCanvas.drawText(amount,barWidth-textPaint.measureText(amount),lineEndY-ScreenUtils.dpToPxInt(mContext, 4),textPaint);
+//            bitmapCanvas.drawText(amount,barWidth-textPaint.measureText(amount),lineEndY-ScreenUtils.dpToPxInt(mContext, 4),textPaint);
+            bitmapCanvas.drawText(amount , barWidth - textPaint.measureText(amount) , getBaseLineY(lineEndY - (rect.height() /2)) - ScreenUtils.dpToPxInt(mContext ,2),textPaint );
             descRectF.top = lineEndY - rect.height();
             descRectF.bottom = lineEndY + rect.height();
             descRectF.left = barWidth - textPaint.measureText(desc);
@@ -344,10 +353,13 @@ public class MonthlyBillView extends View {
             bitmapCanvas.drawLine(lineEndX,lineEndY,0,lineEndY,linePaint);
             textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,10));
             textPaint.getTextBounds("消", 0, 1, rect);
-            bitmapCanvas.drawText(desc,0,lineEndY+rect.height()+ScreenUtils.dpToPxInt(mContext, 2),textPaint);
+//            bitmapCanvas.drawText(desc,0,lineEndY+rect.height()+ScreenUtils.dpToPxInt(mContext, 2),textPaint);
+            bitmapCanvas.drawText(desc , 0 , getBaseLineY(lineEndY + (rect.height() /2)) + ScreenUtils.dpToPxInt(mContext ,2),textPaint );
             textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,12));
             textPaint.getTextBounds("消", 0, 1, rect);
-            bitmapCanvas.drawText(amount,0,lineEndY-ScreenUtils.dpToPxInt(mContext, 4),textPaint);
+//            bitmapCanvas.drawText(amount,0,lineEndY-ScreenUtils.dpToPxInt(mContext, 4),textPaint);
+
+            bitmapCanvas.drawText(amount , 0 , getBaseLineY(lineEndY - (rect.height() /2)) - ScreenUtils.dpToPxInt(mContext ,2),textPaint );
             descRectF.top = lineEndY - rect.height();
             descRectF.bottom = lineEndY + rect.height();
             descRectF.left = 0;
@@ -355,6 +367,17 @@ public class MonthlyBillView extends View {
         }
         return descRectF;
     }
+    
+
+    private int getBaseLineY(float  rectCenterY){
+        Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
+        float top = fontMetrics.top;//为基线到字体上边框的距离,即上图中的top
+        float bottom = fontMetrics.bottom;//为基线到字体下边框的距离,即上图中的bottom
+
+        int baseLineY = (int) (rectCenterY - top/2 - bottom/2);//基线中间点的y轴计算公式
+        return baseLineY ;
+    }
+
 
     public void setOnSelectedListener(OnSelectedListener l){
         mListener = l;

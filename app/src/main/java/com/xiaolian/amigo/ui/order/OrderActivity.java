@@ -132,7 +132,7 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
                 return false;
             }
         });
-        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
+//        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setAdapter(adaptor);
     }
 
