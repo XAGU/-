@@ -779,16 +779,6 @@ public class BalanceListFragment extends Fragment {
 
 
     void onRefresh() {
-//        if (items.size() > 0) {
-//            BillListAdaptor.BillListAdaptorWrapper item = items.get(0);
-//            lastId = item.getDetailId();
-//        }
-//
-//        if (tempItems.size() > 0) {
-//            BillListAdaptor.BillListAdaptorWrapper item = tempItems.get(0);
-//            lastId = item.getDetailId();
-//        }
-
         //  初始化年月日
         if (isInitData) {
             initTimeStr();
@@ -803,6 +793,7 @@ public class BalanceListFragment extends Fragment {
     void onRefresh(List<BillListAdaptor.BillListAdaptorWrapper> wrappers) {
         hideEmptyView();
         hideErrorView();
+        recyclerView.setVisibility(View.VISIBLE);
         items.clear();
         if (wrappers.size() <= 0 )  /*没有新的数据，并且没有临时存储的数据*/ {
                 showEmptyView(R.string.empty_tip_1);
@@ -838,6 +829,7 @@ public class BalanceListFragment extends Fragment {
     public void addMore(List<BillListAdaptor.BillListAdaptorWrapper> wrappers) {
         hideEmptyView();
         hideErrorView();
+        recyclerView.setVisibility(View.VISIBLE);
         if (wrappers.size() <= 0 && tempItems.size() <= 0)  /*没有新的数据，并且没有临时存储的数据*/ {
             if (items.size() <= 0) {
                 showEmptyView(R.string.empty_tip_1);
@@ -913,6 +905,8 @@ public class BalanceListFragment extends Fragment {
 //            rlEmpty.setBackgroundResource(colorRes);
             tvEmptyTip.setText(tip);
         }
+        hideErrorView();
+        recyclerView.setVisibility(View.GONE);
     }
 
     public void hideEmptyView() {
@@ -927,6 +921,8 @@ public class BalanceListFragment extends Fragment {
 
     public void showErrorView(int colorRes) {
         rlError.setVisibility(View.VISIBLE);
+        hideEmptyView();
+        recyclerView.setVisibility(View.GONE);
 //        rlError.setBackgroundResource(colorRes);
     }
 
