@@ -1080,11 +1080,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     public void refreshProfile() {
-        PersonalExtraInfoDTO data = new PersonalExtraInfoDTO();
-        data.setAllBalance(Double.valueOf(presenter.getBalance()));
-        data.setBonusAmount(presenter.getBonusAmount());
-        data.setCredits(presenter.getCredits());
-        EventBus.getDefault().post(data);
+        try {
+            PersonalExtraInfoDTO data = new PersonalExtraInfoDTO();
+            data.setAllBalance(Double.valueOf(presenter.getBalance()));
+            data.setBonusAmount(presenter.getBonusAmount());
+            data.setCredits(presenter.getCredits());
+            EventBus.getDefault().post(data);
+        }catch (NumberFormatException e){
+            android.util.Log.e(TAG, "refreshProfile: " + e.getMessage() );
+        }
     }
 
     public void showPrepayDialog(int type, int prepaySize, DeviceCheckRespDTO data) {
