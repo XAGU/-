@@ -192,7 +192,7 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
         } else {
             SaveLostAndFoundReportDTO reqDTO = new SaveLostAndFoundReportDTO();
             reqDTO.setId(commentId);
-            reqDTO.setType(3);
+            reqDTO.setType(2);
             addObserver(lostAndFoundManager.report(reqDTO),
                     new NetworkObserver<ApiResult<SimpleRespDTO>>(){
 
