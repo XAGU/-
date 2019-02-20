@@ -814,7 +814,7 @@ public class BalanceListFragment extends Fragment {
             BillListAdaptor.BillListAdaptorWrapper item = tempItems.get(tempItems.size() - 1);
             lastId = item.getDetailId();
         }
-
+        ((BalanceDetailListActivity) getActivity()).presenter.resetPage(false);
         ((BalanceDetailListActivity) getActivity()).presenter.getUserBillList(timeStr, billType, billStatus, lastId, false, 20);
     }
 
