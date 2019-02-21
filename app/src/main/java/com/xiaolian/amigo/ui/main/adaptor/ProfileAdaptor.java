@@ -2,10 +2,12 @@ package com.xiaolian.amigo.ui.main.adaptor;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.VersionUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -32,6 +34,9 @@ public class ProfileAdaptor extends CommonAdapter<ProfileAdaptor.Item> {
 
     @Override
     protected void convert(ViewHolder holder, Item item, int position) {
+        if (VersionUtils.isUpLollipop()){
+            holder.setBackgroundRes(R.id.ll_profile ,R.drawable.custom_bg);
+        }
         holder.setImageResource(R.id.imageLeft, item.getLeftImageId());
         holder.setText(R.id.textMid, item.getText());
         TextView rightTv = holder.getView(R.id.tv_amount);

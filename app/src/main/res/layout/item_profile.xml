@@ -4,9 +4,9 @@
     android:layout_height="wrap_content"
     xmlns:tool="http://schemas.android.com/tools"
     android:descendantFocusability="blocksDescendants"
-    android:background="@drawable/custom_bg"
+    android:id="@+id/ll_profile"
     >
-
+    <!--android:background="@drawable/custom_bg"-->
     <RelativeLayout
         android:id="@+id/rel"
         style="@style/ListItemRel"
