@@ -157,7 +157,7 @@ public class ProfileFragment2 extends BaseFragment {
                 return false;
             }
         });
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adaptor);
     }
 
@@ -345,7 +345,7 @@ public class ProfileFragment2 extends BaseFragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.REFRESH_NOTICE));
+//        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.REFRESH_NOTICE));
     }
 
     @Override

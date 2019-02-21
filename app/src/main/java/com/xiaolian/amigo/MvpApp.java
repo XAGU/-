@@ -17,6 +17,7 @@ package com.xiaolian.amigo;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -50,6 +51,7 @@ public class MvpApp extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        MultiDex.install(this);
         try {
             final ACRAConfiguration config = new ConfigurationBuilder(this)
                     .setFormUri(Constant.SERVER + "/android/crash/add")
