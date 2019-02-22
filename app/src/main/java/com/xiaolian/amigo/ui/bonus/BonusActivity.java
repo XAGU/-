@@ -13,14 +13,17 @@ import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusView;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.RxHelper;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import rx.functions.Action1;
 
 /**
  * 代金券Activity
@@ -87,7 +90,10 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        onRefresh();
+
+        //200毫秒
+        RxHelper.delay(200 , TimeUnit.MILLISECONDS)
+        .subscribe(integer -> onRefresh());
     }
 
     @Override
