@@ -90,6 +90,7 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
 
     @Override
     public void render(OrderDetailRespDTO orderDetailRespDTO) {
+        if (orderDetailRespDTO == null) return ;
         this.orderDetailRespDTO = orderDetailRespDTO;
 //        Order order = orderWrapper.getOrder();
         // 设置基础信息
@@ -140,6 +141,11 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
      */
     @OnClick(R.id.bt_ok)
     public void settleOrder() {
+
+        if (orderDetailRespDTO == null) {
+            onError("订单数据为空");
+            return ;
+        }
         String macAddress = orderDetailRespDTO.getMacAddress();
         String location = orderDetailRespDTO.getLocation();
         Intent intent = null;

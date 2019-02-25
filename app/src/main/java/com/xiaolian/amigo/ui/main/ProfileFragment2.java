@@ -184,10 +184,6 @@ public class ProfileFragment2 extends BaseFragment {
         return true;
     }
 
-
-
-
-
     /**
      * 点击昵称 跳转到编辑个人信息页面
      */
@@ -360,7 +356,6 @@ public class ProfileFragment2 extends BaseFragment {
          * 是否显示红点
          */
         private int num;
-
 
         public NoticeEvent(int num) {
             this.num = num;
