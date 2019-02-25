@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.vo.Bonus;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusView;
@@ -23,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import rx.functions.Action1;
 
 /**
  * 代金券Activity
@@ -92,8 +90,8 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
         super.onNewIntent(intent);
 
         //200毫秒
-        RxHelper.delay(200 , TimeUnit.MILLISECONDS)
-        .subscribe(integer -> onRefresh());
+        RxHelper.delay(200, TimeUnit.MILLISECONDS)
+                .subscribe(integer -> onRefresh());
     }
 
     @Override
@@ -103,8 +101,8 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
                 getSubTitle().setTextColor(ContextCompat.getColor(this, R.color.colorBlue));
                 getSubTitle().setOnClickListener(v -> {
                     Intent intent = new Intent();
-                    intent.putExtra(INTENT_IS_USE_BONUS , false);
-                    setResult(RESULT_CANCELED ,intent);
+                    intent.putExtra(INTENT_IS_USE_BONUS, false);
+                    setResult(RESULT_CANCELED, intent);
                     finish();
                 });
 
@@ -112,8 +110,8 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
                 tvTitleThird.setTextColor(ContextCompat.getColor(this, R.color.colorBlue));
                 tvTitleThird.setOnClickListener(v -> {
                     Intent intent = new Intent();
-                    intent.putExtra(INTENT_IS_USE_BONUS , false);
-                    setResult(RESULT_CANCELED ,intent);
+                    intent.putExtra(INTENT_IS_USE_BONUS, false);
+                    setResult(RESULT_CANCELED, intent);
                     finish();
                 });
 
