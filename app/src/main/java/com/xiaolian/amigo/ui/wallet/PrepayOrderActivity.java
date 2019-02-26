@@ -9,7 +9,6 @@ import com.xiaolian.amigo.data.base.TimeHolder;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserCategory;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
-import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
@@ -18,7 +17,6 @@ import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.order.OrderConstant;
-import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayOrderPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayOrderView;
 import com.xiaolian.amigo.util.CommonUtil;
@@ -69,7 +67,7 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
     @BindView(R.id.tv_prepay_order_tip)
     TextView tvPrepayOrderTip;
 
-//    private PrepayAdaptor.OrderWrapper orderWrapper;
+    //    private PrepayAdaptor.OrderWrapper orderWrapper;
     private OrderDetailRespDTO orderDetailRespDTO;
 
     private Long orderId;
@@ -83,14 +81,14 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         presenter.onAttach(PrepayOrderActivity.this);
 
         setToolBarTitle(orderTitle);
-        if (orderId > 0) /*获取订单信息*/{
+        if (orderId > 0) /*获取订单信息*/ {
             presenter.getOrder(orderId);
         }
     }
 
     @Override
     public void render(OrderDetailRespDTO orderDetailRespDTO) {
-        if (orderDetailRespDTO == null) return ;
+        if (orderDetailRespDTO == null) return;
         this.orderDetailRespDTO = orderDetailRespDTO;
 //        Order order = orderWrapper.getOrder();
         // 设置基础信息
@@ -144,7 +142,7 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
 
         if (orderDetailRespDTO == null) {
             onError("订单数据为空");
-            return ;
+            return;
         }
         String macAddress = orderDetailRespDTO.getMacAddress();
         String location = orderDetailRespDTO.getLocation();

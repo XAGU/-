@@ -46,7 +46,7 @@ implements IFindBathroomPasswordPresenter<V>{
                 button.setEnabled(true);
                 if(null == result.getError() ){
                     getMvpView().onSuccess("浴室密码更新成功");
-                    manager.setBathroomPassword();
+                    manager.setBathroomPassword(true);
                     getMvpView().backToCenter();
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());

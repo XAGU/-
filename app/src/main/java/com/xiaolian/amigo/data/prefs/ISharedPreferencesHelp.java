@@ -245,5 +245,15 @@ public interface ISharedPreferencesHelp {
      */
     int getUnReadWorkMessageCount();
 
+    /**
+     * 是否设置浴室密码
+     * @param isHadSetBathPassword
+     */
+    void setHadSetBathPassword(boolean isHadSetBathPassword);
 
+    /**
+     * 获取是否设置浴室密码
+     * @param
+     */
+    boolean isHadSetBathPassword();
 }

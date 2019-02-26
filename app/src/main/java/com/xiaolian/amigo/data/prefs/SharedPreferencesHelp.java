@@ -164,6 +164,8 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     private static final String PREF_UNREAD_WORK_MESSAGE_COUNT = "PREF_UNREAD_WORK_MESSAGE_COUNT";
 
+    private static final String PREF_IS_SET_BATH_PASSWORD = "PREF_IS_SET_BATH_PASSWORD";
+
     private User userHolder;
 
     private boolean showUrgencyNotify = true;
@@ -820,6 +822,16 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public int getUnReadWorkMessageCount() {
         return mSharedPreferences.getInt(PREF_UNREAD_WORK_MESSAGE_COUNT ,0);
+    }
+
+    @Override
+    public void setHadSetBathPassword(boolean isHadSetBathPassword) {
+         mSharedPreferences.edit().putBoolean(PREF_IS_SET_BATH_PASSWORD ,isHadSetBathPassword).apply();
+    }
+
+    @Override
+    public boolean isHadSetBathPassword() {
+        return mSharedPreferences.getBoolean(PREF_IS_SET_BATH_PASSWORD,false);
     }
 
 

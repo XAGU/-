@@ -333,15 +333,14 @@ public class UserDataManager implements IUserDataManager {
             sharedPreferencesHelp.saveDeviceCategory(deviceCategories);
         }
 
-
     @Override
     public Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(DeviceCheckReqDTO reqDTO) {
         return deviceApi.checkDeviceUseage(reqDTO);
     }
 
     @Override
-    public void setBathroomPassword() {
-        sharedPreferencesHelp.getUserInfo().setHadSetBathPassword(true);
+    public void setBathroomPassword(boolean isHadSetBathPassword) {
+        sharedPreferencesHelp.setHadSetBathPassword(isHadSetBathPassword);
     }
 
     @Override
@@ -354,15 +353,6 @@ public class UserDataManager implements IUserDataManager {
         return sharedPreferencesHelp.getRoomId();
     }
 
-
-    public void setBathroomPassword(String password){
-        sharedPreferencesHelp.setBathroomPassword(password);
-    }
-
-
-    public String getBathroomPassword(){
-       return sharedPreferencesHelp.getBathroomPassword();
-    }
 
     @Override
     public Observable<ApiResult<SchoolNameListRespDTO>> getSchoolNameList() {

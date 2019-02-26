@@ -112,7 +112,7 @@ public class BathroomDataManager implements IBathroomDataManager {
 
     @Override
     public boolean getBathroomPassword() {
-        return iSharedPreferencesHelp.getUserInfo().isHadSetBathPassword();
+        return iSharedPreferencesHelp.isHadSetBathPassword();
     }
 
     @Override

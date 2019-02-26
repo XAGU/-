@@ -96,7 +96,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     }
 
                     isHadSetBathPassword = result.getData().isHadSetBathPassword();
-                    userDataManager.setBathroomPassword();
+                    userDataManager.setBathroomPassword(isHadSetBathPassword);
                     if (result.getData().getSex() != null) {
                         getMvpView().setSex(result.getData().getSex());
                     }

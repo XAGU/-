@@ -290,16 +290,11 @@ public interface IUserDataManager {
      * 首页设备用水校验
      */
     Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(@Body DeviceCheckReqDTO reqDTO);
-    void setBathroomPassword();
+    void setBathroomPassword(boolean isHadSetPassword);
 
     void setRoomId(Long residenceId);
 
     Long getRoomId();
-
-    public void setBathroomPassword(String password);
-
-    public String getBathroomPassword();
-
 
     /**
      * 获取学校列表
