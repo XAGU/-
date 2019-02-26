@@ -1427,7 +1427,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     private void gotoDryer2(){
-        startActivity(new Intent(this, WasherActivity2.class));
+//        startActivity(new Intent(this, WasherActivity2.class));
+
+        Intent intent = new Intent(this,WebActivity.class);
+        String url = BuildConfig.H5_SERVER +"/dryer" + "?accessToken=" + presenter.getAccessToken()+"&refreshToken=" +presenter.getRefreshToken() + "&schoolId=" + presenter.getSchoolId();
+        intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL,url);
+        startActivity(intent);
     }
 
 

@@ -248,13 +248,32 @@ public class ScanActivity extends WasherBaseActivity
             }
             return;
 
-        }else if (scanContent.startsWith("https://www.xiaolian365.com/apply/device/3")){  //  扫码吹风机
-            String[]  params = scanContent.split("/");
-            if (params.length > 0){
-                String unique = params[params.length -1];  //  最后一个/后的内容就为该设备唯一标识值
+        }else if (scanContent.startsWith("https://www.xiaolian365.com/apply/device/3")) {  //  扫码吹风机
+            String[] params = scanContent.split("/");
+            if (params.length > 0) {
+                String unique = params[params.length - 1];  //  最后一个/后的内容就为该设备唯一标识值
                 presenter.getDeviceDetail(unique);
-                return ;
+                return;
             }
+        }else if (scanContent.startsWith("https://www.xiaolian365.com/apply/device/6")){ // 烘干机
+            Intent intent = new Intent(this, WebActivity.class);
+            //联网新模式https://www.xiaolian365.com/apply/device/4/7/CH9527
+            String [] params = scanContent.split("/");
+            String sid = params[6];
+            String deviceType = params[5];
+            String deviceNo = params[7];
+            String url = BuildConfig.H5_SERVER
+                    + "/dryer"
+                    + "?accessToken=" + presenter.getAccessToken()
+                    +"&refreshToken=" + presenter.getRefreshToken()
+                    + "&schoolId=" + presenter.getUserInfo().getSchoolId()
+                    + "&supplierId=" + sid
+                    + "&deviceType=" + deviceType
+                    + "&deviceNo=" + deviceNo;
+                intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL, url);
+                startActivity(intent);
+                finish();
+            return;
         } else if (isDoubleWasher(scanContent)) {//是否是正反扫设备
             presenter.scanCheckout(scanContent,-1);
             return;
@@ -800,6 +819,21 @@ public class ScanActivity extends WasherBaseActivity
         }else if (QR_CODE.getPage().equals(data.getTradePage())){
             gotoH5Dryer(data.getDeviceType() ,unique , data.getSupplierId());
         }
+    }
+
+    @Override
+    public void gotoDryer(String deviceToken, String macAddress, int deviceType) {
+        String url = BuildConfig.H5_SERVER
+                + "/dryer" + "?accessToken=" + presenter.getAccessToken()
+                +"&refreshToken=" + presenter.getRefreshToken()
+                + "&shcoolId=" + presenter.getUserInfo().getSchoolId()
+                + "&deviceToken=" + deviceToken
+                + "&deviceType=" + deviceType
+                + "&macAddress=" + macAddress;
+            Intent intent = new Intent(this, WebActivity.class);
+            intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL, url);
+            startActivity(intent);
+            finish();
     }
 
     private void gotoH5Dryer(int deviceType ,String unique , long supplierId ){
