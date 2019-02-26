@@ -350,4 +350,9 @@ public class MainDataManager implements IMainDataManager {
         sharedPreferencesHelp.saveUnReadWorkMessageCount(unReadWorkOrderRemarkMessageCount);
     }
 
+    @Override
+    public void clearUpdateRemindTime() {
+        sharedPreferencesHelp.clearUpdateRemindTime();
+    }
+
 }

@@ -90,6 +90,11 @@ public class LoginDataManager implements ILoginDataManager {
     }
 
     @Override
+    public void clearUpdateRemindTime() {
+        sharedPreferencesHelp.clearUpdateRemindTime();
+    }
+
+    @Override
     public Observable<ApiResult<LoginRespDTO>> registerAlipay(@Body AlipayBindReq body) {
         return loginApi.registerAlipay(body);
     }

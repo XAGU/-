@@ -834,6 +834,11 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
         return mSharedPreferences.getBoolean(PREF_IS_SET_BATH_PASSWORD,false);
     }
 
+    @Override
+    public void clearUpdateRemindTime() {
+        mUnclearSharedPreferences.edit().putString(PREF_LAST_UPDATE_REMIND_TIME ,"").apply();
+    }
+
 
     @Override
     public void logout() {

@@ -637,7 +637,9 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                             if (result.getData().getResult()) {
                                 if (result.getData().getVersion().isMustUpdate()) {
                                     getMvpView().showUpdateDialog(result.getData().getVersion());
-                                    loginDataManager.setLastUpdateRemindTime(remindMobile);
+
+                                    // 清除所有记录的更新时间，目的是为了强更之后的下一个普通更新必弹窗
+                                    loginDataManager.clearUpdateRemindTime();
                                 } else {
                                     // 小于6小时不再提醒
                                     VersionDialogTime versionDialogTime = loginDataManager.getLastUpdateRemindTime() ;

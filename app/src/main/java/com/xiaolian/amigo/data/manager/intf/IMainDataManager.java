@@ -201,4 +201,6 @@ public interface IMainDataManager {
      * @param unReadWorkOrderRemarkMessageCount
      */
     void saveUnReadWorkMessageCount(int unReadWorkOrderRemarkMessageCount);
+
+    void clearUpdateRemindTime();
 }

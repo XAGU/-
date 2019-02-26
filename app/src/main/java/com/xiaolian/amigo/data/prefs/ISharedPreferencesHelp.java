@@ -256,4 +256,6 @@ public interface ISharedPreferencesHelp {
      * @param
      */
     boolean isHadSetBathPassword();
+
+    void clearUpdateRemindTime();
 }

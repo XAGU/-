@@ -128,4 +128,6 @@ public interface ILoginDataManager {
     VersionDialogTime getLastUpdateRemindTime();
 
     void setLastUpdateRemindTime(String mobile);
+
+    void clearUpdateRemindTime();
 }
