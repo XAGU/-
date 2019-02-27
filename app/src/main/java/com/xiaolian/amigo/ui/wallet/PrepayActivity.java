@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.order.OrderConstant;
 import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayView;
@@ -53,7 +54,8 @@ public class PrepayActivity extends WalletBaseListActivity implements IPrepayVie
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 startActivity(new Intent(PrepayActivity.this, PrepayOrderActivity.class)
-                        .putExtra(Constant.EXTRA_KEY, orders.get(position)));
+                        .putExtra(OrderConstant.KEY_ORDER_ID, orders.get(position).getOrder().getId())
+                        .putExtra(OrderConstant.KEY_ORDER_TITLE ,"待找零订单"));
             }
 
             @Override

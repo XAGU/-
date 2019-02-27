@@ -79,7 +79,6 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(PrepayOrderActivity.this);
-
         setToolBarTitle(orderTitle);
         if (orderId > 0) /*获取订单信息*/ {
             presenter.getOrder(orderId);
