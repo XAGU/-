@@ -121,7 +121,7 @@ public class CreditsAdapter extends CommonAdapter<CreditsAdapter.CreditsItem> {
                 case DISPENSER:
                     return R.drawable.bg_credit_dispenser;
                 case DRYER2:
-                    return R.drawable.bg_credit_hairdryer ;
+                    return R.drawable.bg_credit_dryer2 ;
             }
             return 0;
         }

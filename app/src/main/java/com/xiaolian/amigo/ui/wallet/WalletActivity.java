@@ -162,6 +162,7 @@ public class WalletActivity extends BaseActivity implements IWalletView {
         viewLine.setVisibility(visiable);
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();

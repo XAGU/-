@@ -114,7 +114,7 @@ public enum Device {
 
         @Override
         public int getDrawableRes() {
-            return R.drawable.hongganji_long;
+            return R.drawable.dryer2;
         }
 
         @Override

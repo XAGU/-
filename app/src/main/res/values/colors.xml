@@ -76,7 +76,7 @@
     <color name="device_dispenser">#00d3c7</color>
     <color name="device_dryer">#fddd5a</color>
     <color name="device_washer">#499BFF</color>
-    <color name="device_dryer2">#ff9aed</color>
+    <color name="device_dryer2">#8E8EFF</color>
 
     <color name="repair_todo">@color/colorFullRed</color>
     <color name="repair_doing">@color/colorYellow</color>

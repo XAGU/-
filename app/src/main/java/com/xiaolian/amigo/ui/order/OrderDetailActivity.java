@@ -412,6 +412,8 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
                 return "#21FF4E80";
             case DRYER:
                 return "#33F8B646";
+            case DRYER2:
+                return "#E3E3FF";
         }
         return "#21FF4E80";
     }
