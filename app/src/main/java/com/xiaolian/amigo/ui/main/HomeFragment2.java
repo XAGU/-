@@ -97,7 +97,7 @@ public class HomeFragment2 extends BaseFragment {
             R.drawable.gate, R.drawable.small_gate);
     HomeAdaptor.ItemWrapper dryer1 = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE ,
             null ,"烘干机","DRYER" ,
-            R.drawable.hongganji_long , R.drawable.hongganji_short);
+            R.drawable.dryer2 , R.drawable.small_dryer2);
 //    HomeAdaptor.ItemWrapper lost = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
 //            null, "失物招领", "LOST AND FOUND",
 //            R.drawable.lost, R.drawable.small_lost);
@@ -256,7 +256,7 @@ public class HomeFragment2 extends BaseFragment {
                             EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
                         } else if (items.get(position).getRes() == R.drawable.gate) {
                             EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_GATE));
-                        }else if (items.get(position).getRes() == R.drawable.hongganji_long){
+                        }else if (items.get(position).getRes() == R.drawable.dryer2){
                             EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRAYER2));
                         }
                     }

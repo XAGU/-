@@ -13,9 +13,6 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Locale;
-
-import lombok.Data;
 
 /**
  * BonusAdaptor
@@ -211,7 +208,7 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
                 case DISPENSER:
                     return R.drawable.bg_bonus_dispenser;
                 case DRYER2:
-                    return R.drawable.bg_bonus_dryer2 ;
+                    return R.drawable.bg_bonus_dryer2;
             }
             return R.drawable.bg_bonus_heater;
         }
