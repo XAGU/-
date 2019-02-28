@@ -171,7 +171,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
 
-    public void setPresenter(IMainPresenter <IMainView> mainPresenter) {
+    public void setPresenter(IMainPresenter<IMainView> mainPresenter) {
         this.mainPresenter = mainPresenter;
     }
 
@@ -201,11 +201,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         return rootView;
     }
 
-    private void setErrorNetListener(){
+    private void setErrorNetListener() {
         if (errorNetLayout != null)
             errorNetLayout.setReferListener(() -> initView());
     }
-
 
 
     /**
@@ -366,12 +365,14 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     protected void initView() {
-        android.util.Log.e(TAG, "initView: "  );
+        android.util.Log.e(TAG, "initView: ");
         if (mSocialTagDatas == null || mSocialTagDatas.size() == 0) presenter.getTopicList();
-         if (null != mainPresenter) {
-             mainPresenter.getNoticeAmount();
-         }
-        presenter.getLostList("", 1, "", 0);
+        if (null != mainPresenter) {
+            mainPresenter.getNoticeAmount();
+        }
+
+        //  在外层Fragment中不需要请求详情数据
+//        presenter.getLostList("", 1, "", 0);
 
     }
 
@@ -402,7 +403,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
         moveLeft = moveLeft - ScreenUtils.dpToPxInt(mActivity, 4);
         int oldLeft = titleBorder.getLeft();
-
 
 
         int maxWidth;
@@ -544,8 +544,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (hidden){
-            if (loadingAnimator !=null){
+        if (hidden) {
+            if (loadingAnimator != null) {
                 if (loadingAnimator.isRunning()) loadingAnimator.cancel();
             }
         }
@@ -737,25 +737,25 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void showErrorLayout() {
         if (errorNetLayout != null)
-        errorNetLayout.setVisibility(View.VISIBLE);
+            errorNetLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideErrorLayout() {
         if (errorNetLayout != null)
-        errorNetLayout.setVisibility(View.GONE);
+            errorNetLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void showTagLayout() {
         if (tagRl != null)
-        tagRl.setVisibility(View.VISIBLE);
+            tagRl.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideTagLayout() {
         if (tagRl != null)
-        tagRl.setVisibility(View.GONE);
+            tagRl.setVisibility(View.GONE);
     }
 
 

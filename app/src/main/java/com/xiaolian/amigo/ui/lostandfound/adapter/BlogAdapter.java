@@ -10,16 +10,16 @@ import com.xiaolian.amigo.ui.lostandfound.BlogFragment;
 
 import java.util.List;
 
-public class BlogAdapter  extends FragmentPagerAdapter{
+public class BlogAdapter extends FragmentPagerAdapter {
 
-    private List<BlogFragment>  baseFragments ;
+    private List<BlogFragment> baseFragments;
 
-    private FragmentManager fm ;
+    private FragmentManager fm;
 
-    public BlogAdapter(FragmentManager fm , List<BlogFragment> baseFragments) {
+    public BlogAdapter(FragmentManager fm, List<BlogFragment> baseFragments) {
         super(fm);
-        this.fm = fm ;
-        this.baseFragments = baseFragments ;
+        this.fm = fm;
+        this.baseFragments = baseFragments;
     }
 
 
@@ -35,15 +35,15 @@ public class BlogAdapter  extends FragmentPagerAdapter{
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        BlogFragment baseFragment = (BlogFragment) super.instantiateItem(container , position);
+        BlogFragment baseFragment = (BlogFragment) super.instantiateItem(container, position);
         this.fm.beginTransaction().show(baseFragment).commit();
-        return baseFragment ;
+        return baseFragment;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         if (baseFragments == null || position == -1 ||
-                baseFragments.get(position) == null && baseFragments.size() == position) return ;
+                baseFragments.get(position) == null && baseFragments.size() == position) return;
         BaseFragment fragment = baseFragments.get(position);
         this.fm.beginTransaction().hide(fragment).commit();
 
