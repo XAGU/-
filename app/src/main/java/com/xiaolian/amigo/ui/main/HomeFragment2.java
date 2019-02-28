@@ -435,7 +435,7 @@ public class HomeFragment2 extends BaseFragment {
                 currentBusinessSize += 1;
                 if (shower.isExistOrder()){
                     needNotify = true ;
-                    shower.setExistOrder(false);
+                    shower.setExistOrder(true);
                 }
             } else if (business.getBusinessId() == 3) {
                 dryer.setActive(true);
@@ -594,11 +594,12 @@ public class HomeFragment2 extends BaseFragment {
      * @param event
      */
     private void checkTitleTip(CurrentBathOrderRespDTO event) {
-        shower.setExistOrder(true);
         shower.setStatus(event.getStatus());
-        if (shower.getStatus() == 1) {
+        if (shower.getStatus() == 1) {  // 表明空闲
             shower.setUsing(false);
         } else {
+             //  表明有公共浴室订单状态
+            shower.setExistOrder(true);
             shower.setUsing(true);
         }
         notifyAdaptor();

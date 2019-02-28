@@ -45,6 +45,7 @@ public class HomeSmallDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapp
 
     @Override
     public void convert(ViewHolder holder, HomeAdaptor.ItemWrapper itemWrapper, int position) {
+        Log.e(TAG, "convert: " + itemWrapper );
         if (itemWrapper.isActive()) {
             holder.itemView.setVisibility(View.VISIBLE);
         } else {
