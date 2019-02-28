@@ -90,6 +90,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     /******************** 底部线条 **********************/
     View vBottomLine1;
     View vBottomLine2;
+    private LinearLayout llTip ;
     private TextView right_oper;
 
     Unbinder unbinder ;
@@ -116,6 +117,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         llBottom = findViewById(R.id.ll_bottom);
         tvBottomTip = findViewById(R.id.tv_bottom_tip);
         right_oper = findViewById(R.id.right_oper);
+        llTip = findViewById(R.id.ll_tip);
         tv_order_title = findViewById(R.id.tv_order_title);
     }
 
@@ -194,6 +196,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         }
         List<TitleContentListDelegate.ListItem> listItems = new ArrayList<>();
         if (ObjectsCompat.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
+//            llTip.setVisibility(View.VISIBLE);
             llOrderError.setVisibility(View.VISIBLE);
             // 异常账单
             // 是否有代金券
@@ -216,6 +219,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         } else {
             // 正常账单
             // 是否有代金券
+//            llTip.setVisibility(View.GONE);
             llOrderError.setVerticalGravity(View.GONE);
             if (TextUtils.isEmpty(data.getBonus())) {
                 // 没有代金券
@@ -227,13 +231,16 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
             }
             items.add(new TitleContentListDelegate.TitleContentListItem(listItems, WithdrawRechargeDetailAdapter.TITLE_CONTENT_LIST_TYPE));
             adapter.notifyDataSetChanged();
-            setBottomLayout(data);
+            if ((data.getDeviceType() == Device.DRYER2.getType()
+            || data.getDeviceType() == Device.WASHER.getType()) && data.isNetWashing()) llBottom.setVisibility(View.GONE);
+            else setBottomLayout(data);
         }
 
     }
 
     private void setBottomLayout(OrderDetailRespDTO data) {
         Log.e(TAG, "setBottomLayout: " + data.isNetWashing()  );
+        llBottom.setVisibility(View.VISIBLE);
         vBottomLine1.setBackgroundColor(Color.parseColor(OrderDetailActivity.getLineColorByDeviceType(data.getDeviceType())));
         vBottomLine1.setVisibility(View.VISIBLE);
         vBottomLine2.setBackgroundColor(Color.parseColor(OrderDetailActivity.getLineColorByDeviceType(data.getDeviceType())));
@@ -243,6 +250,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         if (Device.getDevice(data.getDeviceType()) == Device.WASHER || Device.getDevice(data.getDeviceType()) == Device.DRYER2 ) {
             if (ObjectsCompat.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
                 // 异常订单
+
                 tvBottomTip.setVisibility(View.VISIBLE);
                 // 设置服务器返回的文案
                 if (!TextUtils.isEmpty(data.getZeroConsumeCopy())) {

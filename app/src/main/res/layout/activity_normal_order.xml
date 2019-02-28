@@ -94,7 +94,9 @@
             android:background="@color/white"
             android:orientation="vertical"
             android:paddingLeft="14dp"
-            android:paddingRight="14dp">
+            android:paddingRight="14dp"
+            android:visibility="gone"
+            android:id="@+id/ll_tip">
 
             <View
                 android:id="@+id/v_bottom_line1"
