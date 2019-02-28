@@ -342,7 +342,6 @@ public class HomeFragment2 extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
     public void onBannerEvent(List<BannerDTO> banners) {
@@ -351,7 +350,7 @@ public class HomeFragment2 extends BaseFragment {
                 items.get(items.size() - 1).getType() == HomeAdaptor.SMALL_TYPE) {
             banner = new HomeAdaptor.ItemWrapper(HomeAdaptor.BANNER_TYPE, banners, null, null, 0, 0);
             items.add(banner);
-            adaptor.notifyItemInserted(items.size() - 1);
+            adaptor.notifyDataSetChanged();
         } else {
             if (!isBannersEqual(items.get(items.size() - 1).getBanners(), banners)) {
                 items.get(items.size() - 1).setBanners(banners);

@@ -91,6 +91,7 @@ public class SplashActivity extends MainBaseActivity implements ISplashView {
     @Override
     public void startMainServerNoResponse(ArrayList<BannerDTO> banners) {
         Log.i(TAG, "startMainServerNoResponse");
+        cancelTimer();
         Log.i(TAG, "clearObserver");
         presenter.clearObservers();
         startActivity(new Intent(this, MainActivity.class)
