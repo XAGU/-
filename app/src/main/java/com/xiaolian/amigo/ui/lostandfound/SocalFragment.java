@@ -168,6 +168,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         rootView = inflater.inflate(R.layout.fragment_socal, container, false);
         unbinder = ButterKnife.bind(this, rootView);
         mActivityComponent = DaggerLostAndFoundActivityComponent.builder()
@@ -856,14 +857,17 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
      * 根据标签添加Fragment
      */
     public void referFragment(List<BbsTopicListTradeRespDTO.TopicListBean> data) {
-        android.util.Log.e(TAG, "referFragment: " );
-        if (blogFragments == null && blogAdapter == null) return;
-        if (blogFragments.size() > 0) blogFragments.clear();
 
+        if (blogAdapter == null) return;
+        if (blogFragments == null) {
+            blogFragments = new ArrayList<>();
+        } else {
+            blogFragments.clear();
+        }
         for (BbsTopicListTradeRespDTO.TopicListBean topicListBean : data) {
-//            BlogFragment blogFragment = BlogFragment.newInstance(topicListBean.getTopicId());
-//            blogFragment.setScrollListener(this);
-            blogFragments.add(new BlogFragment(topicListBean.getTopicId() ,this));
+            BlogFragment blogFragment = BlogFragment.newInstance(topicListBean.getTopicId());
+            blogFragment.setScrollListener(this);
+            blogFragments.add(blogFragment);
         }
         blogAdapter.notifyDataSetChanged();
     }
@@ -983,7 +987,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
         if (moveDistance < socialTagHeight) {
             moveDistance += height;
-
             if (moveDistance < socialTagHeight) {
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
                 layoutParams.setMargins(0, -moveDistance, 0, 0);

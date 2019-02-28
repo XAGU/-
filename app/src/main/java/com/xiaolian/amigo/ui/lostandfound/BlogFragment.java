@@ -4,6 +4,7 @@ package com.xiaolian.amigo.ui.lostandfound;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -64,7 +65,7 @@ import static com.xiaolian.amigo.ui.lostandfound.SocalFragment.REQUEST_CODE_PHOT
  * @author zcd
  * 社交联子界面
  */
-public class BlogFragment extends BaseFragment implements IBlogView  , SocialImgAdapter.PhotoClickListener{
+public class BlogFragment extends BaseFragment implements IBlogView, SocialImgAdapter.PhotoClickListener {
 
 
     private static final String KEY_TOPICID = "KEY_TOPICID";
@@ -103,7 +104,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     Unbinder unbinder;
 
 
-    private  RefreshLayoutHeader header ;
+    private RefreshLayoutHeader header;
     /**
      * 刷新数据
      */
@@ -119,43 +120,38 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     private List<LostAndFoundDTO> mHotPotsData;
 
 
-    SocalContentAdapter mPotsAdapter ;
-    SocalContentAdapter mHotPotsAdapter ;
+    SocalContentAdapter mPotsAdapter;
+    SocalContentAdapter mHotPotsAdapter;
 
 
     // 订阅设备返回的消息
     private Subscription busSubscriber;
 
 
+    ScrollListener scrollListener;
 
-    ScrollListener scrollListener ;
-
-     public static BlogFragment newInstance(int topicId) {
+    public static BlogFragment newInstance(int topicId) {
 
         Bundle args = new Bundle();
-
         BlogFragment fragment = new BlogFragment();
-        args.putInt(KEY_TOPICID ,topicId);
+        args.putInt(KEY_TOPICID, topicId);
         fragment.setArguments(args);
         return fragment;
     }
 
 
-    public BlogFragment() {
-        // Required empty public constructor
-    }
-
-    @SuppressLint("ValidFragment")
-    public BlogFragment(int topicId , ScrollListener scrollListener) {
-
-         this.topicId = topicId;
-         this.scrollListener = scrollListener ;
-    }
-
-
     public void setReferTop(boolean referTop) {
         this.isReferTop = referTop;
-        presenter.getLostList("",1 ,"",0);
+        presenter.getLostList("", 1, "", 0);
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            topicId = getArguments().getInt(KEY_TOPICID);
+        }
     }
 
     @Override
@@ -179,33 +175,33 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     }
 
 
-    private void initScroll(){
-         scrollView.post(() -> scrollView.scrollBy(0 , ScreenUtils.dpToPxInt(mActivity , 64)));
-         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-             @Override
-             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+    private void initScroll() {
+        scrollView.post(() -> scrollView.scrollBy(0, ScreenUtils.dpToPxInt(mActivity, 64)));
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
-                    int onScrollDistance = scrollY - oldScrollY ;
-                 Log.d(TAG ,"  " + onScrollDistance);
-                        if (onScrollDistance > 0){  // 往下滑 ，tag标签往上走隐藏
-                            scrollListener.onUpMove(onScrollDistance);
-                            if (header != null)
-                                header.getView().setVisibility(View.GONE);
-                        }else{   // 往上滑， 标签往下走， 显示
-                            scrollListener.onDownMove(onScrollDistance);
-                        }
-                    }
-         });
+                int onScrollDistance = scrollY - oldScrollY;
+                if (onScrollDistance > 0) {  // 往下滑 ，tag标签往上走隐藏
+                    if (scrollListener != null)
+                        scrollListener.onUpMove(onScrollDistance);
+                    if (header != null)
+                        header.getView().setVisibility(View.GONE);
+                } else {   // 往上滑， 标签往下走， 显示
+                    if (scrollListener != null)
+                        scrollListener.onDownMove(onScrollDistance);
+                }
+            }
+        });
     }
 
 
-
-    private void initRxbus(){
+    private void initRxbus() {
         if (null == busSubscriber) {
             busSubscriber = RxBus.getDefault()
                     .toObservable(Intent.class)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::handlePostData ,throwable -> {
+                    .subscribe(this::handlePostData, throwable -> {
                         Log.wtf(TAG, "接收从Activity返回的数据失败 thread" + Thread.currentThread().getName(), throwable);
                     });
         }
@@ -215,7 +211,6 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG ,"onActivityResult");
         if (requestCode == REQUEST_CODE_DETAIL) {
             if (data != null) {
                 presenter.handleData(data);
@@ -225,31 +220,33 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
 
     /**
      * 收到从设备返回的数据，进行处理
+     *
      * @param data
      */
-    private void handlePostData(Intent data){
+    private void handlePostData(Intent data) {
         presenter.handleData(data);
     }
 
 
     @Override
     protected void initView() {
-        android.util.Log.e(TAG, "initView: " );
-        if ((mPotsData== null || mPotsData.size() == 0 )&& (mHotPotsData == null || mHotPotsData.size() ==0)) {
+
+        if ((mPotsData == null || mPotsData.size() == 0) && (mHotPotsData == null || mHotPotsData.size() == 0)) {
+
             requestNet();
         }
     }
 
-    private void initPage(){
-        page = 1 ;
+    private void initPage() {
+        page = 1;
     }
 
     /**
      * 网络请求
      */
-    protected void requestNet(){
+    protected void requestNet() {
         if (presenter != null)
-        presenter.getLostList("", page, "", topicId);
+            presenter.getLostList("", page, "", topicId);
     }
 
     @Override
@@ -270,7 +267,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
         mHotPotsAdapter = new SocalContentAdapter(mActivity, R.layout.item_socal, mHotPotsData, new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (position == -1 ) return ;
+                if (position == -1) return;
                 presenter.setCurrentHotPosition(position);
                 presenter.setCurrentChoosePosition(-1);
                 Intent intent = new Intent(mActivity, LostAndFoundDetailActivity2.class);
@@ -301,7 +298,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
         mPotsAdapter = new SocalContentAdapter(mActivity, R.layout.item_socal, mPotsData, new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (position == -1) return ;
+                if (position == -1) return;
                 presenter.setCurrentHotPosition(-1);
                 presenter.setCurrentChoosePosition(position);
                 Intent intent = new Intent(mActivity, LostAndFoundDetailActivity2.class);
@@ -377,7 +374,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
 
     @Override
     public void referPost(List<LostAndFoundDTO> posts) {
-        if (rlEmpty == null || rlContent == null || potTitle == null || pots == null) return ;
+        if (rlEmpty == null || rlContent == null || potTitle == null || pots == null) return;
         rlEmpty.setVisibility(View.GONE);
         rlContent.setVisibility(View.VISIBLE);
         potTitle.setVisibility(View.VISIBLE);
@@ -396,7 +393,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
                         @Override
                         public void run() {
                             if (scrollView == null) return;
-                            int scrollHeight = hotPots.getHeight()  +
+                            int scrollHeight = hotPots.getHeight() +
                                     hotPotTitle.getHeight() + ScreenUtils.dpToPxInt(mActivity, 43);
                             scrollView.scrollTo(0, scrollHeight);
                             pots.smoothScrollToPosition(0);
@@ -410,7 +407,8 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
 
     @Override
     public void referHotPost(List<LostAndFoundDTO> hotPosts) {
-        if (rlEmpty == null || rlError == null || rlContent == null  || hotPotTitle == null || hotPosts == null) return ;
+        if (rlEmpty == null || rlError == null || rlContent == null || hotPotTitle == null || hotPosts == null)
+            return;
         rlEmpty.setVisibility(View.GONE);
         rlError.setVisibility(View.GONE);
         rlContent.setVisibility(View.VISIBLE);
@@ -425,8 +423,8 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
 
     @Override
     public void removeHotAdapter(int currentHotPosition) {
-        if (mHotPotsData== null  || mHotPotsData.size() == 0 && currentHotPosition>=mHotPotsData.size()||
-                mHotPotsAdapter == null || currentHotPosition == -1) return ;
+        if (mHotPotsData == null || mHotPotsData.size() == 0 && currentHotPosition >= mHotPotsData.size() ||
+                mHotPotsAdapter == null || currentHotPosition == -1) return;
         mHotPotsData.remove(currentHotPosition);
         mHotPotsAdapter.notifyItemRemoved(currentHotPosition);
         mHotPotsAdapter.notifyItemRangeChanged(currentHotPosition, mHotPotsData.size());
@@ -434,8 +432,8 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
 
     @Override
     public void notifyHotAdapter(Intent data, int currentHotPosition) {
-        if (mHotPotsData== null  || mHotPotsData.size() == 0 && currentHotPosition>=mHotPotsData.size()||
-                mHotPotsAdapter == null || currentHotPosition == -1) return ;
+        if (mHotPotsData == null || mHotPotsData.size() == 0 && currentHotPosition >= mHotPotsData.size() ||
+                mHotPotsAdapter == null || currentHotPosition == -1) return;
         int liked = data.getIntExtra(KEY_LIKE, 0);
         int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
         int oldLiked = mHotPotsData.get(currentHotPosition).getLiked();
@@ -453,13 +451,13 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
         }
         mHotPotsData.get(currentHotPosition).setCommentsCount(commentCount);
 
-        mHotPotsAdapter.notifyItemChanged(currentHotPosition , "aa");
+        mHotPotsAdapter.notifyItemChanged(currentHotPosition, "aa");
     }
 
     @Override
     public void removePotItem(int currentChoosePosition) {
-        if (mPotsData== null  || mPotsData.size() == 0 && currentChoosePosition>=mPotsData.size()||
-                mPotsAdapter == null || currentChoosePosition == -1) return ;
+        if (mPotsData == null || mPotsData.size() == 0 && currentChoosePosition >= mPotsData.size() ||
+                mPotsAdapter == null || currentChoosePosition == -1) return;
         mPotsData.remove(currentChoosePosition);
         mPotsAdapter.notifyItemRemoved(currentChoosePosition);
         mPotsAdapter.notifyItemRangeChanged(currentChoosePosition, mPotsData.size());
@@ -467,8 +465,8 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
 
     @Override
     public void notifyPotAdapter(Intent data, int currentChoosePosition) {
-        if (mPotsData== null  || mPotsData.size() == 0 && currentChoosePosition>=mPotsData.size()||
-                mPotsAdapter == null || currentChoosePosition ==-1) return ;
+        if (mPotsData == null || mPotsData.size() == 0 && currentChoosePosition >= mPotsData.size() ||
+                mPotsAdapter == null || currentChoosePosition == -1) return;
         int liked = data.getIntExtra(KEY_LIKE, 0);
         int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
         int oldLiked = mPotsData.get(currentChoosePosition).getLiked();
@@ -486,7 +484,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
         }
         mPotsData.get(currentChoosePosition).setCommentsCount(commentCount);
 
-        mPotsAdapter.notifyItemChanged(currentChoosePosition , "aa");
+        mPotsAdapter.notifyItemChanged(currentChoosePosition, "aa");
     }
 
     @Override
@@ -503,7 +501,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
 
     @Override
     public void onErrorView() {
-        if (rlError == null || rlEmpty == null || rlContent == null) return ;
+        if (rlError == null || rlEmpty == null || rlContent == null) return;
         rlError.setVisibility(View.VISIBLE);
         rlEmpty.setVisibility(View.GONE);
         rlContent.setVisibility(View.GONE);
@@ -513,12 +511,12 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     @Override
     public void onEmpty() {
         if (rlEmpty != null)
-        rlEmpty.setVisibility(View.VISIBLE);
+            rlEmpty.setVisibility(View.VISIBLE);
         if (rlError != null)
-        rlError.setVisibility(View.GONE);
+            rlError.setVisibility(View.GONE);
 
         if (rlContent != null)
-        rlContent.setVisibility(View.GONE);
+            rlContent.setVisibility(View.GONE);
     }
 
     @Override
@@ -541,11 +539,11 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     @Override
     public void notifyAdapter(int position, boolean b) {
         if (mPotsAdapter != null) {
-            mPotsAdapter.notifyItemChanged(position ,"bbb");
+            mPotsAdapter.notifyItemChanged(position, "bbb");
         }
 
         if (mHotPotsAdapter != null && position < 3) {
-            mHotPotsAdapter.notifyItemChanged(position , "aaa");
+            mHotPotsAdapter.notifyItemChanged(position, "aaa");
         }
     }
 
@@ -565,9 +563,15 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
         if (busSubscriber != null) busSubscriber.unsubscribe();
     }
 
+    public void setScrollListener(ScrollListener scrollListener) {
+        if (this.scrollListener == null) {
+            this.scrollListener = scrollListener;
+        }
+    }
 
-    interface ScrollListener{
-        void onUpMove(int height) ;
+
+    interface ScrollListener {
+        void onUpMove(int height);
 
         void onDownMove(int height);
     }
