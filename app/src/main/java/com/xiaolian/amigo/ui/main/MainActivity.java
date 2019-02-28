@@ -47,7 +47,6 @@ import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
-import com.xiaolian.amigo.ui.device.washer.WasherActivity2;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2;
 import com.xiaolian.amigo.ui.lostandfound.SocalFragment;
 import com.xiaolian.amigo.ui.lostandfound.WriteLZActivity;
@@ -111,7 +110,7 @@ import static com.xiaolian.amigo.util.Log.getContext;
 public class MainActivity extends MainBaseActivity implements IMainView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    public static final int WRITE_BLOG = 0x11 ;
+    public static final int WRITE_BLOG = 0x11;
     public static final String INTENT_KEY_MAC_ADDRESS = "intent_key_mac_address";
     public static final String INTENT_KEY_LOCATION = "intent_key_location";
     public static final String INTENT_KEY_SUPPLIER_ID = "intent_key_supplier_id";
@@ -125,18 +124,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static final String INTENT_KEY_AFTER_ORDER_COPY = "intent_key_after_order_copy";
 
     // 保存上一个点击的fragment
-    private static final String KEY_LASTFRAGMENT ="KEY_LAST_FRAGMENT" ;
+    private static final String KEY_LASTFRAGMENT = "KEY_LAST_FRAGMENT";
 
     /**
      * 版本更新接口
      */
-    private static final int UPDATA = 0X111 ;
+    private static final int UPDATA = 0X111;
 
     @Inject
-    IMainPresenter<IMainView> presenter;
+    public IMainPresenter<IMainView> presenter;
 
     @Inject
-    H5StartUtils h5StartUtils ;
+    H5StartUtils h5StartUtils;
 
     @BindView(R.id.home_image)
     ImageView homeImage;
@@ -164,7 +163,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
 
     @BindView(R.id.fragment)
-    FrameLayout frameLayout ;
+    FrameLayout frameLayout;
 
 
     private boolean isNotice = false;
@@ -183,49 +182,48 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     private FragmentManager fm;
 
-    private SocalFragment socalFragment ;
-    private Fragment[] fragments ;
+    private SocalFragment socalFragment;
+    private Fragment[] fragments;
 
-    private Fragment fragment ;
+    private Fragment fragment;
 
-    private int lastFragment = -1  ;
+    private int lastFragment = -1;
 
-    private int nowPosition = - 1 ;
+    private int nowPosition = -1;
 
-    private int unReadCount ;
 
     /**
-     *  是否是更新弹窗的后返回的onResume ,  如果是，则不进行版本更新检查 ， 否则，进行版本更新检查
+     * 是否是更新弹窗的后返回的onResume ,  如果是，则不进行版本更新检查 ， 否则，进行版本更新检查
      */
-    private boolean isUpdateResume = false ;
+    private boolean isUpdateResume = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isUpdateResume = false ;
+        isUpdateResume = false;
         setContentView(R.layout.activity_main);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(this);
-            if (isNotice) {
-                presenter.routeHeaterOrBathroom();
-            }
-            // 友盟日志加密
-            MobclickAgent.enableEncrypt(true);
-            MobclickAgent.setCatchUncaughtExceptions(true);
-            if (presenter.isLogin()) {
-                presenter.getSchoolForumStatus();
+        if (isNotice) {
+            presenter.routeHeaterOrBathroom();
+        }
+        // 友盟日志加密
+        MobclickAgent.enableEncrypt(true);
+        MobclickAgent.setCatchUncaughtExceptions(true);
+        if (presenter.isLogin()) {
+            presenter.getSchoolForumStatus();
 
-                uploadDeviceInfo();
-                presenter.rollingNotify();
-            }
-            if (fragments == null)
+            uploadDeviceInfo();
+            presenter.rollingNotify();
+        }
+        if (fragments == null)
             fragments = new Fragment[3];
-            initTable(savedInstanceState);
+        initTable(savedInstanceState);
 
-            rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .subscribe(granted -> {
-                        if (granted) {
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(granted -> {
+                    if (granted) {
                     } else {
                         showMessage("没有SD卡权限");
                     }
@@ -235,20 +233,20 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onPause() {
         super.onPause();
-        isUpdateResume = true ;
+        isUpdateResume = true;
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode ==RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == WRITE_BLOG) {
                 if (socalFragment != null) {
                     socalFragment.setReferTop(true);
                 }
-            }else if(requestCode == UPDATA){
-                isUpdateResume = true ;
+            } else if (requestCode == UPDATA) {
+                isUpdateResume = true;
             }
         }
     }
@@ -256,22 +254,22 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     /**
      * 弹性动画
      */
-    private void springAnimator(View view){
-        int normalHeight = ScreenUtils.dpToPxInt(this ,30);
-        ValueAnimator animator2 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,5),ScreenUtils.dpToPxInt(this ,30) , ScreenUtils.dpToPxInt(this ,65) , ScreenUtils.dpToPxInt(this ,80),ScreenUtils.dpToPxInt(this ,65)
-                                                         ,ScreenUtils.dpToPxInt(this ,70) ,ScreenUtils.dpToPxInt(this ,65)    );
+    private void springAnimator(View view) {
+        int normalHeight = ScreenUtils.dpToPxInt(this, 30);
+        ValueAnimator animator2 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this, 5), ScreenUtils.dpToPxInt(this, 30), ScreenUtils.dpToPxInt(this, 65), ScreenUtils.dpToPxInt(this, 80), ScreenUtils.dpToPxInt(this, 65)
+                , ScreenUtils.dpToPxInt(this, 70), ScreenUtils.dpToPxInt(this, 65));
         animator2.addUpdateListener(animation -> {
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             int currentValue = (int) animation.getAnimatedValue();
             params.addRule(CENTER_IN_PARENT);
 
-            if (currentValue < normalHeight){
-                params.height = currentValue ;
-            }else {
+            if (currentValue < normalHeight) {
+                params.height = currentValue;
+            } else {
                 params.height = (int) ScreenUtils.dpToPx(MainActivity.this, 30);
             }
-            params.width = currentValue ;
+            params.width = currentValue;
             view.setLayoutParams(params);
             view.postInvalidate();
         });
@@ -283,8 +281,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (fm != null){
-                    if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null){
+                if (fm != null) {
+                    if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null) {
                         setDefalutItem(1);
                     }
                 }
@@ -312,27 +310,27 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     private void initTable(Bundle bundle) {
         //  获取被内存杀死时的activity保存的上一个fragment
-        if (fm == null) fm = getSupportFragmentManager() ;
+        if (fm == null) fm = getSupportFragmentManager();
         if (bundle != null) {
             try {
                 lastFragment = bundle.getInt(KEY_LASTFRAGMENT);
             } catch (Exception e) {
             }
         }
-            // 杀死界面重新进入
-            if (presenter.isLogin()) {
-                if (lastFragment == -1) {
-                    setDefalutItem(0);
-                    tableBottomImageChange(0);
-                } else {
-                    setDefalutItem(lastFragment);
-                    tableBottomImageChange(lastFragment);
-                }
+        // 杀死界面重新进入
+        if (presenter.isLogin()) {
+            if (lastFragment == -1) {
+                setDefalutItem(0);
+                tableBottomImageChange(0);
             } else {
-                setDefalutItem(2);
-                tableBottomImageChange(2);
+                setDefalutItem(lastFragment);
+                tableBottomImageChange(lastFragment);
             }
+        } else {
+            setDefalutItem(2);
+            tableBottomImageChange(2);
         }
+    }
 
     /**
      * 设置默认选择底部那个模块
@@ -340,142 +338,92 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * @param position
      */
     private void setDefalutItem(int position) {
-        if (position == -1 || position > 2) return ;
-        // 目标Fragment
-        Fragment targetFragment = null ;
-
+        if (position == -1 || position > 2) return;
         // 上一个显示的Tag
-        Fragment last ;
-        if (fm == null) fm =getSupportFragmentManager() ;
-        if (position == lastFragment){
+        Fragment last;
+        if (fm == null) fm = getSupportFragmentManager();
 
-            //  内存不足时，Fragment的Presenter 变量没有保存，所以需要我们判断给他set进去
-            switch (position){
-                case 0:
-                    targetFragment = fm.findFragmentByTag(HomeFragment2.class.getSimpleName());
-                     if (targetFragment != null){
-                         if (((HomeFragment2)targetFragment).presenter == null && presenter != null){
-                             ((HomeFragment2)targetFragment).setPresenter(presenter);
-                         }
-                     }
-                     break;
-                case 1:
-                    targetFragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
-                    if (targetFragment != null){
-                        if (((SocalFragment)targetFragment).mainPresenter == null && presenter != null){
-                            ((SocalFragment)targetFragment).setPresenter(presenter);
-                        }
-                    }
-                    break;
-                case 2:
-                    targetFragment = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
-                    if (targetFragment != null){
-                        if (((ProfileFragment2)targetFragment).presenter == null && presenter != null){
-                            ((ProfileFragment2)targetFragment).setPresenter(presenter);
-                        }
-                    }
-                    break;
-                    default:
-                        break;
-            }
-
-        }else {
-
-            //  获取上一个Fragment ； 因为Fragment添加时设置了Tag，所以用findFragmentByTag获取。
-
-            switch (lastFragment){
-                case 0:
-                    last =fm.findFragmentByTag(HomeFragment2.class.getSimpleName()) ;
-                    break;
-                case 1:
-                    last = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
-                    break;
-                case 2:
-                    last = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
-                    break;
-                    default:
-                        last = null;
-            }
-            if (position == 0) {
-                if (fm.findFragmentByTag(HomeFragment2.class.getSimpleName()) == null) {
-                    fragment = new HomeFragment2(presenter, isServerError);
-                    switchFragment(fragment ,last ,HomeFragment2.class.getSimpleName());
-
-                } else {
-                    fragment = fm.findFragmentByTag(HomeFragment2.class.getSimpleName());
-                    if (fragment instanceof HomeFragment2) {
-                        if (((HomeFragment2) fragment).presenter == null) {
-                            if (presenter != null)
-                                ((HomeFragment2) fragment).setPresenter(presenter);
-                        }
-                    }
-                    switchFragment(fragment ,last ,HomeFragment2.class.getSimpleName());
-                }
-            }
-            if (position == 1) {
-                if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null) {
-                    socalFragment = new SocalFragment(presenter);
-                    fragment = socalFragment ;
-                    switchFragment(fragment ,last ,SocalFragment.class.getSimpleName());
-                } else {
-                    fragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
-                    socalFragment = (SocalFragment) fragment;
-                    if (socalFragment.mainPresenter == null) {
-                        if (presenter != null) socalFragment.setPresenter(presenter);
-                    }
-                    switchFragment(socalFragment ,last ,SocalFragment.class.getSimpleName());
-                }
-            }
-
-            if (position == 2) {
-                if (fm.findFragmentByTag(ProfileFragment2.class.getSimpleName()) == null) {
-                    fragment = new ProfileFragment2(presenter, isServerError);
-                    switchFragment(fragment , last ,ProfileFragment2.class.getSimpleName());
-                } else {
-                    fragment = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
-                    if (fragment instanceof ProfileFragment2) {
-                        if (((ProfileFragment2) fragment).presenter == null && presenter != null)
-                            ((ProfileFragment2) fragment).setPresenter(presenter);
-                    }
-                    switchFragment(fragment , last ,ProfileFragment2.class.getSimpleName());
-                }
-            }
-            lastFragment = position;
+        switch (lastFragment) {
+            case 0:
+                last = fm.findFragmentByTag(HomeFragment2.class.getSimpleName());
+                break;
+            case 1:
+                last = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
+                break;
+            case 2:
+                last = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
+                break;
+            default:
+                last = null;
         }
+        if (position == 0) {
+            if (fm.findFragmentByTag(HomeFragment2.class.getSimpleName()) == null) {
+                fragment = HomeFragment2.newInstance(isServerError);
+                switchFragment(fragment, last, HomeFragment2.class.getSimpleName());
+
+            } else {
+                fragment = fm.findFragmentByTag(HomeFragment2.class.getSimpleName());
+                switchFragment(fragment, last, HomeFragment2.class.getSimpleName());
+            }
+        }
+        if (position == 1) {
+            if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null) {
+                socalFragment = new SocalFragment();
+                fragment = socalFragment;
+                switchFragment(fragment, last, SocalFragment.class.getSimpleName());
+            } else {
+                fragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
+                switchFragment(fragment, last, SocalFragment.class.getSimpleName());
+            }
+        }
+
+        if (position == 2) {
+            if (fm.findFragmentByTag(ProfileFragment2.class.getSimpleName()) == null) {
+                fragment = ProfileFragment2.newInstance(isServerError);
+                switchFragment(fragment, last, ProfileFragment2.class.getSimpleName());
+            } else {
+                fragment = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
+                switchFragment(fragment, last, ProfileFragment2.class.getSimpleName());
+            }
+        }
+        lastFragment = position;
     }
+
     /**
      * 隐藏上一个界面，显示目标界面
-     * @param target   目标界面
-     * @param last     上一个界面
-     * @param targetTag   目标tag
+     *
+     * @param target    目标界面
+     * @param last      上一个界面
+     * @param targetTag 目标tag
      */
-    private void switchFragment( Fragment target,Fragment last , String targetTag){
+    private void switchFragment(Fragment target, Fragment last, String targetTag) {
 
-        FragmentTransaction transaction = fm.beginTransaction() ;
+        FragmentTransaction transaction = fm.beginTransaction();
         // 隐藏上一个界面
-        if (last != null && last.isAdded() && !last.isHidden()){
-           transaction.hide(last);
+        if (last != null && last.isAdded() && !last.isHidden()) {
+            transaction.hide(last);
         }
 
         //  显示targetFragment
 
-        if (target != null){
-            if (target.isAdded()){
+        if (target != null) {
+            if (target.isAdded()) {
                 transaction.show(target);
-            }else{
-                transaction.add(R.id.fragment ,target , targetTag);
+            } else {
+                transaction.add(R.id.fragment, target, targetTag);
             }
         }
-        transaction.commit() ;
+        transaction.commit();
     }
 
     /**
      * 底部按钮的变化
+     *
      * @param position
      */
     private void tableBottomImageChange(int position) {
-        if (position == -1 || position > 2) return ;
-        nowPosition = position ;
+        if (position == -1 || position > 2) return;
+        nowPosition = position;
         if (position == 0) {
             homeImage.setImageResource(R.drawable.tab_home_sel);
         } else {
@@ -490,9 +438,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         } else {
             socialSelRl.setVisibility(View.GONE);
             socialImage.setVisibility(View.VISIBLE);
-            if (presenter.getNoticeCount() > 0 && presenter.getCommentEnable()){
+            if (presenter.getNoticeCount() > 0 && presenter.getCommentEnable()) {
                 socialRed.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 socialRed.setVisibility(View.GONE);
             }
         }
@@ -515,9 +463,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 setDefalutItem(0);
                 break;
             case R.id.social_rl:
-                if (socialSelRl.getVisibility() == View.VISIBLE){
-                    startActivityForResult(new Intent(this , WriteLZActivity.class) ,WRITE_BLOG);
-                }else {
+                if (socialSelRl.getVisibility() == View.VISIBLE) {
+                    startActivityForResult(new Intent(this, WriteLZActivity.class), WRITE_BLOG);
+                } else {
                     tableBottomImageChange(1);
                     if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) != null) {
                         setDefalutItem(1);
@@ -539,10 +487,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             presenter.getSchoolForumStatus();
             uploadDeviceInfo();
             if (presenter.getIsFirstAfterLogin()) {
-                if (fm == null) fm = getSupportFragmentManager() ;
+                if (fm == null) fm = getSupportFragmentManager();
                 presenter.setIsFirstAfterLogin(false);
                 SocalFragment socalFragment = (SocalFragment) fm.findFragmentByTag(SocalFragment.class.getSimpleName());
-                if (socalFragment == null ) {
+                if (socalFragment == null) {
                     setDefalutItem(0);
                     tableBottomImageChange(0);
                     return;
@@ -562,7 +510,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (lastFragment != -1 ) {
+        if (lastFragment != -1) {
             outState.putInt(KEY_LASTFRAGMENT, lastFragment);
         }
     }
@@ -632,13 +580,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onResume() {
         super.onResume();
-        android.util.Log.e(TAG, "onResume: " );
         if (!isUpdateResume) {
             FragmentInit();
             presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                     AppUtils.getVersionName(this), presenter.getRemindMobile());
         }
-        isUpdateResume = false ;
+        isUpdateResume = false;
 
     }
 
@@ -646,11 +593,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 首页界面初始化显示，因为是需要请求网络
      */
     private void FragmentInit() {
-        if (!presenter.isLogin()){
+        if (!presenter.isLogin()) {
             showNoticeAmount(0);
             initSchoolBiz();
             checkLogin();
-        }else {
+        } else {
             // 注册信鸽推送
             registerXGPush();
             presenter.noticeCount();
@@ -665,8 +612,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     /**
      * 启动上传蓝牙统计服务
      */
-    private void startBleCountService(){
-        Intent intent = new Intent(this , BleCountService.class);
+    private void startBleCountService() {
+        Intent intent = new Intent(this, BleCountService.class);
         startService(intent);
     }
 
@@ -683,7 +630,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
 
-
     /**
      * 显示通知个数
      *
@@ -691,13 +637,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     @Override
     public void showNoticeAmount(Integer amount) {
-            if (personalRed == null) return ;
-            if ( (amount ==0 &&!presenter.getIsShowRepair())|| nowPosition == 2){
-                personalRed.setVisibility(View.GONE);
+        if (personalRed == null) return;
+        if ((amount == 0 && !presenter.getIsShowRepair()) || nowPosition == 2) {
+            personalRed.setVisibility(View.GONE);
 
-            }else{
-                personalRed.setVisibility(View.VISIBLE);
-            }
+        } else {
+            personalRed.setVisibility(View.VISIBLE);
+        }
         EventBus.getDefault().post(new ProfileFragment2.NoticeEvent(amount));
     }
 
@@ -742,7 +688,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     private void gotoChooseDryer(List<String> tradePages) {
 
-        if (tradePages == null || tradePages.size() == 0 ) return ;
+        if (tradePages == null || tradePages.size() == 0) return;
         if (tradePages.size() == 1) {
 
             if (TradePage.BLE.getPage().equals(tradePages.get(0))) {
@@ -752,15 +698,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
                 startActivity(intent);
 
-            }else if (TradePage.QR_CODE.getPage().equals(tradePages.get(0))){
-                String url =Constant.H5_DRYER  +
-                        "?accessToken=" +presenter.getAccessToken()
-                        +"&refreshToken=" + presenter.getRefreshToken() ;
+            } else if (TradePage.QR_CODE.getPage().equals(tradePages.get(0))) {
+                String url = Constant.H5_DRYER +
+                        "?accessToken=" + presenter.getAccessToken()
+                        + "&refreshToken=" + presenter.getRefreshToken();
 
-                startActivity(new Intent(this , WebActivity.class)
-                .putExtra(INTENT_KEY_URL , url));
+                startActivity(new Intent(this, WebActivity.class)
+                        .putExtra(INTENT_KEY_URL, url));
             }
-        }else{
+        } else {
             Intent intent = new Intent(this, ChooseDispenserActivity.class);
             intent.putExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DRYER.getType());
             intent.putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHANGE_DRYER_AND_H5);
@@ -810,6 +756,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
         enableView();
     }
+
     public void gotoDispenser(String macAddress, Long supplierId, String location, Long residenceId,
                               boolean favor, int usefor,
                               boolean recovery) {
@@ -871,7 +818,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         null));
 
     }
-    boolean requestBathOrder = false ;
+
+    boolean requestBathOrder = false;
+
     @Override
     public void showSchoolBiz(List<BriefSchoolBusiness> businesses) {
         if (businesses == null) {
@@ -881,8 +830,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         this.businesses = businesses;
         for (BriefSchoolBusiness business : businesses) {
             if (business.getBusinessId() == 1) {
-                if (!business.getUsing()){
-                    requestBathOrder = true ;
+                if (!business.getUsing()) {
+                    requestBathOrder = true;
                     presenter.currentOrder();
                 }
                 heaterOrderSize = business.getPrepayOrder();
@@ -892,13 +841,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 dryerOrderSize = business.getPrepayOrder();
             } else if (business.getBusinessId() == Constant.PUB_BATH) {
                 if (!requestBathOrder)
-                presenter.currentOrder();
+                    presenter.currentOrder();
             }
         }
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.SCHOOL_BIZ,
                 businesses));
 
-        requestBathOrder = false ;
+        requestBathOrder = false;
     }
 
     @Override
@@ -1022,9 +971,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     /**
      * 服务入口未读数量
+     *
      * @param unReadCount
      */
-    private void postReadCount(int unReadCount){
+    private void postReadCount(int unReadCount) {
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.UNREAD_COUNT,
                 unReadCount));
     }
@@ -1038,7 +988,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra(IntentKey.MODEL, model);
                         intent.putExtra(IntentKey.NOTIFICATION_ICON, R.mipmap.ic_launcher);
-                        startActivityForResult(intent , UPDATA);
+                        startActivityForResult(intent, UPDATA);
                     } else {
                         showMessage("没有SD卡权限");
                     }
@@ -1086,13 +1036,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             data.setBonusAmount(presenter.getBonusAmount());
             data.setCredits(presenter.getCredits());
             EventBus.getDefault().post(data);
-        }catch (NumberFormatException e){
-            android.util.Log.e(TAG, "refreshProfile: " + e.getMessage() );
+        } catch (NumberFormatException e) {
+            android.util.Log.e(TAG, "refreshProfile: " + e.getMessage());
         }
     }
 
     public void showPrepayDialog(int type, int prepaySize, DeviceCheckRespDTO data) {
-        Log.d(TAG, "showPrepayDialog: " + type + "->" + prepaySize);
         if (prepayDialog == null) {
             prepayDialog = new PrepayDialog(this);
         }
@@ -1145,12 +1094,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
 
-
     /**
      * 点击进入热水澡界面
      */
     public void gotoHeater() {
-        Log.d(TAG, "gotoHeater");
+
         presenter.routeHeaterOrBathroom();
     }
 
@@ -1217,7 +1165,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showNoticeRemind() {
-        if (nowPosition  != 1  && presenter.getCommentEnable()) socialRed.setVisibility(View.VISIBLE);
+        if (nowPosition != 1 && presenter.getCommentEnable()) socialRed.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -1230,7 +1178,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         RxBus.getDefault().post(personalExtraInfoDTO);
     }
 
-    
+
     @Override
     public void enableView() {
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
@@ -1239,16 +1187,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void showRollingNotify(RollingNotifyRespDTO data) {
 
-//        if (data.getRollingNotifyList() == null || data.getRollingNotifyList().size() == 0) return ;
-//        android.util.Log.e(TAG, "showRollingNotify: " + data.getRollingNotifyList().size() );
-        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ROLLING_NOTIFY ,data.getRollingNotifyList()));
+        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ROLLING_NOTIFY, data.getRollingNotifyList()));
     }
 
     @Override
     public void showOrHideBlogFragment(boolean canShowBlogFragment) {
-        if (canShowBlogFragment){
+        if (canShowBlogFragment) {
             socialRl.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             socialRl.setVisibility(View.GONE);
         }
     }
@@ -1321,10 +1267,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void onStop() {
-        Log.d(TAG, "onStop");
         super.onStop();
         EventBus.getDefault().unregister(this);
-        isUpdateResume = false ;
+        isUpdateResume = false;
     }
 
     @Override
@@ -1370,7 +1315,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 break;
             case GOTO_DRAYER2:
 
-                if (checkLogin()){
+                if (checkLogin()) {
                     gotoDryer2();
                 }
                 enableView();
@@ -1393,7 +1338,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 if (checkLogin()) {
                     if (event.getObject() != null) {
                         startActivity(this, (Class) event.getObject());
-                    }else{
+                    } else {
                         startServiceH5();
                     }
                 }
@@ -1408,30 +1353,27 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     //  跳服务中心h5页面
-    public void startServiceH5(){
+    public void startServiceH5() {
         h5StartUtils.startH5Service();
     }
 
     private void gotoGate() {
         startActivity(new Intent(this, WebActivity.class)
                 .putExtra(INTENT_KEY_URL, Constant.H5_GATE
-                        + "?accessToken=" + presenter.getAccessToken() +"&refreshToken" + presenter.getRefreshToken()));
+                        + "?accessToken=" + presenter.getAccessToken() + "&refreshToken" + presenter.getRefreshToken()));
     }
 
     private void gotoWasher() {
-       // startActivity(new Intent(this, WasherActivity.class));
-        Intent intent = new Intent(this,WebActivity.class);
-        String url = BuildConfig.H5_SERVER +"/washer" + "?accessToken=" + presenter.getAccessToken()+"&refreshToken=" +presenter.getRefreshToken() + "&schoolId=" + presenter.getSchoolId();
-        intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL,url);
+        Intent intent = new Intent(this, WebActivity.class);
+        String url = BuildConfig.H5_SERVER + "/washer" + "?accessToken=" + presenter.getAccessToken() + "&refreshToken=" + presenter.getRefreshToken() + "&schoolId=" + presenter.getSchoolId();
+        intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL, url);
         startActivity(intent);
     }
 
-    private void gotoDryer2(){
-//        startActivity(new Intent(this, WasherActivity2.class));
-
-        Intent intent = new Intent(this,WebActivity.class);
-        String url = BuildConfig.H5_SERVER +"/dryer" + "?accessToken=" + presenter.getAccessToken()+"&refreshToken=" +presenter.getRefreshToken() + "&schoolId=" + presenter.getSchoolId();
-        intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL,url);
+    private void gotoDryer2() {
+        Intent intent = new Intent(this, WebActivity.class);
+        String url = BuildConfig.H5_SERVER + "/dryer" + "?accessToken=" + presenter.getAccessToken() + "&refreshToken=" + presenter.getRefreshToken() + "&schoolId=" + presenter.getSchoolId();
+        intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL, url);
         startActivity(intent);
     }
 
@@ -1440,7 +1382,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static class Event {
         EventType type;
         Object object;
-        Integer certificationType ;
+        Integer certificationType;
 
         public Event(EventType type, Object object) {
             this.type = type;
@@ -1450,7 +1392,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         public Event(EventType type) {
             this.type = type;
         }
-
 
 
         public enum EventType {

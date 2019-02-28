@@ -50,7 +50,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class MainPresenter<V extends IMainView> extends BasePresenter<V>
-        implements IMainPresenter<V> {
+        implements IMainPresenter<V>  {
 
     private static final String DeviceLogFileName = "DeviceLog.txt";
     private static final int GUIDE_REMIND_MAX_TIME = 3;

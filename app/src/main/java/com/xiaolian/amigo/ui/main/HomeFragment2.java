@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.main;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -62,20 +61,13 @@ import static com.xiaolian.amigo.ui.device.washer.ScanActivity.SCAN_TYPE;
  */
 
 public class HomeFragment2 extends BaseFragment {
-    protected IMainPresenter<IMainView> presenter ;
-    private boolean isServerError ;
 
-    public void setPresenter(IMainPresenter<IMainView> presenter) {
-        this.presenter = presenter;
+    public static final String KEY_SERVERERROR = "KEY_SERVERERROR";
+    protected IMainPresenter<IMainView> presenter;
+    private boolean isServerError;
+
+    public HomeFragment2() {
     }
-
-    @SuppressLint("ValidFragment")
-    public HomeFragment2(IMainPresenter<IMainView> presenter , boolean isServerError){
-        this.presenter = presenter ;
-        this.isServerError = isServerError ;
-    }
-
-    public HomeFragment2(){}
 
     private static final int SMALL_LIST_FORMAT_MIN_SIZE = 3;
 
@@ -95,9 +87,9 @@ public class HomeFragment2 extends BaseFragment {
     HomeAdaptor.ItemWrapper gate = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
             null, "门禁卡", "ACCESS CONTROL",
             R.drawable.gate, R.drawable.small_gate);
-    HomeAdaptor.ItemWrapper dryer1 = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE ,
-            null ,"烘干机","DRYER" ,
-            R.drawable.dryer2 , R.drawable.small_dryer2);
+    HomeAdaptor.ItemWrapper dryer1 = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
+            null, "烘干机", "DRYER",
+            R.drawable.dryer2, R.drawable.small_dryer2);
 //    HomeAdaptor.ItemWrapper lost = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
 //            null, "失物招领", "LOST AND FOUND",
 //            R.drawable.lost, R.drawable.small_lost);
@@ -122,12 +114,12 @@ public class HomeFragment2 extends BaseFragment {
 //    滚动公告
 
     @BindView(R.id.marqueeview)
-    TextSwitcherView marqueeView ;
+    TextSwitcherView marqueeView;
     @BindView(R.id.rl_scroll)
-    RelativeLayout rlScroll ;
+    RelativeLayout rlScroll;
 
     @BindView(R.id.un_read_count)
-    TextView unReadCount ;
+    TextView unReadCount;
 
 
     /**
@@ -146,13 +138,36 @@ public class HomeFragment2 extends BaseFragment {
     private HomeAdaptor.ItemWrapper banner;
     private GridLayoutManager gridLayoutManager;
 
-    private int unReadWorkOrderRemarkMessageCount ;
+    private int unReadWorkOrderRemarkMessageCount;
 
-    private boolean rollingOff = false ;
+    private boolean rollingOff = false;
+
+    public static HomeFragment2 newInstance(boolean isServerError) {
+        HomeFragment2 homeFragment2 = new HomeFragment2();
+        Bundle args = new Bundle();
+        args.putBoolean(KEY_SERVERERROR, isServerError);
+        homeFragment2.setArguments(args);
+        return homeFragment2;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            isServerError = getArguments().getBoolean(KEY_SERVERERROR);
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        //  为presenter赋值，因为activity因内存不足杀死时，重新恢复界面时，Fragment的onAttach 和 onCreate方法会比Activity的onCreate先运行
+        if (this.presenter == null) {
+            if (this.mActivity instanceof MainActivity) {
+                this.presenter = ((MainActivity) (this.mActivity)).presenter;
+            }
+        }
         super.onCreateView(inflater, container, savedInstanceState);
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, homeView);
@@ -171,34 +186,33 @@ public class HomeFragment2 extends BaseFragment {
     }
 
     @OnClick(R.id.main_service)
-    public void startServiceH5(){
+    public void startServiceH5() {
         String url = BuildConfig.H5_SERVER + "/serviceCenter"
-                    + "?accessToken=" + presenter.getAccessToken()
-                +"&refreshToken=" + presenter.getRefreshToken()
-                +"&unreadCount=" + unReadWorkOrderRemarkMessageCount
-                +"&schoolId=" + presenter.getUserInfo().getSchoolId();
+                + "?accessToken=" + presenter.getAccessToken()
+                + "&refreshToken=" + presenter.getRefreshToken()
+                + "&unreadCount=" + unReadWorkOrderRemarkMessageCount
+                + "&schoolId=" + presenter.getUserInfo().getSchoolId();
         Intent intent = new Intent(getContext(), WebActivity.class);
-        android.util.Log.e(TAG, "startServiceH5: " + url );
         intent.putExtra(WebActivity.INTENT_KEY_URL, url);
         startActivity(intent);
     }
 
     @OnClick(R.id.rolling_off)
-    public void rollOff(){
+    public void rollOff() {
         if (marqueeView != null) {
             marqueeView.destory();
         }
-        rollingOff = true ;
+        rollingOff = true;
         rlScroll.setVisibility(View.GONE);
     }
+
     /**
      * 设置滚动公告
      */
-    private void initRollingNotice(List<String> info){
-        android.util.Log.e(TAG, "initRollingNotice: " + info.size() );
+    private void initRollingNotice(List<String> info) {
         if (info.size() == 0) {
             rlScroll.setVisibility(View.GONE);
-            return ;
+            return;
         }
         if (!rollingOff) {
             rlScroll.setVisibility(View.VISIBLE);
@@ -208,13 +222,14 @@ public class HomeFragment2 extends BaseFragment {
 
     /**
      * 显示服务入口数量
+     *
      * @param unReadWorkOrderRemarkMessageCount
      */
-    private void showUnReadWorkOrderRemarkMessageCount(int unReadWorkOrderRemarkMessageCount){
+    private void showUnReadWorkOrderRemarkMessageCount(int unReadWorkOrderRemarkMessageCount) {
         if (unReadWorkOrderRemarkMessageCount > 0) {
             unReadCount.setVisibility(View.VISIBLE);
             unReadCount.setText(unReadWorkOrderRemarkMessageCount + "");
-        }else{
+        } else {
             unReadCount.setVisibility(View.GONE);
         }
     }
@@ -256,7 +271,7 @@ public class HomeFragment2 extends BaseFragment {
                             EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
                         } else if (items.get(position).getRes() == R.drawable.gate) {
                             EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_GATE));
-                        }else if (items.get(position).getRes() == R.drawable.dryer2){
+                        } else if (items.get(position).getRes() == R.drawable.dryer2) {
                             EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRAYER2));
                         }
                     }
@@ -275,12 +290,11 @@ public class HomeFragment2 extends BaseFragment {
     }
 
 
-
     /**
      * 请求网络数据
      */
-    public void requestData(){
-        if (presenter == null )  return ;
+    public void requestData() {
+        if (presenter == null) return;
         if (!isNetworkAvailable()) {
             if (presenter.isLogin()) {
                 presenter.getSchoolBusiness();
@@ -318,7 +332,7 @@ public class HomeFragment2 extends BaseFragment {
     }
 
 
-    private void initSchoolBiz(){
+    private void initSchoolBiz() {
 
         onEvent(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
                 null));
@@ -328,20 +342,19 @@ public class HomeFragment2 extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
     }
 
     public void onBannerEvent(List<BannerDTO> banners) {
-        if (items.size() == 0) return ;
+        if (items.size() == 0) return;
         if (items.get(items.size() - 1).getType() == HomeAdaptor.NORMAL_TYPE ||
                 items.get(items.size() - 1).getType() == HomeAdaptor.SMALL_TYPE) {
             banner = new HomeAdaptor.ItemWrapper(HomeAdaptor.BANNER_TYPE, banners, null, null, 0, 0);
             items.add(banner);
-            Log.d(TAG, "onBannerEvent notify");
             adaptor.notifyItemInserted(items.size() - 1);
         } else {
             if (!isBannersEqual(items.get(items.size() - 1).getBanners(), banners)) {
                 items.get(items.size() - 1).setBanners(banners);
-                Log.d(TAG, "onBannerEvent notify");
                 notifyAdaptor();
             }
         }
@@ -349,7 +362,7 @@ public class HomeFragment2 extends BaseFragment {
 
 
     private void notifyAdaptor() {
-        if (recyclerView == null) return ;
+        if (recyclerView == null) return;
         if (recyclerView.getAdapter() == null) {
             resetItem();
             recyclerView.setAdapter(adaptor);
@@ -378,7 +391,7 @@ public class HomeFragment2 extends BaseFragment {
             items.add(washer);
         }
 
-        if (dryer1.isActive()){
+        if (dryer1.isActive()) {
             items.add(dryer1);
         }
 
@@ -433,8 +446,8 @@ public class HomeFragment2 extends BaseFragment {
                 shower.setStatus(0);
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
-                if (shower.isExistOrder()){
-                    needNotify = true ;
+                if (shower.isExistOrder()) {
+                    needNotify = true;
                     shower.setExistOrder(true);
                 }
             } else if (business.getBusinessId() == 3) {
@@ -451,7 +464,7 @@ public class HomeFragment2 extends BaseFragment {
                 washer.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
-            }else if (business.getBusinessId() == 6){
+            } else if (business.getBusinessId() == 6) {
                 dryer1.setActive(true);
                 shower.setExistOrder(false);
                 dryer1.setPrepaySize(business.getPrepayOrder());
@@ -485,7 +498,6 @@ public class HomeFragment2 extends BaseFragment {
         }
 
         if (needNotify) {
-            Log.d(TAG, "onSchoolBizEvent notify");
             notifyAdaptor();
         }
     }
@@ -513,7 +525,6 @@ public class HomeFragment2 extends BaseFragment {
     }
 
 
-
     private void onPrepayOrderEvent(HomeAdaptor.ItemWrapper itemWrapper) {
         boolean needNotify = false;
         for (HomeAdaptor.ItemWrapper item : items) {
@@ -525,7 +536,6 @@ public class HomeFragment2 extends BaseFragment {
             }
         }
         if (needNotify) {
-            Log.d(TAG, "onPrepayOrderEvent notify");
             notifyAdaptor();
         }
     }
@@ -553,9 +563,9 @@ public class HomeFragment2 extends BaseFragment {
                 notifyAdaptor();
                 break;
             case ROLLING_NOTIFY:
-                if (event.getObject() == null){
+                if (event.getObject() == null) {
                     rlScroll.setVisibility(View.GONE);
-                }else {
+                } else {
                     initRollingNotice((List<String>) event.getObject());
                 }
                 break;
@@ -571,11 +581,11 @@ public class HomeFragment2 extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (hidden){
+        if (hidden) {
             if (marqueeView != null) {
                 marqueeView.onStop();
             }
-        }else{
+        } else {
             if (marqueeView != null) {
                 marqueeView.start();
             }
@@ -598,7 +608,7 @@ public class HomeFragment2 extends BaseFragment {
         if (shower.getStatus() == 1) {  // 表明空闲
             shower.setUsing(false);
         } else {
-             //  表明有公共浴室订单状态
+            //  表明有公共浴室订单状态
             shower.setExistOrder(true);
             shower.setUsing(true);
         }
@@ -682,9 +692,10 @@ public class HomeFragment2 extends BaseFragment {
 
             /**
              * 服务入口未读数量
+             *
              * @param
              */
-            UNREAD_COUNT(7) ;
+            UNREAD_COUNT(7);
 
             EventType(int type) {
                 this.type = type;
@@ -693,7 +704,6 @@ public class HomeFragment2 extends BaseFragment {
             private int type;
         }
     }
-
 
     @Override
     public void onStart() {
@@ -711,9 +721,9 @@ public class HomeFragment2 extends BaseFragment {
     /**
      * 扫一扫
      */
-    @OnClick({R.id.scan,R.id.tv_scan})
+    @OnClick({R.id.scan, R.id.tv_scan})
     public void scan() {
-        if (presenter == null ) return ;
+        if (presenter == null) return;
 
         if (presenter.isLogin()) {
             scanQRCode();

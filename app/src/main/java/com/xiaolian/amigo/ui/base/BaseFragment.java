@@ -110,7 +110,6 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
                 ft.hide(this);
             } else {
                 ft.show(this);
-                android.util.Log.e(TAG, "onCreate:  >>>>> show" );
             }
             ft.commit();
         }
@@ -121,7 +120,6 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         // 经验证 没有用
-        android.util.Log.e(TAG, "setUserVisibleHint: " + isVisibleToUser );
     }
 
     @Override
@@ -133,7 +131,6 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        android.util.Log.e(TAG, "onHiddenChanged: >>>>> " + hidden  );
         if (!hidden){
             initView();
         }
@@ -664,22 +661,6 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
         super.onDetach();
         this.mActivity = null ;
     }
-
-
-    //    @Nullable
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        if (mRootView == null) {
-//            mRootView = inflater.inflate(setLayout(), container, false);
-//            initView(mRootView);
-//        }
-//        return mRootView;
-//    }
-
-//    @LayoutRes
-//    protected abstract int setLayout();
-//
-//    protected abstract void initView(View view);
 
 
 

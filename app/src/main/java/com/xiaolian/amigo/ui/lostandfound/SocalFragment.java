@@ -5,7 +5,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -49,6 +48,7 @@ import com.xiaolian.amigo.ui.lostandfound.adapter.SocalTagsAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocialImgAdapter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalView;
+import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.widget.ErrorLayout;
@@ -88,7 +88,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     private static final String TAG = SocalFragment.class.getSimpleName();
     @BindView(R.id.iv_remaind)
     ImageView ivRemaind;
-    //    @BindView(R.id.title_border)
     View titleBorder;
     @BindView(R.id.tag_rl)
     RelativeLayout tagRl;
@@ -165,18 +164,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     private int socialTagHeight;
 
-    @SuppressLint("ValidFragment")
-    public SocalFragment(IMainPresenter<IMainView> mainPresenter) {
-        this.mainPresenter = mainPresenter;
-    }
-
-
-    public void setPresenter(IMainPresenter<IMainView> mainPresenter) {
-        this.mainPresenter = mainPresenter;
-    }
-
-    public SocalFragment() {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -188,6 +175,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 .applicationComponent(((MvpApp) mActivity.getApplication()).getComponent())
                 .build();
         mActivityComponent.inject(this);
+        if (mainPresenter == null) {
+            if (this.mActivity instanceof MainActivity) {
+                this.mainPresenter = ((MainActivity) (this.mActivity)).presenter;
+            }
+        }
         presenter.onAttach(this);
         initPop();
         getInitSocialTagHeight();
@@ -205,7 +197,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (errorNetLayout != null)
             errorNetLayout.setReferListener(() -> initView());
     }
-
 
     /**
      * 获取socialTags的高度
@@ -276,9 +267,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     boolean search(TextView v, int actionId, KeyEvent event) {
         // 判断如果用户输入的是搜索键
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//            this.dismiss();
             InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+            if (imm != null) {
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+            }
             presenter.getLostList("", 1, etSearchContent.getText().toString().trim(), 0);
             return true;
         }
@@ -365,15 +357,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     protected void initView() {
-        android.util.Log.e(TAG, "initView: ");
         if (mSocialTagDatas == null || mSocialTagDatas.size() == 0) presenter.getTopicList();
         if (null != mainPresenter) {
             mainPresenter.getNoticeAmount();
         }
-
-        //  在外层Fragment中不需要请求详情数据
-//        presenter.getLostList("", 1, "", 0);
-
     }
 
 
@@ -783,7 +770,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void referTopic(BbsTopicListTradeRespDTO data) {
-//        if (adapter == null) return;
         if (data == null || data.getTopicList() == null || data.getTopicList().size() == 0) return;
         if (this.mSocialTagDatas != null && this.mSocialTagDatas.size() > 0) {
             this.mSocialTagDatas.clear();
@@ -870,11 +856,14 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
      * 根据标签添加Fragment
      */
     public void referFragment(List<BbsTopicListTradeRespDTO.TopicListBean> data) {
+        android.util.Log.e(TAG, "referFragment: " );
         if (blogFragments == null && blogAdapter == null) return;
         if (blogFragments.size() > 0) blogFragments.clear();
 
         for (BbsTopicListTradeRespDTO.TopicListBean topicListBean : data) {
-            blogFragments.add(new BlogFragment(topicListBean.getTopicId(), this));
+//            BlogFragment blogFragment = BlogFragment.newInstance(topicListBean.getTopicId());
+//            blogFragment.setScrollListener(this);
+            blogFragments.add(new BlogFragment(topicListBean.getTopicId() ,this));
         }
         blogAdapter.notifyDataSetChanged();
     }

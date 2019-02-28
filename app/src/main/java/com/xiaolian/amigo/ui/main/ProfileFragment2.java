@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.main;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -47,6 +46,8 @@ import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.Data;
 
+import static com.xiaolian.amigo.ui.main.HomeFragment2.KEY_SERVERERROR;
+
 /**
  * 个人中心
  *
@@ -61,8 +62,8 @@ public class ProfileFragment2 extends BaseFragment {
     ProfileAdaptor.Item wallet = new ProfileAdaptor.Item(R.drawable.profile_wallet, "我的钱包", WalletActivity.class);
     ProfileAdaptor.Item bonus = new ProfileAdaptor.Item(R.drawable.profile_luck, "我的代金券", BonusActivity.class);
     ProfileAdaptor.Item credits = new ProfileAdaptor.Item(R.drawable.profile_credits, "积分兑换", CreditsActivity.class);
-    ProfileAdaptor.Item service = new ProfileAdaptor.Item(R.drawable.profile_repair, "服务中心",null);
-//    ProfileAdaptor.Item legalize = new ProfileAdaptor.Item(R.drawable.profile_certification, "学生认证", null,"");
+    ProfileAdaptor.Item service = new ProfileAdaptor.Item(R.drawable.profile_repair, "服务中心", null);
+    //    ProfileAdaptor.Item legalize = new ProfileAdaptor.Item(R.drawable.profile_certification, "学生认证", null,"");
     List<ProfileAdaptor.Item> items = new ArrayList<ProfileAdaptor.Item>() {
         {
             add(new ProfileAdaptor.Item(R.drawable.profile_edit, "编辑个人信息", EditProfileActivity.class));
@@ -83,21 +84,7 @@ public class ProfileFragment2 extends BaseFragment {
     TextView tvNoticeCount;
 
 
-    public ProfileFragment2() {
-    }
-
-    @SuppressLint("ValidFragment")
-    public ProfileFragment2(IMainPresenter<IMainView> presenter, boolean isServerError) {
-        this.presenter = presenter;
-        this.isServerError = isServerError;
-    }
-
-
-    public void setPresenter(IMainPresenter<IMainView> presenter) {
-        this.presenter = presenter;
-    }
-
-    public  IMainPresenter<IMainView> presenter;
+    public IMainPresenter<IMainView> presenter;
     boolean isServerError;
 
     ProfileAdaptor adaptor;
@@ -110,11 +97,32 @@ public class ProfileFragment2 extends BaseFragment {
 
     private Unbinder unbinder;
 
+    public static ProfileFragment2 newInstance(boolean isServerError) {
+        ProfileFragment2 profileFragment2 = new ProfileFragment2();
+        Bundle args = new Bundle();
+        args.putBoolean(KEY_SERVERERROR, isServerError);
+        profileFragment2.setArguments(args);
+        return profileFragment2;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            isServerError = getArguments().getBoolean(KEY_SERVERERROR);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         unbinder = ButterKnife.bind(this, view);
+        if (presenter == null) {
+            if (this.mActivity instanceof MainActivity) {
+                this.presenter = ((MainActivity) (this.mActivity)).presenter;
+            }
+        }
         initView();
         return view;
     }
@@ -143,8 +151,8 @@ public class ProfileFragment2 extends BaseFragment {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 try {
 
-                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.START_ACTIVITY,
-                                items.get(position).getActivityClazz()));
+                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.START_ACTIVITY,
+                            items.get(position).getActivityClazz()));
                 } catch (ArrayIndexOutOfBoundsException e) {
                     Log.wtf(TAG, "数组越界", e);
                 } catch (Exception e) {
@@ -177,7 +185,7 @@ public class ProfileFragment2 extends BaseFragment {
     }
 
     private boolean checkLogin() {
-        if (null == presenter.getAccessToken() ||  TextUtils.isEmpty(presenter.getRefreshToken())) {
+        if (null == presenter.getAccessToken() || TextUtils.isEmpty(presenter.getRefreshToken())) {
             redirectToLogin(false);
             return false;
         }
@@ -212,12 +220,11 @@ public class ProfileFragment2 extends BaseFragment {
         if (tvNoticeCount == null) return;
         if (event.num > 0) {
             tvNoticeCount.setVisibility(View.VISIBLE);
-            tvNoticeCount.setText(event.num+"");
+            tvNoticeCount.setText(event.num + "");
         } else {
             tvNoticeCount.setVisibility(View.GONE);
         }
     }
-
 
 
     @SuppressWarnings("unchecked")
@@ -244,7 +251,7 @@ public class ProfileFragment2 extends BaseFragment {
             }
         }
 
-        if (data.getUnReadWorkOrderRemarkMessageCount() != null){
+        if (data.getUnReadWorkOrderRemarkMessageCount() != null) {
             service.setUnReadWorkOrderRemarkMessageCount(data.getUnReadWorkOrderRemarkMessageCount());
         }
         if (credits.getBonusAmount() != -1
@@ -263,7 +270,6 @@ public class ProfileFragment2 extends BaseFragment {
     }
 
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -272,14 +278,13 @@ public class ProfileFragment2 extends BaseFragment {
 
     @Override
     protected void initView() {
-        android.util.Log.e(TAG, "initView: "  + (presenter == null));
         if (presenter == null) return;
         if (presenter.isLogin()) {
             presenter.getNoticeAmount();
             User user = presenter.getUserInfo();
             setAvatar(user.getPictureUrl());
             if (tvNickName != null) {
-                if( null != user.getNickName() && !user.getNickName().equals(tvNickName.getText().toString())){
+                if (null != user.getNickName() && !user.getNickName().equals(tvNickName.getText().toString())) {
                     tvNickName.setText(user.getNickName());
                 }
             }
@@ -298,11 +303,11 @@ public class ProfileFragment2 extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        if (presenter == null) return;
         User user = presenter.getUserInfo();
         setAvatar(user.getPictureUrl());
         if (tvNickName != null) {
-            if( null != user.getNickName() && !user.getNickName().equals(tvNickName.getText().toString())){
+            if (null != user.getNickName() && !user.getNickName().equals(tvNickName.getText().toString())) {
                 tvNickName.setText(user.getNickName());
             }
         }
@@ -341,7 +346,6 @@ public class ProfileFragment2 extends BaseFragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-//        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.REFRESH_NOTICE));
     }
 
     @Override
