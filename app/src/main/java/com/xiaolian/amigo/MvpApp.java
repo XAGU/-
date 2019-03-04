@@ -128,7 +128,7 @@ public class MvpApp extends Application {
         mWxApi = WXAPIFactory.createWXAPI(this, Constant.WECHAT_APP_ID, false);
         mWxApi.registerApp(Constant.WECHAT_APP_ID);
     }
-
+    
     private void closeAndroidPDialog(){
         try {
             Class aClass = Class.forName("android.content.pm.PackageParser$Package");

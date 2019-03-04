@@ -22,10 +22,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.RxHelper;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 单选列表Dialog
@@ -199,7 +201,10 @@ public class ActionSheetDialog {
 
     public void show() {
         setSheetItems();
-        dialog.show();
+        //  延迟10毫秒显示
+        RxHelper.delay(10, TimeUnit.MILLISECONDS)
+                .subscribe(integer -> dialog.show());
+
     }
 
     public Dialog getDialog() {
