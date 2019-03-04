@@ -32,6 +32,15 @@
         tools:replace="android:allowBackup, android:label, android:icon"
         android:resizeableActivity="true">
 
+        <!--屏幕适配-->
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="360" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="540" />
+
+
         <!--全面屏-->
         <meta-data
             android:name="android.max_aspect"

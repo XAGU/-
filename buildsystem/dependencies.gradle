@@ -18,6 +18,7 @@ ext.versions = [
         'espresso'      : '2.2.2',
         'astl'          : '0.5',
         'errorProne'    : '2.1.1',
+        'autoSize'      : '1.1.2'
 ]
 
 ext.deps = [
@@ -107,5 +108,6 @@ ext.deps = [
         'zxingEmbed'             : 'com.journeyapps:zxing-android-embedded:3.5.0',
         'wechatSDKWithMta'       : 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.0',
         'wechatSDKWithoutMta'    : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.1.0',
-        'newbieGuide'            : 'com.github.huburt-Hu:NewbieGuide:v2.4.0'
+        'newbieGuide'            : 'com.github.huburt-Hu:NewbieGuide:v2.4.0',
+        'autoSize'               : "me.jessyan:autosize:${versions.autoSize}"
 ]

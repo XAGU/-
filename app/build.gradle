@@ -258,6 +258,8 @@ dependencies {
     //    implementation deps.newbieGuide
     implementation project(':guide')
     implementation project(':library')
+    // 屏幕适配
+    implementation deps.autoSize
 }
 
 configurations.all {
