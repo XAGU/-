@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/ll_order_normal"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/ll_order_normal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tool="http://schemas.android.com/tools">
+    android:orientation="vertical">
+
     <RelativeLayout
+        android:id="@+id/rl_prepay"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:id="@+id/rl_prepay">
+        android:layout_height="60dp">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dip"
             android:background="#eee" />
+
         <View
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="1dip"
+            android:layout_alignParentBottom="true"
             android:background="#eee" />
 
         <TextView
@@ -28,7 +31,6 @@
             android:text="@string/prepay_money_colon" />
 
         <TextView
-            tool:text="预付0元"
             android:id="@+id/tv_prepay"
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
@@ -36,13 +38,15 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:textColor="@color/colorDark6"
-            />
+            tool:text="预付0元" />
     </RelativeLayout>
+
     <RelativeLayout
-        android:layout_marginTop="20dp"
         android:id="@+id/rl_consume"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp">
 
         <TextView
             style="@style/ContentText_main"
@@ -55,19 +59,17 @@
         <TextView
             android:id="@+id/tv_consume"
             style="@style/ContentText_main"
-            tool:text="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:textColor="@color/colorFullRed"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/colorFullRed"
-            />
+            tool:text="0" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_marginTop="15dp"
         android:id="@+id/rl_use_bonus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -84,22 +86,21 @@
         <TextView
             android:id="@+id/tv_bonus_remark"
             style="@style/ContentText_main"
-            tool:text="0元1234"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:textColor="#666"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="#666"
-            />
+            tool:text="0元1234" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_marginTop="15dp"
         android:id="@+id/rl_actual_debit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
 
         <TextView
             style="@style/ContentText_main"
@@ -110,7 +111,6 @@
             android:text="@string/actual_debit_colon" />
 
         <TextView
-            tool:text="0元"
             android:id="@+id/tv_actual_debit"
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
@@ -120,15 +120,15 @@
             android:textColor="#666"
             android:textSize="16sp"
             android:textStyle="bold"
-            />
+            tool:text="0元" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="17dp"
         android:id="@+id/rl_odd"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="17dp">
 
         <TextView
             style="@style/ContentText_main"
@@ -139,7 +139,6 @@
             android:text="@string/change_amount_colon" />
 
         <TextView
-            tool:text="0元"
             android:id="@+id/tv_odd"
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
@@ -148,7 +147,8 @@
             android:gravity="center"
             android:textColor="@color/colorDark6"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tool:text="0元" />
 
     </RelativeLayout>
 
