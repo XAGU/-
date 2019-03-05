@@ -156,10 +156,6 @@ public class UserDataManager implements IUserDataManager {
         return schoolApi.getSchoolList(body);
     }
 
-    @Override
-    public Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList() {
-        return schoolApi.getSchoolBizList();
-    }
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> getVerifyCode(VerificationCodeGetReqDTO body) {
@@ -169,16 +165,6 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public Observable<ApiResult<QueryUserResidenceListRespDTO>> queryUserResidenceList() {
         return userApi.queryUserResidenceList(new SimpleQueryReqDTO());
-    }
-
-//    @Override
-    public Observable<ApiResult<QueryUserResidenceListRespDTO>> queryUserResidenceList(@Body SimpleQueryReqDTO body) {
-        return userApi.queryUserResidenceList(body);
-    }
-
-    @Override
-    public Observable<ApiResult<DeleteResidenceRespDTO>> deleteResidence(@Body SimpleReqDTO body) {
-        return userApi.deleteResidence(body);
     }
 
     @Override
@@ -237,12 +223,6 @@ public class UserDataManager implements IUserDataManager {
         return userApi.cancelApplyChangeSchool(reqDTO);
     }
 
-
-
-    @Override
-    public Observable<ApiResult<UserResidenceDTO>> queryResidenceDetail(SimpleReqDTO reqDTO) {
-        return userApi.queryResidenceDetail(reqDTO);
-    }
 
     @Override
     public Observable<ApiResult<OssModel>> getOssModel() {
@@ -323,18 +303,6 @@ public class UserDataManager implements IUserDataManager {
     }
 
     @Override
-    public void saveDeviceCategory(List<DeviceCategoryBO> devices) {
-            if (devices == null) {
-                return;
-            }
-            List<DeviceCategory> deviceCategories = new ArrayList<>();
-            for (DeviceCategoryBO bo : devices) {
-                deviceCategories.add(bo.transform());
-            }
-            sharedPreferencesHelp.saveDeviceCategory(deviceCategories);
-        }
-
-    @Override
     public Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(DeviceCheckReqDTO reqDTO) {
         return deviceApi.checkDeviceUseage(reqDTO);
     }
@@ -342,16 +310,6 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public void setBathroomPassword(boolean isHadSetBathPassword) {
         sharedPreferencesHelp.setHadSetBathPassword(isHadSetBathPassword);
-    }
-
-    @Override
-    public void setRoomId(Long residenceId) {
-        sharedPreferencesHelp.setRoomId(residenceId);
-    }
-
-    @Override
-    public Long getRoomId() {
-        return sharedPreferencesHelp.getRoomId();
     }
 
 
@@ -411,11 +369,6 @@ public class UserDataManager implements IUserDataManager {
         return sharedPreferencesHelp.getRememberMobile();
     }
 
-    @Override
-    public Observable<ApiResult<String>> uploadFile(@Part("file") RequestBody images) {
-
-        return fileApi.uploadFile(images);
-    }
 
     @Override
     public User getUser() {

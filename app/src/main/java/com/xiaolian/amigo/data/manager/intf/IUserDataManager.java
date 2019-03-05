@@ -67,7 +67,6 @@ import rx.Observable;
  */
 
 public interface IUserDataManager {
-    Observable<ApiResult<String>> uploadFile(@Part("filename=\"image.jpg\"") RequestBody images);
 
     User getUser();
 
@@ -116,11 +115,6 @@ public interface IUserDataManager {
     Observable<ApiResult<CancelThirdBindReqDTO>> weChatUnbind();
 
     /**
-     * 获取学校业务列表
-     */
-    Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
-
-    /**
      * 获取验证码
      */
     Observable<ApiResult<BooleanRespDTO>> getVerifyCode(@Body VerificationCodeGetReqDTO body);
@@ -130,11 +124,6 @@ public interface IUserDataManager {
      */
     @Deprecated
     Observable<ApiResult<QueryUserResidenceListRespDTO>> queryUserResidenceList();
-
-    /**
-     * 用户删除绑定寝室
-     */
-    Observable<ApiResult<DeleteResidenceRespDTO>> deleteResidence(@Body SimpleReqDTO body);
 
     /**
      * 获取建筑列表
@@ -190,11 +179,6 @@ public interface IUserDataManager {
      * 提交审核
      */
     Observable<ApiResult<ChangeSchoolResDTO>> applyChangeSchool(CommitSchoolReqDTO reqDTO);
-
-    /**
-     * 用户绑定宿舍详情
-     */
-    Observable<ApiResult<UserResidenceDTO>> queryResidenceDetail(@Body SimpleReqDTO reqDTO);
 
     /**
      *清空token
@@ -284,8 +268,6 @@ public interface IUserDataManager {
     Observable<ApiResult<NoticeCountDTO>> noticeCount();
 
 
-    void saveDeviceCategory(List<DeviceCategoryBO> devices);
-
 
     /**
      * 首页设备用水校验
@@ -293,9 +275,7 @@ public interface IUserDataManager {
     Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(@Body DeviceCheckReqDTO reqDTO);
     void setBathroomPassword(boolean isHadSetPassword);
 
-    void setRoomId(Long residenceId);
 
-    Long getRoomId();
 
     /**
      * 获取学校列表
@@ -304,8 +284,6 @@ public interface IUserDataManager {
     Observable<ApiResult<SchoolNameListRespDTO>> getSchoolNameList ();
 
 
-
-//    Observable<ApiResult<BooleanRespDTO>> certify(@Body UserAuthCertifyReqDTO dto);
 
     Observable<ApiResult<BooleanRespDTO>> certify(@Body RequestBody body);
 

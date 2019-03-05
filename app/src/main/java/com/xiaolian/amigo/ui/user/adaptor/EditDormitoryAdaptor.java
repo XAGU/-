@@ -30,19 +30,11 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
     private IEditDormitoryPresenter<IEditDormitoryView> presenter;
     private OnItemClickListener listener;
     private OnItemLongClickListener longClickListener;
-    private OnItemEditListener editListener;
 
     public EditDormitoryAdaptor(Context context, int layoutId, List<UserResidenceWrapper> datas) {
         super(context, layoutId, datas);
         setHasStableIds(false);
         this.context = context;
-    }
-
-    public EditDormitoryAdaptor(Context context, int layoutId, List<UserResidenceWrapper> datas,
-                                IEditDormitoryPresenter<IEditDormitoryView> presenter) {
-        super(context, layoutId, datas);
-        this.context = context;
-        this.presenter = presenter;
     }
 
     public void setPresenter(IEditDormitoryPresenter<IEditDormitoryView> presenter) {
@@ -53,13 +45,15 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
     protected void convert(ViewHolder holder, UserResidenceWrapper userResidenceWrapper, int position) {
         holder.setText(R.id.tv_edit_dormitory_name, userResidenceWrapper.getResidenceName());
         // 只有一个宿舍时，显示为默认宿舍
-        if (userResidenceWrapper.isDefault() || getDatas().size() == 1) {
+        if (position == 0) {
             holder.getView(R.id.iv_tick).setVisibility(View.VISIBLE);
         } else {
             holder.getView(R.id.iv_tick).setVisibility(View.GONE); }
         holder.getView(R.id.tv_delete).setOnClickListener(v ->
                 {
-                    presenter.deleteBathroomRecord(userResidenceWrapper.getId(), position, userResidenceWrapper.isDefault());
+                    if (position == 0) {
+                        presenter.deleteBathroomRecord(userResidenceWrapper.getId(), position, true);
+                    }else presenter.deleteBathroomRecord(userResidenceWrapper.getId(), position, false);
                 }
                 );
 
@@ -86,14 +80,6 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         void onItemLongClick();
     }
 
-    public interface OnItemEditListener {
-        /**
-         * 列表编辑事件
-         * @param position 位置
-         */
-        void onItemEdit(int position);
-    }
-
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
@@ -102,9 +88,6 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         this.longClickListener = listener;
     }
 
-    public void setOnItemEditListener(OnItemEditListener listener) {
-        this.editListener = listener;
-    }
 
     @Data
     public static class UserResidenceWrapper {
@@ -112,17 +95,15 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         private Long residenceId;
         private String residenceName;
         private String macAddress;
-        private boolean isDefault = false;
         private boolean exist = true;
         private boolean isPubBath = false ;
         private long supplierId ;
         private UserResidenceInListDTO residence ;
-        public UserResidenceWrapper(UserResidenceInListDTO residence, boolean isDefault) {
+        public UserResidenceWrapper(UserResidenceInListDTO residence) {
             if (TextUtils.isEmpty(residence.getMacAddress())) {
                 exist = false;
             }
             this.residence = residence ;
-            this.isDefault = isDefault;
             this.id = residence.getId();
             this.residenceId = residence.getResidenceId();
             this.residenceName = residence.getResidenceName();

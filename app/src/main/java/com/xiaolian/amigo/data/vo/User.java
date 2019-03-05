@@ -137,13 +137,6 @@ public class User {
         this.room = room;
     }
 
-    public Long getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(Long roomId) {
-        this.roomId = roomId;
-    }
 
     public Long getSchoolId() {
         return schoolId;

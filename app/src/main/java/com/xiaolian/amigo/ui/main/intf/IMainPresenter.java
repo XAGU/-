@@ -110,13 +110,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
                           String location, Long residenceId);
 
     /**
-     * 检查默认宿舍是否存在
-     *
-     * @return 是否存在
-     */
-    boolean checkDefaultDormitoryExist();
-
-    /**
      * 获取学校业务
      */
     void getSchoolBusiness();
@@ -136,12 +129,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
      */
     void checkUpdate(Integer code, String versionNo , String remindMobile);
 
-    /**
-     * 主页引导是否完成
-     *
-     * @return 是否完成
-     */
-    boolean isMainGuideDone();
 
     /**
      * 设置上次报修更改时间
@@ -150,12 +137,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
      */
     void setLastRepairTime(Long time);
 
-    /**
-     * 获取上次报修更改时间
-     *
-     * @return 时间
-     */
-    Long getLastRepairTime();
 
     /**
      * 上传设备信息
@@ -189,11 +170,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     void setPushToken(String pushToken);
 
     void routeHeaterOrBathroom();
-
-    /**
-     * 存储room信息
-     */
-    void saveRoomInfo(Long residenceId);
 
     /**
      * 获取上一个订单状态

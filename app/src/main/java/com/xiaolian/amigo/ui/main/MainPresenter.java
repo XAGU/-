@@ -53,11 +53,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         implements IMainPresenter<V>  {
 
     private static final String DeviceLogFileName = "DeviceLog.txt";
-    private static final int GUIDE_REMIND_MAX_TIME = 3;
     private static final String TAG = MainPresenter.class.getSimpleName();
     private IMainDataManager mainDataManager;
     private IUserDataManager userDataManager;
-    private Integer guideTime;
     private LogInterceptor interceptor;
 
     int noticeCount;
@@ -287,11 +285,6 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     }
 
     @Override
-    public boolean checkDefaultDormitoryExist() {
-        return mainDataManager.getUserInfo().getResidenceId() != null;
-    }
-
-    @Override
     public void getSchoolBusiness() {
         if (!getMvpView().isNetworkAvailable()) {
             List<BriefSchoolBusiness> businesses = mainDataManager.getSchoolBiz();
@@ -397,30 +390,10 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                 });
     }
 
-    @Override
-    public boolean isMainGuideDone() {
-        if (guideTime == null) {
-            guideTime = mainDataManager.getMainGuide();
-            if (guideTime < GUIDE_REMIND_MAX_TIME) {
-                guideTime++;
-                mainDataManager.setMainGuide(guideTime);
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return true;
-        }
-    }
 
     @Override
     public void setLastRepairTime(Long time) {
         mainDataManager.setLastRepairTime(time);
-    }
-
-    @Override
-    public Long getLastRepairTime() {
-        return mainDataManager.getLastRepairTime();
     }
 
     @Override
@@ -500,7 +473,6 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         getMvpView().gotoCompleteInfoActivity(result.getData());
 //                        getMvpView().startToBathroomShower();
                     } else {
-                        saveRoomInfo(result.getData().getResidenceId());
                         if (result.getData().isIsPubBath()) {
                             //设置了洗澡地址并且是公共浴室，判断是否设置了用户性别和宿舍信息
 //                            没有设置用户性别
@@ -540,10 +512,6 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         });
     }
 
-    @Override
-    public void saveRoomInfo(Long residenceId) {
-        userDataManager.setRoomId(residenceId);
-    }
 
     @Override
     public void currentOrder() {

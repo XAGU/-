@@ -159,17 +159,6 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
     @Override
     public void notifyAdapter(EditDormitoryAdaptor.UserResidenceWrapper wrapper  ,int currentPosition) {
         if (items != null && adaptor != null) {
-            if (lastNormalPosition != -1) {
-                EditDormitoryAdaptor.UserResidenceWrapper lastNormalWrapper = items.get(lastNormalPosition);
-                lastNormalWrapper.setDefault(false);
-                items.set(lastNormalPosition  , lastNormalWrapper);
-            }
-            if (currentPosition != -1){
-                EditDormitoryAdaptor.UserResidenceWrapper currentNormalWrapper = items.get(currentPosition);
-                currentNormalWrapper.setDefault(true);
-                items.set(currentPosition,currentNormalWrapper);
-                lastNormalPosition = currentPosition ;
-            }
             adaptor.notifyDataSetChanged();
         }
 
@@ -196,7 +185,7 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
     }
 
     @Override
-    public void showTimeValidDialog(String title, String remark, boolean pubBath, UserResidenceInListDTO residence, String macAddress) {
+    public void showTimeValidDialog(String title, String remark, EditDormitoryAdaptor.UserResidenceWrapper wrapper  ,int currentPosition) {
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
         }
@@ -212,13 +201,15 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
         availabilityDialog.setTitle(title);
         availabilityDialog.setTip(remark);
         availabilityDialog.setOnOkClickListener(dialog1 -> {
-            if (pubBath) {
-                startBathroom(residence);
+            notifyAdapter(wrapper, currentPosition);
+            if (wrapper.isPubBath()) {
+                startBathroom(wrapper.getResidence());
             } else {
-                if (TextUtils.isEmpty(macAddress)) {
+                if (TextUtils.isEmpty(wrapper.getMacAddress())) {
                     onError("该地址下无设备");
                 } else {
-                    startShower(residence);
+                    notifyAdapter(wrapper, currentPosition);
+                    startShower(wrapper.getResidence());
                 }
             }
         });

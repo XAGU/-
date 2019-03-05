@@ -21,7 +21,6 @@ import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.WithdrawWay;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
-import com.xiaolian.amigo.data.vo.UserCertificationStatus;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;
@@ -226,10 +225,10 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     }
                     // page size 为null 加载全部
                     if (Constant.MAIN_ACTIVITY_BATHROOM_SRC.equals(activitySrc)
-                           || Constant.ADD_BATHROOM_SRC.equals(activitySrc)
-                            || Constant.HEATER_TO_BATHROOM.equals(activitySrc)){
-                        presenter.queryBathResidenceList(null ,null , deviceType);
-                    }else {
+                            || Constant.ADD_BATHROOM_SRC.equals(activitySrc)
+                            || Constant.HEATER_TO_BATHROOM.equals(activitySrc)) {
+                        presenter.queryBathResidenceList(null, null, deviceType);
+                    } else {
                         presenter.getBuildList(null, null, deviceType);
                     }
                     adapter.setOnItemClickListener((view, position) -> {
@@ -248,7 +247,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         } catch (ArrayIndexOutOfBoundsException e) {
                             Log.e(TAG, "数组越界");
                         } catch (Exception e) {
-                            Log.e(TAG , e.getMessage());
+                            Log.e(TAG, e.getMessage());
                         }
                     });
                     break;
@@ -265,8 +264,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                             // page size 为null 加载全部
                             if (Constant.USER_INFO_ACTIVITY_SRC.equals(activitySrc) || Constant.USER_CERTIFICATION_STATUS_ACTIVITY_SRC.equalsIgnoreCase(activitySrc)) {
                                 presenter.getFloorList(null, null, deviceType, parentId);
-                            }else{
-                                presenter.getBathFloorList(null , null , deviceType , parentId);
+                            } else {
+                                presenter.getBathFloorList(null, null, deviceType, parentId);
                             }
                         }
                     }
@@ -298,10 +297,10 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                         residenceDetail = (UserResidenceDTO) getIntent().getSerializableExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL);
                         if (TextUtils.equals(activitySrc, Constant.USER_INFO_ACTIVITY_SRC) || TextUtils.equals(activitySrc, Constant.COMPLETE_INFO_ACTIVITY_SRC)
-                                || TextUtils.equals(activitySrc ,Constant.USER_CERTIFICATION_STATUS_ACTIVITY_SRC)){
-                                tvTitle.setText("选择宿舍");
+                                || TextUtils.equals(activitySrc, Constant.USER_CERTIFICATION_STATUS_ACTIVITY_SRC)) {
+                            tvTitle.setText("选择宿舍");
                             adapter = new ListChooseAdaptor(items, false);
-                        }else {
+                        } else {
                             adapter = new ListChooseAdaptor(items, true);
                             if (deviceType == Device.HEATER.getType()) {
                                 tvTitle.setText("选择洗澡房间");
@@ -321,17 +320,18 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
                             } else if (TextUtils.equals(activitySrc, Constant.MAIN_ACTIVITY_SRC)) {
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
-                            } else if (TextUtils.equals(activitySrc ,Constant.USER_INFO_ACTIVITY_SRC) || TextUtils.equals(activitySrc ,Constant.USER_CERTIFICATION_STATUS_ACTIVITY_SRC)){
+                            } else if (TextUtils.equals(activitySrc, Constant.USER_INFO_ACTIVITY_SRC) || TextUtils.equals(activitySrc, Constant.USER_CERTIFICATION_STATUS_ACTIVITY_SRC)) {
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
-                            } else if (TextUtils.equals(activitySrc ,Constant.COMPLETE_INFO_ACTIVITY_SRC)) {
+                            } else if (TextUtils.equals(activitySrc, Constant.COMPLETE_INFO_ACTIVITY_SRC)) {
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
-                            }else if (TextUtils.equals(activitySrc ,Constant.MAIN_ACTIVITY_BATHROOM_SRC)){
+                            } else if (TextUtils.equals(activitySrc, Constant.MAIN_ACTIVITY_BATHROOM_SRC)) {
                                 presenter.getBathroomList(null, null, deviceType, parentId, false);
-                            }else if (TextUtils.equals(activitySrc ,Constant.ADD_BATHROOM_SRC)){
+                            } else if (TextUtils.equals(activitySrc, Constant.ADD_BATHROOM_SRC)) {
                                 presenter.getBathroomList(null, null, deviceType, parentId, false);
-                            }else if (TextUtils.equals(activitySrc ,Constant.HEATER_TO_BATHROOM)){
+                            } else if (TextUtils.equals(activitySrc, Constant.HEATER_TO_BATHROOM)) {
                                 presenter.getBathroomList(null, null, deviceType, parentId, false);
-                            }else{}
+                            } else {
+                            }
 
                         }
                     }
@@ -340,7 +340,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         try {
                             if (presenter.isStartBathroom(this.items.get(position))) {
                                 int bathType = -1;
-                                if (TextUtils.isEmpty(items.get(position).getGroupId())) bathType = 1;
+                                if (TextUtils.isEmpty(items.get(position).getGroupId()))
+                                    bathType = 1;
                                 else bathType = 2;
                                 if (Constant.REPAIR_APPLY_ACTIVITY_SRC.equals(activitySrc)) {
                                     ListChooseAdaptor.Item item = items.get(position);
@@ -359,12 +360,12 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                                 } else if (Constant.COMPLETE_INFO_ACTIVITY_SRC.equals(activitySrc)) {
                                     presenter.updateUser(items.get(position).getId(), activitySrc);
                                 } else if (Constant.MAIN_ACTIVITY_BATHROOM_SRC.equals(activitySrc)) {
-                                    presenter.recordBath(items.get(position).getId(), bathType, null , items.get(position).getMac());
+                                    presenter.recordBath(items.get(position).getId(), bathType, null, items.get(position).getMac());
                                 } else if (Constant.ADD_BATHROOM_SRC.equals(activitySrc)) {
-                                    presenter.recordBath(items.get(position).getId(), bathType, null , items.get(position).getMac());
+                                    presenter.recordBath(items.get(position).getId(), bathType, null, items.get(position).getMac());
                                 } else if (Constant.HEATER_TO_BATHROOM.equals(activitySrc)) {
-                                    presenter.recordBath(items.get(position).getId(), bathType, null , items.get(position).getMac());
-                                } else if (Constant.USER_CERTIFICATION_STATUS_ACTIVITY_SRC.equals(activitySrc)){
+                                    presenter.recordBath(items.get(position).getId(), bathType, null, items.get(position).getMac());
+                                } else if (Constant.USER_CERTIFICATION_STATUS_ACTIVITY_SRC.equals(activitySrc)) {
                                     presenter.updateUser(items.get(position).getId(), activitySrc);
 //                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
                                 }
@@ -448,7 +449,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
         tvToolBarTitle.setText(tvTitle.getText().toString());
 
         appBarLayout.addOnOffsetChangedListener((AppBarLayout appBarLayout, int verticalOffset) -> {
-            if (verticalOffset < - (tvToolBarTitle.getHeight() + tvToolBarTitle.getPaddingTop())) {
+            if (verticalOffset < -(tvToolBarTitle.getHeight() + tvToolBarTitle.getPaddingTop())) {
                 tvToolBarTitle.setVisibility(View.VISIBLE);
                 viewLine.setVisibility(View.VISIBLE);
             } else {
@@ -556,39 +557,39 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
 
     @Override
     public void backToEditProfileActivity(String residenceName) {
-        startActivity(this ,UserCertificationActivity.class);
+        startActivity(this, UserCertificationActivity.class);
         this.finish();
     }
 
     public void backToCompeteInfoActivity(String residenceName) {
-        startActivity(this ,CompleteInfoActivity.class);
+        startActivity(this, CompleteInfoActivity.class);
         this.finish();
     }
 
     @Override
     public void startBathroom(UserResidenceInListDTO dto) {
-        startActivity(new Intent(this , ChooseBathroomActivity.class)
-        .putExtra(KEY_ID , dto.getId())
-        .putExtra(KEY_BUILDING_ID ,dto.getBuildingId())
-        .putExtra(KEY_RESIDENCE_ID , dto.getResidenceId())
-        .putExtra(KEY_RESIDENCE_TYPE , dto.getResidenceType())
-        .putExtra(KEY_RESIDENCE_NAME , dto.getResidenceName()));
+        startActivity(new Intent(this, ChooseBathroomActivity.class)
+                .putExtra(KEY_ID, dto.getId())
+                .putExtra(KEY_BUILDING_ID, dto.getBuildingId())
+                .putExtra(KEY_RESIDENCE_ID, dto.getResidenceId())
+                .putExtra(KEY_RESIDENCE_TYPE, dto.getResidenceType())
+                .putExtra(KEY_RESIDENCE_NAME, dto.getResidenceName()));
         this.finish();
     }
 
     @Override
-    public void startShower(String residenceName ,String macAddress , long supplierId , long residenceId ) {
-        startActivity(new Intent(this , HeaterActivity.class)
-                .putExtra(INTENT_KEY_LOCATION ,residenceName)
-                .putExtra(INTENT_KEY_MAC_ADDRESS ,macAddress)
-                .putExtra(INTENT_KEY_SUPPLIER_ID , supplierId)
-                .putExtra(INTENT_KEY_RESIDENCE_ID ,residenceId));
+    public void startShower(String residenceName, String macAddress, long supplierId, long residenceId) {
+        startActivity(new Intent(this, HeaterActivity.class)
+                .putExtra(INTENT_KEY_LOCATION, residenceName)
+                .putExtra(INTENT_KEY_MAC_ADDRESS, macAddress)
+                .putExtra(INTENT_KEY_SUPPLIER_ID, supplierId)
+                .putExtra(INTENT_KEY_RESIDENCE_ID, residenceId));
         this.finish();
     }
 
     @Override
     public void backToUserCertification(String residenceName) {
-        startActivity(this ,UserCertificationStatusActivity.class);
+        startActivity(this, UserCertificationStatusActivity.class);
     }
 
     @Override
@@ -609,8 +610,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
         availabilityDialog.setTip(dto.getRemark());
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             startShower(dto.getResidenceName()
-                    ,dto.getMacAddress() , dto.getSupplierId()
-                    ,dto.getResidenceId());
+                    , dto.getMacAddress(), dto.getSupplierId()
+                    , dto.getResidenceId());
         });
         availabilityDialog.show();
     }
@@ -618,12 +619,13 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     @Override
     protected void onDestroy() {
         presenter.onDetach();
-        if (availabilityDialog != null && availabilityDialog.isShowing()){
+        if (availabilityDialog != null && availabilityDialog.isShowing()) {
             availabilityDialog.dismiss();
         }
-        availabilityDialog = null ;
+        availabilityDialog = null;
         super.onDestroy();
     }
+
     private int mTouchRepeat = 0;
     private boolean mPoint2Down = false;
     private boolean mThreePointDown = false;
@@ -650,9 +652,9 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     break;
                 case MotionEvent.ACTION_POINTER_UP:
                     if (mPoint2Down && mTouchRepeat < 10 && !mThreePointDown) {
-                        System.arraycopy(mHits, 1, mHits, 0, mHits.length-1);
-                        mHits[mHits.length-1] = SystemClock.uptimeMillis();
-                        if (mHits[0] >= (SystemClock.uptimeMillis()-3000)) {
+                        System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
+                        mHits[mHits.length - 1] = SystemClock.uptimeMillis();
+                        if (mHits[0] >= (SystemClock.uptimeMillis() - 3000)) {
                             items.clear();
                             online = !online;
                             Arrays.fill(mHits, 0);

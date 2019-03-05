@@ -12,7 +12,6 @@ import com.xiaolian.amigo.ui.user.ChangeBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.ChangePhonePresenter;
 import com.xiaolian.amigo.ui.user.ChangeSchoolPresenter;
 import com.xiaolian.amigo.ui.user.CheckPasswordPresenter;
-import com.xiaolian.amigo.ui.user.ChooseDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.ChooseSchoolPresenter;
 import com.xiaolian.amigo.ui.user.CompleteInfoPresenter;
 import com.xiaolian.amigo.ui.user.EditAvatarPresenter;
@@ -36,8 +35,6 @@ import com.xiaolian.amigo.ui.user.intf.IChangeSchoolPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChangeSchoolView;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordView;
-import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryPresenter;
-import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryView;
 import com.xiaolian.amigo.ui.user.intf.IChooseSchoolPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChooseSchoolView;
 import com.xiaolian.amigo.ui.user.intf.ICompleteInfoPresenter;
@@ -163,92 +160,85 @@ public class UserActivityModule {
         return presenter;
     }
 
-    @Provides
-    @UserActivityContext
-    IChooseDormitoryPresenter<IChooseDormitoryView> provideChooseDormitoryPresenter(
-            ChooseDormitoryPresenter<IChooseDormitoryView> presenter) {
-        return presenter;
-    }
-
 
     @Provides
     @UserActivityContext
     IChangeBathroomPasswordPresenter<IChangeBathroomPasswordView> provideChangeBathroomPasswordPresenter(
-            ChangeBathroomPasswordPresenter<IChangeBathroomPasswordView> presenter){
-        return presenter ;
+            ChangeBathroomPasswordPresenter<IChangeBathroomPasswordView> presenter) {
+        return presenter;
     }
 
 
     @Provides
     @UserActivityContext
     IFindBathroomPasswordPresenter<IFindBathroomPasswordView> provideFindBathroomPasswordPresenter(
-            FindBathroomPasswordPresenter<IFindBathroomPasswordView> presenter){
-        return presenter ;
+            FindBathroomPasswordPresenter<IFindBathroomPasswordView> presenter) {
+        return presenter;
     }
 
 
     @Provides
     @UserActivityContext
     ICompleteInfoPresenter<ICompleteInfoView> provideCompleteInfoPresenter(
-            CompleteInfoPresenter<ICompleteInfoView> presenter){
-        return presenter ;
+            CompleteInfoPresenter<ICompleteInfoView> presenter) {
+        return presenter;
     }
 
 
     @Provides
     @UserActivityContext
     IUserCertificationPresenter<IUserCertificationView> provideUserCertificationPresenter(
-            UserCertificationPresenter<IUserCertificationView> presenter){
-        return presenter ;
+            UserCertificationPresenter<IUserCertificationView> presenter) {
+        return presenter;
     }
 
 
     @Provides
     @UserActivityContext
     IUserCerticifationStatusPresenter<IUserCertificationStatusView> provideUserCertificationStatusPresenter(
-            UserCertificationStatusPresenter<IUserCertificationStatusView> presenter){
-        return presenter ;
+            UserCertificationStatusPresenter<IUserCertificationStatusView> presenter) {
+        return presenter;
     }
 
     @Provides
     @UserActivityContext
     IChooseSchoolPresenter<IChooseSchoolView> provideChooseSchoolPresenter
-            (ChooseSchoolPresenter<IChooseSchoolView> presenter){
-        return presenter ;
+            (ChooseSchoolPresenter<IChooseSchoolView> presenter) {
+        return presenter;
     }
 
     @Provides
     @UserActivityContext
     IEditUserInfoPresenter<IEditUserInfoView> provideEditUserInfoPresenter(
-            EditUserInfoPresenter<IEditUserInfoView> presenter){
-        return presenter ;
+            EditUserInfoPresenter<IEditUserInfoView> presenter) {
+        return presenter;
     }
 
     @Provides
     @UserActivityContext
     IChangeSchoolPresenter<IChangeSchoolView> provideChangeSchoolPresenter(
-            ChangeSchoolPresenter<IChangeSchoolView> presenter){
+            ChangeSchoolPresenter<IChangeSchoolView> presenter) {
         return presenter;
     }
 
     @Provides
     @UserActivityContext
     IChangePhonePresenter<IChangePhoneView> provideChangePhonePresenter(
-            ChangePhonePresenter<IChangePhoneView> presenter){
+            ChangePhonePresenter<IChangePhoneView> presenter) {
         return presenter;
     }
 
     @Provides
     @UserActivityContext
     IThirdBindPresenter<IThirdBindView> provideThirdBindPresenter(
-            ThirdBindPresenter<IThirdBindView> presenter){
+            ThirdBindPresenter<IThirdBindView> presenter) {
         return presenter;
     }
 
     @Provides
     @UserActivityContext
     IPasswordVerifyPresenter<IPasswordVerifyView> providePasswordVerifyPresenter(
-            PasswordVerifyPresenter<IPasswordVerifyView> presenter){
+            PasswordVerifyPresenter<IPasswordVerifyView> presenter) {
         return presenter;
     }
 }

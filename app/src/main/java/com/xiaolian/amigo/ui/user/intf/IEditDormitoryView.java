@@ -84,9 +84,6 @@ public interface IEditDormitoryView extends IBaseListView {
      *
      * @param title
      * @param remark     提示内容
-     * @param pubBath    是否为公共浴室
-     * @param residence  洗澡地址
-     * @param macAddress mac地址
      */
-    void showTimeValidDialog(String title, String remark, boolean pubBath, UserResidenceInListDTO residence, String macAddress);
+    void showTimeValidDialog(String title, String remark, EditDormitoryAdaptor.UserResidenceWrapper wrapper  ,int currentPosition);
 }

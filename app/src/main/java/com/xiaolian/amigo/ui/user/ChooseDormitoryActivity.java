@@ -9,7 +9,6 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ChooseDormitoryAdaptor;
 import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
-import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.Constant;
@@ -18,8 +17,6 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
@@ -34,9 +31,6 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
 
     private static final int REQUEST_CODE_EDIT_DORMITORY = 0x1020;
     public static final String INTENT_KEY_LAST_DORMITORY = "intent_key_last_dormitory";
-    @Inject
-    IChooseDormitoryPresenter<IChooseDormitoryView> presenter;
-
     List<EditDormitoryAdaptor.UserResidenceWrapper> items = new ArrayList<>();
 
     ChooseDormitoryAdaptor adaptor;
@@ -110,7 +104,6 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
-        presenter.onAttach(ChooseDormitoryActivity.this);
     }
 
     @Override
@@ -154,7 +147,6 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
 
     @Override
     protected void onDestroy() {
-        presenter.onDetach();
         super.onDestroy();
     }
 }

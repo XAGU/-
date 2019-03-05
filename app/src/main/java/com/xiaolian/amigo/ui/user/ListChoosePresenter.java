@@ -416,13 +416,9 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                     if (null !=result.getData().getTimeValid() && result.getData().getTimeValid()) {
                         UserResidenceInListDTO dto = result.getData();
                         userDataManager.getUser().setRoomId(residenceId);
-                        userDataManager.setRoomId(residenceId);
                         if (dto.isPubBath()) {
                             getMvpView().startBathroom(dto);
                         } else {
-                            //   请求接口 获取device信息
-//                            checkDeviceUsage();
-//                            userDataManager.saveDeviceCategory(result.getData().getDevices());
                             getMvpView().startShower(result.getData().getResidenceName()
                                     ,result.getData().getMacAddress() , result.getData().getSupplierId()
                                     ,result.getData().getResidenceId());
