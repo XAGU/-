@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.user;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ScreenUtils;
 
@@ -60,6 +62,8 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
     TextView tvAddDormitory;
     private boolean needRefresh;
     private volatile boolean refreshFlag = false;
+
+    private AvailabilityDialog availabilityDialog;
 
     void onAddDormitoryClick() {
         Intent intent = new Intent(this, ListChooseActivity.class);
@@ -192,6 +196,36 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
     }
 
     @Override
+    public void showTimeValidDialog(String title, String remark, boolean pubBath, UserResidenceInListDTO residence, String macAddress) {
+        if (null == availabilityDialog) {
+            availabilityDialog = new AvailabilityDialog(this);
+        }
+        if (availabilityDialog.isShowing()) {
+            if (availabilityDialog.getType() == AvailabilityDialog.Type.TIME_VALID) {
+                return;
+            } else {
+                availabilityDialog.dismiss();
+            }
+        }
+        availabilityDialog.setType(AvailabilityDialog.Type.TIME_VALID);
+        availabilityDialog.setOkText(getString(R.string.keep_use_cold_water));
+        availabilityDialog.setTitle(title);
+        availabilityDialog.setTip(remark);
+        availabilityDialog.setOnOkClickListener(dialog1 -> {
+            if (pubBath) {
+                startBathroom(residence);
+            } else {
+                if (TextUtils.isEmpty(macAddress)) {
+                    onError("该地址下无设备");
+                } else {
+                    startShower(residence);
+                }
+            }
+        });
+        availabilityDialog.show();
+    }
+
+    @Override
     protected void onRefresh() {
         if (!needRefresh) {
             setRefreshComplete();
@@ -253,6 +287,10 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
     @Override
     protected void onDestroy() {
         presenter.onDetach();
+        if (availabilityDialog != null && availabilityDialog.isShowing()){
+            availabilityDialog.dismiss();
+        }
+        availabilityDialog = null ;
         super.onDestroy();
     }
 }

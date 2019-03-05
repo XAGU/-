@@ -413,16 +413,22 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             @Override
             public void onReady(ApiResult<UserResidenceInListDTO> result) {
                 if (null == result.getError()){
-                    UserResidenceInListDTO dto = result.getData();
-                    userDataManager.getUser().setRoomId(residenceId);
-                    userDataManager.setRoomId(residenceId);
-                    if (dto.isPubBath()){
-                        getMvpView().startBathroom(dto);
+                    if (null !=result.getData().getTimeValid() && result.getData().getTimeValid()) {
+                        UserResidenceInListDTO dto = result.getData();
+                        userDataManager.getUser().setRoomId(residenceId);
+                        userDataManager.setRoomId(residenceId);
+                        if (dto.isPubBath()) {
+                            getMvpView().startBathroom(dto);
+                        } else {
+                            //   请求接口 获取device信息
+//                            checkDeviceUsage();
+//                            userDataManager.saveDeviceCategory(result.getData().getDevices());
+                            getMvpView().startShower(result.getData().getResidenceName()
+                                    ,result.getData().getMacAddress() , result.getData().getSupplierId()
+                                    ,result.getData().getResidenceId());
+                        }
                     }else{
-
-                        //   请求接口 获取device信息
-                        checkDeviceUsage();
-
+                        getMvpView().showTimeValidDialog(result.getData());
                     }
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -450,10 +456,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             public void onReady(ApiResult<DeviceCheckRespDTO> result) {
                 EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
                 if (null == result.getError()) {
-                    userDataManager.saveDeviceCategory(result.getData().getDevices());
-                    getMvpView().startShower(result.getData().getLocation()
-                            ,result.getData().getDefaultMacAddress() , result.getData().getDefaultSupplierId()
-                            ,result.getData().getResidenceId());
+
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

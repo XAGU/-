@@ -26,6 +26,7 @@ import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.user.ResidenceUpdateRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserCertifyInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
@@ -191,7 +192,7 @@ public interface IUserApi {
      * @return
      */
     @POST("user/residence/bath/record/default/update")
-    Observable<ApiResult<BooleanRespDTO>>  updateNormalBathroom(@Body SimpleReqDTO dto);
+    Observable<ApiResult<ResidenceUpdateRespDTO>>  updateNormalBathroom(@Body SimpleReqDTO dto);
 
 
     /**

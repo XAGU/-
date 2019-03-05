@@ -14,6 +14,7 @@ import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.user.DeleteResidenceRespDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.user.ResidenceUpdateRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.vo.User;
@@ -257,35 +258,40 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
             });
         }
     }
-
+    
     @Override
     public void  updateNormalBathroom(EditDormitoryAdaptor.UserResidenceWrapper wrapper  , int  currentPosition) {
         SimpleReqDTO dto = new SimpleReqDTO();
         dto.setId(wrapper.getId());
-        addObserver(userDataManager.updateNormalBathroom(dto) , new NetworkObserver<ApiResult<BooleanRespDTO>>(){
+        addObserver(userDataManager.updateNormalBathroom(dto) , new NetworkObserver<ApiResult<ResidenceUpdateRespDTO>>(){
 
             @Override
-            public void onReady(ApiResult<BooleanRespDTO> result) {
+            public void onReady(ApiResult<ResidenceUpdateRespDTO> result) {
                 if (null == result.getError()){
-                    if (result.getData().isResult()) {
-                        saveNormalBathroomId(wrapper.getResidenceId());
-                        userDataManager.setRoomId(wrapper.getResidenceId());
-                        getMvpView().notifyAdapter( wrapper,currentPosition);
-                        RxHelper.delay(300 ,TimeUnit.MILLISECONDS)
-                                .subscribe(new Action1<Integer>() {
-                                    @Override
-                                    public void call(Integer integer) {
-                                        if (wrapper.isPubBath()){
-                                            getMvpView().startBathroom(wrapper.getResidence());
-                                        }else{
-                                            if (TextUtils.isEmpty(wrapper.getMacAddress())){
-                                                getMvpView().onError("该地址下无设备");
-                                            }else {
-                                                getMvpView().startShower(wrapper.getResidence());
+                    if (result.getData().getResult()) {
+                        if (null != result.getData().getTimeValid() && result.getData().getTimeValid()) {
+                            saveNormalBathroomId(wrapper.getResidenceId());
+                            userDataManager.setRoomId(wrapper.getResidenceId());
+                            getMvpView().notifyAdapter(wrapper, currentPosition);
+                            RxHelper.delay(300, TimeUnit.MILLISECONDS)
+                                    .subscribe(new Action1<Integer>() {
+                                        @Override
+                                        public void call(Integer integer) {
+                                            if (wrapper.isPubBath()) {
+                                                getMvpView().startBathroom(wrapper.getResidence());
+                                            } else {
+                                                if (TextUtils.isEmpty(wrapper.getMacAddress())) {
+                                                    getMvpView().onError("该地址下无设备");
+                                                } else {
+                                                    getMvpView().startShower(wrapper.getResidence());
+                                                }
                                             }
                                         }
-                                    }
-                                });
+                                    });
+                        }else{
+                            getMvpView().showTimeValidDialog(result.getData().getTitle() ,result.getData().getRemark() ,
+                                    wrapper.isPubBath() ,wrapper.getResidence() ,wrapper.getMacAddress());
+                        }
                     }else{
                         getMvpView().onError(result.getData().getFailReason());
                     }

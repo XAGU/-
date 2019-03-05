@@ -100,4 +100,11 @@ public interface IListChooseView extends IBaseView {
 
 
     void backToUserCertification(String residenceName);
+
+    /**
+     * 显示不在供水时段提示
+     * @param dto  title
+     * @param
+     */
+    void showTimeValidDialog(UserResidenceInListDTO dto);
 }

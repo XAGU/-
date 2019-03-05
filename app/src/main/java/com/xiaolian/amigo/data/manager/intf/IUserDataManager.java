@@ -44,6 +44,7 @@ import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.user.ResidenceUpdateRespDTO;
 import com.xiaolian.amigo.data.network.model.user.SchoolNameListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserCertifyInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
@@ -274,7 +275,7 @@ public interface IUserDataManager {
      * @param dto
      * @return
      */
-    Observable<ApiResult<BooleanRespDTO>> updateNormalBathroom(@Body SimpleReqDTO dto);
+    Observable<ApiResult<ResidenceUpdateRespDTO>> updateNormalBathroom(@Body SimpleReqDTO dto);
 
 
     /**

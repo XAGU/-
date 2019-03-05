@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.data.network.model.user;
 
+import com.xiaolian.amigo.data.network.model.device.Supplier;
+
 import lombok.Data;
 
 /**
@@ -12,87 +14,34 @@ import lombok.Data;
 @Data
 public class UserResidenceInListDTO {
 
-        /**
-         * buildingId : 0
-         * id : 0
-         * isPubBath : false
-         * macAddress : string
-         * residenceId : 0
-         * residenceName : string
-         * residenceType : 0
-         * supplierId : 0
-         */
+    /**
+     * buildingId : 0
+     * id : 0
+     * isPubBath : false
+     * macAddress : string
+     * residenceId : 0
+     * residenceName : string
+     * residenceType : 0
+     * supplierId : 0
+     */
 
-        private long buildingId;
-        private long id;
-        private boolean isPubBath;
-        private String macAddress;
-        private long residenceId;
-        private String residenceName;
-        private long residenceType;
-        private long supplierId;
+    private long buildingId;
+    private long id;
+    private boolean isPubBath;
+    private String macAddress;
+    private long residenceId;
+    private String residenceName;
+    private long residenceType;
+    private long supplierId;
 
-    public long getBuildingId() {
-        return buildingId;
-    }
+    private Supplier supplier ;
 
-    public void setBuildingId(long buildingId) {
-        this.buildingId = buildingId;
-    }
+    // 是否是当前供水时段
+    private Boolean timeValid;
 
-    public long getId() {
-        return id;
-    }
+    // 标题
+    private String title;
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public boolean isPubBath() {
-        return isPubBath;
-    }
-
-    public void setPubBath(boolean pubBath) {
-        isPubBath = pubBath;
-    }
-
-    public String getMacAddress() {
-        return macAddress;
-    }
-
-    public void setMacAddress(String macAddress) {
-        this.macAddress = macAddress;
-    }
-
-    public long getResidenceId() {
-        return residenceId;
-    }
-
-    public void setResidenceId(long residenceId) {
-        this.residenceId = residenceId;
-    }
-
-    public String getResidenceName() {
-        return residenceName;
-    }
-
-    public void setResidenceName(String residenceName) {
-        this.residenceName = residenceName;
-    }
-
-    public long getResidenceType() {
-        return residenceType;
-    }
-
-    public void setResidenceType(long residenceType) {
-        this.residenceType = residenceType;
-    }
-
-    public long getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(long supplierId) {
-        this.supplierId = supplierId;
-    }
+    // 提示内容
+    private String remark;
 }

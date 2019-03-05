@@ -35,6 +35,7 @@ import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
 import com.xiaolian.amigo.ui.wallet.WithdrawalActivity;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
+import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
@@ -143,6 +144,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     View viewLine;
 
     private int action;
+
+    private AvailabilityDialog availabilityDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -589,8 +592,36 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     }
 
     @Override
+    public void showTimeValidDialog(UserResidenceInListDTO dto) {
+        if (null == availabilityDialog) {
+            availabilityDialog = new AvailabilityDialog(this);
+        }
+        if (availabilityDialog.isShowing()) {
+            if (availabilityDialog.getType() == AvailabilityDialog.Type.TIME_VALID) {
+                return;
+            } else {
+                availabilityDialog.dismiss();
+            }
+        }
+        availabilityDialog.setType(AvailabilityDialog.Type.TIME_VALID);
+        availabilityDialog.setOkText(getString(R.string.keep_use_cold_water));
+        availabilityDialog.setTitle(dto.getTitle());
+        availabilityDialog.setTip(dto.getRemark());
+        availabilityDialog.setOnOkClickListener(dialog1 -> {
+            startShower(dto.getResidenceName()
+                    ,dto.getMacAddress() , dto.getSupplierId()
+                    ,dto.getResidenceId());
+        });
+        availabilityDialog.show();
+    }
+
+    @Override
     protected void onDestroy() {
         presenter.onDetach();
+        if (availabilityDialog != null && availabilityDialog.isShowing()){
+            availabilityDialog.dismiss();
+        }
+        availabilityDialog = null ;
         super.onDestroy();
     }
     private int mTouchRepeat = 0;
