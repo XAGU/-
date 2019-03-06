@@ -59,9 +59,11 @@ import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
 import static com.xiaolian.amigo.data.enumeration.TradePage.BLE;
 import static com.xiaolian.amigo.data.enumeration.TradePage.QR_CODE;
 import static com.xiaolian.amigo.ui.base.WebActivity.INTENT_KEY_URL;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_AFTER_ORDER_COPY;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_DEVICE_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_LOCATION;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_MAC_ADDRESS;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_PRE_ORDER_COPY;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_RESIDENCE_ID;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_SUPPLIER_ID;
 
@@ -663,7 +665,7 @@ public class ScanActivity extends WasherBaseActivity
         }
     }
 
-    public void showTimeValidDialog(int deviceType, BriefDeviceDTO data, String mac) {
+    public void showTimeValidDialog(int deviceType, BriefDeviceDTO data, String mac , List<String> afterOrderCopy , List<String> preOrderCopy) {
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
             availabilityDialog.setCancelListener(new AvailabilityDialog.onCancelListener() {
@@ -695,7 +697,8 @@ public class ScanActivity extends WasherBaseActivity
                         data.getLocation(), data.getResidenceId(),
                         data.isFavor(), (data.getCategory() != null
                                 && DispenserCategory.MULTI.getType() == data.getCategory())
-                                ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true);
+                                ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true
+                                , afterOrderCopy , preOrderCopy );
             } else if (deviceType == Device.DRYER.getType()) {
                 gotoDryer(mac, data.getSupplierId(),
                         data.getLocation(), data.getResidenceId(),
@@ -736,7 +739,7 @@ public class ScanActivity extends WasherBaseActivity
                         data.getLocation(), data.getResidenceId(),
                         data.getFavor(), (data.getCategory() != null
                                 && DispenserCategory.MULTI.getType() == data.getCategory())
-                                ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true);
+                                ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true , null , null );
             } else if (deviceType == Device.DRYER.getType()) {
                 gotoDryer(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
                         data.getLocation(), data.getResidenceId(),
@@ -775,7 +778,7 @@ public class ScanActivity extends WasherBaseActivity
                                 data.getLocation(), data.getResidenceId(),
                                 data.getFavor(), (data.getCategory() != null
                                         && DispenserCategory.MULTI.getType() == data.getCategory())
-                                        ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true);
+                                        ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true , null , null);
                     } else if (type == Device.DRYER.getType()) {
                         gotoDryer(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
                                 data.getLocation(), data.getResidenceId(),
@@ -799,9 +802,9 @@ public class ScanActivity extends WasherBaseActivity
 
 
     @Override
-    public void goToBleDevice(int type, String macAddress, BriefDeviceDTO data, boolean isBle) {
+    public void goToBleDevice(int type, String macAddress, BriefDeviceDTO data, boolean isBle , List<String> afterOrderCopy , List<String> preOrderCopy) {
         if (data.getTimeValid() != null && !data.getTimeValid()) {
-            showTimeValidDialog(data.getDeviceType(), data, macAddress);
+            showTimeValidDialog(data.getDeviceType(), data, macAddress , afterOrderCopy , preOrderCopy);
         } else {
             if (type == Device.HEATER.getType()) {
                 // 前往热水澡
@@ -811,7 +814,7 @@ public class ScanActivity extends WasherBaseActivity
             } else if (type == Device.DISPENSER.getType()) {
                 // 进入饮水机
                 gotoDispenser(macAddress, data.getSupplierId(), data.getLocation(),
-                        data.getResidenceId(), data.isFavor(), 0, false);
+                        data.getResidenceId(), data.isFavor(), 0, false ,afterOrderCopy , preOrderCopy);
 //
             } else if (type == Device.DRYER.getType()) {
                 // 进入吹风机
@@ -859,7 +862,7 @@ public class ScanActivity extends WasherBaseActivity
             if (TextUtils.isEmpty(unique)) {
                 onError("设备macAddress不合法");
             } else {
-                goToBleDevice(data.getDeviceType(), unique, data, true);
+                goToBleDevice(data.getDeviceType(), unique, data, true , data.getAfterOrderCopy() , data.getPreOrderCopy());
             }
         } else if (QR_CODE.getPage().equals(data.getTradePage())) {
             gotoH5Dryer(data.getDeviceType(), unique, data.getSupplierId());
@@ -954,7 +957,7 @@ public class ScanActivity extends WasherBaseActivity
 
     public void gotoDispenser(String macAddress, Long supplierId, String location, Long residenceId,
                               boolean favor, int usefor,
-                              boolean recovery) {
+                              boolean recovery , List<String> afterOrderCopy , List<String> preOrderCopy) {
         if (TextUtils.isEmpty(macAddress)) {
             onError("设备macAddress不合法");
         } else {
@@ -969,6 +972,12 @@ public class ScanActivity extends WasherBaseActivity
             intent.putExtra(DispenserActivity.INTENT_KEY_FAVOR, favor);
             intent.putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, String.valueOf(usefor));
             intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
+            if (preOrderCopy != null && preOrderCopy.size() > 0){
+                intent.putStringArrayListExtra(INTENT_KEY_PRE_ORDER_COPY , (ArrayList<String>) preOrderCopy);
+            }
+            if (afterOrderCopy != null && afterOrderCopy.size() > 0){
+                intent.putStringArrayListExtra(INTENT_KEY_AFTER_ORDER_COPY , (ArrayList<String>) afterOrderCopy);
+            }
             startActivity(intent);
             finish();
         }

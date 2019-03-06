@@ -24,7 +24,6 @@ import android.widget.TextView;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.base.TimeHolder;
-import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.ErrorTag;
 import com.xiaolian.amigo.data.enumeration.TradeError;
@@ -38,8 +37,6 @@ import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
 import com.xiaolian.amigo.ui.main.MainActivity;
-import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
-import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
@@ -51,7 +48,6 @@ import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
 import com.xiaolian.amigo.util.Log;
-import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.TimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -60,14 +56,13 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
-import rx.functions.Action1;
 
+import static com.xiaolian.amigo.ui.bonus.BonusActivity.INTENT_IS_USE_BONUS;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_AFTER_ORDER_COPY;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_PRE_ORDER_COPY;
 import static com.xiaolian.amigo.util.Constant.FROM_LOCATION;
@@ -84,12 +79,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public static final String INTENT_HOME_PAGE_JUMP = "intent_home_page_jump";
     public static final String INTENT_RECOVER = "intent_recover";
     public static final String INTENT_PREPAY_INFO = "intent_prepay_info";
-    public static final String CONN_TYPE = "CONN_TYPE" ;  // 连接方式， 是否是扫一扫， 是为true; 否 为false
+    public static final String CONN_TYPE = "CONN_TYPE";  // 连接方式， 是否是扫一扫， 是为true; 否 为false
 
     /**
      * 跳转到蓝牙开启提示
      */
-    public static final int REQUEST_BLE_OPEN = 0X013 ;
+    public static final int REQUEST_BLE_OPEN = 0X013;
     private static final String TAG = WaterDeviceBaseActivity.class.getSimpleName();
     /**
      * 跳转到选择代金券页面的request code
@@ -217,7 +212,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      * 设备标题
      */
     @BindView(R.id.tv_device_title)
-    protected  TextView tvDeviceTitle;
+    protected TextView tvDeviceTitle;
     /**
      * 显示加载动画
      */
@@ -283,7 +278,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 设备位置id
      */
-    public  Long residenceId;
+    public Long residenceId;
     private boolean homePageJump;
     /**
      * 供应商id
@@ -303,17 +298,17 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private OrderPreInfoDTO orderPreInfo;
     protected boolean bleError = false;
 
-    private  boolean isScan ;
+    private boolean isScan;
 
     /**
      * 下单前文案
      */
-    private List<String> preOrderCopy ;
+    private List<String> preOrderCopy;
 
     /**
      * 下单后文案
      */
-    private List<String> afterOrderCopy ;
+    private List<String> afterOrderCopy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -332,11 +327,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         setBleCallback(() -> {
             initView();
             presenter.setDeviceType(deviceType);
-            android.util.Log.e(TAG, "onCreate: " + residenceId );
+            android.util.Log.e(TAG, "onCreate: " + residenceId);
             presenter.setResidenceId(residenceId);
-            if (isScan){
-                presenter.onPreConnect(macAddress , true);
-            }else {
+            if (isScan) {
+                presenter.onPreConnect(macAddress, true);
+            } else {
                 presenter.onPreConnect(macAddress);
             }
 
@@ -350,7 +345,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
         // 如果未注册，开始注册
         if (!EventBus.getDefault().isRegistered(this))
-        EventBus.getDefault().register(this);
+            EventBus.getDefault().register(this);
     }
 
     @Override
@@ -362,14 +357,14 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     protected void setUp() {
         if (getIntent() != null) {
             macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
-            android.util.Log.e(TAG, "setUp: " + getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS) );
+            android.util.Log.e(TAG, "setUp: " + getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS));
             deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
             location = getIntent().getStringExtra(MainActivity.INTENT_KEY_LOCATION);
             residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, -1L);
             supplierId = getIntent().getLongExtra(MainActivity.INTENT_KEY_SUPPLIER_ID, -1L);
             homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
             recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
-            isScan = getIntent().getBooleanExtra(CONN_TYPE , false);
+            isScan = getIntent().getBooleanExtra(CONN_TYPE, false);
             orderPreInfo = getIntent().getParcelableExtra(INTENT_PREPAY_INFO);
             preOrderCopy = getIntent().getStringArrayListExtra(INTENT_KEY_PRE_ORDER_COPY);
             afterOrderCopy = getIntent().getStringArrayListExtra(INTENT_KEY_AFTER_ORDER_COPY);
@@ -563,7 +558,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 if (bonusAmount >= minPrepay) {
 
                     //  如果后台返回有下单前文案，则使用下单前的文案
-                    tip = orderListTipConvertTip(df.format(minPrepay), R.string.connect_prepay_tip_5 , preOrderCopy);
+                    tip = orderListTipConvertTip(df.format(minPrepay), R.string.connect_prepay_tip_5, preOrderCopy);
                     prepayAmount = 0.0;
                     needRecharge = false;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
@@ -592,7 +587,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 // 余额加代金券大于等于预付金额
                 if (balance + bonusAmount >= prepay) {
 
-                    tip = orderListTipConvertTip(df.format(prepay), R.string.connect_prepay_tip_4 , preOrderCopy);
+                    tip = orderListTipConvertTip(df.format(prepay), R.string.connect_prepay_tip_4, preOrderCopy);
                     prepayAmount = prepay - bonusAmount;
                     if (prepayAmount < 0) {
                         prepayAmount = 0.0;
@@ -612,7 +607,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 // 余额加代金券小于预付金额 大于等于最小预付金额
                 else if (balance + bonusAmount >= minPrepay
                         && balance + bonusAmount < prepay) {
-                    tip = orderListTipConvertTip(df.format(prepay), R.string.connect_prepay_tip_6 , preOrderCopy);
+                    tip = orderListTipConvertTip(df.format(prepay), R.string.connect_prepay_tip_6, preOrderCopy);
                     prepayAmount = balance;
                     needRecharge = false;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
@@ -645,9 +640,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 // 余额大于等于预付金额
                 if (balance >= prepay) {
                     prepayAmount = prepay;
-                    String[] tips ;
-                    tips = orderListTipConvertHaveNoBoundsTip(df.format(prepayAmount) ,R.string.connect_prepay_tip_1 ,
-                            R.string.need_prepay_amount ,preOrderCopy);
+                    String[] tips;
+                    tips = orderListTipConvertHaveNoBoundsTip(df.format(prepayAmount), R.string.connect_prepay_tip_1,
+                            R.string.need_prepay_amount, preOrderCopy);
                     title = tips[1];
                     tip = tips[0];
 //                    title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
@@ -667,9 +662,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     prepayAmount = balance;
 //                    title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
 //                    tip = getString(R.string.connect_prepay_tip_2, df.format(prepay));
-                    String[] tips ;
-                    tips = orderListTipConvertHaveNoBoundsTip(df.format(prepayAmount) ,R.string.connect_prepay_tip_2 ,
-                            R.string.need_prepay_amount ,preOrderCopy,df.format(prepay));
+                    String[] tips;
+                    tips = orderListTipConvertHaveNoBoundsTip(df.format(prepayAmount), R.string.connect_prepay_tip_2,
+                            R.string.need_prepay_amount, preOrderCopy, df.format(prepay));
                     title = tips[0];
                     tip = tips[1];
                     needRecharge = false;
@@ -699,23 +694,24 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     /**
      * 无红包时，从服务器获取的tip数组组装为tip文字
+     *
      * @param format
      * @param connect_prepay_tip_4
      * @param orderCopy
      * @return
      */
     @NonNull
-    private String orderListTipConvertTip(String format, int connect_prepay_tip_4 ,List<String> orderCopy) {
+    private String orderListTipConvertTip(String format, int connect_prepay_tip_4, List<String> orderCopy) {
         String tip = "";
         if (orderCopy != null && orderCopy.size() > 0) {
             StringBuilder mPreOrderTip = new StringBuilder();
             for (String preOrdertip : orderCopy) {
-                mPreOrderTip.append(preOrdertip+"\n");
+                mPreOrderTip.append(preOrdertip + '\n');
             }
-            tip = mPreOrderTip.toString() ;
+            tip = mPreOrderTip.toString();
             if (tip.length() > 1)
-            tip = tip.replace("\\n" ,"\n").substring(0 , tip.length() -1)
-                    .replace("x" , format).replace("X" ,format);
+                tip = tip.replace("\\n", "\n").substring(0, tip.length() - 1)
+                        .replace("x", format).replace("X", format);
         } else {
             tip = getString(connect_prepay_tip_4, format);
         }
@@ -725,78 +721,82 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     /**
      * 无红包时，从服务器获取的tip数组组装为tip文字
+     *
      * @param format
      * @param
      * @param orderCopy
      * @return
      */
     @NonNull
-    private String[] orderListTipConvertHaveNoBoundsTip(String format, int tipString , int titleString ,List<String> orderCopy ,  String formatTip ) {
-        String [] tips = new String[2];
-        String title="" ;
-        String tip = "" ;
+    private String[] orderListTipConvertHaveNoBoundsTip(String format, int tipString, int titleString, List<String> orderCopy, String formatTip) {
+        String[] tips = new String[2];
+        String title = "";
+        String tip = "";
         if (orderCopy != null && orderCopy.size() > 0) {
             StringBuilder mPreOrderTip = new StringBuilder();
-            for (int i = 0 ; i < orderCopy.size() ; i++){
-                if (i ==0) {
+            for (int i = 0; i < orderCopy.size(); i++) {
+                if (i == 0) {
                     title = orderCopy.get(0);
-                } else{
-                    mPreOrderTip.append(orderCopy.get(i) +"\n");
+                } else {
+                    mPreOrderTip.append(orderCopy.get(i) + "\n");
                 }
             }
-            tip = mPreOrderTip.toString() ;
+            tip = mPreOrderTip.toString();
             if (tip.length() > 1)
                 tip = tip.replace("\\n", "\n").substring(0, tip.length() - 1)
                         .replace("x", format).replace("X", format);
+            title = title.replace("x", format);
+            title = title.replace("X", format);
         } else {
             title = getString(titleString, format);
-            tip = getString(tipString , formatTip);
+            tip = getString(tipString, formatTip);
         }
-        tips[0] = title ;
-        tips[1] = tip ;
-        return tips ;
+        tips[0] = title;
+        tips[1] = tip;
+        return tips;
 
     }
 
     /**
      * 无红包时，从服务器获取的tip数组组装为tip文字
+     *
      * @param format
      * @param
      * @param orderCopy
      * @return
      */
     @NonNull
-    private String[] orderListTipConvertHaveNoBoundsTip(String format, int tipString , int titleString ,List<String> orderCopy  ) {
+    private String[] orderListTipConvertHaveNoBoundsTip(String format, int tipString, int titleString, List<String> orderCopy) {
         String[] tips = new String[2];
-        String title = "" ;
-        String tip ="";
+        String title = "";
+        String tip = "";
         if (orderCopy != null && orderCopy.size() > 0) {
             StringBuilder mPreOrderTip = new StringBuilder();
-            for (int i = 0 ; i < orderCopy.size() ; i++){
-                if (i ==0) {
+            for (int i = 0; i < orderCopy.size(); i++) {
+                if (i == 0) {
                     title = orderCopy.get(0);
-                } else{
-                   mPreOrderTip.append(orderCopy.get(i)+"\n");
+                } else {
+                    mPreOrderTip.append(orderCopy.get(i) + "\n");
                 }
             }
-            tip = mPreOrderTip.toString() ;
+            tip = mPreOrderTip.toString();
             if (tip.length() > 1)
                 tip = tip.replace("\\n", "\n").substring(0, tip.length() - 1);
-            title = title.replace("x",format);
-            title = title.replace("X" ,format);
+            title = title.replace("x", format);
+            title = title.replace("X", format);
         } else {
             title = getString(titleString, format);
             tip = getString(tipString);
         }
 
-        tips[0] = tip ;
-        tips[1] = title ;
+        tips[0] = tip;
+        tips[1] = title;
 
         return tips;
     }
 
-    public  void setDvTitleNull(){
-        tvDeviceTitle.setCompoundDrawables(null , null , null , null);
+    public void setDvTitleNull() {
+        tvDeviceTitle.setCompoundDrawables(null, null, null, null);
     }
 
     /**
@@ -955,7 +955,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
                 // 关闭蓝牙连接
 
-                android.util.Log.e("DeviceBasePresenter", "onFinish: >>>>>> 10  " );
+                android.util.Log.e("DeviceBasePresenter", "onFinish: >>>>>> 10  ");
                 if (presenter.getStep() == TradeStep.CLOSE_VALVE) {
                     presenter.closeBleConnection();
                 }
@@ -1048,7 +1048,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public void realPay() {
         // 需要充值
         if (needRecharge) {
-            String fromLocation ="" ;
+            String fromLocation = "";
             if (Device.getDevice(deviceType) == Device.HEATER) {
                 fromLocation = "热水澡";
             } else if (Device.getDevice(deviceType) == Device.DISPENSER) {
@@ -1057,7 +1057,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 fromLocation = "吹风机";
             }
             startActivityForResult(new Intent(this, RechargeActivity.class)
-                    .putExtra(FROM_LOCATION ,fromLocation),
+                            .putExtra(FROM_LOCATION, fromLocation),
                     REQUEST_CODE_RECHARGE);
             return;
         } else {
@@ -1105,17 +1105,17 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 //        super.getBlePermission();
         RxPermissions rxPermissions = RxPermissions.getInstance(this);
         if (rxPermissions.isGranted(Manifest.permission.BLUETOOTH)
-                &&(rxPermissions.isGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
-                || rxPermissions.isGranted(Manifest.permission.ACCESS_FINE_LOCATION))){
-            if (!isBleOpen()){
+                && (rxPermissions.isGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
+                || rxPermissions.isGranted(Manifest.permission.ACCESS_FINE_LOCATION))) {
+            if (!isBleOpen()) {
                 startBleTipActivity();
-            }else{
+            } else {
                 if (null != blePermissonCallback) {
                     blePermissonCallback.execute();
                 }
             }
 
-        }else{
+        } else {
             startBleTipActivity();
         }
     }
@@ -1123,9 +1123,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 去蓝牙提示开启界面
      */
-    private void startBleTipActivity(){
-        Intent intent = new Intent(this ,BleTipActivity.class);
-        startActivityForResult(intent ,REQUEST_BLE_OPEN);
+    private void startBleTipActivity() {
+        Intent intent = new Intent(this, BleTipActivity.class);
+        startActivityForResult(intent, REQUEST_BLE_OPEN);
     }
 
     /**
@@ -1177,10 +1177,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         startActivity(new Intent(this, WebActivity.class)
                 .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_REPAIR
                         + "?accessToken=" + presenter.getAccessToken()
-                        +"&refreshToken=" +presenter.getRefreshToken()
+                        + "&refreshToken=" + presenter.getRefreshToken()
                         + "&schoolId=" + presenter.getSchoolId()
                         + "&residenceId=" + residenceId
-                        +"&residenceName=" + location
+                        + "&residenceName=" + location
                         + "&deviceType=" + deviceType));
     }
 
@@ -1199,9 +1199,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(Event event){
-        if (event == null) return ;
-        if (event.refreshUi){
+    public void onEvent(Event event) {
+        if (event == null) return;
+        if (event.refreshUi) {
             presenter.closeBleConnection();
             // 加上充值金额
             balance += event.rechargeBalance;
@@ -1234,22 +1234,22 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             slideView.setDisableStr(getString(R.string.slide_to_settlement));
             slideView.setEnableStr(getString(R.string.settlement));
         } else {
-            if (afterOrderCopy != null && afterOrderCopy.size() > 0){
+            if (afterOrderCopy != null && afterOrderCopy.size() > 0) {
                 String tvShower = "";
                 StringBuilder mtipBuilder = new StringBuilder();
-                for (int i = 0 ; i < afterOrderCopy.size() ; i ++){
-                    if (i ==0){
-                        tvShower  = afterOrderCopy.get(0);
-                        tvShower = tvShower.replace("x" ,String.valueOf(prepayAmount));
-                        tvShower = tvShower.replace("X" , String.valueOf(prepayAmount));
+                for (int i = 0; i < afterOrderCopy.size(); i++) {
+                    if (i == 0) {
+                        tvShower = afterOrderCopy.get(0);
+                        tvShower = tvShower.replace("x", String.valueOf(prepayAmount));
+                        tvShower = tvShower.replace("X", String.valueOf(prepayAmount));
 
-                    }else{
+                    } else {
                         mtipBuilder.append(afterOrderCopy.get(i) + "\n");
                     }
                 }
                 tvShowerPayed.setText(tvShower);
-                String tip = mtipBuilder.toString() ;
-                if (tip.length()  > 1)
+                String tip = mtipBuilder.toString();
+                if (tip.length() > 1)
                     tip = tip.replace("\\n", "\n").substring(0, tip.length() - 1);
                 tradeTip.setText(tip);
                 btStopShower.setText(getString(R.string.settlement_and_change));
@@ -1257,7 +1257,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 slideView.setVisibility(View.VISIBLE);
                 slideView.setDisableStr(getString(R.string.slide_to_settlement));
                 slideView.setEnableStr(getString(R.string.settlement));
-            }else {
+            } else {
                 tvShowerPayed.setText(getString(R.string.prepaid, String.valueOf(prepayAmount)));
                 tradeTip.setText(getBalanceTradeTip());
                 btStopShower.setText(getString(R.string.settlement_and_change));
@@ -1282,13 +1282,20 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             bsvWave.startAnim();
         }
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHOOSE_BONUS_CODE) {
             if (resultCode == RESULT_CANCELED) {
-
+                if (data != null) {
+                    boolean isChooseBounds = data.getBooleanExtra(INTENT_IS_USE_BONUS, true);
+                    if (!isChooseBounds) {
+                        bonusAmount = 0.0;
+                        bonusDescription = getString(R.string.not_use_bonus);
+                        refreshPrepayStatus();
+                    }
+                }
                 /** 未选中代金券的时候，不修改任何数据**/
 //                bonusAmount = 0.0;
 //                bonusDescription = getString(R.string.not_use_bonus);
@@ -1338,7 +1345,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 }
                 // 重新连接设备
                 showConnecting();
-                android.util.Log.e(TAG, "onActivityResult: " + residenceId + " chosenResidenceId >>>>> " + chosenResidenceId  );
+                android.util.Log.e(TAG, "onActivityResult: " + residenceId + " chosenResidenceId >>>>> " + chosenResidenceId);
                 presenter.setResidenceId(residenceId);
                 presenter.setDeviceType(deviceType);
                 presenter.clearObservers(); // 清空旧连接
@@ -1349,18 +1356,16 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             }
         } else if (requestCode == REQUEST_CODE_RECHARGE) {
             presenter.queryPrepayOption(deviceType);
-        }else if (requestCode == REQUEST_BLE_OPEN){
+        } else if (requestCode == REQUEST_BLE_OPEN) {
             if (isBleOpen()) {
                 if (null != blePermissonCallback) {
                     blePermissonCallback.execute();
                 }
-            }else{
+            } else {
 //                getBlePermission();
             }
         }
     }
-
-
 
 
     @Override
@@ -1384,18 +1389,18 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         new IOSAlertDialog(this).builder()
                 .setMsg("sorry,你的账户余额不足" + amount + "元~")
                 .setPositiveButton("前往充值", v -> {
-                            String fromLocation = "" ;
+                            String fromLocation = "";
                             if (Device.getDevice(deviceType) == Device.HEATER) {
-                                fromLocation = "热水澡" ;
+                                fromLocation = "热水澡";
                             } else if (Device.getDevice(deviceType) == Device.DISPENSER) {
                                 fromLocation = "饮水机";
                             } else if (Device.getDevice(deviceType) == Device.DRYER) {
-                                fromLocation = "吹风机" ;
+                                fromLocation = "吹风机";
                             }
                             startActivityForResult(new Intent(getApplicationContext(), RechargeActivity.class)
-                                    .putExtra(FROM_LOCATION , fromLocation) , REQUEST_CODE_RECHARGE);
+                                    .putExtra(FROM_LOCATION, fromLocation), REQUEST_CODE_RECHARGE);
                         }
-                    )
+                )
                 .setNegativeClickListener("取消", IOSAlertDialog::dismiss).show();
     }
 
@@ -1438,10 +1443,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 结账中不关闭观察者
         if (presenter.getStep() != TradeStep.CLOSE_VALVE) {
             // 异常发生时关闭蓝牙连接
-            android.util.Log.e("DeviceBasePresenter", "onError: >>>>> 10    tag ::  " + tradeError.getBtnTag() +'\n' + "title ::" + tradeError.getErrorTip()   );
+            android.util.Log.e("DeviceBasePresenter", "onError: >>>>> 10    tag ::  " + tradeError.getBtnTag() + '\n' + "title ::" + tradeError.getErrorTip());
             presenter.closeBleConnection();
         }
-        
+
         // 显示错误页面，必须加这行判断，否则在activity销毁时会报空指针错误
         if (null != llContentNormal && null != llContentShower && null != llContentUnconnected && null != llError) {
             llContentNormal.setVisibility(View.GONE);
@@ -1451,9 +1456,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
             vLoading.setVisibility(tradeError.isShowLoading() ? View.VISIBLE : View.GONE);
             tvErrorTitle.setText(getString(tradeError.getErrorTitle()));
-            if (tradeError == TradeError.DEVICE_BUSY &&macAddress.startsWith("KL")) /*凯路设备特别提示*/{
+            if (tradeError == TradeError.DEVICE_BUSY && macAddress.startsWith("KL")) /*凯路设备特别提示*/ {
                 tvErrorTip.setText("上个用户还未结账，请稍后再来使用\n给你带来的不便敬请谅解！");
-            } else if (tradeError == TradeError.CONNECT_ERROR_2 &&macAddress.startsWith("KL")) {
+            } else if (tradeError == TradeError.CONNECT_ERROR_2 && macAddress.startsWith("KL")) {
                 tvErrorTip.setText("请回到首页或重启笑联app，然后重新连接\n给你带来的不便敬请谅解！");
             } else {
                 tvErrorTip.setText(getString(tradeError.getErrorTip()));
@@ -1491,7 +1496,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     public void changeDormitory() {
         // 只有在step为SETILE时才不能更换宿舍
-            if (!recorvery && presenter.getStep() != TradeStep.SETTLE) {   //  residenceId  != -1L
+        if (!recorvery && presenter.getStep() != TradeStep.SETTLE) {   //  residenceId  != -1L
             startActivityForResult(
                     new Intent(this, EditDormitoryActivity.class)
                             .putExtra(EditDormitoryActivity.INTENT_KEY_LAST_DORMITORY, residenceId),
@@ -1503,7 +1508,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Override
     protected void onResume() {
         super.onResume();
-        if (timer != null){
+        if (timer != null) {
             timer.start();
         }
     }
@@ -1511,7 +1516,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Override
     protected void onStop() {
         super.onStop();
-        if (timer != null){
+        if (timer != null) {
             timer.cancel();
         }
     }
@@ -1536,8 +1541,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
     }
 
-    
-    
+
     /**
      * 单击回退按钮返回 解决返回区域过小问题
      */
@@ -1568,17 +1572,17 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 蓝牙热水澡刷新ui
      */
-    public static class Event{
-        private boolean refreshUi ;
+    public static class Event {
+        private boolean refreshUi;
 
         /**
          * 充值金额
          */
-        private double rechargeBalance ;
+        private double rechargeBalance;
 
-        public Event(boolean refreshUi  , double rechargeBalance){
-            this.refreshUi = refreshUi ;
-            this.rechargeBalance = rechargeBalance ;
+        public Event(boolean refreshUi, double rechargeBalance) {
+            this.refreshUi = refreshUi;
+            this.rechargeBalance = rechargeBalance;
         }
 
 

@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.data.network.model.device;
 
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -45,4 +47,16 @@ public class BriefDeviceDTO {
      * 水温
      */
     private int usefor;
+
+
+    /**
+     * 下单前文案
+     */
+    private List<String> afterOrderCopy ;
+
+    /**
+     * 下单后文案
+     */
+    private List<String> preOrderCopy ;
+
 }

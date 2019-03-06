@@ -133,7 +133,7 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<BriefDeviceDTO> result) {
                 if (result.getError() == null){
-                    getMvpView().goToBleDevice( result.getData().getDeviceType() ,macAddress,result.getData() ,isBle);
+                    getMvpView().goToBleDevice( result.getData().getDeviceType() ,macAddress,result.getData() ,isBle , result.getData().getAfterOrderCopy() , result.getData().getPreOrderCopy());
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

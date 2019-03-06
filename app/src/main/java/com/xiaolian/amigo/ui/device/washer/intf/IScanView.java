@@ -7,6 +7,8 @@ import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.vo.Bonus;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
+import java.util.List;
+
 /**
  * 二维码扫描
  *
@@ -88,7 +90,7 @@ public interface IScanView extends IBaseView {
      * @param data
      * @param isBle
      */
-    void goToBleDevice( int type, String macAddress, BriefDeviceDTO data, boolean isBle);
+    void goToBleDevice( int type, String macAddress, BriefDeviceDTO data, boolean isBle , List<String> afterOrderCopy , List<String> preOrderCopy);
 
 
     void goToWasher(String deviceToken,String macAddress,int deviceType);
