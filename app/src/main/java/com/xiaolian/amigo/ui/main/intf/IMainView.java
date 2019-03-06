@@ -159,6 +159,11 @@ public interface IMainView extends IBaseView {
      */
     void gotoCompleteInfoActivity(BathRouteRespDTO dto);
 
+    /**
+     * 调到配置性别界面
+     * @param dto
+     */
+    void gotoCompleteInfoActivity(BathRouteRespDTO dto  ,DeviceCheckRespDTO dto2);
 
     /**
      * 显示上一洗澡订单状态

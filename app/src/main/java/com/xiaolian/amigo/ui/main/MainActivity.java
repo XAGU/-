@@ -98,6 +98,7 @@ import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_B
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_NAME;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_TYPE;
+import static com.xiaolian.amigo.ui.user.CompleteInfoActivity.KEY_BATHROUTE_CHECK_RESPDTO;
 import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
@@ -1156,6 +1157,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         enableView();
         startActivity(new Intent(this, CompleteInfoActivity.class)
                 .putExtra(CompleteInfoActivity.KEY_BATHROUTERESPDTO, dto));
+    }
+
+    @Override
+    public void gotoCompleteInfoActivity(BathRouteRespDTO dto, DeviceCheckRespDTO dto2) {
+        enableView();
+        startActivity(new Intent(this, CompleteInfoActivity.class)
+                .putExtra(CompleteInfoActivity.KEY_BATHROUTERESPDTO, dto)
+                .putExtra(KEY_BATHROUTE_CHECK_RESPDTO ,dto2));
+
     }
 
     @Override

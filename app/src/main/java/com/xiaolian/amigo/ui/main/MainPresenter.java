@@ -62,6 +62,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
     private boolean isShowRepair = false;
 
+    private BathRouteRespDTO bathRouteRespDTO ;
+
+
     @Inject
     MainPresenter(IMainDataManager mainDataManager, IUserDataManager userDataManager, LogInterceptor interceptor) {
         this.mainDataManager = mainDataManager;
@@ -75,6 +78,14 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         setUpInterceptor();
     }
 
+
+    private void setBathRouteRespDTO(BathRouteRespDTO bathRouteRespDTO){
+        this.bathRouteRespDTO = bathRouteRespDTO ;
+    }
+
+    public BathRouteRespDTO getBathRouteRespDTO() {
+        return bathRouteRespDTO;
+    }
 
     private void setUpInterceptor() {
         String androidId = getMvpView().getAndroidId();
@@ -337,8 +348,15 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             public void onReady(ApiResult<DeviceCheckRespDTO> result) {
 
                 if (null == result.getError()) {
-                    mainDataManager.saveDeviceCategory(result.getData().getDevices());
-                    getMvpView().showDeviceUsageDialog(type, result.getData());
+                    boolean isSetSex = (userDataManager.getUser().getSex() != null && (userDataManager.getUser().getSex() == 1 || userDataManager.getUser().getSex() == 2));
+//                            boolean isSetDormitoryAddress = !TextUtils.isEmpty(userDataManager.getUser().getResidenceName());
+
+                    if (!isSetSex) /*没有设置性别或是宿舍信息*/ {
+                        getMvpView().gotoCompleteInfoActivity(getBathRouteRespDTO() ,result.getData());
+                    } else {
+                        mainDataManager.saveDeviceCategory(result.getData().getDevices());
+                        getMvpView().showDeviceUsageDialog(type, result.getData());
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                     getMvpView().enableView();
@@ -468,6 +486,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<BathRouteRespDTO> result) {
                 if (null == result.getError()) {
+                    setBathRouteRespDTO(result.getData());
                     if (!result.getData().isExistHistory()) {
                         //没有设置过洗澡地址，直接跳转到CompleteInfoActivity页面进行配置
                         getMvpView().gotoCompleteInfoActivity(result.getData());
@@ -485,17 +504,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                                 getMvpView().routeToBathroomShower(result.getData());
                             }
                         } else {
-
-                            boolean isSetSex = (userDataManager.getUser().getSex() != null && (userDataManager.getUser().getSex() == 1 || userDataManager.getUser().getSex() == 2));
-//                            boolean isSetDormitoryAddress = !TextUtils.isEmpty(userDataManager.getUser().getResidenceName());
-
-                            if (!isSetSex) /*没有设置性别或是宿舍信息*/ {
-                                getMvpView().gotoCompleteInfoActivity(result.getData());
-                            } else {
-                                getMvpView().routeToRoomShower(result.getData());
-                            }
-
-//
+                            getMvpView().routeToRoomShower(result.getData());
                         }
                     }
                 } else {

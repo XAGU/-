@@ -327,4 +327,6 @@ public interface IUserDataManager {
     Observable<ApiResult<SchoolForumStatusDTO>> getSchoolForumStatus();
 
     String getRemindMobile();
+
+    void saveDeviceCategory(List<DeviceCategoryBO> devices);
 }

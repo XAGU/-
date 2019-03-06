@@ -369,6 +369,18 @@ public class UserDataManager implements IUserDataManager {
         return sharedPreferencesHelp.getRememberMobile();
     }
 
+    @Override
+    public void saveDeviceCategory(List<DeviceCategoryBO> devices) {
+        if (devices == null) {
+            return;
+        }
+        List<DeviceCategory> deviceCategories = new ArrayList<>();
+        for (DeviceCategoryBO bo : devices) {
+            deviceCategories.add(bo.transform());
+        }
+        sharedPreferencesHelp.saveDeviceCategory(deviceCategories);
+    }
+
 
     @Override
     public User getUser() {

@@ -5,6 +5,8 @@ import android.widget.Toast;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.vo.User;
@@ -51,4 +53,15 @@ public class CompleteInfoPresenter<V extends ICompleteInfoView>  extends BasePre
         });
 
     }
+
+    @Override
+    public void startShower(DeviceCheckRespDTO deviceCheckRespDTO) {
+        if (deviceCheckRespDTO == null){
+            getMvpView().choseDormitory();
+        }else {
+            userDataManager.saveDeviceCategory(deviceCheckRespDTO.getDevices());
+            getMvpView().showDeviceUsageDialog( deviceCheckRespDTO);
+        }
+    }
+
 }

@@ -15,7 +15,13 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.DispenserCategory;
+import com.xiaolian.amigo.data.enumeration.DispenserWater;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
+import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity;
+import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
@@ -29,11 +35,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_DEVICE_TYPE;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_LOCATION;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_MAC_ADDRESS;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_RESIDENCE_ID;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_SUPPLIER_ID;
+
 /*该页面只针对公共浴室的设置，如果已经选择了普通洗澡地址，但未设置其他信息，不应该进到该页面*/
 public class CompleteInfoActivity extends UserBaseActivity implements ICompleteInfoView {
 
     public static final String TAG = "CompleteInfoActivity";
     public static final String KEY_BATHROUTERESPDTO = "key_bathRouteRespDTO";
+    public static final String KEY_BATHROUTE_CHECK_RESPDTO = "KEY_BATH_CHECK_RESPDTO";
 
     public static final int DORMITORY =  1 ;
 
@@ -68,7 +82,9 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
     ///上一个页面传递进来的值
     private  BathRouteRespDTO bathRouteRespDTO;
 
+    private DeviceCheckRespDTO deviceCheckRespDTO ;
 
+    private OrderPreInfoDTO orderPreInfo;
     @Override
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
@@ -144,12 +160,7 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
 //        }
 
         presenter.updateSex(sex); //更新个人性别，异步操作，有可能会失败
-
-
     }
-
-
-
 
     @Override
     protected void onDestroy() {
@@ -182,22 +193,59 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
 
     @Override
     public void startChooseBathroom() {
-        if (bathRouteRespDTO!=null && !bathRouteRespDTO.isExistHistory()) /*未设置洗澡地址信息*/ {
-            Log.d(TAG, "chooseBathroom: " + "跳转到选择洗澡地址页面");
-            Intent intent = new Intent(this, ListChooseActivity.class);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-                    ListChooseActivity.ACTION_LIST_BUILDING);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.MAIN_ACTIVITY_BATHROOM_SRC);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+        if (bathRouteRespDTO!=null) /*有记录*/ {
+
+            //  不是公共浴室，跳热水澡
+            if (!bathRouteRespDTO.isPubBath()) {
+
+                presenter.startShower(deviceCheckRespDTO);
+            }else{
+
+                // 跳公共浴室
+                Intent intent = new Intent(this, ChooseBathroomActivity.class)
+                        .putExtra(ChooseBathroomActivity.KEY_BUILDING_ID, bathRouteRespDTO.getBuildingId())
+                        .putExtra(ChooseBathroomActivity.KEY_RESIDENCE_TYPE, bathRouteRespDTO.getResidenceType())
+                        .putExtra(ChooseBathroomActivity.KEY_RESIDENCE_ID, bathRouteRespDTO.getResidenceId());
+                startActivity(intent);
+                Log.d(TAG, "chooseBathroom: " + "公共浴室界面");
+            }
+        }else {/*跳转到选择洗澡地址界面*/
+            Log.d(TAG, "chooseBathroom: " + "选择洗澡地址界面");
+            choseDormitory();
+        }
+    }
+
+    @Override
+    public void choseDormitory() {
+        Intent intent = new Intent(this, ListChooseActivity.class);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                ListChooseActivity.ACTION_LIST_BUILDING);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.MAIN_ACTIVITY_BATHROOM_SRC);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+        startActivity(intent);
+    }
+
+    private void enableView(){
+
+    }
+
+    @Override
+    public void showDeviceUsageDialog( DeviceCheckRespDTO data) {
+        enableView();
+        if (TextUtils.isEmpty(data.getDefaultMacAddress())) {
+            onError("设备macAddress不合法");
+        } else {
+            Intent intent = new Intent(this, HEATER.getClz());
+            intent.putExtra(INTENT_KEY_LOCATION, data.getLocation());
+            intent.putExtra(INTENT_KEY_SUPPLIER_ID, data.getDefaultSupplierId());
+            intent.putExtra(INTENT_KEY_MAC_ADDRESS, data.getDefaultMacAddress());
+            intent.putExtra(INTENT_KEY_DEVICE_TYPE, HEATER.getType());
+            intent.putExtra(INTENT_KEY_RESIDENCE_ID, data.getResidenceId());
+            intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, false);
+            intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
             startActivity(intent);
-        } else if (bathRouteRespDTO!=null)/*跳转到公共浴室页面*/{
-            Intent intent = new Intent(this, ChooseBathroomActivity.class)
-                    .putExtra(ChooseBathroomActivity.KEY_BUILDING_ID, bathRouteRespDTO.getBuildingId())
-                    .putExtra(ChooseBathroomActivity.KEY_RESIDENCE_TYPE, bathRouteRespDTO.getResidenceType())
-                    .putExtra(ChooseBathroomActivity.KEY_RESIDENCE_ID, bathRouteRespDTO.getResidenceId());
-            startActivity(intent);
-            Log.d(TAG, "chooseBathroom: " + "跳转到洗澡页面");
+            this.finish();
         }
     }
 
@@ -256,6 +304,7 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
     protected void initIntent() {
         if (getIntent() != null) /*由上一个页面带进来的值*/{
             bathRouteRespDTO = getIntent().getParcelableExtra(KEY_BATHROUTERESPDTO);
+            deviceCheckRespDTO = getIntent().getParcelableExtra(KEY_BATHROUTE_CHECK_RESPDTO);
         }
     }
 }
