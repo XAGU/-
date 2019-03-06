@@ -5,6 +5,7 @@ import lombok.Data;
 /**
  * 设备详情
  */
+@Data
 public class BriefDeviceDTO {
 
     /**
@@ -22,80 +23,26 @@ public class BriefDeviceDTO {
     private long schoolId;
     private String schoolName;
     private long supplierId; // 设备供应商
-    private long residenceId ;
-    private boolean favor ;
-    private String tradePage ; //  交易页面枚举 = ['BLE', 'GATEWAY_NETWORK', 'QR_CODE', 'NB'],
+    private long residenceId;
+    private boolean favor;
+    private String tradePage; //  交易页面枚举 = ['BLE', 'GATEWAY_NETWORK', 'QR_CODE', 'NB'],
 
+    // 是否是当前供水时段
+    private Boolean timeValid;
 
-    public String getTradePage() {
-        return tradePage;
-    }
+    // 标题
+    private String title;
 
-    public void setTradePage(String tradePage) {
-        this.tradePage = tradePage;
-    }
+    // 提示内容
+    private String remark;
 
-    public int getDeviceType() {
-        return deviceType;
-    }
+    /**
+     * 饮水机类型 普通 三合一
+     */
+    private Integer category;
 
-    public void setDeviceType(int deviceType) {
-        this.deviceType = deviceType;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public long getSchoolId() {
-        return schoolId;
-    }
-
-    public void setSchoolId(long schoolId) {
-        this.schoolId = schoolId;
-    }
-
-    public String getSchoolName() {
-        return schoolName;
-    }
-
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
-    }
-
-    public long getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(long supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public long getResidenceId() {
-        return residenceId;
-    }
-
-    public void setResidenceId(long residenceId) {
-        this.residenceId = residenceId;
-    }
-
-    public boolean isFavor() {
-        return favor;
-    }
-
-    public void setFavor(boolean favor) {
-        this.favor = favor;
-    }
+    /**
+     * 水温
+     */
+    private int usefor;
 }

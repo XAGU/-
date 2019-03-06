@@ -125,7 +125,7 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
     }
 
     @Override
-    public void getDeviceDetail(boolean isTimeValid,int type,String macAddress, boolean isBle) {
+    public void getDeviceDetail(int type,String macAddress, boolean isBle) {
         GetDeviceDetailReqDTO getDeviceDetailReqDTO = new GetDeviceDetailReqDTO();
         getDeviceDetailReqDTO.setMacAddress(macAddress);
         addObserver(washerDataManager.getDeviceDetail(getDeviceDetailReqDTO) ,new NetworkObserver<ApiResult<BriefDeviceDTO>>(){
@@ -133,7 +133,7 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<BriefDeviceDTO> result) {
                 if (result.getError() == null){
-                    getMvpView().goToBleDevice( isTimeValid,result.getData().getDeviceType() ,macAddress,result.getData() ,isBle);
+                    getMvpView().goToBleDevice( result.getData().getDeviceType() ,macAddress,result.getData() ,isBle);
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

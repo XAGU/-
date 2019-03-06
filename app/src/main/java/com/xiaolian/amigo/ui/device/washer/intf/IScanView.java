@@ -82,13 +82,13 @@ public interface IScanView extends IBaseView {
 
     /**
      * 扫一扫二维码，跳转到对应的设备页面
-     * @param isTimeValid
+     * @param
      * @param type
      * @param macAddress
      * @param data
      * @param isBle
      */
-    void goToBleDevice(boolean isTimeValid, int type, String macAddress, BriefDeviceDTO data, boolean isBle);
+    void goToBleDevice( int type, String macAddress, BriefDeviceDTO data, boolean isBle);
 
 
     void goToWasher(String deviceToken,String macAddress,int deviceType);

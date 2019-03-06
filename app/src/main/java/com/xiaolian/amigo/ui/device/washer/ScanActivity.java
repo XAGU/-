@@ -122,7 +122,7 @@ public class ScanActivity extends WasherBaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(TAG, "onCreate: " );
+        Log.e(TAG, "onCreate: ");
         setContentView(R.layout.activity_scan);
         ButterKnife.bind(this);
         setUp();
@@ -209,7 +209,6 @@ public class ScanActivity extends WasherBaseActivity
      * 处理扫一扫进入的扫描内容 ； 内容格式为 （type , mac , siBle）
      * https://www.xiaolian365.com/apply/device/4   洗衣机模式的url
      * https://www.xiaolian365.com/apply/device/3   吹风机模式的url
-     *
      */
     private void handleScanContent(String scanContent) {
         if (scanContent.startsWith("https://www.xiaolian365.com/net-washing") || scanContent.startsWith("https://www.xiaolian365.com/apply/device/4")) {//在线洗衣机 supplierId=7&deviceType=4&deviceNo=CH9527
@@ -218,9 +217,9 @@ public class ScanActivity extends WasherBaseActivity
             String sid = uri.getQueryParameter("supplierId");
             String deviceType = uri.getQueryParameter("deviceType");
             String deviceNo = uri.getQueryParameter("deviceNo");
-            if (null == sid || sid.isEmpty()) /*新格式的联网洗衣机*/{
+            if (null == sid || sid.isEmpty()) /*新格式的联网洗衣机*/ {
                 //联网新模式https://www.xiaolian365.com/apply/device/4/7/CH9527
-                String [] params = scanContent.split("/");
+                String[] params = scanContent.split("/");
                 sid = params[6];
                 deviceType = params[5];
                 deviceNo = params[7];
@@ -235,7 +234,7 @@ public class ScanActivity extends WasherBaseActivity
             String url = BuildConfig.H5_SERVER
                     + "/washer"
                     + "?accessToken=" + presenter.getAccessToken()
-                    +"&refreshToken=" + presenter.getRefreshToken()
+                    + "&refreshToken=" + presenter.getRefreshToken()
                     + "&schoolId=" + presenter.getUserInfo().getSchoolId()
                     + "&supplierId=" + sid
                     + "&deviceType=" + deviceType
@@ -248,34 +247,34 @@ public class ScanActivity extends WasherBaseActivity
             }
             return;
 
-        }else if (scanContent.startsWith("https://www.xiaolian365.com/apply/device/3")) {  //  扫码吹风机
+        } else if (scanContent.startsWith("https://www.xiaolian365.com/apply/device/3")) {  //  扫码吹风机
             String[] params = scanContent.split("/");
             if (params.length > 0) {
                 String unique = params[params.length - 1];  //  最后一个/后的内容就为该设备唯一标识值
                 presenter.getDeviceDetail(unique);
                 return;
             }
-        }else if (scanContent.startsWith("https://www.xiaolian365.com/apply/device/6")){ // 烘干机
+        } else if (scanContent.startsWith("https://www.xiaolian365.com/apply/device/6")) { // 烘干机
             Intent intent = new Intent(this, WebActivity.class);
             //联网新模式https://www.xiaolian365.com/apply/device/4/7/CH9527
-            String [] params = scanContent.split("/");
+            String[] params = scanContent.split("/");
             String sid = params[6];
             String deviceType = params[5];
             String deviceNo = params[7];
             String url = BuildConfig.H5_SERVER
                     + "/dryer"
                     + "?accessToken=" + presenter.getAccessToken()
-                    +"&refreshToken=" + presenter.getRefreshToken()
+                    + "&refreshToken=" + presenter.getRefreshToken()
                     + "&schoolId=" + presenter.getUserInfo().getSchoolId()
                     + "&supplierId=" + sid
                     + "&deviceType=" + deviceType
                     + "&deviceNo=" + deviceNo;
-                intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL, url);
-                startActivity(intent);
-                finish();
+            intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL, url);
+            startActivity(intent);
+            finish();
             return;
         } else if (isDoubleWasher(scanContent)) {//是否是正反扫设备
-            presenter.scanCheckout(scanContent,-1);
+            presenter.scanCheckout(scanContent, -1);
             return;
         }
 
@@ -352,7 +351,7 @@ public class ScanActivity extends WasherBaseActivity
             findViewById(R.id.iv_flashlight).setVisibility(View.GONE);
         }
     }
-    
+
     @SuppressWarnings("deprecation")
     private void zoomCamera() {
         if (barcodeScannerView.getBarcodeView().getCameraInstance() == null) {
@@ -653,16 +652,58 @@ public class ScanActivity extends WasherBaseActivity
         if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
             showScanDialog(deviceType, data, orderPreInfo);
         } else {
+            presenter.getDeviceDetail(deviceType, mac, true);
             // 调用one
-            if (!data.getTimeValid()) {
-                showTimeValidDialog(deviceType, data, mac);
-            } else {
-                presenter.getDeviceDetail(false, deviceType, mac, true);
-                // 如果热水澡 检查默认宿舍
-            }
+//            if (!data.getTimeValid()) {
+////                showTimeValidDialog(deviceType, data, mac);
+//            } else {
+//
+//                // 如果热水澡 检查默认宿舍
+//            }
         }
     }
 
+    public void showTimeValidDialog(int deviceType, BriefDeviceDTO data, String mac) {
+        if (null == availabilityDialog) {
+            availabilityDialog = new AvailabilityDialog(this);
+            availabilityDialog.setCancelListener(new AvailabilityDialog.onCancelListener() {
+                @Override
+                public void onCancelLick() {
+                    capture.isCanPause = false;
+                    resumeScan();
+                }
+            });
+        }
+        if (availabilityDialog.isShowing()) {
+            if (availabilityDialog.getType() == AvailabilityDialog.Type.TIME_VALID) {
+                return;
+            } else {
+                availabilityDialog.dismiss();
+            }
+        }
+        availabilityDialog.setType(AvailabilityDialog.Type.TIME_VALID);
+        availabilityDialog.setOkText(getString(R.string.keep_use_cold_water));
+        availabilityDialog.setTitle(data.getTitle());
+        availabilityDialog.setTip(data.getRemark());
+        availabilityDialog.setOnOkClickListener(dialog1 -> {
+            if (deviceType == Device.HEATER.getType()) {
+                gotoDevice(HEATER, mac,
+                        data.getSupplierId(), data.getLocation(),
+                        data.getResidenceId(), false);
+            } else if (deviceType == Device.DISPENSER.getType()) {
+                gotoDispenser(mac, data.getSupplierId(),
+                        data.getLocation(), data.getResidenceId(),
+                        data.isFavor(), (data.getCategory() != null
+                                && DispenserCategory.MULTI.getType() == data.getCategory())
+                                ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true);
+            } else if (deviceType == Device.DRYER.getType()) {
+                gotoDryer(mac, data.getSupplierId(),
+                        data.getLocation(), data.getResidenceId(),
+                        data.isFavor(), true);
+            }
+        });
+        availabilityDialog.show();
+    }
 
     @Override
     public void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data, String mac) {
@@ -689,7 +730,7 @@ public class ScanActivity extends WasherBaseActivity
         availabilityDialog.setTip(data.getRemark());
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             if (deviceType == Device.HEATER.getType()) {
-                presenter.getDeviceDetail(false, deviceType, mac, true);
+                presenter.getDeviceDetail(deviceType, mac, true);
             } else if (deviceType == Device.DISPENSER.getType()) {
                 gotoDispenser(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
                         data.getLocation(), data.getResidenceId(),
@@ -741,7 +782,8 @@ public class ScanActivity extends WasherBaseActivity
                                 data.getFavor(), true);
                     }
                 } else {
-                    showTimeValidDialog(type, data, data.getUnsettledMacAddress());
+                    //
+//                    showTimeValidDialog(type, data, data.getUnsettledMacAddress());
                 }
             }
         });
@@ -757,27 +799,29 @@ public class ScanActivity extends WasherBaseActivity
 
 
     @Override
-    public void goToBleDevice(boolean isTimeValid, int type, String macAddress, BriefDeviceDTO data, boolean isBle) {
-
-        if (type == Device.HEATER.getType()) {
-            // 前往热水澡
-            gotoDevice(HEATER, macAddress,
-                    data.getSupplierId(), data.getLocation(),
-                    data.getResidenceId(), false);
-        } else if (type == Device.DISPENSER.getType()) {
-            // 进入饮水机
-            gotoDispenser(macAddress, data.getSupplierId(), data.getLocation(),
-                    data.getResidenceId(), data.isFavor(), 0, false);
+    public void goToBleDevice(int type, String macAddress, BriefDeviceDTO data, boolean isBle) {
+        if (data.getTimeValid() != null && !data.getTimeValid()) {
+            showTimeValidDialog(data.getDeviceType(), data, macAddress);
+        } else {
+            if (type == Device.HEATER.getType()) {
+                // 前往热水澡
+                gotoDevice(HEATER, macAddress,
+                        data.getSupplierId(), data.getLocation(),
+                        data.getResidenceId(), false);
+            } else if (type == Device.DISPENSER.getType()) {
+                // 进入饮水机
+                gotoDispenser(macAddress, data.getSupplierId(), data.getLocation(),
+                        data.getResidenceId(), data.isFavor(), 0, false);
 //
-        } else if (type == Device.DRYER.getType()) {
-            // 进入吹风机
+            } else if (type == Device.DRYER.getType()) {
+                // 进入吹风机
 
-            gotoDryer(macAddress, data.getSupplierId(), data.getLocation(),
-                    data.getResidenceId(), data.isFavor(), false);
+                gotoDryer(macAddress, data.getSupplierId(), data.getLocation(),
+                        data.getResidenceId(), data.isFavor(), false);
+
+            }
 
         }
-
-
 
 
     }
@@ -786,13 +830,13 @@ public class ScanActivity extends WasherBaseActivity
     public void goToWasher(String deviceToken, String macAddress, int deviceType) {
         String url = BuildConfig.H5_SERVER
                 + "/washer" + "?accessToken=" + presenter.getAccessToken()
-                +"&refreshToken=" + presenter.getRefreshToken()
+                + "&refreshToken=" + presenter.getRefreshToken()
                 + "&shcoolId=" + presenter.getUserInfo().getSchoolId()
                 + "&deviceToken=" + deviceToken
                 + "&deviceType=" + deviceType
                 + "&macAddress=" + macAddress;
 
-        if(!isGotoWasher) {
+        if (!isGotoWasher) {
             isGotoWasher = true;
             Intent intent = new Intent(this, WebActivity.class);
             intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL, url);
@@ -803,21 +847,22 @@ public class ScanActivity extends WasherBaseActivity
 
     /**
      * 根据后台返回的tradePage 类型跳转不同交易界面
-     * @param data  后台返回值
+     *
+     * @param data   后台返回值
      * @param unique 设备唯一标识
      */
     @Override
-    public void gotoPage(BriefDeviceDTO data , String unique) {
+    public void gotoPage(BriefDeviceDTO data, String unique) {
 
         //  如果是蓝牙设备 , 跳转蓝牙界面
-        if (BLE.getPage().equals(data.getTradePage())){
-            if (TextUtils.isEmpty(unique)){
+        if (BLE.getPage().equals(data.getTradePage())) {
+            if (TextUtils.isEmpty(unique)) {
                 onError("设备macAddress不合法");
-            }else{
-                goToBleDevice(true ,data.getDeviceType() ,unique ,data ,true);
+            } else {
+                goToBleDevice(data.getDeviceType(), unique, data, true);
             }
-        }else if (QR_CODE.getPage().equals(data.getTradePage())){
-            gotoH5Dryer(data.getDeviceType() ,unique , data.getSupplierId());
+        } else if (QR_CODE.getPage().equals(data.getTradePage())) {
+            gotoH5Dryer(data.getDeviceType(), unique, data.getSupplierId());
         }
     }
 
@@ -825,26 +870,26 @@ public class ScanActivity extends WasherBaseActivity
     public void gotoDryer(String deviceToken, String macAddress, int deviceType) {
         String url = BuildConfig.H5_SERVER
                 + "/dryer" + "?accessToken=" + presenter.getAccessToken()
-                +"&refreshToken=" + presenter.getRefreshToken()
+                + "&refreshToken=" + presenter.getRefreshToken()
                 + "&shcoolId=" + presenter.getUserInfo().getSchoolId()
                 + "&deviceToken=" + deviceToken
                 + "&deviceType=" + deviceType
                 + "&macAddress=" + macAddress;
-            Intent intent = new Intent(this, WebActivity.class);
-            intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL, url);
-            startActivity(intent);
-            finish();
+        Intent intent = new Intent(this, WebActivity.class);
+        intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL, url);
+        startActivity(intent);
+        finish();
     }
 
-    private void gotoH5Dryer(int deviceType ,String unique , long supplierId ){
+    private void gotoH5Dryer(int deviceType, String unique, long supplierId) {
         String url = Constant.H5_DRYER
                 + "?accessToken=" + presenter.getAccessToken()
-                +"&refreshToken=" + presenter.getRefreshToken()
+                + "&refreshToken=" + presenter.getRefreshToken()
                 + "&deviceType=" + deviceType
                 + "&macAddress=" + unique
                 + "&supplierId=" + supplierId;
-        startActivity(new Intent(this ,WebActivity.class)
-        .putExtra(INTENT_KEY_URL ,url));
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(INTENT_KEY_URL, url));
         this.finish();
     }
 

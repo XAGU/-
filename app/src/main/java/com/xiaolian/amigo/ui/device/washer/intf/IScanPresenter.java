@@ -38,7 +38,7 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
      * @param macAddress
      * @param isBle
      */
-    void getDeviceDetail(boolean isTimeValid,int type,String macAddress , boolean isBle);
+    void getDeviceDetail(int type,String macAddress , boolean isBle);
 
 
     User getUserInfo();
