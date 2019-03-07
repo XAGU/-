@@ -248,6 +248,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @BindView(R.id.v_connect_tip_bar)
     View vConnectTipBar;
 
+
     /**
      * 支付信息
      */
@@ -1100,6 +1101,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
 
+
+
     @Override
     public void getBlePermission() {
 //        super.getBlePermission();
@@ -1510,6 +1513,16 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         super.onResume();
         if (timer != null) {
             timer.start();
+        }
+            
+        // 重新恢复button可点击
+        resetButton(btErrorHandler);
+        resetButton(btPay);
+    }
+
+    private void resetButton(Button btError) {
+        if (btError.getVisibility() == View.VISIBLE) {
+            btError.setEnabled(true);
         }
     }
 

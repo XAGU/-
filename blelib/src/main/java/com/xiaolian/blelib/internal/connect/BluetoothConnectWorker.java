@@ -338,6 +338,7 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
     @Override
     public boolean openGatt() {
         if (bluetoothGatt != null) {
+
             return true;
         }
 

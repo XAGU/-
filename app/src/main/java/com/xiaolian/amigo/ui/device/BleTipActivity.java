@@ -63,6 +63,7 @@ public class BleTipActivity extends BaseActivity {
             bleTipContent.setLayoutParams(params1);
         });
         getBlePermission();
+        setBleCallback(() -> back());
     }
 
 
