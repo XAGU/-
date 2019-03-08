@@ -20,8 +20,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+//import android.webkit.WebView;
+//import android.webkit.WebViewClient;
+import com.tencent.smtt.export.external.interfaces.ClientCertRequest;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
+
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -133,7 +137,7 @@ public class WebActivity extends BaseActivity {
         if (url == null) {
             url = getIntent().getStringExtra(INTENT_KEY_WASHER_URL);
         }
-        WebSettings webSettings = webView.getSettings();
+        com.tencent.smtt.sdk.WebSettings webSettings = webView.getSettings();
         webSettings.setAllowFileAccess(true);
         webSettings.setDefaultTextEncodingName("UTF-8");
         webSettings.setUseWideViewPort(true);
@@ -167,11 +171,11 @@ public class WebActivity extends BaseActivity {
                 showBlogLoading();
             }
 
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                // ignore ssl error
+//            @Override
+//            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+//                // ignore ssl error
 //                super.onReceivedSslError(view, handler, error);
-            }
+//            }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -190,17 +194,28 @@ public class WebActivity extends BaseActivity {
                 loadError = true;
             }
 
-            @TargetApi(Build.VERSION_CODES.M)
             @Override
-            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                super.onReceivedHttpError(view, request, errorResponse);
+            public void onReceivedHttpError(WebView webView, com.tencent.smtt.export.external.interfaces.WebResourceRequest webResourceRequest, com.tencent.smtt.export.external.interfaces.WebResourceResponse webResourceResponse) {
+                super.onReceivedHttpError(webView, webResourceRequest, webResourceResponse);
                 // 这个方法在6.0才出现
-                int statusCode = errorResponse.getStatusCode();
+                int statusCode = webResourceResponse.getStatusCode();
                 Log.d(TAG, "onReceivedHttpError code = " + statusCode);
                 if (404 == statusCode || 500 == statusCode) {
                     loadError = true;
                 }
             }
+
+//            @TargetApi(Build.VERSION_CODES.M)
+//            @Override
+//            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+//                super.onReceivedHttpError(view, request, errorResponse);
+//                // 这个方法在6.0才出现
+//                int statusCode = errorResponse.getStatusCode();
+//                Log.d(TAG, "onReceivedHttpError code = " + statusCode);
+//                if (404 == statusCode || 500 == statusCode) {
+//                    loadError = true;
+//                }
+//            }
 
         });
 //        WebView.setWebContentsDebuggingEnabled(true);
@@ -349,7 +364,7 @@ public class WebActivity extends BaseActivity {
         if (loadingRl != null) loadingRl.setVisibility(View.GONE);
     }
 
-    private class MyWebChromeClient extends WebChromeClient {
+    private class MyWebChromeClient extends com.tencent.smtt.sdk.WebChromeClient {
 
         public boolean onShowFileChooser(
                 WebView webView, ValueCallback<Uri[]> filePathCallback,
@@ -497,9 +512,9 @@ public class WebActivity extends BaseActivity {
 
         webView.post(()->{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                webView.evaluateJavascript(method, new ValueCallback<String>() {
+                webView.evaluateJavascript(method, new com.tencent.smtt.sdk.ValueCallback<String>() {
                     @Override
-                    public void onReceiveValue(String value) {
+                    public void onReceiveValue(String s) {
 
                     }
                 });
