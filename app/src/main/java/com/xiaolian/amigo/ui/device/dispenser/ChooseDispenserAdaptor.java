@@ -106,7 +106,7 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
                         dispenserWrapper.getDeviceGroup().getAfterOrderCopy());
                 return;
             }
-            if (lastExpandPosition != -1) {
+            if (lastExpandPosition != -1 && lastExpandPosition < mData.size()) {
                 mData.get(lastExpandPosition).setExpanded(false);
             }
             boolean expand;

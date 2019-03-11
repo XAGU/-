@@ -484,7 +484,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     //重写返回键逻辑
     @Override
     public void onBackPressed() {
-        if (status != THIRD_STATUS_LOGIN || !loginFragment.isVisible()) {
+        if (status != THIRD_STATUS_LOGIN || (loginFragment != null && !loginFragment.isVisible())) {
             super.onBackPressed();
             status = THIRD_STATUS_LOGIN;
             return;

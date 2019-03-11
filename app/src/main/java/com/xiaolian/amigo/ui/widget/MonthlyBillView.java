@@ -49,7 +49,7 @@ public class MonthlyBillView extends View {
 
     private int lengedHeight = 0;
     private boolean isLengedVisible = false;
-    private int initAngle = -60;
+    private int initAngle = 0;
 
     private boolean hasData = true;
 
