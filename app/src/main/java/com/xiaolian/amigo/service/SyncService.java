@@ -6,4 +6,5 @@ package com.xiaolian.amigo.service;
  */
 
 public class SyncService {
+
 }
