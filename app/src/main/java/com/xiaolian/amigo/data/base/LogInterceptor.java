@@ -181,7 +181,6 @@ public class LogInterceptor implements Interceptor {
             throw e;
         }
 
-
         if (null != response.header(DEVICE_TOKEN)) {
             // 有device_token,一定配对一个macAddress
             String macAddress = response.header("macAddress");

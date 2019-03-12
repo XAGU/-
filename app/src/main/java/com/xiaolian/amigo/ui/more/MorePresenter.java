@@ -72,7 +72,6 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
             }
         });
 
-
     }
 
     @Override

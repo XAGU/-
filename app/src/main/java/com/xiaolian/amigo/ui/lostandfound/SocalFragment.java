@@ -367,16 +367,29 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     private List<ImageView> tags = new ArrayList<>();
 
+
+
     public void moveCursor(int position) {
         isCanMove = false;
         try {
             if (tags == null || tags.size() == 0 || tags.get(position) == null) return;
             ImageView imageView = tags.get(position);
-            int middle = (imageView.getLeft() + imageView.getRight()) / 2;
+            int middle = getViewLocation(imageView) + imageView.getWidth() / 2  ;
             animWidthMove(middle);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
+    }
+
+    /**
+     * 获取view 在屏幕的绝对坐标
+     * @param view
+     * @return
+     */
+    private int getViewLocation(View view){
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        return location[0] ;
     }
 
     /**
@@ -388,20 +401,16 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
      * @param moveLeft 是最终位置的中间位置
      */
     private void animWidthMove(int moveLeft) {
-
-        moveLeft = moveLeft - ScreenUtils.dpToPxInt(mActivity, 4);
-        int oldLeft = titleBorder.getLeft();
-
-
+        int oldLeft = getViewLocation(titleBorder);
         int maxWidth;
         int oldWidth = ScreenUtils.dpToPxInt(mActivity, 8);
         boolean backMove = false;
         if (oldLeft < moveLeft) {
             backMove = true;
-            maxWidth = moveLeft - oldLeft + oldWidth + ScreenUtils.dpToPxInt(mActivity, 4);
+            maxWidth = moveLeft - oldLeft + oldWidth ;
         } else {
             backMove = false;
-            maxWidth = oldLeft - moveLeft + oldWidth - ScreenUtils.dpToPxInt(mActivity, 4);
+            maxWidth = oldLeft - moveLeft + oldWidth;
         }
         if (maxWidth < oldWidth) {
             isCanMove = true;
