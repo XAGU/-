@@ -174,6 +174,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
 
     @Override
     public void parseAlipayResult(String resultStatus, String result, String memo) {
+        android.util.Log.e(TAG, "parseAlipayResult: " );
         AlipayTradeAppPayResultParseReqDTO reqDTO = new AlipayTradeAppPayResultParseReqDTO();
         reqDTO.setMemo(memo);
         reqDTO.setResult(result);
@@ -184,6 +185,8 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<AlipayTradeAppPayResultParseRespDTO> apiResult) {
                 if (apiResult.getError() == null) {
+                    android.util.Log.e(TAG, "onReady: " + apiResult.getData().getCode() +'\t' +
+                       apiResult.getData().getMsg());
                     if (apiResult.getData().getCode() == AlipayPayOrderCheckResult.SUCCESS.getType()) {
                         getMvpView().onSuccess("充值成功");
                         getMvpView().gotoDetail(fundsId);

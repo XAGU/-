@@ -61,6 +61,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.xiaolian.amigo.util.StringUtils.appendToken;
+
 /**
  * web页面
  *
@@ -456,9 +458,14 @@ public class WebActivity extends BaseActivity {
                 String accessToken =waher.getData().getAccessToken();
                 String refreshToken = waher.getData().getRefreshToken();
 
-                if (!TextUtils.isEmpty(accessToken)) sharedPreferencesHelp.setAccessToken(accessToken);
+//                if (!TextUtils.isEmpty(accessToken)) sharedPreferencesHelp.setAccessToken(accessToken);
+//
+//                if (!TextUtils.isEmpty(refreshToken)) sharedPreferencesHelp.setReferToken(refreshToken);
 
-                if (!TextUtils.isEmpty(refreshToken)) sharedPreferencesHelp.setReferToken(refreshToken);
+                if (!TextUtils.isEmpty(accessToken)
+                        &&!TextUtils.isEmpty(refreshToken)){
+                    sharedPreferencesHelp.setAppendToken(appendToken(accessToken , refreshToken));
+                }
             }
         }
     }

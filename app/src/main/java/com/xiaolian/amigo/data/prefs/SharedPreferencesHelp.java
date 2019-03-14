@@ -15,6 +15,7 @@ import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.NormalBathroom;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.ApplicationContext;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.blelib.BluetoothConstants;
 
 import junit.runner.Version;
@@ -166,6 +167,8 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     private static final String PREF_IS_SET_BATH_PASSWORD = "PREF_IS_SET_BATH_PASSWORD";
 
+    private static final String APPEND_TOKEN = "APPEND_TOKEN";
+
     private User userHolder;
 
     private boolean showUrgencyNotify = true;
@@ -194,9 +197,21 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public String getAccessToken() {
-        return mSharedPreferences.getString(PREF_KEY_ACCESS_TOKEN , "");
+        String[] token = getToken(getAppendToken());
+        if (token != null && token.length == 2 ){
+            return token[0];
+        }
+        return "";
     }
 
+    /**
+     * 获取token数组
+     * @return
+     */
+    private String[] getToken(String tokens){
+        if (TextUtils.isEmpty(tokens)) return null ;
+        return tokens.split(Constant.TOKEN_SEPARATOR);
+    }
     @Override
     public void setReferToken(String referToken) {
         mSharedPreferences.edit().putString(PREF_KEY_REFERSH_TOKEN ,referToken).commit();
@@ -204,7 +219,12 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public String getReferToken() {
-        return mSharedPreferences.getString(PREF_KEY_REFERSH_TOKEN , "");
+//        return mSharedPreferences.getString(PREF_KEY_REFERSH_TOKEN , "");
+        String[] token = getToken(getAppendToken());
+        if (token != null && token.length == 2 ){
+            return token[1];
+        }
+        return "";
     }
 
     @Override
@@ -837,6 +857,16 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void clearUpdateRemindTime() {
         mUnclearSharedPreferences.edit().putString(PREF_LAST_UPDATE_REMIND_TIME ,"").apply();
+    }
+
+    @Override
+    public void setAppendToken(String s) {
+        mSharedPreferences.edit().putString(APPEND_TOKEN , s).commit();
+    }
+
+    @Override
+    public String getAppendToken() {
+       return  mSharedPreferences.getString(APPEND_TOKEN , "");
     }
 
 

@@ -6,6 +6,7 @@ import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -81,9 +82,9 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     private int rechargeTypeSelectedPosition = 0;
 
 
-    private WithDrawExplainAlertDialog withDrawExplainAlertDialog ;
+    private WithDrawExplainAlertDialog withDrawExplainAlertDialog;
 
-    private String fromLocation  ;
+    private String fromLocation;
 
     @Override
     protected void initView() {
@@ -153,12 +154,12 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     @Override
     protected void setUp() {
         super.setUp();
-        if (getIntent() != null){
+        if (getIntent() != null) {
             fromLocation = getIntent().getStringExtra(FROM_LOCATION);
         }
     }
 
-    private void initDialog(){
+    private void initDialog() {
         withDrawExplainAlertDialog = new WithDrawExplainAlertDialog(this);
         withDrawExplainAlertDialog.setOnOkClickListener(dialog -> {
             dialog.dismiss();
@@ -205,7 +206,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
         }
         btSubmit.setEnabled(false);
         presenter.recharge(recharges.get(rechargeSelectedPosition).getAmount(),
-                rechargeTypes.get(rechargeTypeSelectedPosition).getType() , btSubmit);
+                rechargeTypes.get(rechargeTypeSelectedPosition).getType(), btSubmit);
     }
 
     private void toggleSubmitButton() {
@@ -216,12 +217,13 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     @Override
     public void back() {
+        Log.e(TAG, "back: " );
         onBackPressed();
     }
 
     @Override
     public void alipay(String reqArgs) {
-        PayUtil.alpay(this, reqArgs );
+        PayUtil.alpay(this, reqArgs);
     }
 
     @Override
@@ -248,10 +250,10 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     @Override
     public void gotoDetail(Long fundsId) {
-
+        Log.e(TAG, "gotoDetail: "   );
         startActivity(new Intent(this, RechargeDetailActivity.class)
                 .putExtra(Constant.EXTRA_KEY, fundsId)
-        .putExtra(FROM_LOCATION , fromLocation));
+                .putExtra(FROM_LOCATION, fromLocation));
         setResult(RESULT_OK);
         finish();
     }
@@ -263,20 +265,21 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     @Override
     public void showWithDrawDialog(WithdrawExplanationRespDTO dto) {
-        if (withDrawExplainAlertDialog != null){
-            withDrawExplainAlertDialog.setExplain("退款说明：" +dto.getExplanation() );
-            if(dto.isAll()){
+        if (withDrawExplainAlertDialog != null) {
+            withDrawExplainAlertDialog.setExplain("退款说明：" + dto.getExplanation());
+            if (dto.isAll()) {
                 withDrawExplainAlertDialog.showObject(false);
-            }else{
+            } else {
                 withDrawExplainAlertDialog.setObject("退款对象：" + dto.getRefundUser());
             }
             withDrawExplainAlertDialog.setTime("退款时间：" + dto.getTimeRange());
             withDrawExplainAlertDialog.show();
         }
-    } 
+    }
 
     @Override
     protected void onDestroy() {
+        Log.e(TAG, "onDestroy: " );
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
@@ -312,10 +315,10 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void clickEvent(ClickEvent clickEvent){
-        if (clickEvent.isClick){
+    public void clickEvent(ClickEvent clickEvent) {
+        if (clickEvent.isClick) {
             btSubmit.setEnabled(true);
-        }else{
+        } else {
             btSubmit.setEnabled(false);
         }
     }
@@ -342,12 +345,12 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
      * 是否可以点击事件
      */
     @Data
-    public static class ClickEvent{
+    public static class ClickEvent {
 
-        private boolean isClick ;
+        private boolean isClick;
 
-        public ClickEvent(boolean isClick){
-            this.isClick = isClick ;
+        public ClickEvent(boolean isClick) {
+            this.isClick = isClick;
         }
     }
 }

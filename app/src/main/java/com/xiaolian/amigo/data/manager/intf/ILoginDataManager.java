@@ -130,4 +130,11 @@ public interface ILoginDataManager {
     void setLastUpdateRemindTime(String mobile);
 
     void clearUpdateRemindTime();
+
+    /**
+     * 存储token
+     * @param accessToken
+     * @param refreshToken
+     */
+    void setToken(String accessToken, String refreshToken);
 }

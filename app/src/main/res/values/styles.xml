@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="toolbarStyle" tools:ignore="NewApi">@style/MyToolBar</item>
         <!-- 设置activity切换动画 -->
-        <!--<item name="android:windowAnimationStyle">@style/activityAnimation</item>-->
+        <item name="android:windowAnimationStyle">@style/activityAnimation</item>
     </style>
 
     <!-- animation 样式 -->

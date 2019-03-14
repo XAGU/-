@@ -29,6 +29,8 @@ import rx.Observable;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
 
+import static com.xiaolian.amigo.util.StringUtils.appendToken;
+
 /**
  * LoginDataManager实现类
  *
@@ -92,6 +94,11 @@ public class LoginDataManager implements ILoginDataManager {
     @Override
     public void clearUpdateRemindTime() {
         sharedPreferencesHelp.clearUpdateRemindTime();
+    }
+
+    @Override
+    public void setToken(String accessToken, String refreshToken) {
+        sharedPreferencesHelp.setAppendToken(appendToken(accessToken , refreshToken));
     }
 
     @Override

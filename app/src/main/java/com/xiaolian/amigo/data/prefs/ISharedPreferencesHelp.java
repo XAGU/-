@@ -258,4 +258,15 @@ public interface ISharedPreferencesHelp {
     boolean isHadSetBathPassword();
 
     void clearUpdateRemindTime();
+
+    /**
+     * 存储拼接token
+     * @param s
+     */
+    void setAppendToken(String s);
+
+    /**
+     * 取出拼接token
+     */
+    String getAppendToken();
 }

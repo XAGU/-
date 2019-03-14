@@ -460,7 +460,6 @@ public final class Constant {
      */
     public static final int UPDATE_REMIND_INTERVAL = 6 * 1000 * 60 * 60;
 
-
     /**
      * 扫描为洗衣机模式
      */
@@ -473,5 +472,10 @@ public final class Constant {
      * 扫描为吹风机
      */
     public static final int SCAN_HAIR_DRYER = 8 ;
+
+    /**
+     * TOKEN 分隔符
+     */
+    public static final String TOKEN_SEPARATOR = ";";
 
 }

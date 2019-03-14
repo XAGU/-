@@ -26,6 +26,8 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
 
+import static com.xiaolian.amigo.util.StringUtils.appendToken;
+
 /**
  * Log拦截器
  *
@@ -187,13 +189,21 @@ public class LogInterceptor implements Interceptor {
             sharedPreferencesHelp.setDeviceToken(macAddress, response.header(DEVICE_TOKEN));
         }
 
-        if (null != response.header(ACCESS_TOKEN) && !TextUtils.isEmpty(response.header(ACCESS_TOKEN))){
-            sharedPreferencesHelp.setAccessToken(response.header(ACCESS_TOKEN));
+//        if (null != response.header(ACCESS_TOKEN) && !TextUtils.isEmpty(response.header(ACCESS_TOKEN))){
+//            sharedPreferencesHelp.setAccessToken(response.header(ACCESS_TOKEN));
+//        }
+//
+//        if (null != response.header(REFER_TOKEN) && !TextUtils.isEmpty(response.header(REFER_TOKEN))){
+//            sharedPreferencesHelp.setReferToken(response.header(REFER_TOKEN));
+//        }
+
+        if (null != response.header(ACCESS_TOKEN) && !TextUtils.isEmpty(response.header(ACCESS_TOKEN))
+                 && null != response.header(REFER_TOKEN) && !TextUtils.isEmpty(response.header(REFER_TOKEN))){
+             sharedPreferencesHelp.setAppendToken(appendToken(response.header(ACCESS_TOKEN ) , response.header(REFER_TOKEN)));
         }
 
-        if (null != response.header(REFER_TOKEN) && !TextUtils.isEmpty(response.header(REFER_TOKEN))){
-            sharedPreferencesHelp.setReferToken(response.header(REFER_TOKEN));
-        }
+
+
         String content;
         MediaType mediaType;
         if (response.body() != null) {
