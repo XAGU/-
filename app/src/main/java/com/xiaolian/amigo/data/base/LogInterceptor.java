@@ -102,14 +102,19 @@ public class LogInterceptor implements Interceptor {
 
         String refreshToken;
 
-        if (TextUtils.isEmpty(MvpApp.accessToken) || TextUtils.isEmpty(MvpApp.refreshToken)) {
-            accessToken = MvpApp.accessToken;
-            refreshToken = MvpApp.refreshToken;
-        } else {
-            accessToken = sharedPreferencesHelp.getAccessToken();
-            refreshToken = sharedPreferencesHelp.getReferToken();
-        }
+        /**
+         * 读取token时，必须是线程安全的
+         */
+        synchronized (this) {
+            if (TextUtils.isEmpty(MvpApp.accessToken) || TextUtils.isEmpty(MvpApp.refreshToken)) {
+                accessToken = MvpApp.accessToken;
+                refreshToken = MvpApp.refreshToken;
+            } else {
+                accessToken = sharedPreferencesHelp.getAccessToken();
+                refreshToken = sharedPreferencesHelp.getReferToken();
+            }
 
+        }
         if ((request.url().url().getPath().contains(TRADE_PREFIX)
                 && (!request.url().url().getPath().contains(ANTI_TRADE_PREFIX))) || request.url().url().getPath().contains(UPDAT_RATE_PREFIX)) {
             String deviceToken = sharedPreferencesHelp.getCurrentDeviceToken();
