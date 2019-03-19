@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.BuildConfig;
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
-import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
@@ -13,9 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -99,10 +97,18 @@ public class LogInterceptor implements Interceptor {
     public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
         Request newRequest;
-//        String token = sharedPreferencesHelp.getToken();
 
-        String accessToken  =  sharedPreferencesHelp.getAccessToken() ;
-        String refershToken = sharedPreferencesHelp.getReferToken() ;
+        String accessToken;
+
+        String refreshToken;
+
+        if (TextUtils.isEmpty(MvpApp.accessToken) || TextUtils.isEmpty(MvpApp.refreshToken)) {
+            accessToken = MvpApp.accessToken;
+            refreshToken = MvpApp.refreshToken;
+        } else {
+            accessToken = sharedPreferencesHelp.getAccessToken();
+            refreshToken = sharedPreferencesHelp.getReferToken();
+        }
 
         if ((request.url().url().getPath().contains(TRADE_PREFIX)
                 && (!request.url().url().getPath().contains(ANTI_TRADE_PREFIX))) || request.url().url().getPath().contains(UPDAT_RATE_PREFIX)) {
@@ -120,14 +126,14 @@ public class LogInterceptor implements Interceptor {
                         // 添加token
                         .url(newUrl)
                         .addHeader(ACCESS_TOKEN, accessToken)
-                        .addHeader(REFER_TOKEN ,refershToken)
+                        .addHeader(REFER_TOKEN, refreshToken)
                         .addHeader(DEVICE_TOKEN, deviceToken)
                         .build();
             } else {
                 newRequest = request.newBuilder()
                         // 添加token
-                        .addHeader(ACCESS_TOKEN , accessToken)
-                        .addHeader(REFER_TOKEN ,refershToken)
+                        .addHeader(ACCESS_TOKEN, accessToken)
+                        .addHeader(REFER_TOKEN, refreshToken)
                         .addHeader(DEVICE_TOKEN, deviceToken)
                         .build();
             }
@@ -139,14 +145,14 @@ public class LogInterceptor implements Interceptor {
                 newRequest = request.newBuilder()
                         // 添加token
                         .url(newUrl)
-                        .addHeader(ACCESS_TOKEN , accessToken)
-                        .addHeader(REFER_TOKEN ,refershToken)
+                        .addHeader(ACCESS_TOKEN, accessToken)
+                        .addHeader(REFER_TOKEN, refreshToken)
                         .build();
             } else {
                 newRequest = request.newBuilder()
                         // 添加token
-                        .addHeader(ACCESS_TOKEN , accessToken)
-                        .addHeader(REFER_TOKEN ,refershToken)
+                        .addHeader(ACCESS_TOKEN, accessToken)
+                        .addHeader(REFER_TOKEN, refreshToken)
                         .build();
             }
         }
@@ -189,19 +195,16 @@ public class LogInterceptor implements Interceptor {
             sharedPreferencesHelp.setDeviceToken(macAddress, response.header(DEVICE_TOKEN));
         }
 
-//        if (null != response.header(ACCESS_TOKEN) && !TextUtils.isEmpty(response.header(ACCESS_TOKEN))){
-//            sharedPreferencesHelp.setAccessToken(response.header(ACCESS_TOKEN));
-//        }
-//
-//        if (null != response.header(REFER_TOKEN) && !TextUtils.isEmpty(response.header(REFER_TOKEN))){
-//            sharedPreferencesHelp.setReferToken(response.header(REFER_TOKEN));
-//        }
+        String responseAccessToken = response.header(ACCESS_TOKEN);
+        String responseRefreshToken = response.header(REFER_TOKEN);
+        if (!TextUtils.isEmpty(responseAccessToken)
+                && TextUtils.isEmpty(responseRefreshToken)) {
 
-        if (null != response.header(ACCESS_TOKEN) && !TextUtils.isEmpty(response.header(ACCESS_TOKEN))
-                 && null != response.header(REFER_TOKEN) && !TextUtils.isEmpty(response.header(REFER_TOKEN))){
-             sharedPreferencesHelp.setAppendToken(appendToken(response.header(ACCESS_TOKEN ) , response.header(REFER_TOKEN)));
+            synchronized (this) {
+                updateToken(responseAccessToken, responseRefreshToken);
+                sharedPreferencesHelp.setAppendToken(appendToken(responseAccessToken, responseRefreshToken));
+            }
         }
-
 
 
         String content;
@@ -237,12 +240,12 @@ public class LogInterceptor implements Interceptor {
             return false;
         }
 
-        if (!TextUtils.equals(request.headers().get(ACCESS_TOKEN) , lastRequest.headers().get(ACCESS_TOKEN))){
-            return false ;
+        if (!TextUtils.equals(request.headers().get(ACCESS_TOKEN), lastRequest.headers().get(ACCESS_TOKEN))) {
+            return false;
         }
 
-        if (!TextUtils.equals(request.headers().get(REFER_TOKEN) , lastRequest.headers().get(REFER_TOKEN))){
-            return false ;
+        if (!TextUtils.equals(request.headers().get(REFER_TOKEN), lastRequest.headers().get(REFER_TOKEN))) {
+            return false;
         }
 
         if (!TextUtils.equals(request.headers().get(DEVICE_TOKEN), lastRequest.headers().get(DEVICE_TOKEN))) {
@@ -336,5 +339,16 @@ public class LogInterceptor implements Interceptor {
         this.uniqueId = uniqueId;
     }
 
-
+    /**
+     *
+     *
+     * @param accessToken
+     * @param refreshToken
+     */
+    private void updateToken(String accessToken, String refreshToken) {
+        if (TextUtils.isEmpty(MvpApp.accessToken) || !MvpApp.accessToken.equals(accessToken))
+            MvpApp.accessToken = accessToken;
+        if (TextUtils.isEmpty(MvpApp.refreshToken) || !MvpApp.refreshToken.equals(refreshToken))
+            MvpApp.refreshToken = refreshToken;
+    }
 }

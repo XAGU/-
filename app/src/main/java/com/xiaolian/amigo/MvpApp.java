@@ -51,6 +51,13 @@ public class MvpApp extends Application {
     private static Context context ;
     public static IWXAPI mWxApi;
 
+    /**
+     * 内存缓存token
+     */
+    public static String accessToken ;
+
+    public static String refreshToken ;
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);

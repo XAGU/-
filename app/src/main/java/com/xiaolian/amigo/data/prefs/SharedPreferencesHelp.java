@@ -859,9 +859,15 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
         mUnclearSharedPreferences.edit().putString(PREF_LAST_UPDATE_REMIND_TIME ,"").apply();
     }
 
+    /**
+     * 如果token跟本地存储的不一致，才进行写入操作
+     * @param s
+     */
     @Override
     public void setAppendToken(String s) {
-        mSharedPreferences.edit().putString(APPEND_TOKEN , s).commit();
+        if (TextUtils.isEmpty(getAppendToken()) || getAppendToken().equals(s)) {
+            mSharedPreferences.edit().putString(APPEND_TOKEN, s).commit();
+        }
     }
 
     @Override
