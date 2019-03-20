@@ -259,11 +259,11 @@ public interface ISharedPreferencesHelp {
 
     void clearUpdateRemindTime();
 
-    /**
-     * 存储拼接token
-     * @param s
-     */
-    void setAppendToken(String s);
+//    /**
+//     * 存储拼接token
+//     * @param s
+//     */
+//    void setAppendToken(String s);
 
     /**
      * 取出拼接token

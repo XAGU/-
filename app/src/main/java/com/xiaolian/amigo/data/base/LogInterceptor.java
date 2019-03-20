@@ -98,15 +98,15 @@ public class LogInterceptor implements Interceptor {
         Request request = chain.request();
         Request newRequest;
 
-        String accessToken;
+        String accessToken="";
 
-        String refreshToken;
+        String refreshToken="";
 
         /**
          * 读取token时，必须是线程安全的
          */
         synchronized (this) {
-            if (TextUtils.isEmpty(MvpApp.accessToken) || TextUtils.isEmpty(MvpApp.refreshToken)) {
+            if (!TextUtils.isEmpty(MvpApp.accessToken) || !TextUtils.isEmpty(MvpApp.refreshToken)) {
                 accessToken = MvpApp.accessToken;
                 refreshToken = MvpApp.refreshToken;
             } else {
@@ -207,7 +207,8 @@ public class LogInterceptor implements Interceptor {
 
             synchronized (this) {
                 updateToken(responseAccessToken, responseRefreshToken);
-                sharedPreferencesHelp.setAppendToken(appendToken(responseAccessToken, responseRefreshToken));
+                sharedPreferencesHelp.setAccessToken(responseAccessToken);
+                sharedPreferencesHelp.setReferToken(responseRefreshToken);
             }
         }
 

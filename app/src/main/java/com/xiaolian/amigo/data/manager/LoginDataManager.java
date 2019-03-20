@@ -98,7 +98,7 @@ public class LoginDataManager implements ILoginDataManager {
 
     @Override
     public void setToken(String accessToken, String refreshToken) {
-        sharedPreferencesHelp.setAppendToken(appendToken(accessToken , refreshToken));
+//        sharedPreferencesHelp.setAppendToken(appendToken(accessToken , refreshToken));
     }
 
     @Override

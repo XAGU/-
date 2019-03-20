@@ -197,11 +197,7 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public String getAccessToken() {
-        String[] token = getToken(getAppendToken());
-        if (token != null && token.length == 2 ){
-            return token[0];
-        }
-        return "";
+        return  mSharedPreferences.getString(PREF_KEY_ACCESS_TOKEN ,"");
     }
 
     /**
@@ -219,12 +215,7 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public String getReferToken() {
-//        return mSharedPreferences.getString(PREF_KEY_REFERSH_TOKEN , "");
-        String[] token = getToken(getAppendToken());
-        if (token != null && token.length == 2 ){
-            return token[1];
-        }
-        return "";
+        return mSharedPreferences.getString(PREF_KEY_REFERSH_TOKEN , "");
     }
 
     @Override
@@ -859,16 +850,16 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
         mUnclearSharedPreferences.edit().putString(PREF_LAST_UPDATE_REMIND_TIME ,"").apply();
     }
 
-    /**
-     * 如果token跟本地存储的不一致，才进行写入操作
-     * @param s
-     */
-    @Override
-    public void setAppendToken(String s) {
-        if (TextUtils.isEmpty(getAppendToken()) || getAppendToken().equals(s)) {
-            mSharedPreferences.edit().putString(APPEND_TOKEN, s).commit();
-        }
-    }
+//    /**
+//     * 如果token跟本地存储的不一致，才进行写入操作
+//     * @param s
+//     */
+//    @Override
+//    public void setAppendToken(String s) {
+//        if (TextUtils.isEmpty(getAppendToken()) || getAppendToken().equals(s)) {
+//            mSharedPreferences.edit().putString(APPEND_TOKEN, s).commit();
+//        }
+//    }
 
     @Override
     public String getAppendToken() {
