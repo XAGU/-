@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -49,7 +50,7 @@ public class MonthlyBillView extends View {
 
     private int lengedHeight = 0;
     private boolean isLengedVisible = false;
-    private int initAngle = -60;
+    private int initAngle = -90;
 
     private boolean hasData = true;
 
@@ -318,7 +319,7 @@ public class MonthlyBillView extends View {
                     lineEndX = barWidth / 2 + (radius + distance * num * 1f + descRectF.width()) * (float) Math.cos(lineAngle * 3.14 / 180);
 //                    lineEndY   =   (barHeight-lengedHeight)/2   + Math.abs  (radius+ distance*num*1f+descRectF.height())  *   (float) Math.sin(lineAngle   *   3.14   /180);
                     lineEndY = rectF.bottom + rectSpace;
-                } else if (descRectF.top < rectF.top) {
+                } else if (descRectF.top < rectF.top || descRectF.bottom < rectF.bottom) {
                     // <  表明在上方
                     float num = 1f;
                     lineEndX = barWidth / 2 + (radius + distance * num * 1f) * (float) Math.cos(lineAngle * 3.14 / 180);
