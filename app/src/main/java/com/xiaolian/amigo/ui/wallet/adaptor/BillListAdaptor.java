@@ -216,6 +216,7 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
         private Long detailId;
         private int status;
         private Long id;
+        private int deviceType ;
 
         public BillListAdaptorWrapper(HashMap<String, Object> billDic) {
             this.type = ((Double)billDic.get("type")).intValue();
@@ -225,17 +226,19 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
             this.id = ((Double) billDetail.get("id")).longValue();
             this.status = ((Double)billDetail.get("status")).intValue();
             this.createTime = ((Double) billDetail.get("createTime")).longValue();
+            this.deviceType = type ;
         }
 
         //  兼容orderList 数据
         public BillListAdaptorWrapper(Order order){
             // 新type中多添加了充值和退款，  所以需要在原有的基础上+2
-            this.type = order.getDeviceType() + 2 ;
+            this.type = order.getDeviceType() + 2  ;
             this.amount = order.getActualDebit();
 //            this.detailId = orderInListDTO.get();
             this.status = order.getBillStatus();
             this.id = order.getId();
             this.createTime = order.getCreateTime();
+            this.deviceType = order.getDeviceType();
         }
 
         public BillListAdaptorWrapper(FundsInListDTO dto) {
@@ -245,6 +248,7 @@ public class BillListAdaptor extends CommonAdapter<BillListAdaptor.BillListAdapt
             this.id = dto.getId();
             this.status = dto.getBillStatus();
             this.createTime = dto.getCreateTime();
+            this.deviceType = type ;
         }
 
 

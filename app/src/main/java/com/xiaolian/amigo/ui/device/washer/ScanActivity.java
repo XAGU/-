@@ -814,7 +814,11 @@ public class ScanActivity extends WasherBaseActivity
             } else if (type == Device.DISPENSER.getType()) {
                 // 进入饮水机
                 gotoDispenser(macAddress, data.getSupplierId(), data.getLocation(),
-                        data.getResidenceId(), data.isFavor(), 0, false ,afterOrderCopy , preOrderCopy);
+                        data.getResidenceId(), data.isFavor(),
+                        (data.getCategory() != null
+                                && DispenserCategory.MULTI.getType() == data.getCategory())
+                                ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor()
+                        , false ,afterOrderCopy , preOrderCopy);
 //
             } else if (type == Device.DRYER.getType()) {
                 // 进入吹风机

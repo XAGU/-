@@ -113,8 +113,9 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 BillListAdaptor.BillListAdaptorWrapper item = items.get(position);
-                String orderName = getDeviceNameWithType(item.getType());
-                if (Device.getDevice(item.getType()) == Device.WASHER || Device.getDevice(item.getType())==Device.DRYER2) {
+
+                String orderName = getDeviceNameWithType(item.getDeviceType());
+                if (Device.getDevice(item.getDeviceType()) == Device.WASHER || Device.getDevice(item.getDeviceType())==Device.DRYER2) {
                     startActivity(new Intent(OrderActivity.this, NormalOrderActivity.class)
                             .putExtra(OrderConstant.KEY_ORDER_ID, item.getId())
                             .putExtra(OrderConstant.KEY_ORDER_TITLE, orderName));
